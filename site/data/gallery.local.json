@@ -1,0 +1,4 @@
+{
+  "about": "Written by scripts/fetch_gallery.py. Maps gallery ids to local copies in site/assets/gallery/; the gallery page prefers these. Empty until the script is run.",
+  "images": {}
+}

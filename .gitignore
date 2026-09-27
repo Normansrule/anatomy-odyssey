@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+outputs/*
+!outputs/.gitignore
+
+# Node (vendored copies live in site/vendor)
+node_modules/
+
+# Local mirrors & scratch
+site/assets/gallery/
+*.log
+.DS_Store
+Thumbs.db
+
+# KiCad backups / caches
+*.kicad_prl
+*-backups/
+fp-info-cache
+*.lck

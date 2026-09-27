@@ -1,0 +1,13 @@
+{
+  "impulse_Ns": 292.6,
+  "site_elevation_m": 600.0,
+  "launch_s": 5.004,
+  "burnout_s": 6.9,
+  "apogee_s": 20.406,
+  "apogee_m": 1135.5,
+  "main_s": 64.167,
+  "landed_s": 87.826,
+  "max_velocity_mps": 157.55,
+  "max_accel_g": 13.9,
+  "samples": 10283
+}

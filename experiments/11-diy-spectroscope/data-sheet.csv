@@ -1,0 +1,5 @@
+photo_file,light_source,grating,calibration,line_label,pixel,wavelength_measured_nm,wavelength_reference_nm,error_nm,notes
+,fluorescent tube,DVD,cfl-auto,Hg blue,,,435.83,,
+,fluorescent tube,DVD,cfl-auto,Hg green,,,546.07,,
+,fluorescent tube,DVD,cfl-auto,Eu red,,,611.6,,
+,white cloud,DVD,manual,Na D,,,589.3,,

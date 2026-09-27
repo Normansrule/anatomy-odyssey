@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Endeavour · Cosmic Codex</title>
+<meta name="description" content="Explore Space Shuttle Endeavour (OV-105) in 3D: its 25 missions, heat shield, engines and robot arm, and its new launch-ready home at the California Science Center in Los Angeles.">
+<meta property="og:title" content="Endeavour · Cosmic Codex">
+<meta property="og:description" content="Explore Space Shuttle Endeavour (OV-105) in 3D: its 25 missions, heat shield, engines and robot arm, and its new launch-ready home at the California Science Center in Los Angeles.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="assets/css/shuttle.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body class="sim" data-page="shuttle">
+  <div class="stage" id="stage" role="img" aria-label="Interactive 3D model of Space Shuttle Endeavour. Drag to orbit, scroll or pinch to zoom, and select the glowing markers to learn about each part."></div>
+  <div class="loading" id="loading"><span class="shiny">Rolling Endeavour out of the hangar…</span></div>
+  <div class="sh-flash" id="flash" aria-hidden="true"></div>
+
+  <div class="hud hud-title sh-title">
+    <div class="eyebrow">Orbiter Vehicle 105 (OV-105)</div>
+    <h1><span class="grad-text">Endeavour</span></h1>
+    <p id="modeLede">The youngest space shuttle orbiter flew 25 missions between 1992 and 2011. Since 2012 it has lived in Southern California, where every orbiter was built — at the California Science Center in Exposition Park, Los Angeles.</p>
+    <div class="sh-mode-tag" id="modeTag"><span class="dot"></span><span id="modeTagText">Samuel Oschin Pavilion · 2012 – 2023</span></div>
+    <p class="hint sh-hint">Drag to orbit · scroll to zoom · select a glowing marker or any part</p>
+  </div>
+
+  <div class="hud hud-bottom sh-bar" role="toolbar" aria-label="Display mode and model controls">
+    <div class="seg sh-modes" role="group" aria-label="Display mode">
+      <button data-mode="museum" aria-pressed="true">Pavilion</button>
+      <button data-mode="stack" aria-pressed="false"><span class="sh-long">Launch </span>stack</button>
+      <button data-mode="orbit" aria-pressed="false"><span class="sh-long">In </span>orbit</button>
+    </div>
+    <span class="sh-sep" aria-hidden="true"></span>
+    <button class="btn small" id="btnDoors" aria-pressed="false" title="Open or close the payload bay doors"><span class="sh-long">Bay </span>doors</button>
+    <button class="btn small" id="btnArm" aria-pressed="false" title="Unfold the Canadarm (orbit mode, doors open)">Canadarm</button>
+    <button class="btn small" id="btnGear" aria-pressed="true" title="Raise or lower the landing gear">Gear</button>
+    <button class="btn small" id="btnBrake" aria-pressed="false" title="Split the rudder into a speed brake"><span class="sh-long">Speed </span>brake</button>
+  </div>
+
+  <aside class="hud hud-panel sh-panel" aria-label="Endeavour facts, missions and visit information">
+    <button class="hud-collapse">▼ HIDE</button>
+
+    <h2>Flight record</h2>
+    <div class="sh-stats" id="stats"></div>
+
+    <h2>Mission explorer <span class="sh-count" id="missionCount"></span></h2>
+    <div class="sh-filter seg" role="group" aria-label="Filter missions" id="missionFilter"></div>
+    <ol class="sh-missions" id="missions" aria-label="All 25 Endeavour missions"></ol>
+
+    <h2>Visit</h2>
+    <div class="card beam sh-visit" id="visit"></div>
+
+    <h2>Settings</h2>
+    <div class="field">
+      <label for="quality">Render quality <span class="val" id="qualityVal"></span></label>
+      <select id="quality">
+        <option value="high">High — shadows, bloom, 4× anti-aliasing</option>
+        <option value="medium">Balanced</option>
+        <option value="low">Low — for older phones</option>
+      </select>
+    </div>
+    <label class="switch">Auto-rotate camera <input type="checkbox" id="autoRot"></label>
+    <label class="switch">Show part markers <input type="checkbox" id="showHot" checked></label>
+
+    <details class="sh-sources">
+      <summary>Sources &amp; notes</summary>
+      <p class="hint">The 3D model is procedural and built from public reference dimensions; it is an educational approximation, not a scale drawing. Insignia and agency logos are deliberately omitted.</p>
+      <ul id="sources"></ul>
+    </details>
+  </aside>
+
+  <section class="hud sh-info" id="info" aria-live="polite" hidden>
+    <button class="sh-close" id="infoClose" aria-label="Close part card">✕</button>
+    <div class="eyebrow" id="infoTag"></div>
+    <h3 id="infoTitle"></h3>
+    <p id="infoText"></p>
+    <div class="readouts" id="infoNums"></div>
+    <p class="hint sh-src" id="infoSrc"></p>
+  </section>
+
+  <div class="sh-hotspots" id="hotspots" aria-label="Part markers"></div>
+
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="assets/js/codex.js"></script>
+  <script type="module" src="assets/js/shuttle.js"></script>
+</body>
+</html>

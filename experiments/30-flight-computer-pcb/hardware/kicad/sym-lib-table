@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "cosmic_codex")(type "KiCad")(uri "${KIPRJMOD}/cosmic_codex.kicad_sym")(options "")(descr "Cosmic Codex parts"))
+)

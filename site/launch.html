@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Launch · Cosmic Codex</title>
+<meta name="description" content="Watch or fly the Apollo 11 Saturn V from Launch Complex 39A to Earth orbit: a real-time 3-D launch driven by a physics simulation with the real vehicle's masses, thrust and event times.">
+<meta property="og:title" content="Launch · Cosmic Codex">
+<meta property="og:description" content="Watch or fly the Apollo 11 Saturn V from Launch Complex 39A to Earth orbit: a real-time 3-D launch driven by a physics simulation with the real vehicle's masses, thrust and event times.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="assets/css/launch.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body class="sim" data-page="launch">
+  <div class="stage" id="stage" role="img" aria-label="Real-time 3-D scene: the Apollo 11 Saturn V rocket on Launch Complex 39A beside its red umbilical tower, with the Atlantic Ocean on the horizon. Press Launch to start the countdown."></div>
+  <div class="loading" id="loading"><div class="lx-loader"><span></span>Stacking the Saturn V…</div></div>
+
+  <!-- title -->
+  <div class="hud hud-title lx-title" id="title">
+    <div class="eyebrow">Apollo 11 · 16 July 1969 · Pad 39A</div>
+    <h1>Saturn V <span class="grad-text">Launch</span></h1>
+    <p>A 2,941-tonne rocket, three stages and eleven and a half minutes to orbit. Every number on screen comes from a live physics simulation using the real vehicle's masses, thrust, specific impulse (Isp) and event times.</p>
+    <p class="hint lx-keys"><kbd>Space</kbd> launch / pause · <kbd>R</kbd> restart · <kbd>1</kbd>–<kbd>6</kbd> cameras · <kbd>[</kbd> <kbd>]</kbd> time warp</p>
+  </div>
+
+  <!-- mission clock -->
+  <div class="lx-clock" id="clock" aria-live="off">
+    <div class="lx-t"><span id="tSign">T−</span><span id="tVal">00:00:30</span></div>
+    <div class="lx-phase" id="phase">On the pad · awaiting launch</div>
+    <div class="lx-mini" id="mini" aria-hidden="true">
+      <span><b id="mAlt">0.0</b> km</span><span><b id="mVel">0</b> m/s</span><span><b id="mG">1.00</b> g</span>
+    </div>
+    <div class="lx-stagebar" id="stagebar" aria-hidden="true">
+      <i data-s="0">S-IC</i><i data-s="1">S-II</i><i data-s="2">S-IVB</i><i data-s="3">Orbit</i>
+    </div>
+  </div>
+
+  <!-- caption for the latest event -->
+  <div class="lx-caption" id="caption" aria-live="polite"></div>
+
+  <!-- telemetry + explanations -->
+  <aside class="hud hud-panel lx-panel" id="panel" aria-label="Telemetry, rocket equation and flight log">
+    <button class="hud-collapse" id="collapse">▼ HIDE</button>
+    <h2>Telemetry</h2>
+    <div class="readouts">
+      <div class="readout"><div class="k">Altitude</div><div class="v" id="rAlt">0.00<small>km</small></div></div>
+      <div class="readout"><div class="k">Velocity <span class="lx-sub">surface</span></div><div class="v" id="rVel">0<small>m/s</small></div></div>
+      <div class="readout"><div class="k">Mach</div><div class="v" id="rMach">0.00</div></div>
+      <div class="readout"><div class="k">Dyn. pressure q</div><div class="v" id="rQ">0.0<small>kPa</small></div></div>
+      <div class="readout"><div class="k">Acceleration</div><div class="v" id="rG">1.00<small>g</small></div></div>
+      <div class="readout"><div class="k">Downrange</div><div class="v" id="rDr">0<small>km</small></div></div>
+      <div class="readout"><div class="k">Mass</div><div class="v" id="rM">2,941<small>t</small></div></div>
+      <div class="readout"><div class="k">Thrust</div><div class="v" id="rF">0<small>MN</small></div></div>
+      <div class="readout"><div class="k">Velocity <span class="lx-sub">inertial</span></div><div class="v" id="rVin">389<small>m/s</small></div></div>
+      <div class="readout"><div class="k">Stage</div><div class="v lx-stage" id="rStage">S-IC</div></div>
+    </div>
+    <canvas class="lx-profile" id="profile" width="560" height="200" aria-label="Altitude versus downrange distance, simulated trajectory"></canvas>
+
+    <h2>Rocket equation in action</h2>
+    <div class="lx-eq">
+      <div class="lx-formula">Δv = I<sub>sp</sub>·g<sub>0</sub>·ln(m<sub>0</sub>/m)</div>
+      <div class="lx-eqnow" id="eqNow">S-IC: 304 s × 9.81 m/s² × ln(2,941 t / 2,941 t) = 0 m/s</div>
+      <canvas id="dvChart" width="560" height="220" aria-label="Chart comparing delta-v predicted by the rocket equation with delta-v delivered by the engines and the speed actually gained"></canvas>
+      <div class="lx-legend">
+        <span><i style="--c:var(--nebula)"></i>Tsiolkovsky (vacuum I<sub>sp</sub>)</span>
+        <span><i style="--c:var(--flame)"></i>Engines delivered ∫F/m dt</span>
+        <span><i style="--c:var(--aurora)"></i>Speed actually gained</span>
+      </div>
+      <table class="lx-budget" aria-label="Delta-v budget">
+        <tr><td>Rocket equation</td><td id="bTs">0</td></tr>
+        <tr><td>− nozzle back-pressure</td><td id="bP">0</td></tr>
+        <tr><td>− gravity</td><td id="bG">0</td></tr>
+        <tr><td>− steering</td><td id="bS">0</td></tr>
+        <tr><td>− drag</td><td id="bD">0</td></tr>
+        <tr class="lx-sum"><td>= speed gained</td><td id="bV">0</td></tr>
+      </table>
+      <p class="hint">Losses are integrated live: gravity ∫g·sinγ dt, drag ∫D/m dt, steering ∫(F/m)(1−cos α) dt. Speeds in m/s; the Earth's rotation gives a free 388 m/s along the 72° flight azimuth.</p>
+    </div>
+
+    <h2>Flight log</h2>
+    <ol class="lx-log" id="log"></ol>
+
+    <h2>Settings</h2>
+    <div class="field"><span class="lbl">Rendering quality</span>
+      <div class="seg" id="quality" role="group" aria-label="Rendering quality">
+        <button data-q="low" aria-pressed="false">Low</button><button data-q="high" aria-pressed="true">High</button><button data-q="ultra" aria-pressed="false">Ultra</button>
+      </div>
+    </div>
+    <label class="switch">Engine sound (synthesised) <input type="checkbox" id="audio"></label>
+    <label class="switch">Camera shake <input type="checkbox" id="shake" checked></label>
+    <p class="hint">Physics: 2-D point-mass trajectory, Runge–Kutta 4 at 50 Hz, U.S. Standard Atmosphere 1976, inverse-square gravity, rotating Earth. Vehicle data: Saturn V Flight Evaluation Report AS-506 (NASA MSFC, 1969). The ascent guidance is simplified, so the simulated flight lands within a few percent of the real one, not on top of it.</p>
+  </aside>
+
+  <!-- controls -->
+  <div class="hud hud-bottom lx-controls" id="controls">
+    <div class="lx-group">
+      <button class="btn flame small" id="launchBtn">Launch</button>
+      <button class="btn small" id="pauseBtn" aria-pressed="false" disabled>Pause</button>
+      <button class="btn small" id="restartBtn">Restart</button>
+    </div>
+    <div class="lx-group">
+      <span class="lx-lbl">Time</span>
+      <div class="seg" id="warp" role="group" aria-label="Time warp">
+        <button data-w="1" aria-pressed="true">1×</button><button data-w="2" aria-pressed="false">2×</button><button data-w="5" aria-pressed="false">5×</button><button data-w="10" aria-pressed="false">10×</button><button data-w="50" aria-pressed="false">50×</button>
+      </div>
+    </div>
+    <div class="lx-group">
+      <span class="lx-lbl">Camera</span>
+      <div class="seg lx-cams" id="cams" role="group" aria-label="Camera">
+        <button data-c="auto" aria-pressed="true">Director</button><button data-c="pad" aria-pressed="false">Pad</button><button data-c="track" aria-pressed="false">Track</button><button data-c="chase" aria-pressed="false">Chase</button><button data-c="onboard" aria-pressed="false">Onboard</button><button data-c="free" aria-pressed="false">Free</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/codex.js"></script>
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script type="module" src="assets/js/launch.js"></script>
+</body>
+</html>

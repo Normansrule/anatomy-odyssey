@@ -1,0 +1,53 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  python:
+    name: Python simulations & experiment tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: simulations/requirements.txt
+      - run: pip install -r simulations/requirements.txt
+      - name: Simulation physics tests
+        run: python -m pytest simulations/tests -q
+      - name: Experiment tool tests
+        run: |
+          set -e
+          for t in experiments/22-barometric-altimeter-payload/tools/test_flightlogic.py \
+                   experiments/31-lora-telemetry-ground-station/ground_station/test_ground_station.py \
+                   experiments/41-openrocket-deep-dive/sim/test_rocketsim.py \
+                   experiments/42-near-space-balloon-cubesat/tools/test_balloon.py; do
+            (cd "$(dirname "$t")" && python -m pytest -q "$(basename "$t")")
+          done
+
+  firmware:
+    name: Firmware host tests (C++)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make -C experiments/30-flight-computer-pcb/firmware/test
+      - run: make -C experiments/31-lora-telemetry-ground-station/firmware
+      - run: make -C experiments/32-barn-door-star-tracker/firmware/test
+
+  site:
+    name: Site data checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --no-warnings scripts/check_equations.mjs
+      - run: node --no-warnings scripts/test_ephemeris.mjs
+      - name: JSON files parse
+        run: for f in site/data/*.json; do node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || exit 1; done

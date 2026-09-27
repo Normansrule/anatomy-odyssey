@@ -1,0 +1,144 @@
+{
+  "_about": "Physical data for the Solar System page. Planets, Moon and Pluto: NASA Planetary Fact Sheet (metric), D. R. Williams, NASA Space Science Data Coordinated Archive (NSSDCA), https://nssdc.gsfc.nasa.gov/planetary/factsheet/ . Sun: NASA Sun Fact Sheet, https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html , and IAU 2015 Resolution B3 nominal values. Ceres: Dawn mission results (Park et al. 2016, Nature 537, 515; Russell et al. 2016, Science 353, 1008) and NASA Science 'Ceres' pages. Spin-axis directions: IAU Working Group on Cartographic Coordinates and Rotational Elements (Archinal et al. 2018, Celest. Mech. Dyn. Astron. 130:22). Moon counts: NASA Science planet pages, as of 2025. Mean temperature for the giant planets is at the 1 bar pressure level (Fact Sheet convention). Negative rotation period = retrograde spin.",
+  "sources": [
+    { "id": "factsheet", "label": "NASA Planetary Fact Sheet (NSSDCA)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/" },
+    { "id": "sunfact", "label": "NASA Sun Fact Sheet (NSSDCA)", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html" },
+    { "id": "standish", "label": "Standish, Keplerian Elements for Approximate Positions of the Major Planets (JPL)", "url": "https://ssd.jpl.nasa.gov/planets/approx_pos.html" },
+    { "id": "wgccre", "label": "Archinal et al. 2018, IAU WGCCRE report (spin axes)", "url": "https://doi.org/10.1007/s10569-017-9805-5" },
+    { "id": "dawn", "label": "NASA Science: Ceres", "url": "https://science.nasa.gov/dwarf-planets/ceres/" },
+    { "id": "voyager", "label": "JPL Voyager mission status", "url": "https://voyager.jpl.nasa.gov/mission/status/" },
+    { "id": "nh", "label": "NASA / JHUAPL New Horizons", "url": "https://science.nasa.gov/mission/new-horizons/" }
+  ],
+  "bodies": [
+    {
+      "id": "sun", "name": "Sun", "kind": "G2V star", "color": "#ffc24b",
+      "radius_km": 695700, "mass_kg": 1.9885e30, "gravity_ms2": 274.0,
+      "rotation_hours": 609.12, "day_hours": null, "orbital_period_days": null,
+      "moons": null, "mean_temp_c": 5499, "temp_note": "photosphere, 5772 K",
+      "pole": [286.13, 63.87], "spin_sign": 1,
+      "fact": "Holds 99.86% of the Solar System's mass. Sunlight takes about 8 minutes 19 seconds to reach Earth.",
+      "missions": ["SOHO (1995 to today)", "Ulysses (1990 to 2009)", "Parker Solar Probe (2018 to today)", "Solar Orbiter (2020 to today)"]
+    },
+    {
+      "id": "mercury", "name": "Mercury", "kind": "Terrestrial planet", "color": "#b8b0a6",
+      "radius_km": 2439.5, "mass_kg": 3.30e23, "gravity_ms2": 3.7,
+      "rotation_hours": 1407.6, "day_hours": 4222.6, "orbital_period_days": 88.0,
+      "moons": 0, "mean_temp_c": 167, "temp_note": "swings from about 430 °C by day to -180 °C at night",
+      "pole": [281.0103, 61.4155], "spin_sign": 1,
+      "fact": "Spins three times for every two orbits, so one solar day lasts two Mercury years.",
+      "missions": ["Mariner 10 (flybys 1974 to 1975)", "MESSENGER (orbiter 2011 to 2015)", "BepiColombo (ESA and JAXA; flybys 2021 to 2025, orbit arrival November 2026)"]
+    },
+    {
+      "id": "venus", "name": "Venus", "kind": "Terrestrial planet", "color": "#e8c889",
+      "radius_km": 6052, "mass_kg": 4.87e24, "gravity_ms2": 8.9,
+      "rotation_hours": -5832.5, "day_hours": 2802.0, "orbital_period_days": 224.7,
+      "moons": 0, "mean_temp_c": 464, "temp_note": "runaway greenhouse; surface pressure 92 bar",
+      "pole": [272.76, 67.16], "spin_sign": -1,
+      "fact": "Spins backwards, and so slowly that its day is longer than its year.",
+      "missions": ["Mariner 2 (first planetary flyby, 1962)", "Venera 7 (first landing on another planet, 1970)", "Pioneer Venus (1978)", "Vega 1 and 2 (1985)", "Magellan (radar mapper, 1990 to 1994)", "Venus Express (2006 to 2014)", "Akatsuki (2015 to 2024)"]
+    },
+    {
+      "id": "earth", "name": "Earth", "kind": "Terrestrial planet", "color": "#6fb4ff",
+      "radius_km": 6378, "mass_kg": 5.97e24, "gravity_ms2": 9.8,
+      "rotation_hours": 23.9345, "day_hours": 24.0, "orbital_period_days": 365.2,
+      "moons": 1, "mean_temp_c": 15, "temp_note": "global mean surface temperature",
+      "pole": [0, 90], "spin_sign": 1,
+      "fact": "The only world known to have liquid water on its surface and life.",
+      "missions": ["Home to every mission. Thousands of satellites orbit it today."]
+    },
+    {
+      "id": "moon", "name": "Moon", "kind": "Earth's natural satellite", "color": "#c9c6c0", "parent": "earth",
+      "radius_km": 1737.5, "mass_kg": 7.3e22, "gravity_ms2": 1.6,
+      "rotation_hours": 655.7, "day_hours": 708.7, "orbital_period_days": 27.3,
+      "moons": 0, "mean_temp_c": -20, "temp_note": "from about 120 °C by day to -170 °C at night",
+      "pole": [269.9949, 66.5392], "spin_sign": 1, "orbit_km": 384400,
+      "fact": "Tidally locked: the same face always points at Earth. It drifts away by about 3.8 cm per year.",
+      "missions": ["Luna 2 (first impact, 1959)", "Luna 3 (first far-side images, 1959)", "Apollo 11 to 17 (12 people walked on it, 1969 to 1972)", "Lunar Reconnaissance Orbiter (2009 to today)", "Chang'e 4 (first far-side landing, 2019)", "Chandrayaan-3 (south polar region, 2023)", "Chang'e 6 (far-side sample return, 2024)"]
+    },
+    {
+      "id": "mars", "name": "Mars", "kind": "Terrestrial planet", "color": "#ff7a4d",
+      "radius_km": 3396, "mass_kg": 6.42e23, "gravity_ms2": 3.7,
+      "rotation_hours": 24.6, "day_hours": 24.7, "orbital_period_days": 687.0,
+      "moons": 2, "mean_temp_c": -65, "temp_note": "thin carbon dioxide air, 0.006 bar",
+      "pole": [317.269, 54.433], "spin_sign": 1,
+      "fact": "Home to Olympus Mons, a volcano about 22 km high, and Valles Marineris, a canyon as long as the United States is wide.",
+      "missions": ["Mariner 4 (first flyby, 1965)", "Viking 1 and 2 (landers, 1976)", "Mars Pathfinder and Sojourner (1997)", "Spirit and Opportunity (2004)", "Mars Reconnaissance Orbiter (2006 to today)", "Curiosity (2012 to today)", "Perseverance and Ingenuity (2021 to today)", "Tianwen-1 and Zhurong (2021)"]
+    },
+    {
+      "id": "ceres", "name": "Ceres", "kind": "Dwarf planet (asteroid belt)", "color": "#a9a39a",
+      "radius_km": 469.7, "mass_kg": 9.38e20, "gravity_ms2": 0.28,
+      "rotation_hours": 9.074, "day_hours": 9.074, "orbital_period_days": 1680,
+      "moons": 0, "mean_temp_c": -105, "temp_note": "about 168 K, estimated average surface temperature",
+      "pole": [291.418, 66.764], "spin_sign": 1,
+      "fact": "The largest object in the asteroid belt, between a quarter and a third of the belt's total mass. Its bright spots in Occator crater are salt deposits.",
+      "missions": ["Dawn (orbiter, 2015 to 2018)"]
+    },
+    {
+      "id": "jupiter", "name": "Jupiter", "kind": "Gas giant", "color": "#e3b98b",
+      "radius_km": 71492, "mass_kg": 1.898e27, "gravity_ms2": 23.1,
+      "rotation_hours": 9.9, "day_hours": 9.9, "orbital_period_days": 4331,
+      "moons": 95, "mean_temp_c": -110, "temp_note": "at the 1 bar level",
+      "pole": [268.057, 64.495], "spin_sign": 1, "flattening": 0.06487,
+      "fact": "More than twice as massive as all the other planets combined. The Great Red Spot is a storm wider than Earth.",
+      "missions": ["Pioneer 10 and 11 (1973, 1974)", "Voyager 1 and 2 (1979)", "Galileo (orbiter, 1995 to 2003)", "Cassini (flyby, 2000)", "New Horizons (flyby, 2007)", "Juno (orbiter, 2016 to today)", "JUICE and Europa Clipper (en route)"]
+    },
+    {
+      "id": "saturn", "name": "Saturn", "kind": "Gas giant", "color": "#f0d7a1",
+      "radius_km": 60268, "mass_kg": 5.68e26, "gravity_ms2": 9.0,
+      "rotation_hours": 10.7, "day_hours": 10.7, "orbital_period_days": 10747,
+      "moons": 274, "mean_temp_c": -140, "temp_note": "at the 1 bar level",
+      "pole": [40.589, 83.537], "spin_sign": 1, "flattening": 0.09796,
+      "rings_km": { "inner": 74658, "outer": 136775 },
+      "fact": "Less dense than water. Its main rings span about 270,000 km edge to edge, yet are typically only about 10 m thick.",
+      "missions": ["Pioneer 11 (1979)", "Voyager 1 (1980)", "Voyager 2 (1981)", "Cassini-Huygens (orbiter 2004 to 2017; Huygens landed on Titan 2005)"]
+    },
+    {
+      "id": "uranus", "name": "Uranus", "kind": "Ice giant", "color": "#9fe3ea",
+      "radius_km": 25559, "mass_kg": 8.68e25, "gravity_ms2": 8.7,
+      "rotation_hours": -17.2, "day_hours": 17.2, "orbital_period_days": 30589,
+      "moons": 29, "mean_temp_c": -195, "temp_note": "at the 1 bar level",
+      "pole": [257.311, -15.175], "spin_sign": -1,
+      "fact": "Rolls around the Sun on its side: its axis is tilted 97.8 degrees, so each pole gets 42 years of sunlight then 42 of darkness.",
+      "moons_note": "28 on the Fact Sheet; S/2025 U1 announced by NASA in August 2025",
+      "missions": ["Voyager 2 (flyby, January 1986): the only visit so far"]
+    },
+    {
+      "id": "neptune", "name": "Neptune", "kind": "Ice giant", "color": "#5b8cff",
+      "radius_km": 24764, "mass_kg": 1.02e26, "gravity_ms2": 11.0,
+      "rotation_hours": 16.1, "day_hours": 16.1, "orbital_period_days": 59800,
+      "moons": 16, "mean_temp_c": -200, "temp_note": "at the 1 bar level",
+      "pole": [299.36, 43.46], "spin_sign": 1,
+      "fact": "Found in 1846 by mathematics before telescopes: Le Verrier predicted its position from wobbles in Uranus's orbit. Winds reach about 2,000 km/h.",
+      "missions": ["Voyager 2 (flyby, August 1989): the only visit so far"]
+    },
+    {
+      "id": "pluto", "name": "Pluto", "kind": "Dwarf planet (Kuiper belt)", "color": "#d9b99b",
+      "radius_km": 1188, "mass_kg": 1.30e22, "gravity_ms2": 0.7,
+      "rotation_hours": -153.3, "day_hours": 153.3, "orbital_period_days": 90560,
+      "moons": 5, "mean_temp_c": -225, "temp_note": "about 48 K",
+      "pole": [132.993, -6.163], "spin_sign": 1,
+      "fact": "Its heart-shaped Sputnik Planitia is a glacier of nitrogen ice. Charon is so large that the pair orbit a point in space between them.",
+      "missions": ["New Horizons (flyby, 14 July 2015)"]
+    }
+  ],
+  "galilean": [
+    { "id": "io", "name": "Io", "radius_km": 1821.6, "color": "#e8d36a" },
+    { "id": "europa", "name": "Europa", "radius_km": 1560.8, "color": "#d8cdb8" },
+    { "id": "ganymede", "name": "Ganymede", "radius_km": 2634.1, "color": "#a99f94" },
+    { "id": "callisto", "name": "Callisto", "radius_km": 2410.3, "color": "#6f665d" }
+  ],
+  "spacecraft": {
+    "_about": "APPROXIMATE positions, for illustration only. Heliocentric distance on 2026-01-01 and radial speed are rounded from the NASA/JPL Voyager status page and New Horizons mission updates (Voyager 1: heliopause at 121.6 AU in August 2012, about 17.0 km/s; Voyager 2: heliopause at 119.0 AU in November 2018, about 15.4 km/s; New Horizons: 50 AU on 2021-04-17, about 13.7 km/s). Directions are rounded ecliptic longitude/latitude (J2000) derived from their catalogued right ascension and declination. The page draws a straight line from the last planetary flyby to the extrapolated position; the real paths curve slightly.",
+    "craft": [
+      { "id": "voyager1", "name": "Voyager 1", "launch": "1977-09-05", "flyby": { "body": "saturn", "date": "1980-11-12" },
+        "ref_date": "2026-01-01", "dist_au": 169.3, "speed_au_yr": 3.58, "lon": 255.9, "lat": 34.9,
+        "note": "Farthest human-made object. In interstellar space since August 2012." },
+      { "id": "voyager2", "name": "Voyager 2", "launch": "1977-08-20", "flyby": { "body": "neptune", "date": "1989-08-25" },
+        "ref_date": "2026-01-01", "dist_au": 142.2, "speed_au_yr": 3.25, "lon": 290.5, "lat": -36.8,
+        "note": "The only spacecraft to visit Uranus and Neptune. In interstellar space since November 2018." },
+      { "id": "newhorizons", "name": "New Horizons", "launch": "2006-01-19", "flyby": { "body": "pluto", "date": "2015-07-14" },
+        "ref_date": "2026-01-01", "dist_au": 63.6, "speed_au_yr": 2.89, "lon": 290.0, "lat": 2.0,
+        "note": "Flew past Pluto in 2015 and Kuiper belt object Arrokoth on 1 January 2019." }
+    ]
+  }
+}

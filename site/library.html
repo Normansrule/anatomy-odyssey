@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mission Library · Cosmic Codex</title>
+<meta name="description" content="A curated library of real primary documents, datasets, tools, courses and videos from NASA, JPL, SpaceX, ESA and others, with a guided reading path from beginner to expert.">
+<meta property="og:title" content="Mission Library · Cosmic Codex">
+<meta property="og:description" content="A curated library of real primary documents, datasets, tools, courses and videos from NASA, JPL, SpaceX, ESA and others, with a guided reading path from beginner to expert.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="assets/css/library.css">
+</head>
+<body data-page="library">
+<main class="page">
+
+  <!-- ================= HERO ================= -->
+  <section class="shell lib-hero">
+    <div class="hero-copy">
+      <div class="eyebrow hero-in" style="animation-delay:0ms">Mission Library</div>
+      <h1 class="hero-in" style="animation-delay:80ms">Read what the <span class="grad-text">engineers read.</span></h1>
+      <p class="lede hero-in" style="animation-delay:160ms">
+        Flight manuals, post-flight reports, user guides, standards, datasets and the tools professionals use,
+        straight from the National Aeronautics and Space Administration (NASA), the Jet Propulsion Laboratory (JPL),
+        SpaceX, the European Space Agency (ESA) and more. Every link goes to the original source.
+      </p>
+      <div class="row hero-in" style="animation-delay:240ms">
+        <a class="btn primary" href="#path">Start reading</a>
+        <a class="btn" href="#library">Browse the shelves</a>
+        <a class="btn" href="#watch">Watch</a>
+      </div>
+      <div class="hero-stats hero-in" style="animation-delay:320ms">
+        <div class="stat"><div class="num"><span data-count="79" id="statDocs">79</span></div><div class="lbl">Primary sources</div></div>
+        <div class="stat"><div class="num"><span data-count="14" id="statChannels">14</span></div><div class="lbl">Channels</div></div>
+        <div class="stat"><div class="num"><span data-count="16" id="statVideos">16</span></div><div class="lbl">Videos</div></div>
+        <div class="stat"><div class="num"><span data-count="6">6</span></div><div class="lbl">Primers</div></div>
+      </div>
+    </div>
+
+    <!-- fanned stack of document covers (original artwork, no logos) -->
+    <div class="doc-stack" aria-hidden="true">
+      <div class="doc d4"><div class="doc-band"></div><div class="doc-num">810-005</div><div class="doc-title">DSN Telecommunications Link Design Handbook</div><div class="doc-lines"><i></i><i></i><i></i><i></i></div><div class="doc-foot">Jet Propulsion Laboratory</div></div>
+      <div class="doc d3"><div class="doc-band"></div><div class="doc-num">JSC-09423</div><div class="doc-title">Apollo Program Summary Report</div><div class="doc-lines"><i></i><i></i><i></i><i></i></div><div class="doc-foot">Lyndon B. Johnson Space Center · 1975</div></div>
+      <div class="doc d2"><div class="doc-band"></div><div class="doc-num">SA-503</div><div class="doc-title">Saturn V Flight Manual</div>
+        <svg class="doc-art" viewBox="0 0 120 150"><g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M60 8 L66 26 L66 118 L72 132 L48 132 L54 118 L54 26 Z"/><path d="M54 52h12M54 84h12M54 104h12"/><path d="M50 132 l-4 12M60 132v12M70 132l4 12" opacity=".6"/></g></svg>
+        <div class="doc-foot">George C. Marshall Space Flight Center · 1968</div></div>
+      <div class="doc d1"><div class="doc-band"></div><div class="doc-num">SP-2016-6105 Rev 2</div><div class="doc-title">Systems Engineering Handbook</div>
+        <svg class="doc-art v" viewBox="0 0 120 80"><path d="M10 10 L60 70 L110 10" fill="none" stroke="currentColor" stroke-width="1.6"/><g fill="currentColor"><circle cx="10" cy="10" r="3"/><circle cx="35" cy="40" r="3"/><circle cx="60" cy="70" r="3"/><circle cx="85" cy="40" r="3"/><circle cx="110" cy="10" r="3"/></g><path d="M35 40H85M10 10H110" stroke="currentColor" stroke-dasharray="3 3" opacity=".5"/></svg>
+        <div class="doc-foot">National Aeronautics and Space Administration</div></div>
+    </div>
+  </section>
+
+  <!-- ================= START HERE ================= -->
+  <section class="block shell" id="path">
+    <div class="sec-head">
+      <div class="eyebrow reveal">Start here</div>
+      <h2 class="reveal">A reading path from launch pad to deep space</h2>
+      <p class="lede reveal">Five picks per stage, in order. Each stage assumes the one before it. Work down a column, then move right.</p>
+    </div>
+    <div class="path-wrap">
+      <svg class="path-arc" viewBox="0 0 1200 220" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="arcG" x1="0" x2="1"><stop offset="0" stop-color="#4ef0b8"/><stop offset=".5" stop-color="#7cc8ff"/><stop offset="1" stop-color="#ff7a3d"/></linearGradient></defs>
+        <path d="M20 210 C 380 200, 700 120, 1180 12" fill="none" stroke="url(#arcG)" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round"/>
+      </svg>
+      <div class="path-cols" id="pathCols"></div>
+    </div>
+  </section>
+
+  <!-- ================= LIBRARY ================= -->
+  <section class="block shell" id="library">
+    <div class="sec-head">
+      <div class="eyebrow reveal">The shelves</div>
+      <h2 class="reveal">Every document, dataset and tool</h2>
+      <p class="lede reveal">Filter by who published it, what kind of thing it is and how much background it expects. Press <kbd>/</kbd> to search.</p>
+    </div>
+
+    <div class="filters" id="filters">
+      <div class="f-row">
+        <label class="search">
+          <span class="sr-only">Search the library</span>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <input type="search" id="q" placeholder="Search titles, topics, tags…" autocomplete="off">
+          <kbd class="slash">/</kbd>
+        </label>
+        <div class="count-badge" aria-live="polite"><span id="countShown">79</span><span class="of"> of <span id="countTotal">79</span></span></div>
+        <label class="sort"><span class="sr-only">Sort</span>
+          <select id="sort">
+            <option value="curated">Curated order</option>
+            <option value="level">Easiest first</option>
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="az">A → Z</option>
+          </select>
+        </label>
+        <button class="btn small" id="reset" type="button">Reset</button>
+      </div>
+      <div class="f-groups">
+        <div class="f-group"><span class="f-lbl">Level</span><div class="chips" id="fLevel" role="group" aria-label="Filter by level"></div></div>
+        <div class="f-group"><span class="f-lbl">Type</span><div class="chips" id="fType" role="group" aria-label="Filter by type"></div></div>
+        <div class="f-group"><span class="f-lbl">From</span><div class="chips" id="fOrg" role="group" aria-label="Filter by organisation"></div></div>
+      </div>
+    </div>
+
+    <div class="grid grid-3 lib-grid" id="grid" aria-live="polite"></div>
+    <div class="empty" id="empty" hidden>
+      <p>Nothing on the shelves matches that. Try fewer filters.</p>
+      <button class="btn small" type="button" id="reset2">Clear filters</button>
+    </div>
+    <div class="more-row"><button class="btn" id="more" type="button" hidden>Show all</button></div>
+  </section>
+
+  <!-- ================= SYSTEMS ENGINEERING CORNER ================= -->
+  <section class="block shell" id="systems">
+    <div class="sec-head">
+      <div class="eyebrow reveal">Systems engineering corner</div>
+      <h2 class="reveal">How a mission becomes hardware</h2>
+      <p class="lede reveal">Three ideas from the NASA Systems Engineering Handbook that organise everything else on this page. Tap or hover any part of a diagram to learn what it means.</p>
+    </div>
+
+    <div class="se-grid">
+      <figure class="card se-card se-v reveal">
+        <figcaption><span class="chip ice">V-model</span><span class="muted">Decompose down the left, integrate and verify up the right.</span></figcaption>
+        <svg id="vModel" viewBox="0 0 640 392" role="img" aria-labelledby="vTitle">
+          <title id="vTitle">The systems engineering V-model: definition on the left arm, integration and verification on the right, linked level by level.</title>
+          <defs>
+            <linearGradient id="vG" x1="0" x2="1"><stop offset="0" stop-color="#7cc8ff"/><stop offset=".5" stop-color="#b18cff"/><stop offset="1" stop-color="#ff7a3d"/></linearGradient>
+            <marker id="vArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8f98bd"/></marker>
+          </defs>
+          <g class="v-links" stroke="#5d6589" stroke-dasharray="4 5">
+            <line x1="192" y1="40" x2="448" y2="40"/><line x1="227" y1="110" x2="413" y2="110"/>
+            <line x1="262" y1="180" x2="378" y2="180"/><line x1="297" y1="250" x2="343" y2="250"/>
+          </g>
+          <g class="v-link-lbl" font-family="JetBrains Mono, monospace" font-size="10" fill="#8f98bd" text-anchor="middle">
+            <text x="320" y="34">validates</text><text x="320" y="104">verifies</text><text x="320" y="174">verifies</text>
+          </g>
+          <path d="M180 40 L320 320 L460 40" fill="none" stroke="url(#vG)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="v-glow" d="M180 40 L320 320 L460 40" fill="none" stroke="url(#vG)" stroke-width="10" opacity=".18" stroke-linecap="round" stroke-linejoin="round"/>
+          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#8f98bd" letter-spacing="1.4" text-anchor="middle">
+            <text x="180" y="12">DEFINE ↓</text>
+            <text x="460" y="12">↑ INTEGRATE &amp; VERIFY</text>
+          </g>
+          <line x1="150" y1="378" x2="470" y2="378" stroke="#5d6589" marker-end="url(#vArrow)"/>
+          <text x="480" y="381.5" font-family="JetBrains Mono, monospace" font-size="10" fill="#8f98bd">TIME</text>
+          <g id="vNodes" font-family="Inter, sans-serif" font-size="13"></g>
+        </svg>
+      </figure>
+
+      <div class="se-side">
+        <div class="card se-card se-life reveal" data-delay="100">
+          <div class="se-head"><span class="chip nebula">Life cycle</span><span class="muted">NASA project phases, gated by Key Decision Points (KDP).</span></div>
+          <div class="life-bands" aria-hidden="true"><span class="band f">Formulation</span><span class="band i">Implementation</span></div>
+          <div class="life" id="life" role="list"></div>
+        </div>
+        <div class="card se-card se-trl reveal" data-delay="180">
+          <div class="se-head"><span class="chip flame">TRL</span><span class="muted">Technology Readiness Levels: how proven is it?</span></div>
+          <div class="trl" id="trl" role="list"></div>
+          <div class="trl-bands" aria-hidden="true"><span>Research</span><span>Development</span><span>Flight</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="se-info callout ice" id="seInfo" aria-live="polite">
+      <strong id="seInfoTitle">Pick anything above.</strong>
+      <span id="seInfoText">Each node, phase and level carries a short definition drawn from the NASA Systems Engineering Handbook and NASA's Technology Readiness Level definitions.</span>
+    </div>
+  </section>
+
+  <!-- ================= WATCH ================= -->
+  <section class="block shell" id="watch">
+    <div class="sec-head">
+      <div class="eyebrow reveal">Watch</div>
+      <h2 class="reveal">Channels worth subscribing to</h2>
+      <p class="lede reveal">English-language channels from agencies, engineers and science communicators, chosen because they get the engineering right.</p>
+    </div>
+    <div class="grid grid-4 channels" id="channels"></div>
+
+    <h3 class="sub-h reveal">Start with these videos</h3>
+    <div class="grid grid-3 videos" id="videos"></div>
+  </section>
+
+  <!-- ================= PRIMERS ================= -->
+  <section class="block shell" id="primers">
+    <div class="sec-head">
+      <div class="eyebrow reveal">Engineering primers</div>
+      <h2 class="reveal">Six short guides in the repository</h2>
+      <p class="lede reveal">Concise Markdown primers with diagrams and the key equations, each ending with the library entries to read next.</p>
+    </div>
+    <div class="grid grid-3 primers">
+      <a class="card spot primer reveal" href="https://github.com/Normansrule/cosmic-codex/blob/main/docs/engineering/rocket-propulsion.md" rel="noopener">
+        <div class="p-ico flame"><svg viewBox="0 0 24 24"><path d="M12 2c3 3 4 6 4 10l-1.5 5h-5L8 12c0-4 1-7 4-10z M9.5 17l-2 4 M14.5 17l2 4 M12 18v4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <h3>Rocket propulsion</h3><p>The rocket equation, specific impulse, nozzle expansion, engine cycles and staging.</p><span class="go">→</span></a>
+      <a class="card spot primer reveal" data-delay="60" href="https://github.com/Normansrule/cosmic-codex/blob/main/docs/engineering/orbital-mechanics.md" rel="noopener">
+        <div class="p-ico ice"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="10" ry="5" fill="none" stroke="currentColor" stroke-width="1.5" transform="rotate(-20 12 12)"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/><circle cx="20.5" cy="8.6" r="1.4" fill="currentColor"/></svg></div>
+        <h3>Orbital mechanics</h3><p>Kepler's laws, the vis-viva equation, Hohmann transfers, plane changes and the Oberth effect.</p><span class="go">→</span></a>
+      <a class="card spot primer reveal" data-delay="120" href="https://github.com/Normansrule/cosmic-codex/blob/main/docs/engineering/spacecraft-subsystems.md" rel="noopener">
+        <div class="p-ico nebula"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 10h6M2 14h6M16 10h6M16 14h6M2 10v4M22 10v4M12 8V4M10 4h4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div>
+        <h3>Spacecraft subsystems</h3><p>Power, thermal, attitude control, communications, command and data handling, structures, propulsion.</p><span class="go">→</span></a>
+      <a class="card spot primer reveal" href="https://github.com/Normansrule/cosmic-codex/blob/main/docs/engineering/launch-vehicles-compared.md" rel="noopener">
+        <div class="p-ico sol"><svg viewBox="0 0 24 24"><path d="M5 21V9l2-4 2 4v12M11 21V6l2-4 2 4v15M17 21v-9l1.5-3 1.5 3v9M3 21h18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <h3>Launch vehicles compared</h3><p>Saturn V to Starship: height, thrust, payload and reusability for eleven rockets, with sources.</p><span class="go">→</span></a>
+      <a class="card spot primer reveal" data-delay="60" href="https://github.com/Normansrule/cosmic-codex/blob/main/docs/engineering/reentry-and-heat-shields.md" rel="noopener">
+        <div class="p-ico plasma"><svg viewBox="0 0 24 24"><path d="M4 16a8 8 0 0 1 16 0z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 19c2-1 4-1 6 0s4 1 6 0M8 5l1 3M12 3v4M16 5l-1 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Reentry and heat shields</h3><p>Blunt bodies, stagnation heating, ablators versus tiles, and why capsules come in backwards.</p><span class="go">→</span></a>
+      <a class="card spot primer reveal" data-delay="120" href="https://github.com/Normansrule/cosmic-codex/blob/main/docs/engineering/deep-space-communications.md" rel="noopener">
+        <div class="p-ico green"><svg viewBox="0 0 24 24"><path d="M4 14a8 8 0 0 0 10 4L6 10a8 8 0 0 0-2 4z M10 14l4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M16 4a5 5 0 0 1 4 4M16 1a8 8 0 0 1 7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h3>Deep space communications</h3><p>The Deep Space Network, decibels, antenna gain and a worked link budget to Mars.</p><span class="go">→</span></a>
+    </div>
+    <p class="fine muted">Cosmic Codex is not affiliated with any organisation listed here. Organisation names are shown as text labels, never logos. Links were checked on 26 September 2026; if one breaks, please open an issue.</p>
+  </section>
+
+</main>
+<script src="assets/js/codex.js"></script>
+<script type="module" src="assets/js/library.js"></script>
+</body>
+</html>

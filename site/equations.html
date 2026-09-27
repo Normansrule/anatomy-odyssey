@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Equation Atlas · Cosmic Codex</title>
+<meta name="description" content="47 equations of space science and spaceflight, each with a plain-language meaning, a worked example with real numbers, a live calculator and plot.">
+<meta property="og:title" content="Equation Atlas · Cosmic Codex">
+<meta property="og:description" content="47 equations of space science and spaceflight, each with a plain-language meaning, a worked example with real numbers, a live calculator and plot.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="assets/css/equations.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body data-page="equations">
+  <main class="page eqx">
+    <!-- ======================================================= hero -->
+    <section class="eqx-hero shell" aria-labelledby="eqx-title">
+      <div class="eqx-hero-copy">
+        <div class="eyebrow">Reference · Chapter by chapter</div>
+        <h1 id="eqx-title" class="grad-text">The Equation Atlas</h1>
+        <p class="lede">The mathematics of spaceflight and the cosmos, one card at a time. Every equation comes with what it means in plain words, a worked example with real mission numbers, and a live calculator you can play with.</p>
+        <div class="eqx-stats" id="eqx-stats" aria-live="off">
+          <div class="stat"><div class="num" data-to="0" id="st-eq">0</div><div class="lbl">Equations</div></div>
+          <div class="stat"><div class="num" data-to="0" id="st-ch">0</div><div class="lbl">Chapters</div></div>
+          <div class="stat"><div class="num" data-to="0" id="st-plot">0</div><div class="lbl">Live plots</div></div>
+          <div class="stat"><div class="num" data-to="0" id="st-k">0</div><div class="lbl">Constants</div></div>
+        </div>
+        <div class="row eqx-cta">
+          <a class="btn primary" href="#ch-gravity">Start with gravity <span aria-hidden="true">→</span></a>
+          <a class="btn" href="#constants">Constants table</a>
+          <a class="btn" href="https://github.com/Normansrule/cosmic-codex/blob/main/docs/EQUATIONS.md" rel="noopener">Markdown edition ↗</a>
+        </div>
+      </div>
+      <div class="eqx-montage" id="montage" aria-hidden="true">
+        <div class="mt-glow"></div>
+        <div class="mt-ring mt-ring-1"><div class="mt-rot" id="ring1"></div></div>
+        <div class="mt-ring mt-ring-2"><div class="mt-rot" id="ring2"></div></div>
+        <div class="mt-core">
+          <div class="mt-label mono" id="mt-label">&nbsp;</div>
+          <div class="mt-eq" id="mt-eq"></div>
+          <div class="mt-dots" id="mt-dots"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="eqx-marquee marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+    <!-- ======================================================= toolbar -->
+    <div class="eqx-toolbar" id="toolbar">
+      <div class="shell eqx-tb">
+        <nav class="eqx-chapnav" id="chapnav" aria-label="Chapters"></nav>
+        <div class="eqx-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4.2-4.2"/></svg>
+          <label class="sr-only" for="q">Search equations</label>
+          <input id="q" type="search" placeholder="Search equations…" autocomplete="off" spellcheck="false">
+          <kbd aria-hidden="true">/</kbd>
+          <span class="eqx-count mono" id="qcount" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="eqx-progress"><span id="progress"></span></div>
+    </div>
+
+    <!-- ======================================================= chapters -->
+    <div class="shell">
+      <div id="atlas" class="eqx-atlas" aria-busy="true">
+        <p class="muted mono eqx-loading">Loading equations…</p>
+      </div>
+      <div class="eqx-empty card" id="empty" hidden>
+        <h3>No equation matches “<span id="empty-q"></span>”</h3>
+        <p>Try a symbol name (<code>delta-v</code>, <code>redshift</code>), a mission (<code>ISS</code>, <code>Apollo</code>, <code>JWST</code>) or a person (<code>Kepler</code>, <code>Hawking</code>).</p>
+      </div>
+
+      <!-- ===================================================== constants -->
+      <section class="eqx-chapter eqx-constants" id="constants" data-chapter="constants" style="--acc: var(--text-2)">
+        <header class="ch-head">
+          <div class="ch-num" aria-hidden="true">K</div>
+          <div>
+            <div class="eyebrow">Reference · CODATA 2018 · IAU 2015</div>
+            <h2>Constants</h2>
+            <p class="lede">The numbers every calculator on this page uses. Exact values are definitions of the International System of Units (SI) or of the International Astronomical Union (IAU); the rest are the Committee on Data of the International Science Council (CODATA) 2018 recommended values. Click a row to copy its value.</p>
+          </div>
+        </header>
+        <div class="table-wrap"><table class="data eqx-ktable" id="ktable"><thead><tr><th>Symbol</th><th>Quantity</th><th class="num">Value</th><th>Unit</th><th>Source</th></tr></thead><tbody></tbody></table></div>
+        <p class="eqx-ksrc muted" id="ksrc"></p>
+      </section>
+
+      <section class="eqx-about card beam">
+        <div class="eyebrow">How the numbers are checked</div>
+        <p>Each calculator evaluates the same expression that produces the worked example, and <code>scripts/check_equations.mjs</code> recomputes every example, renders every formula with KaTeX and compares key results with published values (for example the GPS clock offsets in Ashby 2003 and the IAU nominal solar luminosity). Run it with <code>node scripts/check_equations.mjs --table</code>. Found a mistake? Please <a href="https://github.com/Normansrule/cosmic-codex/issues" rel="noopener">open an issue</a>.</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="eqx-toast mono" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="assets/js/codex.js"></script>
+  <script type="module" src="assets/js/equations.js"></script>
+</body>
+</html>

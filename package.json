@@ -1,0 +1,23 @@
+{
+  "name": "cosmic-codex",
+  "version": "1.0.0",
+  "description": "An open atlas of space and spaceflight: interactive 3D simulations, equations, documents and hands-on builds.",
+  "scripts": {
+    "serve": "python3 -m http.server 8000 --directory site",
+    "check": "node --no-warnings scripts/check_equations.mjs && node --no-warnings scripts/test_ephemeris.mjs",
+    "build:equations-md": "node scripts/build_equations_md.mjs"
+  },
+  "author": "Aleksander Norman",
+  "license": "MIT",
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "katex": "^0.18.9",
+    "three": "^0.186.1"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Normansrule/cosmic-codex.git"
+  },
+  "homepage": "https://normansrule.github.io/cosmic-codex/"
+}

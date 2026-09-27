@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Sun · Cosmic Codex</title>
+<meta name="description" content="An interactive 3D Sun: boiling granulation, sunspots, differential rotation, prominences, flares and Coronal Mass Ejections, seen in white light, hydrogen-alpha and three extreme-ultraviolet channels, with a cutaway of the solar interior and live physics calculators.">
+<meta property="og:title" content="The Sun · Cosmic Codex">
+<meta property="og:description" content="An interactive 3D Sun: boiling granulation, sunspots, differential rotation, prominences, flares and Coronal Mass Ejections, seen in white light, hydrogen-alpha and three extreme-ultraviolet channels, with a cutaway of the solar interior and live physics calculators.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="assets/css/sun.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body class="sim" data-page="sun">
+  <div class="stage" id="stage" role="img" aria-label="A real-time 3D model of the Sun with granulation, sunspots, prominences and a glowing corona. Drag to orbit, scroll or pinch to zoom."></div>
+  <div class="loading" id="loading"><div class="sun-loader"><span></span>Igniting the photosphere…</div></div>
+
+  <!-- screen-space overlays: cutaway labels, Earth reticle, event toast -->
+  <div class="sun-overlay" id="overlay" aria-hidden="true">
+    <svg class="sun-leaders" id="leaders"></svg>
+    <div class="earth-tag" id="earthTag"><i></i><div><b>Earth, to scale</b><span>12,742 km across · 109 fit across the Sun</span><span class="dim">Distance not to scale: Earth orbits 215 solar radii away</span></div></div>
+  </div>
+
+  <div class="hud hud-title sun-title">
+    <div class="eyebrow">G2V main-sequence star · 4.6 billion years old</div>
+    <h1>The <span class="sun-grad">Sun</span></h1>
+    <p>A 1.4-million-kilometre ball of plasma held together by gravity and powered by hydrogen fusion. Switch wavelengths to peel back its atmosphere, cut it open, or set off a flare.</p>
+    <p class="hint">Drag to orbit · scroll or pinch to zoom in on the granulation · <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd></p>
+  </div>
+
+  <!-- instrument dock: wavelength filter + eruption trigger -->
+  <div class="hud hud-bottom sun-dock" role="group" aria-label="Wavelength filter and eruption">
+    <div class="seg sun-filters" id="filters" role="radiogroup" aria-label="Wavelength filter">
+      <button data-f="0" aria-pressed="true" role="radio" aria-checked="true" title="White light (visible)"><i style="--c:#ffd79a"></i><span class="long">White light</span><span class="short">White</span></button>
+      <button data-f="1" aria-pressed="false" role="radio" aria-checked="false" title="Hydrogen-alpha 656.3 nm"><i style="--c:#ff4a2a"></i><span class="long">H-alpha 656.3 nm</span><span class="short">Hα</span></button>
+      <button data-f="2" aria-pressed="false" role="radio" aria-checked="false" title="Extreme ultraviolet 171 Å"><i style="--c:#ffc233"></i><span class="long">171 Å</span><span class="short">171</span></button>
+      <button data-f="3" aria-pressed="false" role="radio" aria-checked="false" title="Extreme ultraviolet 304 Å"><i style="--c:#ff6a1a"></i><span class="long">304 Å</span><span class="short">304</span></button>
+      <button data-f="4" aria-pressed="false" role="radio" aria-checked="false" title="Extreme ultraviolet 193 Å"><i style="--c:#c9a26a"></i><span class="long">193 Å</span><span class="short">193</span></button>
+    </div>
+    <button class="btn flame small sun-flare" id="flareBtn"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg><span class="long">Trigger flare + CME</span><span class="short">Flare</span></button>
+  </div>
+
+  <div class="sun-toast" id="toast" role="status" aria-live="polite"></div>
+
+  <aside class="hud hud-panel sun-panel" id="panel" aria-label="Sun controls and physics">
+    <button class="hud-collapse">▼ HIDE</button>
+    <div class="seg sun-tabs" role="tablist" aria-label="Panel sections">
+      <button role="tab" aria-pressed="true" aria-selected="true" data-tab="explore">Explore</button>
+      <button role="tab" aria-pressed="false" aria-selected="false" data-tab="inside">Inside</button>
+      <button role="tab" aria-pressed="false" aria-selected="false" data-tab="facts">Facts</button>
+      <button role="tab" aria-pressed="false" aria-selected="false" data-tab="calc">Calculate</button>
+    </div>
+
+    <!-- ================= EXPLORE ================= -->
+    <section class="sun-tab" data-panel="explore">
+      <div class="filter-card" id="filterCard">
+        <div class="fc-head"><i id="fcDot"></i><div><div class="fc-name" id="fcName">White light</div><div class="fc-meta" id="fcMeta">400–700 nm · photosphere · ≈5,772 K</div></div></div>
+        <p id="fcText"></p>
+      </div>
+
+      <h2>View</h2>
+      <label class="switch">Cutaway: open the interior <input type="checkbox" id="tCut"></label>
+      <label class="switch">Earth to scale <input type="checkbox" id="tEarth"></label>
+      <label class="switch">Solar wind <input type="checkbox" id="tWind"></label>
+      <label class="switch">Rotation markers <input type="checkbox" id="tMark"></label>
+      <label class="switch">Corona glow <input type="checkbox" id="tCorona" checked></label>
+      <label class="switch">Cinematic auto-orbit <input type="checkbox" id="tOrbit" checked></label>
+
+      <h2>Differential rotation</h2>
+      <div class="field"><label for="warp">Time warp <output id="warpOut">1 day / s</output></label>
+        <input type="range" id="warp" min="0" max="8" step="1" value="5"></div>
+      <div class="readouts">
+        <div class="readout"><div class="k">Elapsed</div><div class="v" id="rDays">0<small>days</small></div></div>
+        <div class="readout"><div class="k">Equator lead</div><div class="v" id="rLead">0°<small>vs 60°</small></div></div>
+        <div class="readout"><div class="k">Equator turn</div><div class="v">24.5<small>days</small></div></div>
+        <div class="readout"><div class="k">Polar turn</div><div class="v">≈34<small>days</small></div></div>
+      </div>
+      <p class="note">The Sun is not solid, so it does not spin as one piece: the equator laps the poles. Turn on <b>rotation markers</b> to paint meridians on the surface and watch them bend. Rates from the Doppler fit Ω = A + B sin²φ + C sin⁴φ with A = 14.713, B = −2.396, C = −1.787 degrees per day (Snodgrass &amp; Ulrich 1990).</p>
+
+      <h2>Rendering</h2>
+      <div class="field"><label for="quality">Quality</label>
+        <select id="quality">
+          <option value="2">High (full resolution, animated granulation)</option>
+          <option value="1">Medium (1× pixels, lighter noise)</option>
+          <option value="0">Low (older phones and laptops)</option>
+        </select></div>
+      <p class="note">Honest simplifications: granule size and contrast are enlarged about 2× so you can see them without a telescope; the white-light view is tinted like a filtered photograph (the real Sun is white in space); the corona is a million times fainter than the disc and is only seen like this during a total eclipse or with a coronagraph.</p>
+    </section>
+
+    <!-- ================= INSIDE ================= -->
+    <section class="sun-tab" data-panel="inside" hidden>
+      <button class="btn small sun-cut-btn" id="cutBtn" aria-pressed="false">Open the cutaway</button>
+      <h2>Layers</h2>
+      <div class="sun-layers" role="list">
+        <div class="lay" role="listitem"><b><i style="--c:#fff4c8"></i>Core</b><span class="r">0–0.25 R☉</span><span class="t">15.7 MK</span><span class="d">162 g/cm³ (centre)</span></div>
+        <div class="lay" role="listitem"><b><i style="--c:#ffb347"></i>Radiative zone</b><span class="r">0.25–0.70 R☉</span><span class="t">7 → 2 MK</span><span class="d">20 → 0.2 g/cm³</span></div>
+        <div class="lay" role="listitem"><b><i style="--c:#ffe08a"></i>Tachocline</b><span class="r">≈0.70 R☉</span><span class="t">≈2 MK</span><span class="d">≈0.2 g/cm³</span></div>
+        <div class="lay" role="listitem"><b><i style="--c:#ff6a1f"></i>Convective zone</b><span class="r">0.713–1 R☉</span><span class="t">2 MK → 5,772 K</span><span class="d">0.2 → 2×10⁻⁷ g/cm³</span></div>
+        <div class="lay" role="listitem"><b><i style="--c:#ffd79a"></i>Photosphere</b><span class="r">1 R☉ (≈500 km thick)</span><span class="t">5,772 K</span><span class="d">≈2×10⁻⁷ g/cm³</span></div>
+        <div class="lay" role="listitem"><b><i style="--c:#ff5a6a"></i>Chromosphere</b><span class="r">+≈2,000 km</span><span class="t">4,000 → 20,000 K</span><span class="d">10⁻⁹ → 10⁻¹³ g/cm³</span></div>
+        <div class="lay" role="listitem"><b><i style="--c:#bcd8ff"></i>Corona</b><span class="r">to many R☉</span><span class="t">1–3 MK</span><span class="d">≈10⁻¹⁵ g/cm³</span></div>
+      </div>
+      <p class="note">MK = million kelvin; R☉ = solar radius (695,700 km). The convection-zone base at 0.713 R☉ is measured by helioseismology (Christensen-Dalsgaard, Gough &amp; Thompson 1991); layer temperatures and densities follow NASA Marshall Space Flight Center (MSFC) solar-physics pages (Hathaway) and the Vernazza–Avrett–Loeser (VAL) chromosphere model.</p>
+
+      <h2>Fusion: the proton–proton chain</h2>
+      <p>In the core, hydrogen nuclei (protons) are squeezed hard enough to fuse. The net result of the proton–proton (p–p) chain:</p>
+      <div class="eq" id="eqPP"></div>
+      <ol class="pp-steps">
+        <li><span class="eq-inline" data-tex="p + p \to {}^{2}\mathrm{H} + e^{+} + \nu_e"></span> the slow, weak-force step: a given proton waits billions of years</li>
+        <li><span class="eq-inline" data-tex="{}^{2}\mathrm{H} + p \to {}^{3}\mathrm{He} + \gamma"></span></li>
+        <li><span class="eq-inline" data-tex="{}^{3}\mathrm{He} + {}^{3}\mathrm{He} \to {}^{4}\mathrm{He} + 2p"></span></li>
+      </ol>
+      <p>0.7% of the mass disappears as energy (E = mc²). Dividing the luminosity by c² gives the mass the Sun converts to light:</p>
+      <div class="eq" id="eqMass"></div>
+
+      <h2>A photon's 170,000-year escape</h2>
+      <p>Energy made in the core cannot fly straight out. In the dense plasma a photon travels a fraction of a millimetre before an electron or ion scatters it in a random direction. After <em>N</em> random steps of length ℓ it is only √N·ℓ from where it started, so crossing a distance R takes N = (R/ℓ)² steps:</p>
+      <div class="eq" id="eqWalk"></div>
+      <div class="field"><label for="mfp">Average mean free path ℓ <output id="mfpOut">0.3 mm</output></label>
+        <input type="range" id="mfp" min="-2" max="1" step="0.01" value="-0.52"></div>
+      <div class="readouts one">
+        <div class="readout"><div class="k">Escape time from the core (random walk)</div><div class="v" id="walkOut">—</div></div>
+      </div>
+      <p class="note">A single average ℓ is a teaching simplification. Detailed solar models give a radiative diffusion time of about 170,000 years (Mitalas &amp; Sills 1992, <i>Astrophysical Journal</i> 401, 759); in the outer 30% convection takes over and carries the energy up far faster, in weeks rather than millennia. Once free at the photosphere, light reaches Earth in 8 min 19 s.</p>
+    </section>
+
+    <!-- ================= FACTS ================= -->
+    <section class="sun-tab" data-panel="facts" hidden>
+      <div class="facts">
+        <div class="fact"><div class="k">Mass</div><div class="v"><span data-count="1.989" data-decimals="3">1.989</span><small>×10³⁰ kg</small></div><div class="s">333,000 Earths · 99.86% of the Solar System</div></div>
+        <div class="fact"><div class="k">Radius</div><div class="v"><span data-count="695700">695,700</span><small>km</small></div><div class="s">109 Earth radii</div></div>
+        <div class="fact"><div class="k">Luminosity</div><div class="v"><span data-count="3.828" data-decimals="3">3.828</span><small>×10²⁶ W</small></div><div class="s">IAU nominal value</div></div>
+        <div class="fact"><div class="k">Effective temperature</div><div class="v"><span data-count="5772">5,772</span><small>K</small></div><div class="s">photosphere</div></div>
+        <div class="fact"><div class="k">Core temperature</div><div class="v"><span data-count="15.7" data-decimals="1">15.7</span><small>million K</small></div><div class="s">1.571×10⁷ K</div></div>
+        <div class="fact"><div class="k">Age</div><div class="v"><span data-count="4.6" data-decimals="1">4.6</span><small>billion yr</small></div><div class="s">oldest meteorite grains: 4.568 Gyr</div></div>
+        <div class="fact"><div class="k">Mean density</div><div class="v"><span data-count="1.408" data-decimals="3">1.408</span><small>g/cm³</small></div><div class="s">core: 162 g/cm³</div></div>
+        <div class="fact"><div class="k">Surface gravity</div><div class="v"><span data-count="274">274</span><small>m/s²</small></div><div class="s">28 × Earth's</div></div>
+        <div class="fact"><div class="k">Escape velocity</div><div class="v"><span data-count="617.6" data-decimals="1">617.6</span><small>km/s</small></div><div class="s">from the photosphere</div></div>
+        <div class="fact"><div class="k">Mass → light</div><div class="v"><span data-count="4.26" data-decimals="2">4.26</span><small>Mt / s</small></div><div class="s">L ÷ c², million tonnes per second</div></div>
+        <div class="fact"><div class="k">Composition</div><div class="v"><span data-count="74" data-decimals="0">74</span><small>% H</small></div><div class="s">≈25% helium, ≈1.3% heavier, by mass</div></div>
+        <div class="fact"><div class="k">Solar constant</div><div class="v"><span data-count="1361">1,361</span><small>W/m²</small></div><div class="s">at 1 AU, top of atmosphere</div></div>
+      </div>
+
+      <h2>Solar Cycle 25</h2>
+      <div class="callout cycle">
+        <p><b>Status (September 2026): declining phase.</b> Solar Cycle 25 began at the December 2019 minimum. NASA and the National Oceanic and Atmospheric Administration (NOAA) announced in October 2024 that the Sun had reached its solar maximum period, and the Sunspot Index and Long-term Solar Observations (SILSO) centre at the Royal Observatory of Belgium later placed the peak of the 13-month smoothed sunspot number at about 161 in October 2024, well above the official forecast of 115.</p>
+        <p>Since 2025 the smoothed sunspot number has been falling, but big eruptions still happen on the way down: an X5.1 flare on 11 November 2025 launched a Coronal Mass Ejection (CME) at roughly 1,950 km/s. The next minimum is expected around 2030. Polar magnetic fields flip at every maximum, so the full magnetic cycle is about 22 years.</p>
+        <p class="src">Sources: SILSO / Solar Influences Data Analysis Center (SIDC), “Solar Cycle 25 reached its maximum in October 2024”; NASA–NOAA announcement, 15 Oct 2024; NOAA Space Weather Prediction Center (SWPC) solar-cycle progression.</p>
+      </div>
+
+      <h2>References</h2>
+      <ul class="refs">
+        <li>NASA Goddard, <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html" rel="noopener">Sun Fact Sheet</a> (mass, density, gravity, escape velocity, core temperature, solar constant).</li>
+        <li>Prša et al. 2016, <a href="https://arxiv.org/abs/1605.09788" rel="noopener">IAU 2015 Resolution B3</a> (nominal R☉ = 695,700 km, L☉ = 3.828×10²⁶ W, T<sub>eff</sub> = 5,772 K).</li>
+        <li>Bouvier &amp; Wadhwa 2010, <i>Nature Geoscience</i> 3, 637 (4.568-billion-year age of the oldest Solar System solids).</li>
+        <li>Asplund et al. 2009, <i>Annual Review of Astronomy and Astrophysics</i> 47, 481 (X = 0.738, Y = 0.249).</li>
+        <li>Lemen et al. 2012, <i>Solar Physics</i> 275, 17: the Atmospheric Imaging Assembly (AIA) on the Solar Dynamics Observatory (SDO).</li>
+        <li>Snodgrass &amp; Ulrich 1990, <i>Astrophysical Journal</i> 351, 309 (differential rotation).</li>
+        <li>Mitalas &amp; Sills 1992, <i>Astrophysical Journal</i> 401, 759 (photon diffusion time).</li>
+        <li>Cox (ed.) 2000, <i>Allen's Astrophysical Quantities</i>, 4th ed. (limb darkening).</li>
+        <li>Baumbach 1937 (radial brightness law of the white-light corona).</li>
+        <li><a href="https://www.sidc.be/article/solar-cycle-25-reached-its-maximum-october-2024" rel="noopener">SIDC: Solar Cycle 25 maximum</a> · <a href="https://www.swpc.noaa.gov/products/solar-cycle-progression" rel="noopener">NOAA SWPC cycle progression</a> · <a href="https://www.swpc.noaa.gov/phenomena/coronal-mass-ejections" rel="noopener">NOAA SWPC: CMEs</a></li>
+      </ul>
+    </section>
+
+    <!-- ================= CALCULATE ================= -->
+    <section class="sun-tab" data-panel="calc" hidden>
+      <h2>Stefan–Boltzmann luminosity</h2>
+      <div class="eq" id="eqSB"></div>
+      <div class="row presets"><button class="btn small" data-preset="sun">Sun</button><button class="btn small" data-preset="sirius">Sirius A</button></div>
+      <div class="field"><label for="cR">Radius R <output id="cROut">1.00 R☉</output></label>
+        <input type="range" id="cR" min="-1" max="1.5" step="0.005" value="0"></div>
+      <div class="field"><label for="cT">Temperature T <output id="cTOut">5,772 K</output></label>
+        <input type="range" id="cT" min="2500" max="30000" step="1" value="5772"></div>
+      <div class="readouts">
+        <div class="readout"><div class="k">Luminosity</div><div class="v" id="cL">—</div></div>
+        <div class="readout"><div class="k">In Suns</div><div class="v" id="cLs">—</div></div>
+      </div>
+
+      <h2>Wien peak wavelength</h2>
+      <div class="eq" id="eqWien"></div>
+      <div class="wien-bar" id="wienBar" aria-hidden="true"><span class="mark" id="wienMark"></span></div>
+      <div class="readouts">
+        <div class="readout"><div class="k">Peak λ (same T)</div><div class="v" id="cW">—</div></div>
+        <div class="readout"><div class="k">Band</div><div class="v" id="cWb">—</div></div>
+      </div>
+      <p class="note">The Sun's spectrum peaks in blue-green, but it emits strongly across the whole visible band, so our eyes add it up to white.</p>
+
+      <h2>Sunlight at a planet</h2>
+      <div class="eq" id="eqFlux"></div>
+      <div class="field"><label for="planet">Planet</label>
+        <select id="planet"></select></div>
+      <div class="readouts">
+        <div class="readout"><div class="k">Flux F</div><div class="v" id="cF">—</div></div>
+        <div class="readout"><div class="k">vs Earth</div><div class="v" id="cFr">—</div></div>
+      </div>
+
+      <h2>Light travel time</h2>
+      <div class="eq" id="eqLight"></div>
+      <div class="readouts">
+        <div class="readout"><div class="k">Sun → planet</div><div class="v" id="cLt">—</div></div>
+        <div class="readout"><div class="k">Distance</div><div class="v" id="cD">—</div></div>
+      </div>
+      <p class="note">σ = 5.670374×10⁻⁸ W m⁻² K⁻⁴; b = 2.897772×10⁻³ m K; c = 299,792,458 m/s. Planet distances are mean orbital distances from the NASA Planetary Fact Sheet; flux uses the IAU nominal solar luminosity.</p>
+    </section>
+  </aside>
+
+  <script src="assets/js/codex.js"></script>
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/katex/katex.min.js"></script>
+  <script type="module" src="assets/js/sun.js"></script>
+</body>
+</html>

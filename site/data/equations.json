@@ -1,0 +1,7803 @@
+{
+ "title": "Equation Atlas",
+ "version": 1,
+ "note": "Every calculator output is computed from 'expr' (JavaScript, SI units) using the constants below. Inputs are in display units; 'mul' converts to SI and output 'div' converts back. Verified by scripts/check_equations.mjs.",
+ "chapters": [
+  {
+   "id": "gravity",
+   "short": "Gravity",
+   "n": 1,
+   "title": "Gravity & Orbits",
+   "color": "ice",
+   "blurb": "One inverse-square law, three laws of Kepler, and the handful of formulas every mission designer carries in their head: how fast, how long, how far, and how much velocity change (Δv) it costs to go somewhere else."
+  },
+  {
+   "id": "rockets",
+   "short": "Rockets",
+   "n": 2,
+   "title": "Rockets",
+   "color": "flame",
+   "blurb": "A rocket is a machine for throwing mass backwards very fast. These equations say how much speed that buys, why we build rockets in stages, and what the atmosphere and gravity take back on the way up."
+  },
+  {
+   "id": "atmosphere",
+   "short": "Re-entry",
+   "n": 3,
+   "title": "Atmosphere & Re-entry",
+   "color": "plasma",
+   "blurb": "Air thins exponentially with height, sound has a speed limit, and a capsule coming home at 11 km/s turns its kinetic energy into a shock layer hotter than the surface of the Sun."
+  },
+  {
+   "id": "light",
+   "short": "Light & Stars",
+   "n": 4,
+   "title": "Light & Stars",
+   "color": "sol",
+   "blurb": "Almost everything we know about stars arrives as light. Temperature sets the colour, size and temperature set the power, distance dims it, and motion shifts it."
+  },
+  {
+   "id": "relativity",
+   "short": "Relativity",
+   "n": 5,
+   "title": "Relativity & Black Holes",
+   "color": "nebula",
+   "blurb": "Moving clocks run slow, clocks deep in gravity run slower, and enough mass in a small enough space closes off a region of spacetime entirely. Satellite navigation depends on all of it."
+  },
+  {
+   "id": "cosmology",
+   "short": "Cosmology",
+   "n": 6,
+   "title": "Cosmology",
+   "color": "aurora",
+   "blurb": "The Universe is expanding. A few equations connect the redshift of distant galaxies to the size, age, density and temperature of the whole cosmos."
+  }
+ ],
+ "constants": [
+  {
+   "key": "G",
+   "sym": "G",
+   "name": "Newtonian constant of gravitation",
+   "value": 6.6743e-11,
+   "unit": "m³ kg⁻¹ s⁻²",
+   "source": "CODATA 2018",
+   "group": "Fundamental"
+  },
+  {
+   "key": "c",
+   "sym": "c",
+   "name": "Speed of light in vacuum",
+   "value": 299792458,
+   "unit": "m/s",
+   "source": "SI (exact)",
+   "group": "Fundamental"
+  },
+  {
+   "key": "h",
+   "sym": "h",
+   "name": "Planck constant",
+   "value": 6.62607015e-34,
+   "unit": "J s",
+   "source": "SI (exact)",
+   "group": "Fundamental"
+  },
+  {
+   "key": "hbar",
+   "sym": "\\hbar",
+   "name": "Reduced Planck constant",
+   "value": 1.054571817e-34,
+   "unit": "J s",
+   "source": "CODATA 2018",
+   "group": "Fundamental"
+  },
+  {
+   "key": "kB",
+   "sym": "k_B",
+   "name": "Boltzmann constant",
+   "value": 1.380649e-23,
+   "unit": "J/K",
+   "source": "SI (exact)",
+   "group": "Fundamental"
+  },
+  {
+   "key": "sigma",
+   "sym": "\\sigma",
+   "name": "Stefan–Boltzmann constant",
+   "value": 5.670374419e-08,
+   "unit": "W m⁻² K⁻⁴",
+   "source": "CODATA 2018",
+   "group": "Fundamental"
+  },
+  {
+   "key": "bWien",
+   "sym": "b",
+   "name": "Wien wavelength displacement constant",
+   "value": 0.002897771955,
+   "unit": "m K",
+   "source": "CODATA 2018",
+   "group": "Fundamental"
+  },
+  {
+   "key": "mp",
+   "sym": "m_p",
+   "name": "Proton mass",
+   "value": 1.67262192369e-27,
+   "unit": "kg",
+   "source": "CODATA 2018",
+   "group": "Fundamental"
+  },
+  {
+   "key": "sigmaT",
+   "sym": "\\sigma_T",
+   "name": "Thomson cross-section",
+   "value": 6.6524587321e-29,
+   "unit": "m²",
+   "source": "CODATA 2018",
+   "group": "Fundamental"
+  },
+  {
+   "key": "Rgas",
+   "sym": "R",
+   "name": "Molar gas constant",
+   "value": 8.314462618,
+   "unit": "J mol⁻¹ K⁻¹",
+   "source": "CODATA 2018",
+   "group": "Fundamental"
+  },
+  {
+   "key": "g0",
+   "sym": "g_0",
+   "name": "Standard acceleration of gravity",
+   "value": 9.80665,
+   "unit": "m/s²",
+   "source": "CGPM 1901 (exact)",
+   "group": "Fundamental"
+  },
+  {
+   "key": "AU",
+   "sym": "\\text{au}",
+   "name": "Astronomical unit",
+   "value": 149597870700,
+   "unit": "m",
+   "source": "IAU 2012 B2 (exact)",
+   "group": "Astronomical"
+  },
+  {
+   "key": "pc",
+   "sym": "\\text{pc}",
+   "name": "Parsec",
+   "value": 3.085677581491367e+16,
+   "unit": "m",
+   "source": "IAU 2015 B2 (exact)",
+   "group": "Astronomical"
+  },
+  {
+   "key": "Mpc",
+   "sym": "\\text{Mpc}",
+   "name": "Megaparsec",
+   "value": 3.085677581491367e+22,
+   "unit": "m",
+   "source": "10⁶ pc",
+   "group": "Astronomical"
+  },
+  {
+   "key": "ly",
+   "sym": "\\text{ly}",
+   "name": "Light-year",
+   "value": 9460730472580800.0,
+   "unit": "m",
+   "source": "IAU (Julian year × c)",
+   "group": "Astronomical"
+  },
+  {
+   "key": "yr",
+   "sym": "\\text{yr}",
+   "name": "Julian year",
+   "value": 31557600,
+   "unit": "s",
+   "source": "IAU (exact)",
+   "group": "Astronomical"
+  },
+  {
+   "key": "day",
+   "sym": "\\text{d}",
+   "name": "Day",
+   "value": 86400,
+   "unit": "s",
+   "source": "SI",
+   "group": "Astronomical"
+  },
+  {
+   "key": "Rsun",
+   "sym": "R_\\odot",
+   "name": "Nominal solar radius",
+   "value": 695700000.0,
+   "unit": "m",
+   "source": "IAU 2015 B3",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "Lsun",
+   "sym": "L_\\odot",
+   "name": "Nominal solar luminosity",
+   "value": 3.828e+26,
+   "unit": "W",
+   "source": "IAU 2015 B3",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "Tsun",
+   "sym": "T_{\\odot}",
+   "name": "Nominal solar effective temperature",
+   "value": 5772,
+   "unit": "K",
+   "source": "IAU 2015 B3",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "GMsun",
+   "sym": "\\mu_\\odot",
+   "name": "Nominal solar mass parameter GM☉",
+   "value": 1.3271244e+20,
+   "unit": "m³/s²",
+   "source": "IAU 2015 B3",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "Msun",
+   "sym": "M_\\odot",
+   "name": "Solar mass (GM☉ / G)",
+   "value": 1.98841e+30,
+   "unit": "kg",
+   "source": "derived from IAU 2015 B3 + CODATA 2018",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "Rearth",
+   "sym": "R_\\oplus",
+   "name": "Mean radius of Earth",
+   "value": 6371000.0,
+   "unit": "m",
+   "source": "IUGG / NASA Earth fact sheet",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "RearthEq",
+   "sym": "R_{\\oplus,eq}",
+   "name": "Nominal equatorial radius of Earth",
+   "value": 6378100.0,
+   "unit": "m",
+   "source": "IAU 2015 B3",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "GMearth",
+   "sym": "\\mu_\\oplus",
+   "name": "Nominal terrestrial mass parameter GM⊕",
+   "value": 398600400000000.0,
+   "unit": "m³/s²",
+   "source": "IAU 2015 B3",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "Mearth",
+   "sym": "M_\\oplus",
+   "name": "Earth mass (GM⊕ / G)",
+   "value": 5.9722e+24,
+   "unit": "kg",
+   "source": "derived from IAU 2015 B3 + CODATA 2018",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "Mmoon",
+   "sym": "M_{\\mathrm{Moon}}",
+   "name": "Moon mass",
+   "value": 7.346e+22,
+   "unit": "kg",
+   "source": "NASA Moon fact sheet",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "aMoon",
+   "sym": "a_{\\mathrm{Moon}}",
+   "name": "Mean Earth–Moon distance",
+   "value": 384400000.0,
+   "unit": "m",
+   "source": "NASA Moon fact sheet",
+   "group": "Sun & Earth"
+  },
+  {
+   "key": "TCMB",
+   "sym": "T_0",
+   "name": "CMB temperature today",
+   "value": 2.72548,
+   "unit": "K",
+   "source": "Fixsen 2009",
+   "group": "Cosmology"
+  },
+  {
+   "key": "H0planck",
+   "sym": "H_0",
+   "name": "Hubble constant (Planck 2018)",
+   "value": 67.4,
+   "unit": "km s⁻¹ Mpc⁻¹",
+   "source": "Planck 2018 VI",
+   "group": "Cosmology"
+  },
+  {
+   "key": "ktTNT",
+   "sym": "E_{kt}",
+   "name": "Kiloton of TNT (conventional)",
+   "value": 4184000000000.0,
+   "unit": "J",
+   "source": "convention",
+   "group": "Conversions"
+  },
+  {
+   "key": "atm",
+   "sym": "\\text{atm}",
+   "name": "Standard atmosphere",
+   "value": 101325,
+   "unit": "Pa",
+   "source": "exact",
+   "group": "Conversions"
+  }
+ ],
+ "constantSources": [
+  {
+   "label": "NIST — CODATA 2018 fundamental physical constants",
+   "url": "https://physics.nist.gov/cuu/Constants/"
+  },
+  {
+   "label": "Prša et al. — IAU 2015 Resolution B3 (nominal solar & planetary constants)",
+   "url": "https://arxiv.org/abs/1510.07674"
+  },
+  {
+   "label": "Fixsen (2009), The Temperature of the Cosmic Microwave Background",
+   "url": "https://arxiv.org/abs/0911.1955"
+  },
+  {
+   "label": "Planck Collaboration (2018), Cosmological parameters",
+   "url": "https://arxiv.org/abs/1807.06209"
+  },
+  {
+   "label": "CODATA 2018 wall chart (NIST PDF)",
+   "url": "https://physics.nist.gov/cuu/pdf/wall_2018.pdf"
+  }
+ ],
+ "equations": [
+  {
+   "id": "newton-gravitation",
+   "chapter": "gravity",
+   "title": "Newton's law of universal gravitation",
+   "aka": "Inverse-square law of gravity",
+   "tags": [
+    "gravity",
+    "force",
+    "Moon",
+    "Principia"
+   ],
+   "latex": "F = G\\,\\frac{m_1\\, m_2}{r^2}",
+   "legend": [
+    {
+     "sym": "F",
+     "desc": "Attractive force between the two bodies",
+     "unit": "N"
+    },
+    {
+     "sym": "G",
+     "desc": "Newtonian constant of gravitation",
+     "unit": "m³ kg⁻¹ s⁻²"
+    },
+    {
+     "sym": "m_1, m_2",
+     "desc": "The two masses",
+     "unit": "kg"
+    },
+    {
+     "sym": "r",
+     "desc": "Distance between their centres",
+     "unit": "m"
+    }
+   ],
+   "meaning": "Every mass pulls on every other mass along the line joining them. Double either mass and the pull doubles; double the distance and it falls to a quarter. The same law drops an apple, holds the Moon in orbit and shapes galaxies. Isaac Newton published it in the Principia (1687).",
+   "example": {
+    "title": "How hard do the Earth and Moon pull on each other?",
+    "text": "Earth $m_1 = 5.972\\times10^{24}$ kg, Moon $m_2 = 7.346\\times10^{22}$ kg, mean separation $r = 384\\,400$ km.",
+    "steps": "F = \\frac{(6.674\\times10^{-11})(5.972\\times10^{24})(7.346\\times10^{22})}{(3.844\\times10^{8})^2}",
+    "set": {
+     "m1": 5.9722e+24,
+     "m2": 7.346e+22,
+     "r": 384400
+    },
+    "answer": {
+     "out": "F",
+     "value": 1.98e+20,
+     "text": "about 20 billion billion newtons — enough to raise tides of metres in the oceans."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "m1",
+      "sym": "m_1",
+      "label": "Mass 1",
+      "unit": "kg",
+      "value": 5.9722e+24,
+      "min": 1e+20,
+      "max": 2e+31,
+      "log": true
+     },
+     {
+      "id": "m2",
+      "sym": "m_2",
+      "label": "Mass 2",
+      "unit": "kg",
+      "value": 7.346e+22,
+      "min": 1,
+      "max": 1e+27,
+      "log": true
+     },
+     {
+      "id": "r",
+      "sym": "r",
+      "label": "Distance",
+      "unit": "km",
+      "value": 384400,
+      "min": 1000,
+      "max": 1000000000.0,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "F",
+      "sym": "F",
+      "label": "Force",
+      "expr": "G*m1*m2/r**2",
+      "unit": "N"
+     },
+     {
+      "id": "acc",
+      "sym": "g_2",
+      "label": "Acceleration of mass 2",
+      "expr": "G*m1/r**2",
+      "unit": "m/s²"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth–Moon",
+      "set": {
+       "m1": 5.9722e+24,
+       "m2": 7.346e+22,
+       "r": 384400
+      }
+     },
+     {
+      "label": "Sun–Earth",
+      "set": {
+       "m1": 1.98841e+30,
+       "m2": 5.9722e+24,
+       "r": 149597870.7
+      }
+     },
+     {
+      "label": "You on Earth (70 kg)",
+      "set": {
+       "m1": 5.9722e+24,
+       "m2": 70,
+       "r": 6371
+      }
+     },
+     {
+      "label": "Astronaut on ISS",
+      "set": {
+       "m1": 5.9722e+24,
+       "m2": 70,
+       "r": 6791
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "r",
+    "y": "F",
+    "logx": true,
+    "logy": true,
+    "caption": "Force against distance: a straight line of slope −2 on log–log axes."
+   },
+   "refs": [
+    {
+     "label": "NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics",
+     "url": "https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/"
+    },
+    {
+     "label": "Wikipedia — Newton's law of universal gravitation",
+     "url": "https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation"
+    }
+   ]
+  },
+  {
+   "id": "kepler-first",
+   "chapter": "gravity",
+   "title": "Kepler's first law — orbits are ellipses",
+   "aka": "Orbit equation (conic section)",
+   "tags": [
+    "Kepler",
+    "ellipse",
+    "eccentricity",
+    "perihelion",
+    "aphelion",
+    "Mars"
+   ],
+   "latex": "r(\\theta) = \\frac{a\\,(1-e^2)}{1 + e\\cos\\theta}",
+   "legend": [
+    {
+     "sym": "r",
+     "desc": "Distance from the focus (the Sun) to the planet",
+     "unit": "m"
+    },
+    {
+     "sym": "a",
+     "desc": "Semi-major axis (half the long axis of the ellipse)",
+     "unit": "m"
+    },
+    {
+     "sym": "e",
+     "desc": "Eccentricity: 0 is a circle, close to 1 is a long thin ellipse",
+     "unit": "—"
+    },
+    {
+     "sym": "\\theta",
+     "desc": "True anomaly: angle from the closest point (periapsis)",
+     "unit": "rad"
+    }
+   ],
+   "meaning": "Planets do not move in circles. Johannes Kepler found in 1609, from Tycho Brahe's observations of Mars, that each orbit is an ellipse with the Sun at one focus — not at the centre. The closest point is $r_p = a(1-e)$ (perihelion) and the farthest is $r_a = a(1+e)$ (aphelion).",
+   "example": {
+    "title": "How close does Mars get to the Sun?",
+    "text": "Mars: $a = 1.5237$ AU, $e = 0.0934$. Perihelion is at $\\theta = 0$.",
+    "steps": "r(0) = \\frac{1.5237\\,(1 - 0.0934^2)}{1 + 0.0934} = 1.5237\\,(1-0.0934)",
+    "set": {
+     "a": 1.5237,
+     "e": 0.0934,
+     "th": 0
+    },
+    "answer": {
+     "out": "r",
+     "value": 1.3814,
+     "text": "about 206.7 million km; at aphelion Mars is 1.666 AU away — a 21 % swing."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "a",
+      "sym": "a",
+      "label": "Semi-major axis",
+      "unit": "AU",
+      "value": 1.5237,
+      "min": 0.1,
+      "max": 50,
+      "log": true,
+      "mul": "AU"
+     },
+     {
+      "id": "e",
+      "sym": "e",
+      "label": "Eccentricity",
+      "unit": "",
+      "value": 0.0934,
+      "min": 0,
+      "max": 0.97,
+      "step": 0.001
+     },
+     {
+      "id": "th",
+      "sym": "\\theta",
+      "label": "True anomaly",
+      "unit": "°",
+      "value": 0,
+      "min": 0,
+      "max": 360,
+      "step": 1,
+      "mul": "PI/180"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "r",
+      "sym": "r",
+      "label": "Distance from Sun",
+      "expr": "a*(1-e*e)/(1+e*cos(th))",
+      "unit": "AU",
+      "div": "AU"
+     },
+     {
+      "id": "rp",
+      "sym": "r_p",
+      "label": "Perihelion",
+      "expr": "a*(1-e)",
+      "unit": "AU",
+      "div": "AU"
+     },
+     {
+      "id": "ra",
+      "sym": "r_a",
+      "label": "Aphelion",
+      "expr": "a*(1+e)",
+      "unit": "AU",
+      "div": "AU"
+     },
+     {
+      "id": "bax",
+      "sym": "b",
+      "label": "Semi-minor axis",
+      "expr": "a*sqrt(1-e*e)",
+      "unit": "AU",
+      "div": "AU"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth",
+      "set": {
+       "a": 1.0,
+       "e": 0.0167
+      }
+     },
+     {
+      "label": "Mercury",
+      "set": {
+       "a": 0.387,
+       "e": 0.2056
+      }
+     },
+     {
+      "label": "Mars",
+      "set": {
+       "a": 1.5237,
+       "e": 0.0934
+      }
+     },
+     {
+      "label": "Halley's Comet",
+      "set": {
+       "a": 17.83,
+       "e": 0.967
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "orbit",
+    "mode": "point",
+    "caption": "The ellipse with the Sun at one focus; drag the anomaly slider to move the planet."
+   },
+   "refs": [
+    {
+     "label": "NASA Science — Orbits and Kepler's Laws",
+     "url": "https://science.nasa.gov/solar-system/orbits-and-keplers-laws/"
+    },
+    {
+     "label": "Wikipedia — Kepler's laws of planetary motion",
+     "url": "https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion"
+    }
+   ]
+  },
+  {
+   "id": "kepler-second",
+   "chapter": "gravity",
+   "title": "Kepler's second law — equal areas in equal times",
+   "aka": "Conservation of angular momentum",
+   "tags": [
+    "Kepler",
+    "areal velocity",
+    "angular momentum",
+    "perihelion speed"
+   ],
+   "latex": "\\frac{dA}{dt} = \\tfrac12\\, r^2\\dot\\theta = \\tfrac12\\sqrt{\\mu\\, a\\,(1-e^2)} = \\text{constant}",
+   "legend": [
+    {
+     "sym": "dA/dt",
+     "desc": "Area swept per second by the Sun–planet line",
+     "unit": "m²/s"
+    },
+    {
+     "sym": "r",
+     "desc": "Sun–planet distance",
+     "unit": "m"
+    },
+    {
+     "sym": "\\dot\\theta",
+     "desc": "Angular speed around the Sun",
+     "unit": "rad/s"
+    },
+    {
+     "sym": "\\mu = GM",
+     "desc": "Gravitational parameter of the central body",
+     "unit": "m³/s²"
+    },
+    {
+     "sym": "a, e",
+     "desc": "Semi-major axis and eccentricity",
+     "unit": "m, —"
+    }
+   ],
+   "meaning": "A line from the Sun to a planet sweeps out equal areas in equal times. Close to the Sun the line is short, so the planet must move fast; far away it crawls. Physically this is conservation of angular momentum, and it gives the speed ratio $v_p/v_a = (1+e)/(1-e)$ between perihelion and aphelion.",
+   "example": {
+    "title": "How much faster is Earth in January than in July?",
+    "text": "Earth: $a = 1$ AU, $e = 0.0167$, $\\mu_\\odot = 1.327\\times10^{20}$ m³/s². Perihelion speed:",
+    "steps": "v_p = \\sqrt{\\frac{\\mu_\\odot}{a}\\,\\frac{1+e}{1-e}} = \\sqrt{\\frac{1.327\\times10^{20}}{1.496\\times10^{11}}\\cdot\\frac{1.0167}{0.9833}}",
+    "set": {
+     "a": 1.0,
+     "e": 0.0167,
+     "M": 1.0
+    },
+    "answer": {
+     "out": "vp",
+     "value": 30.29,
+     "text": "at perihelion (early January) versus 29.29 km/s at aphelion (early July) — 3.4 % faster."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "a",
+      "sym": "a",
+      "label": "Semi-major axis",
+      "unit": "AU",
+      "value": 1.0,
+      "min": 0.1,
+      "max": 50,
+      "log": true,
+      "mul": "AU"
+     },
+     {
+      "id": "e",
+      "sym": "e",
+      "label": "Eccentricity",
+      "unit": "",
+      "value": 0.0167,
+      "min": 0,
+      "max": 0.95,
+      "step": 0.001
+     },
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Central mass",
+      "unit": "M☉",
+      "value": 1.0,
+      "min": 0.1,
+      "max": 10,
+      "log": true,
+      "mul": "Msun"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "vp",
+      "sym": "v_p",
+      "label": "Perihelion speed",
+      "expr": "sqrt(G*M/a*(1+e)/(1-e))",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "va",
+      "sym": "v_a",
+      "label": "Aphelion speed",
+      "expr": "sqrt(G*M/a*(1-e)/(1+e))",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "ratio",
+      "sym": "v_p/v_a",
+      "label": "Speed ratio",
+      "expr": "(1+e)/(1-e)",
+      "unit": "×"
+     },
+     {
+      "id": "areal",
+      "sym": "dA/dt",
+      "label": "Areal velocity",
+      "expr": "0.5*sqrt(G*M*a*(1-e*e))",
+      "unit": "km²/s",
+      "div": 1000000.0
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth",
+      "set": {
+       "a": 1.0,
+       "e": 0.0167,
+       "M": 1
+      }
+     },
+     {
+      "label": "Mercury",
+      "set": {
+       "a": 0.387,
+       "e": 0.2056,
+       "M": 1
+      }
+     },
+     {
+      "label": "Halley's Comet",
+      "set": {
+       "a": 17.83,
+       "e": 0.967,
+       "M": 1
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "orbit",
+    "mode": "areas",
+    "caption": "Twelve wedges, each swept in the same time. The planet moves at its true Keplerian speed."
+   },
+   "refs": [
+    {
+     "label": "NASA Science — Orbits and Kepler's Laws",
+     "url": "https://science.nasa.gov/solar-system/orbits-and-keplers-laws/"
+    },
+    {
+     "label": "Wikipedia — Kepler's laws of planetary motion",
+     "url": "https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion"
+    }
+   ]
+  },
+  {
+   "id": "kepler-third",
+   "chapter": "gravity",
+   "title": "Kepler's third law — the harmonic law",
+   "aka": "Period–distance relation",
+   "tags": [
+    "Kepler",
+    "period",
+    "planets",
+    "year"
+   ],
+   "latex": "T^2 = \\frac{4\\pi^2}{G\\,(M+m)}\\,a^3",
+   "legend": [
+    {
+     "sym": "T",
+     "desc": "Orbital period",
+     "unit": "s"
+    },
+    {
+     "sym": "a",
+     "desc": "Semi-major axis",
+     "unit": "m"
+    },
+    {
+     "sym": "M, m",
+     "desc": "Central mass and orbiting mass (here $m \\ll M$ is neglected)",
+     "unit": "kg"
+    },
+    {
+     "sym": "G",
+     "desc": "Gravitational constant",
+     "unit": "m³ kg⁻¹ s⁻²"
+    }
+   ],
+   "meaning": "The square of a planet's year is proportional to the cube of its orbit size. In units of years and astronomical units (AU) around the Sun it collapses to $T^2 = a^3$. Newton showed where the constant comes from, which turns the law into a scale: measure an orbit and you have weighed the central body.",
+   "example": {
+    "title": "How long is a year on Mars?",
+    "text": "Mars orbits at $a = 1.5237$ AU around a Sun of $1\\,M_\\odot$. In solar units $T = a^{3/2}$ years:",
+    "steps": "T = 1.5237^{3/2}\\ \\text{yr}",
+    "set": {
+     "a": 1.5237,
+     "M": 1
+    },
+    "answer": {
+     "out": "T",
+     "value": 1.881,
+     "text": "that is 687 Earth days."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "a",
+      "sym": "a",
+      "label": "Semi-major axis",
+      "unit": "AU",
+      "value": 1.5237,
+      "min": 0.05,
+      "max": 100,
+      "log": true,
+      "mul": "AU"
+     },
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Central mass",
+      "unit": "M☉",
+      "value": 1,
+      "min": 0.1,
+      "max": 10,
+      "log": true,
+      "mul": "Msun"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "T",
+      "sym": "T",
+      "label": "Period",
+      "expr": "2*PI*sqrt(a**3/(G*M))",
+      "unit": "yr",
+      "div": "yr"
+     },
+     {
+      "id": "Td",
+      "sym": "T",
+      "label": "Period in days",
+      "expr": "2*PI*sqrt(a**3/(G*M))",
+      "unit": "days",
+      "div": "day"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth",
+      "set": {
+       "a": 1,
+       "M": 1
+      }
+     },
+     {
+      "label": "Jupiter",
+      "set": {
+       "a": 5.203,
+       "M": 1
+      }
+     },
+     {
+      "label": "Neptune",
+      "set": {
+       "a": 30.07,
+       "M": 1
+      }
+     },
+     {
+      "label": "Proxima b (0.12 M☉)",
+      "set": {
+       "a": 0.0485,
+       "M": 0.122
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "a",
+    "y": "T",
+    "logx": true,
+    "logy": true,
+    "points": [
+     {
+      "x": 0.387,
+      "y": 0.241,
+      "label": "Mercury"
+     },
+     {
+      "x": 0.723,
+      "y": 0.615,
+      "label": "Venus"
+     },
+     {
+      "x": 1.0,
+      "y": 1.0,
+      "label": "Earth"
+     },
+     {
+      "x": 1.524,
+      "y": 1.881,
+      "label": "Mars"
+     },
+     {
+      "x": 5.203,
+      "y": 11.86,
+      "label": "Jupiter"
+     },
+     {
+      "x": 9.58,
+      "y": 29.45,
+      "label": "Saturn"
+     },
+     {
+      "x": 19.19,
+      "y": 84.0,
+      "label": "Uranus"
+     },
+     {
+      "x": 30.07,
+      "y": 164.8,
+      "label": "Neptune"
+     }
+    ],
+    "caption": "The eight planets (dots, NASA planetary fact sheets) sit on the line T ∝ a^1.5."
+   },
+   "refs": [
+    {
+     "label": "NASA Science — Orbits and Kepler's Laws",
+     "url": "https://science.nasa.gov/solar-system/orbits-and-keplers-laws/"
+    },
+    {
+     "label": "Wikipedia — Kepler's laws of planetary motion",
+     "url": "https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion"
+    }
+   ]
+  },
+  {
+   "id": "vis-viva",
+   "chapter": "gravity",
+   "title": "Vis-viva equation",
+   "aka": "Orbital energy equation",
+   "tags": [
+    "speed",
+    "orbit",
+    "GTO",
+    "energy",
+    "transfer"
+   ],
+   "latex": "v^2 = \\mu\\left(\\frac{2}{r} - \\frac{1}{a}\\right)",
+   "legend": [
+    {
+     "sym": "v",
+     "desc": "Orbital speed at distance $r$",
+     "unit": "m/s"
+    },
+    {
+     "sym": "\\mu = GM",
+     "desc": "Standard gravitational parameter of the central body",
+     "unit": "m³/s²"
+    },
+    {
+     "sym": "r",
+     "desc": "Current distance from the centre of the central body",
+     "unit": "m"
+    },
+    {
+     "sym": "a",
+     "desc": "Semi-major axis of the orbit",
+     "unit": "m"
+    }
+   ],
+   "meaning": "The single most useful equation in orbital mechanics. It is conservation of energy for an orbit: kinetic plus potential energy per kilogram is fixed by the orbit's size, $-\\mu/2a$. Know where you are ($r$) and which orbit you are on ($a$) and you know your speed. A circle ($r = a$) and an escape trajectory ($a \\to \\infty$) are special cases.",
+   "example": {
+    "title": "Speed at the low point of a geostationary transfer orbit (GTO)",
+    "text": "Perigee at 200 km altitude ($r = 6\\,578$ km), apogee at geostationary radius (42 164 km), so $a = 24\\,371$ km.",
+    "steps": "v = \\sqrt{3.986\\times10^{14}\\left(\\frac{2}{6.578\\times10^{6}} - \\frac{1}{2.4371\\times10^{7}}\\right)}",
+    "set": {
+     "mu": 398600400000000.0,
+     "r": 6578,
+     "a": 24371
+    },
+    "answer": {
+     "out": "v",
+     "value": 10.24,
+     "text": "about 2.45 km/s faster than a circular orbit at the same height (7.78 km/s)."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "mu",
+      "sym": "\\mu",
+      "label": "Central body (GM)",
+      "type": "select",
+      "options": [
+       {
+        "label": "Earth",
+        "value": 398600400000000.0
+       },
+       {
+        "label": "Moon",
+        "value": 4902800000000.0
+       },
+       {
+        "label": "Mars",
+        "value": 42828370000000.0
+       },
+       {
+        "label": "Jupiter",
+        "value": 1.26686534e+17
+       },
+       {
+        "label": "Sun",
+        "value": 1.3271244e+20
+       }
+      ],
+      "value": 398600400000000.0
+     },
+     {
+      "id": "r",
+      "sym": "r",
+      "label": "Distance from centre",
+      "unit": "km",
+      "value": 6578,
+      "min": 1000,
+      "max": 10000000000.0,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "a",
+      "sym": "a",
+      "label": "Semi-major axis",
+      "unit": "km",
+      "value": 24371,
+      "min": 1000,
+      "max": 10000000000.0,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "v",
+      "sym": "v",
+      "label": "Orbital speed",
+      "expr": "sqrt(mu*(2/r - 1/a))",
+      "unit": "km/s",
+      "div": 1000,
+      "hint": "— means r > 2a: that point is not on this orbit"
+     },
+     {
+      "id": "vc",
+      "sym": "v_c",
+      "label": "Circular speed at r",
+      "expr": "sqrt(mu/r)",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "ve",
+      "sym": "v_{esc}",
+      "label": "Escape speed at r",
+      "expr": "sqrt(2*mu/r)",
+      "unit": "km/s",
+      "div": 1000
+     }
+    ],
+    "presets": [
+     {
+      "label": "GTO perigee",
+      "set": {
+       "mu": 398600400000000.0,
+       "r": 6578,
+       "a": 24371
+      }
+     },
+     {
+      "label": "GTO apogee",
+      "set": {
+       "mu": 398600400000000.0,
+       "r": 42164,
+       "a": 24371
+      }
+     },
+     {
+      "label": "Earth at perihelion",
+      "set": {
+       "mu": 1.3271244e+20,
+       "r": 147095000,
+       "a": 149598023
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "r",
+    "y": [
+     "v",
+     "vc",
+     "ve"
+    ],
+    "xmin": "0.02*a",
+    "xmax": "1.999*a",
+    "logx": false,
+    "logy": false,
+    "caption": "Speed along the orbit (bright) against circular and escape speed at the same radius."
+   },
+   "refs": [
+    {
+     "label": "R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics",
+     "url": "http://www.braeunig.us/space/orbmech.htm"
+    },
+    {
+     "label": "Wikipedia — Vis-viva equation",
+     "url": "https://en.wikipedia.org/wiki/Vis-viva_equation"
+    }
+   ]
+  },
+  {
+   "id": "orbital-period",
+   "chapter": "gravity",
+   "title": "Orbital period",
+   "aka": "Period of an elliptical orbit",
+   "tags": [
+    "ISS",
+    "GEO",
+    "GPS",
+    "period",
+    "satellite"
+   ],
+   "latex": "T = 2\\pi\\sqrt{\\frac{a^3}{\\mu}}",
+   "legend": [
+    {
+     "sym": "T",
+     "desc": "Time for one full orbit",
+     "unit": "s"
+    },
+    {
+     "sym": "a",
+     "desc": "Semi-major axis (orbit radius for a circle)",
+     "unit": "m"
+    },
+    {
+     "sym": "\\mu = GM",
+     "desc": "Gravitational parameter of the central body",
+     "unit": "m³/s²"
+    }
+   ],
+   "meaning": "Kepler's third law written for satellites. The period depends only on the size of the orbit, not on its shape or on the satellite's mass. That is why every satellite at 35 786 km altitude takes one sidereal day (23 h 56 min) and appears to hang still over the equator.",
+   "example": {
+    "title": "How long does the International Space Station (ISS) take to lap Earth?",
+    "text": "The ISS flies about 420 km above Earth's mean radius of 6 371 km, so $a \\approx 6\\,791$ km.",
+    "steps": "T = 2\\pi\\sqrt{\\frac{(6.791\\times10^{6})^3}{3.986\\times10^{14}}}",
+    "set": {
+     "mu": 398600400000000.0,
+     "a": 6791
+    },
+    "answer": {
+     "out": "T",
+     "value": 5569,
+     "text": "≈ 92.8 minutes — about 15.5 orbits and 16 sunrises a day."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "mu",
+      "sym": "\\mu",
+      "label": "Central body (GM)",
+      "type": "select",
+      "options": [
+       {
+        "label": "Earth",
+        "value": 398600400000000.0
+       },
+       {
+        "label": "Moon",
+        "value": 4902800000000.0
+       },
+       {
+        "label": "Mars",
+        "value": 42828370000000.0
+       },
+       {
+        "label": "Jupiter",
+        "value": 1.26686534e+17
+       },
+       {
+        "label": "Sun",
+        "value": 1.3271244e+20
+       }
+      ],
+      "value": 398600400000000.0
+     },
+     {
+      "id": "a",
+      "sym": "a",
+      "label": "Semi-major axis",
+      "unit": "km",
+      "value": 6791,
+      "min": 1000,
+      "max": 1000000000.0,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "T",
+      "sym": "T",
+      "label": "Period",
+      "expr": "2*PI*sqrt(a**3/mu)",
+      "unit": "s",
+      "fmt": "time"
+     },
+     {
+      "id": "n",
+      "sym": "n",
+      "label": "Orbits per day",
+      "expr": "86400/(2*PI*sqrt(a**3/mu))",
+      "unit": "per day"
+     }
+    ],
+    "presets": [
+     {
+      "label": "ISS",
+      "set": {
+       "mu": 398600400000000.0,
+       "a": 6791
+      }
+     },
+     {
+      "label": "GPS",
+      "set": {
+       "mu": 398600400000000.0,
+       "a": 26562
+      }
+     },
+     {
+      "label": "Geostationary",
+      "set": {
+       "mu": 398600400000000.0,
+       "a": 42164
+      }
+     },
+     {
+      "label": "Moon (Earth's GM only)",
+      "set": {
+       "mu": 398600400000000.0,
+       "a": 384400
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "a",
+    "y": "T",
+    "logx": true,
+    "logy": true,
+    "ydiv": 3600,
+    "yunit": "h",
+    "hlines": [
+     {
+      "y": 23.9345,
+      "label": "1 sidereal day"
+     }
+    ],
+    "caption": "Period (hours) against orbit size."
+   },
+   "refs": [
+    {
+     "label": "NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics",
+     "url": "https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/"
+    },
+    {
+     "label": "Wikipedia — Orbital period",
+     "url": "https://en.wikipedia.org/wiki/Orbital_period"
+    }
+   ]
+  },
+  {
+   "id": "circular-velocity",
+   "chapter": "gravity",
+   "title": "Circular orbital velocity",
+   "aka": "First cosmic velocity",
+   "tags": [
+    "orbit",
+    "speed",
+    "LEO",
+    "ISS"
+   ],
+   "latex": "v_c = \\sqrt{\\frac{\\mu}{r}}",
+   "legend": [
+    {
+     "sym": "v_c",
+     "desc": "Speed needed for a circular orbit",
+     "unit": "m/s"
+    },
+    {
+     "sym": "\\mu = GM",
+     "desc": "Gravitational parameter",
+     "unit": "m³/s²"
+    },
+    {
+     "sym": "r",
+     "desc": "Orbit radius from the body's centre",
+     "unit": "m"
+    }
+   ],
+   "meaning": "In a circular orbit gravity supplies exactly the centripetal force: $GMm/r^2 = mv^2/r$. The spacecraft is always falling, but it moves sideways fast enough that the ground curves away beneath it just as fast. Higher orbits are slower.",
+   "example": {
+    "title": "How fast is the ISS moving?",
+    "text": "Radius $r = 6\\,791$ km around Earth.",
+    "steps": "v_c = \\sqrt{\\frac{3.986\\times10^{14}}{6.791\\times10^{6}}}",
+    "set": {
+     "mu": 398600400000000.0,
+     "r": 6791
+    },
+    "answer": {
+     "out": "vc",
+     "value": 7.661,
+     "text": "about 27 600 km/h — London to New York in 12 minutes."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "mu",
+      "sym": "\\mu",
+      "label": "Central body (GM)",
+      "type": "select",
+      "options": [
+       {
+        "label": "Earth",
+        "value": 398600400000000.0
+       },
+       {
+        "label": "Moon",
+        "value": 4902800000000.0
+       },
+       {
+        "label": "Mars",
+        "value": 42828370000000.0
+       },
+       {
+        "label": "Jupiter",
+        "value": 1.26686534e+17
+       },
+       {
+        "label": "Sun",
+        "value": 1.3271244e+20
+       }
+      ],
+      "value": 398600400000000.0
+     },
+     {
+      "id": "r",
+      "sym": "r",
+      "label": "Orbit radius",
+      "unit": "km",
+      "value": 6791,
+      "min": 1000,
+      "max": 1000000000.0,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "vc",
+      "sym": "v_c",
+      "label": "Circular speed",
+      "expr": "sqrt(mu/r)",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "kmh",
+      "sym": "v_c",
+      "label": "In km/h",
+      "expr": "sqrt(mu/r)*3.6",
+      "unit": "km/h",
+      "sig": 3
+     }
+    ],
+    "presets": [
+     {
+      "label": "ISS",
+      "set": {
+       "mu": 398600400000000.0,
+       "r": 6791
+      }
+     },
+     {
+      "label": "Geostationary",
+      "set": {
+       "mu": 398600400000000.0,
+       "r": 42164
+      }
+     },
+     {
+      "label": "Low lunar orbit",
+      "set": {
+       "mu": 4902800000000.0,
+       "r": 1837
+      }
+     },
+     {
+      "label": "Earth around Sun",
+      "set": {
+       "mu": 1.3271244e+20,
+       "r": 149597870.7
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "r",
+    "y": "vc",
+    "logx": true,
+    "logy": true,
+    "caption": "Higher orbits are slower: v ∝ r^−½."
+   },
+   "refs": [
+    {
+     "label": "NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics",
+     "url": "https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/"
+    },
+    {
+     "label": "Wikipedia — Circular orbit",
+     "url": "https://en.wikipedia.org/wiki/Circular_orbit"
+    }
+   ]
+  },
+  {
+   "id": "escape-velocity",
+   "chapter": "gravity",
+   "title": "Escape velocity",
+   "aka": "Second cosmic velocity",
+   "tags": [
+    "escape",
+    "speed",
+    "Moon",
+    "Mars"
+   ],
+   "latex": "v_{esc} = \\sqrt{\\frac{2\\mu}{r}} = \\sqrt{2}\\;v_c",
+   "legend": [
+    {
+     "sym": "v_{esc}",
+     "desc": "Speed at which kinetic energy equals the depth of the gravity well",
+     "unit": "m/s"
+    },
+    {
+     "sym": "\\mu = GM",
+     "desc": "Gravitational parameter",
+     "unit": "m³/s²"
+    },
+    {
+     "sym": "r",
+     "desc": "Starting distance from the centre",
+     "unit": "m"
+    }
+   ],
+   "meaning": "Throw something at this speed (ignoring air) and it coasts away forever, slowing down but never quite stopping. Set kinetic energy $\\tfrac12 v^2$ equal to the gravitational binding energy $\\mu/r$. It is always exactly $\\sqrt2 \\approx 1.414$ times the circular speed at the same radius.",
+   "example": {
+    "title": "Escape velocity from Earth's surface",
+    "text": "Mean radius $r = 6\\,371$ km.",
+    "steps": "v_{esc} = \\sqrt{\\frac{2\\,(3.986\\times10^{14})}{6.371\\times10^{6}}}",
+    "set": {
+     "mu": 398600400000000.0,
+     "r": 6371
+    },
+    "answer": {
+     "out": "vesc",
+     "value": 11.19,
+     "text": "roughly 40 000 km/h. From the Moon's surface it is only 2.38 km/s."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "mu",
+      "sym": "\\mu",
+      "label": "Central body (GM)",
+      "type": "select",
+      "options": [
+       {
+        "label": "Earth",
+        "value": 398600400000000.0
+       },
+       {
+        "label": "Moon",
+        "value": 4902800000000.0
+       },
+       {
+        "label": "Mars",
+        "value": 42828370000000.0
+       },
+       {
+        "label": "Jupiter",
+        "value": 1.26686534e+17
+       },
+       {
+        "label": "Sun",
+        "value": 1.3271244e+20
+       }
+      ],
+      "value": 398600400000000.0
+     },
+     {
+      "id": "r",
+      "sym": "r",
+      "label": "Distance from centre",
+      "unit": "km",
+      "value": 6371,
+      "min": 1000,
+      "max": 1000000000.0,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "vesc",
+      "sym": "v_{esc}",
+      "label": "Escape speed",
+      "expr": "sqrt(2*mu/r)",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "vc",
+      "sym": "v_c",
+      "label": "Circular speed",
+      "expr": "sqrt(mu/r)",
+      "unit": "km/s",
+      "div": 1000
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth surface",
+      "set": {
+       "mu": 398600400000000.0,
+       "r": 6371
+      }
+     },
+     {
+      "label": "Moon surface",
+      "set": {
+       "mu": 4902800000000.0,
+       "r": 1737.4
+      }
+     },
+     {
+      "label": "Mars surface",
+      "set": {
+       "mu": 42828370000000.0,
+       "r": 3389.5
+      }
+     },
+     {
+      "label": "Jupiter cloud tops",
+      "set": {
+       "mu": 1.26686534e+17,
+       "r": 69911
+      }
+     },
+     {
+      "label": "Sun, from 1 AU",
+      "set": {
+       "mu": 1.3271244e+20,
+       "r": 149597870.7
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "r",
+    "y": [
+     "vesc",
+     "vc"
+    ],
+    "logx": true,
+    "logy": true,
+    "caption": "Escape speed (bright) is always √2 × circular speed."
+   },
+   "refs": [
+    {
+     "label": "NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics",
+     "url": "https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/"
+    },
+    {
+     "label": "Wikipedia — Escape velocity",
+     "url": "https://en.wikipedia.org/wiki/Escape_velocity"
+    }
+   ]
+  },
+  {
+   "id": "hohmann",
+   "chapter": "gravity",
+   "title": "Hohmann transfer Δv",
+   "aka": "Two-impulse transfer between circular orbits",
+   "tags": [
+    "transfer",
+    "delta-v",
+    "GEO",
+    "Mars",
+    "manoeuvre"
+   ],
+   "latex": "\\begin{aligned}\\Delta v_1 &= \\sqrt{\\frac{\\mu}{r_1}}\\left(\\sqrt{\\frac{2r_2}{r_1+r_2}} - 1\\right)\\\\ \\Delta v_2 &= \\sqrt{\\frac{\\mu}{r_2}}\\left(1 - \\sqrt{\\frac{2r_1}{r_1+r_2}}\\right)\\\\ t_H &= \\pi\\sqrt{\\frac{(r_1+r_2)^3}{8\\mu}}\\end{aligned}",
+   "legend": [
+    {
+     "sym": "\\Delta v_1, \\Delta v_2",
+     "desc": "Burn at departure (periapsis) and arrival (apoapsis)",
+     "unit": "m/s"
+    },
+    {
+     "sym": "r_1, r_2",
+     "desc": "Radii of the starting and target circular orbits",
+     "unit": "m"
+    },
+    {
+     "sym": "\\mu",
+     "desc": "Gravitational parameter of the central body",
+     "unit": "m³/s²"
+    },
+    {
+     "sym": "t_H",
+     "desc": "Transfer time (half the transfer ellipse's period)",
+     "unit": "s"
+    }
+   ],
+   "meaning": "Walter Hohmann showed in 1925 that the cheapest two-burn route between circular orbits is half an ellipse that just touches both. Burn prograde to stretch the orbit, coast half an orbit, burn again to circularise. It is slow but fuel-efficient, and it is how most satellites reach geostationary orbit and how Mars missions are timed.",
+   "example": {
+    "title": "Low Earth orbit (LEO) to geostationary orbit (GEO)",
+    "text": "From a 300 km circular orbit ($r_1 = 6\\,678$ km) to GEO ($r_2 = 42\\,164$ km).",
+    "steps": "\\Delta v_1 = 7.726\\left(\\sqrt{\\tfrac{2(42\\,164)}{48\\,842}} - 1\\right),\\quad \\Delta v_2 = 3.075\\left(1 - \\sqrt{\\tfrac{2(6\\,678)}{48\\,842}}\\right)\\ \\text{km/s}",
+    "set": {
+     "mu": 398600400000000.0,
+     "r1": 6678,
+     "r2": 42164
+    },
+    "answer": {
+     "out": "dvt",
+     "value": 3.893,
+     "text": "2.43 + 1.47 km/s, with a 5.3-hour coast. (A real GEO transfer also changes inclination, which costs more.)"
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "mu",
+      "sym": "\\mu",
+      "label": "Central body (GM)",
+      "type": "select",
+      "options": [
+       {
+        "label": "Earth",
+        "value": 398600400000000.0
+       },
+       {
+        "label": "Moon",
+        "value": 4902800000000.0
+       },
+       {
+        "label": "Mars",
+        "value": 42828370000000.0
+       },
+       {
+        "label": "Jupiter",
+        "value": 1.26686534e+17
+       },
+       {
+        "label": "Sun",
+        "value": 1.3271244e+20
+       }
+      ],
+      "value": 398600400000000.0
+     },
+     {
+      "id": "r1",
+      "sym": "r_1",
+      "label": "Starting orbit radius",
+      "unit": "km",
+      "value": 6678,
+      "min": 1000,
+      "max": 10000000000.0,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "r2",
+      "sym": "r_2",
+      "label": "Target orbit radius",
+      "unit": "km",
+      "value": 42164,
+      "min": 1000,
+      "max": 10000000000.0,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "dvt",
+      "sym": "\\Delta v",
+      "label": "Total Δv",
+      "expr": "sqrt(mu/r1)*abs(sqrt(2*r2/(r1+r2))-1) + sqrt(mu/r2)*abs(1-sqrt(2*r1/(r1+r2)))",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "dv1",
+      "sym": "\\Delta v_1",
+      "label": "Departure burn",
+      "expr": "sqrt(mu/r1)*abs(sqrt(2*r2/(r1+r2))-1)",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "dv2",
+      "sym": "\\Delta v_2",
+      "label": "Arrival burn",
+      "expr": "sqrt(mu/r2)*abs(1-sqrt(2*r1/(r1+r2)))",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "tH",
+      "sym": "t_H",
+      "label": "Transfer time",
+      "expr": "PI*sqrt((r1+r2)**3/(8*mu))",
+      "unit": "s",
+      "fmt": "time"
+     }
+    ],
+    "presets": [
+     {
+      "label": "LEO → GEO",
+      "set": {
+       "mu": 398600400000000.0,
+       "r1": 6678,
+       "r2": 42164
+      }
+     },
+     {
+      "label": "LEO → Moon distance",
+      "set": {
+       "mu": 398600400000000.0,
+       "r1": 6678,
+       "r2": 384400
+      }
+     },
+     {
+      "label": "Earth → Mars (heliocentric)",
+      "set": {
+       "mu": 1.3271244e+20,
+       "r1": 149597870.7,
+       "r2": 227939200
+      }
+     },
+     {
+      "label": "Earth → Jupiter",
+      "set": {
+       "mu": 1.3271244e+20,
+       "r1": 149597870.7,
+       "r2": 778570000
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "hohmann",
+    "caption": "Inner and outer circular orbits with the half-ellipse transfer; burns shown as arrows."
+   },
+   "refs": [
+    {
+     "label": "R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics",
+     "url": "http://www.braeunig.us/space/orbmech.htm"
+    },
+    {
+     "label": "Wikipedia — Hohmann transfer orbit",
+     "url": "https://en.wikipedia.org/wiki/Hohmann_transfer_orbit"
+    }
+   ]
+  },
+  {
+   "id": "sphere-of-influence",
+   "chapter": "gravity",
+   "title": "Sphere of influence",
+   "aka": "Laplace sphere; patched-conic boundary",
+   "tags": [
+    "SOI",
+    "patched conics",
+    "mission design"
+   ],
+   "latex": "r_{SOI} \\approx a\\left(\\frac{m}{M}\\right)^{2/5}",
+   "legend": [
+    {
+     "sym": "r_{SOI}",
+     "desc": "Radius of the planet's sphere of influence (SOI)",
+     "unit": "m"
+    },
+    {
+     "sym": "a",
+     "desc": "Planet's orbital distance from the larger body",
+     "unit": "m"
+    },
+    {
+     "sym": "m, M",
+     "desc": "Mass of the planet and of the body it orbits",
+     "unit": "kg"
+    }
+   ],
+   "meaning": "Inside this radius it is more accurate to treat a spacecraft as orbiting the planet (with the Sun as a small disturbance); outside, as orbiting the Sun. Mission designers use it to stitch simple two-body orbits together — the 'patched conic' method used to plan the Apollo and Voyager trajectories.",
+   "example": {
+    "title": "Earth's sphere of influence",
+    "text": "$a = 1.496\\times10^{8}$ km, $m = 5.972\\times10^{24}$ kg, $M_\\odot = 1.988\\times10^{30}$ kg.",
+    "steps": "r_{SOI} = 1.496\\times10^{8}\\ \\text{km}\\times\\left(\\frac{5.972\\times10^{24}}{1.988\\times10^{30}}\\right)^{0.4}",
+    "set": {
+     "a": 149597870.7,
+     "m": 5.9722e+24,
+     "M": 1.98841e+30
+    },
+    "answer": {
+     "out": "rsoi",
+     "value": 924600,
+     "text": "about 2.4 times the Moon's distance."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "a",
+      "sym": "a",
+      "label": "Orbital distance",
+      "unit": "km",
+      "value": 149597870.7,
+      "min": 10000.0,
+      "max": 10000000000.0,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "m",
+      "sym": "m",
+      "label": "Planet mass",
+      "unit": "kg",
+      "value": 5.9722e+24,
+      "min": 1e+18,
+      "max": 1e+28,
+      "log": true
+     },
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Primary mass",
+      "unit": "kg",
+      "value": 1.98841e+30,
+      "min": 1e+22,
+      "max": 1e+32,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "rsoi",
+      "sym": "r_{SOI}",
+      "label": "SOI radius",
+      "expr": "a*pow(m/M, 0.4)",
+      "unit": "km",
+      "div": 1000
+     },
+     {
+      "id": "frac",
+      "sym": "r_{SOI}/a",
+      "label": "Fraction of orbit",
+      "expr": "pow(m/M, 0.4)",
+      "unit": ""
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth",
+      "set": {
+       "a": 149597870.7,
+       "m": 5.9722e+24,
+       "M": 1.98841e+30
+      }
+     },
+     {
+      "label": "Moon (around Earth)",
+      "set": {
+       "a": 384400,
+       "m": 7.346e+22,
+       "M": 5.9722e+24
+      }
+     },
+     {
+      "label": "Mars",
+      "set": {
+       "a": 227939200,
+       "m": 6.4171e+23,
+       "M": 1.98841e+30
+      }
+     },
+     {
+      "label": "Jupiter",
+      "set": {
+       "a": 778570000,
+       "m": 1.89819e+27,
+       "M": 1.98841e+30
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "m",
+    "y": "rsoi",
+    "logx": true,
+    "logy": true,
+    "caption": "SOI radius against planet mass at the chosen distance."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Sphere of influence (astrodynamics)",
+     "url": "https://en.wikipedia.org/wiki/Sphere_of_influence_(astrodynamics)"
+    },
+    {
+     "label": "R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics",
+     "url": "http://www.braeunig.us/space/orbmech.htm"
+    }
+   ]
+  },
+  {
+   "id": "hill-sphere",
+   "chapter": "gravity",
+   "title": "Hill sphere",
+   "aka": "Roche sphere (of a planet)",
+   "tags": [
+    "moons",
+    "stability",
+    "Hill radius"
+   ],
+   "latex": "r_H \\approx a\\,(1-e)\\,\\sqrt[3]{\\frac{m}{3M}}",
+   "legend": [
+    {
+     "sym": "r_H",
+     "desc": "Hill radius: where the planet's gravity dominates the tidal pull of the star",
+     "unit": "m"
+    },
+    {
+     "sym": "a, e",
+     "desc": "Planet's semi-major axis and eccentricity",
+     "unit": "m, —"
+    },
+    {
+     "sym": "m, M",
+     "desc": "Planet mass and star mass",
+     "unit": "kg"
+    }
+   ],
+   "meaning": "A moon must orbit well inside this radius to stay bound to its planet; in practice stable moons live within about a third to a half of $r_H$. It is set by the balance of the planet's gravity against the star's tidal stretching, which is why the cube root appears. The Sun–Earth L1 and L2 points sit almost exactly on it.",
+   "example": {
+    "title": "Earth's Hill sphere",
+    "text": "$a = 1$ AU, $e = 0.0167$, $m/M_\\odot = 3.00\\times10^{-6}$.",
+    "steps": "r_H = 1.496\\times10^{8}\\ \\text{km}\\times(1-0.0167)\\times\\sqrt[3]{\\frac{3.00\\times10^{-6}}{3}}",
+    "set": {
+     "a": 149597870.7,
+     "e": 0.0167,
+     "m": 5.9722e+24,
+     "M": 1.98841e+30
+    },
+    "answer": {
+     "out": "rH",
+     "value": 1471700,
+     "text": "about 1.47 million km; the Moon, at 0.38 million km, is comfortably inside."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "a",
+      "sym": "a",
+      "label": "Semi-major axis",
+      "unit": "km",
+      "value": 149597870.7,
+      "min": 10000.0,
+      "max": 10000000000.0,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "e",
+      "sym": "e",
+      "label": "Eccentricity",
+      "unit": "",
+      "value": 0.0167,
+      "min": 0,
+      "max": 0.9,
+      "step": 0.001
+     },
+     {
+      "id": "m",
+      "sym": "m",
+      "label": "Planet mass",
+      "unit": "kg",
+      "value": 5.9722e+24,
+      "min": 1e+18,
+      "max": 1e+28,
+      "log": true
+     },
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Star mass",
+      "unit": "kg",
+      "value": 1.98841e+30,
+      "min": 1e+22,
+      "max": 1e+32,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "rH",
+      "sym": "r_H",
+      "label": "Hill radius",
+      "expr": "a*(1-e)*cbrt(m/(3*M))",
+      "unit": "km",
+      "div": 1000
+     },
+     {
+      "id": "stable",
+      "sym": "r_H/2",
+      "label": "Rough limit for stable moons",
+      "expr": "0.5*a*(1-e)*cbrt(m/(3*M))",
+      "unit": "km",
+      "div": 1000
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth",
+      "set": {
+       "a": 149597870.7,
+       "e": 0.0167,
+       "m": 5.9722e+24,
+       "M": 1.98841e+30
+      }
+     },
+     {
+      "label": "Jupiter",
+      "set": {
+       "a": 778570000,
+       "e": 0.0489,
+       "m": 1.89819e+27,
+       "M": 1.98841e+30
+      }
+     },
+     {
+      "label": "Moon (around Earth)",
+      "set": {
+       "a": 384400,
+       "e": 0.0549,
+       "m": 7.346e+22,
+       "M": 5.9722e+24
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "m",
+    "y": "rH",
+    "logx": true,
+    "logy": true,
+    "caption": "Hill radius grows only as the cube root of the planet's mass."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Hill sphere",
+     "url": "https://en.wikipedia.org/wiki/Hill_sphere"
+    },
+    {
+     "label": "NASA Science — What is a Lagrange Point?",
+     "url": "https://science.nasa.gov/resource/what-is-a-lagrange-point/"
+    }
+   ]
+  },
+  {
+   "id": "roche-limit",
+   "chapter": "gravity",
+   "title": "Roche limit",
+   "aka": "Tidal disruption distance",
+   "tags": [
+    "tides",
+    "rings",
+    "Saturn",
+    "comet",
+    "Shoemaker–Levy 9"
+   ],
+   "latex": "d_{rigid} = R_M\\left(2\\,\\frac{\\rho_M}{\\rho_m}\\right)^{1/3}\\qquad d_{fluid} \\approx 2.44\\,R_M\\left(\\frac{\\rho_M}{\\rho_m}\\right)^{1/3}",
+   "legend": [
+    {
+     "sym": "d",
+     "desc": "Closest distance (centre to centre) a moon can orbit without being torn apart",
+     "unit": "m"
+    },
+    {
+     "sym": "R_M",
+     "desc": "Radius of the primary (planet or star)",
+     "unit": "m"
+    },
+    {
+     "sym": "\\rho_M, \\rho_m",
+     "desc": "Mean densities of the primary and the satellite",
+     "unit": "kg/m³"
+    }
+   ],
+   "meaning": "Closer than this, the difference in the planet's pull across a moon (the tide) beats the moon's own gravity, and a moon held together only by gravity comes apart. Édouard Roche computed it in 1848. A rigid body survives closer in; a fluid rubble pile breaks up farther out. Saturn's bright rings lie inside Saturn's Roche limit, and comet Shoemaker–Levy 9 was shredded passing inside Jupiter's in 1992.",
+   "example": {
+    "title": "How close could the Moon come to Earth?",
+    "text": "$R_\\oplus = 6\\,371$ km, $\\rho_\\oplus = 5\\,513$ kg/m³, $\\rho_{Moon} = 3\\,344$ kg/m³. Fluid (rubble-pile) limit:",
+    "steps": "d_{fluid} = 2.44 \\times 6\\,371\\ \\text{km}\\times\\left(\\frac{5\\,513}{3\\,344}\\right)^{1/3}",
+    "set": {
+     "R": 6371,
+     "rhoM": 5513,
+     "rhom": 3344
+    },
+    "answer": {
+     "out": "dfl",
+     "value": 18364,
+     "text": "about 18 400 km (rigid-body limit 9 490 km). Today the Moon is 21 times farther away."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "R",
+      "sym": "R_M",
+      "label": "Primary radius",
+      "unit": "km",
+      "value": 6371,
+      "min": 100,
+      "max": 1000000.0,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "rhoM",
+      "sym": "\\rho_M",
+      "label": "Primary density",
+      "unit": "kg/m³",
+      "value": 5513,
+      "min": 100,
+      "max": 10000,
+      "log": true
+     },
+     {
+      "id": "rhom",
+      "sym": "\\rho_m",
+      "label": "Satellite density",
+      "unit": "kg/m³",
+      "value": 3344,
+      "min": 100,
+      "max": 10000,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "dfl",
+      "sym": "d_{fluid}",
+      "label": "Fluid (rubble-pile) limit",
+      "expr": "2.44*R*cbrt(rhoM/rhom)",
+      "unit": "km",
+      "div": 1000
+     },
+     {
+      "id": "drg",
+      "sym": "d_{rigid}",
+      "label": "Rigid-body limit",
+      "expr": "R*cbrt(2*rhoM/rhom)",
+      "unit": "km",
+      "div": 1000
+     },
+     {
+      "id": "ratio",
+      "sym": "d/R_M",
+      "label": "In primary radii",
+      "expr": "2.44*cbrt(rhoM/rhom)",
+      "unit": ""
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth–Moon",
+      "set": {
+       "R": 6371,
+       "rhoM": 5513,
+       "rhom": 3344
+      }
+     },
+     {
+      "label": "Saturn–icy moonlet",
+      "set": {
+       "R": 58232,
+       "rhoM": 687,
+       "rhom": 900
+      }
+     },
+     {
+      "label": "Jupiter–comet",
+      "set": {
+       "R": 69911,
+       "rhoM": 1326,
+       "rhom": 500
+      }
+     },
+     {
+      "label": "Sun–comet",
+      "set": {
+       "R": 695700,
+       "rhoM": 1408,
+       "rhom": 500
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "rhom",
+    "y": [
+     "dfl",
+     "drg"
+    ],
+    "logx": true,
+    "logy": true,
+    "caption": "Fluid (bright) and rigid limits against satellite density: fluffier moons break up farther out."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Roche limit",
+     "url": "https://en.wikipedia.org/wiki/Roche_limit"
+    }
+   ]
+  },
+  {
+   "id": "l1-distance",
+   "chapter": "gravity",
+   "title": "L1 / L2 Lagrange-point distance",
+   "aka": "Collinear Lagrange points (small mass ratio)",
+   "tags": [
+    "Lagrange",
+    "L1",
+    "L2",
+    "JWST",
+    "SOHO",
+    "halo orbit"
+   ],
+   "latex": "r_{L1} \\approx r_{L2} \\approx R\\,\\sqrt[3]{\\frac{m}{3M}}",
+   "legend": [
+    {
+     "sym": "r_{L1}",
+     "desc": "Distance of L1 (or L2) from the smaller body",
+     "unit": "m"
+    },
+    {
+     "sym": "R",
+     "desc": "Separation of the two bodies",
+     "unit": "m"
+    },
+    {
+     "sym": "m, M",
+     "desc": "Smaller and larger mass ($m \\ll M$)",
+     "unit": "kg"
+    }
+   ],
+   "meaning": "L1 and L2 are the two points on the line through a star and planet where a spacecraft can orbit the star in lock-step with the planet: gravity and the rotating frame's centrifugal effect balance. For a small mass ratio both sit about one Hill radius from the planet. The Solar and Heliospheric Observatory (SOHO) watches the Sun from Sun–Earth L1; the James Webb Space Telescope (JWST) hides from it at L2.",
+   "example": {
+    "title": "How far away is JWST's home, Sun–Earth L2?",
+    "text": "$R = 1$ AU $= 1.496\\times10^{8}$ km, $m/M = 3.00\\times10^{-6}$.",
+    "steps": "r_{L2} \\approx 1.496\\times10^{8}\\ \\text{km}\\times\\sqrt[3]{\\frac{3.00\\times10^{-6}}{3}}",
+    "set": {
+     "R": 149597870.7,
+     "m": 5.9722e+24,
+     "M": 1.98841e+30
+    },
+    "answer": {
+     "out": "rL",
+     "value": 1496600,
+     "text": "about 1.5 million km — four times farther than the Moon. (The approximation errs by about 1 % here.)"
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "R",
+      "sym": "R",
+      "label": "Separation",
+      "unit": "km",
+      "value": 149597870.7,
+      "min": 10000.0,
+      "max": 10000000000.0,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "m",
+      "sym": "m",
+      "label": "Smaller mass",
+      "unit": "kg",
+      "value": 5.9722e+24,
+      "min": 1e+18,
+      "max": 1e+28,
+      "log": true
+     },
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Larger mass",
+      "unit": "kg",
+      "value": 1.98841e+30,
+      "min": 1e+22,
+      "max": 1e+32,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "rL",
+      "sym": "r_{L1}",
+      "label": "Distance from small body",
+      "expr": "R*cbrt(m/(3*M))",
+      "unit": "km",
+      "div": 1000
+     },
+     {
+      "id": "lt",
+      "sym": "t_{light}",
+      "label": "Light-time from small body",
+      "expr": "R*cbrt(m/(3*M))/c",
+      "unit": "s",
+      "fmt": "time"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Sun–Earth",
+      "set": {
+       "R": 149597870.7,
+       "m": 5.9722e+24,
+       "M": 1.98841e+30
+      }
+     },
+     {
+      "label": "Earth–Moon",
+      "set": {
+       "R": 384400,
+       "m": 7.346e+22,
+       "M": 5.9722e+24
+      }
+     },
+     {
+      "label": "Sun–Jupiter",
+      "set": {
+       "R": 778570000,
+       "m": 1.89819e+27,
+       "M": 1.98841e+30
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "m",
+    "y": "rL",
+    "logx": true,
+    "logy": true,
+    "caption": "L1/L2 distance against the smaller body's mass."
+   },
+   "refs": [
+    {
+     "label": "NASA Science — What is a Lagrange Point?",
+     "url": "https://science.nasa.gov/resource/what-is-a-lagrange-point/"
+    },
+    {
+     "label": "Wikipedia — Lagrange point",
+     "url": "https://en.wikipedia.org/wiki/Lagrange_point"
+    }
+   ]
+  },
+  {
+   "id": "tsiolkovsky",
+   "chapter": "rockets",
+   "title": "Tsiolkovsky rocket equation",
+   "aka": "Ideal rocket equation",
+   "tags": [
+    "delta-v",
+    "mass ratio",
+    "specific impulse",
+    "RS-25"
+   ],
+   "latex": "\\Delta v = I_{sp}\\,g_0\\,\\ln\\frac{m_0}{m_f} = v_e\\ln\\frac{m_0}{m_f}",
+   "legend": [
+    {
+     "sym": "\\Delta v",
+     "desc": "Change in velocity the rocket can achieve (no gravity or drag)",
+     "unit": "m/s"
+    },
+    {
+     "sym": "I_{sp}",
+     "desc": "Specific impulse of the engine",
+     "unit": "s"
+    },
+    {
+     "sym": "g_0",
+     "desc": "Standard gravity, 9.806 65 m/s²",
+     "unit": "m/s²"
+    },
+    {
+     "sym": "v_e",
+     "desc": "Effective exhaust velocity, $I_{sp}g_0$",
+     "unit": "m/s"
+    },
+    {
+     "sym": "m_0, m_f",
+     "desc": "Initial (fuelled) and final (empty) mass",
+     "unit": "kg"
+    }
+   ],
+   "meaning": "Konstantin Tsiolkovsky published this in 1903 and it rules all of rocketry. Because each kilogram of propellant must also accelerate the propellant still on board, Δv grows only with the logarithm of the mass ratio. Doubling Δv means squaring the mass ratio — the 'tyranny of the rocket equation'.",
+   "example": {
+    "title": "A hydrogen–oxygen stage with a mass ratio of 4",
+    "text": "An RS-25-class engine in vacuum ($I_{sp} = 452$ s) on a stage that is 75 % propellant ($m_0/m_f = 4$).",
+    "steps": "\\Delta v = 452 \\times 9.80665 \\times \\ln 4",
+    "set": {
+     "isp": 452,
+     "R": 4
+    },
+    "answer": {
+     "out": "dv",
+     "value": 6.145,
+     "text": "about two-thirds of what it takes to reach low Earth orbit (≈ 9.4 km/s including losses)."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "isp",
+      "sym": "I_{sp}",
+      "label": "Specific impulse",
+      "unit": "s",
+      "value": 452,
+      "min": 100,
+      "max": 5000,
+      "log": true
+     },
+     {
+      "id": "R",
+      "sym": "m_0/m_f",
+      "label": "Mass ratio",
+      "unit": "",
+      "value": 4,
+      "min": 1.01,
+      "max": 30,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "dv",
+      "sym": "\\Delta v",
+      "label": "Delta-v",
+      "expr": "isp*g0*log(R)",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "ve",
+      "sym": "v_e",
+      "label": "Exhaust velocity",
+      "expr": "isp*g0",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "zeta",
+      "sym": "\\zeta",
+      "label": "Propellant fraction",
+      "expr": "100*(1-1/R)",
+      "unit": "%",
+      "sig": 3
+     }
+    ],
+    "presets": [
+     {
+      "label": "Solid motor (268 s)",
+      "set": {
+       "isp": 268,
+       "R": 4
+      }
+     },
+     {
+      "label": "Kerosene (311 s)",
+      "set": {
+       "isp": 311,
+       "R": 4
+      }
+     },
+     {
+      "label": "Hydrolox (452 s)",
+      "set": {
+       "isp": 452,
+       "R": 4
+      }
+     },
+     {
+      "label": "Ion drive (3 100 s)",
+      "set": {
+       "isp": 3100,
+       "R": 1.5
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "R",
+    "y": "dv",
+    "logx": false,
+    "logy": false,
+    "xmin": 1,
+    "xmax": 20,
+    "series": {
+     "input": "isp",
+     "values": [
+      268,
+      311
+     ]
+    },
+    "hlines": [
+     {
+      "y": 9.4,
+      "label": "LEO incl. losses ≈ 9.4 km/s"
+     }
+    ],
+    "caption": "Δv against mass ratio; dim curves for solid (268 s) and kerosene (311 s) engines. Note the diminishing returns."
+   },
+   "refs": [
+    {
+     "label": "NASA Glenn Research Center — Ideal Rocket Equation",
+     "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ideal-rocket-equation/"
+    },
+    {
+     "label": "Wikipedia — Tsiolkovsky rocket equation",
+     "url": "https://en.wikipedia.org/wiki/Tsiolkovsky_rocket_equation"
+    }
+   ]
+  },
+  {
+   "id": "thrust-equation",
+   "chapter": "rockets",
+   "title": "Rocket thrust equation",
+   "aka": "Momentum thrust + pressure thrust",
+   "tags": [
+    "thrust",
+    "nozzle",
+    "F-1",
+    "altitude"
+   ],
+   "latex": "F = \\dot m\\,v_e + (p_e - p_a)\\,A_e",
+   "legend": [
+    {
+     "sym": "F",
+     "desc": "Thrust",
+     "unit": "N"
+    },
+    {
+     "sym": "\\dot m",
+     "desc": "Propellant mass flow rate",
+     "unit": "kg/s"
+    },
+    {
+     "sym": "v_e",
+     "desc": "Exhaust velocity at the nozzle exit",
+     "unit": "m/s"
+    },
+    {
+     "sym": "p_e, p_a",
+     "desc": "Exhaust pressure at the nozzle exit, and ambient pressure",
+     "unit": "Pa"
+    },
+    {
+     "sym": "A_e",
+     "desc": "Nozzle exit area",
+     "unit": "m²"
+    }
+   ],
+   "meaning": "Thrust has two parts. The big one is momentum: mass thrown back each second times its speed. The second is a pressure imbalance across the nozzle exit. At sea level the air pushes back on an engine designed for altitude ($p_a > p_e$), so the same engine gains thrust as it climbs into thinner air.",
+   "example": {
+    "title": "An F-1-class engine at sea level (illustrative round numbers)",
+    "text": "$\\dot m = 2\\,580$ kg/s, $v_e = 2\\,750$ m/s, $p_e = 70$ kPa, $p_a = 101.3$ kPa, $A_e = 10.8$ m².",
+    "steps": "F = 2\\,580\\times2\\,750 + (70\\,000 - 101\\,325)\\times10.8",
+    "set": {
+     "mdot": 2580,
+     "ve": 2750,
+     "pe": 70,
+     "pa": 101.325,
+     "Ae": 10.8
+    },
+    "answer": {
+     "out": "F",
+     "value": 6757,
+     "text": "about 6.76 MN; the pressure term costs 338 kN at sea level and becomes a bonus of 756 kN in vacuum. (The real F-1 made about 6.77 MN at sea level.)"
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "mdot",
+      "sym": "\\dot m",
+      "label": "Mass flow rate",
+      "unit": "kg/s",
+      "value": 2580,
+      "min": 1,
+      "max": 5000,
+      "log": true
+     },
+     {
+      "id": "ve",
+      "sym": "v_e",
+      "label": "Exhaust velocity",
+      "unit": "m/s",
+      "value": 2750,
+      "min": 500,
+      "max": 5000,
+      "step": 10
+     },
+     {
+      "id": "pe",
+      "sym": "p_e",
+      "label": "Exit pressure",
+      "unit": "kPa",
+      "value": 70,
+      "min": 0,
+      "max": 200,
+      "step": 0.5,
+      "mul": 1000
+     },
+     {
+      "id": "pa",
+      "sym": "p_a",
+      "label": "Ambient pressure",
+      "unit": "kPa",
+      "value": 101.325,
+      "min": 0,
+      "max": 101.325,
+      "step": 0.025,
+      "mul": 1000
+     },
+     {
+      "id": "Ae",
+      "sym": "A_e",
+      "label": "Exit area",
+      "unit": "m²",
+      "value": 10.8,
+      "min": 0.01,
+      "max": 30,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "F",
+      "sym": "F",
+      "label": "Thrust",
+      "expr": "mdot*ve + (pe-pa)*Ae",
+      "unit": "kN",
+      "div": 1000
+     },
+     {
+      "id": "Fm",
+      "sym": "\\dot m v_e",
+      "label": "Momentum term",
+      "expr": "mdot*ve",
+      "unit": "kN",
+      "div": 1000
+     },
+     {
+      "id": "Fp",
+      "sym": "(p_e-p_a)A_e",
+      "label": "Pressure term",
+      "expr": "(pe-pa)*Ae",
+      "unit": "kN",
+      "div": 1000
+     },
+     {
+      "id": "isp",
+      "sym": "I_{sp}",
+      "label": "Specific impulse",
+      "expr": "(mdot*ve + (pe-pa)*Ae)/(mdot*g0)",
+      "unit": "s"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Sea level",
+      "set": {
+       "pa": 101.325
+      }
+     },
+     {
+      "label": "10 km altitude",
+      "set": {
+       "pa": 26.5
+      }
+     },
+     {
+      "label": "Vacuum",
+      "set": {
+       "pa": 0
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "pa",
+    "y": "F",
+    "logx": false,
+    "logy": false,
+    "yzero": false,
+    "caption": "Thrust rises as the ambient pressure falls away during the climb."
+   },
+   "refs": [
+    {
+     "label": "NASA Glenn Research Center — Rocket Thrust Equation",
+     "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/rocket-thrust-equation/"
+    }
+   ]
+  },
+  {
+   "id": "specific-impulse",
+   "chapter": "rockets",
+   "title": "Specific impulse and effective exhaust velocity",
+   "aka": "Engine efficiency",
+   "tags": [
+    "Isp",
+    "efficiency",
+    "RS-25",
+    "ion thruster"
+   ],
+   "latex": "I_{sp} = \\frac{F}{\\dot m\\,g_0},\\qquad v_e = I_{sp}\\,g_0",
+   "legend": [
+    {
+     "sym": "I_{sp}",
+     "desc": "Specific impulse: seconds a unit weight of propellant can produce thrust equal to its weight",
+     "unit": "s"
+    },
+    {
+     "sym": "F",
+     "desc": "Thrust",
+     "unit": "N"
+    },
+    {
+     "sym": "\\dot m",
+     "desc": "Propellant mass flow rate",
+     "unit": "kg/s"
+    },
+    {
+     "sym": "g_0",
+     "desc": "Standard gravity (a unit convention, not local gravity)",
+     "unit": "m/s²"
+    },
+    {
+     "sym": "v_e",
+     "desc": "Effective exhaust velocity",
+     "unit": "m/s"
+    }
+   ],
+   "meaning": "Specific impulse is the 'miles per gallon' of a rocket engine: thrust per unit of propellant flow. Multiply by $g_0$ and you get the effective exhaust velocity that goes straight into the rocket equation. Chemical engines top out near 450 s; electric thrusters reach thousands of seconds but with tiny thrust.",
+   "example": {
+    "title": "The Space Shuttle Main Engine (RS-25) in vacuum",
+    "text": "Thrust about $2\\,279$ kN with a propellant flow of about $514$ kg/s.",
+    "steps": "I_{sp} = \\frac{2.279\\times10^{6}}{514\\times9.80665}",
+    "set": {
+     "F": 2279,
+     "mdot": 514
+    },
+    "answer": {
+     "out": "isp",
+     "value": 452.1,
+     "text": "matching the published ≈ 452 s; exhaust velocity ≈ 4.43 km/s."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "F",
+      "sym": "F",
+      "label": "Thrust",
+      "unit": "kN",
+      "value": 2279,
+      "min": 1e-05,
+      "max": 10000,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "mdot",
+      "sym": "\\dot m",
+      "label": "Mass flow rate",
+      "unit": "kg/s",
+      "value": 514,
+      "min": 1e-07,
+      "max": 5000,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "isp",
+      "sym": "I_{sp}",
+      "label": "Specific impulse",
+      "expr": "F/(mdot*g0)",
+      "unit": "s"
+     },
+     {
+      "id": "ve",
+      "sym": "v_e",
+      "label": "Exhaust velocity",
+      "expr": "F/mdot",
+      "unit": "km/s",
+      "div": 1000
+     }
+    ],
+    "presets": [
+     {
+      "label": "RS-25 (vacuum)",
+      "set": {
+       "F": 2279,
+       "mdot": 514
+      }
+     },
+     {
+      "label": "F-1 (sea level)",
+      "set": {
+       "F": 6770,
+       "mdot": 2578
+      }
+     },
+     {
+      "label": "NSTAR ion thruster",
+      "set": {
+       "F": 9.2e-05,
+       "mdot": 3.03e-06
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "refbars",
+    "y": "isp",
+    "logy": true,
+    "refs": [
+     {
+      "label": "Shuttle SRB (vac)",
+      "value": 268
+     },
+     {
+      "label": "F-1 (vac)",
+      "value": 304
+     },
+     {
+      "label": "Merlin 1D Vac",
+      "value": 348
+     },
+     {
+      "label": "RS-25 (vac)",
+      "value": 452
+     },
+     {
+      "label": "NSTAR ion",
+      "value": 3100
+     }
+    ],
+    "caption": "Your engine (bright) against real engines, published vacuum values."
+   },
+   "refs": [
+    {
+     "label": "NASA Glenn Research Center — Specific Impulse",
+     "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/specific-impulse/"
+    },
+    {
+     "label": "Wikipedia — Specific impulse",
+     "url": "https://en.wikipedia.org/wiki/Specific_impulse"
+    }
+   ]
+  },
+  {
+   "id": "mass-ratio",
+   "chapter": "rockets",
+   "title": "Mass ratio and propellant fraction",
+   "aka": "How much of a rocket is fuel",
+   "tags": [
+    "mass ratio",
+    "propellant fraction",
+    "Saturn V",
+    "S-IC"
+   ],
+   "latex": "R = \\frac{m_0}{m_f},\\qquad \\zeta = \\frac{m_p}{m_0} = 1 - \\frac{1}{R}",
+   "legend": [
+    {
+     "sym": "R",
+     "desc": "Mass ratio",
+     "unit": "—"
+    },
+    {
+     "sym": "m_0",
+     "desc": "Initial mass, $m_p + m_f$",
+     "unit": "kg"
+    },
+    {
+     "sym": "m_f",
+     "desc": "Final mass: structure, engines, upper stages and payload",
+     "unit": "kg"
+    },
+    {
+     "sym": "m_p",
+     "desc": "Propellant burned",
+     "unit": "kg"
+    },
+    {
+     "sym": "\\zeta",
+     "desc": "Propellant (mass) fraction",
+     "unit": "—"
+    }
+   ],
+   "meaning": "Two ways to say the same thing. The mass ratio goes into the logarithm of the rocket equation; the propellant fraction says how much of the vehicle is fuel. Orbital rockets are over 85 % propellant at liftoff — proportionally less 'container' than an egg's shell.",
+   "example": {
+    "title": "The Saturn V first-stage (S-IC) burn",
+    "text": "S-IC propellant ≈ 2 077 t. Everything left at burnout — the empty S-IC (137 t) plus the fuelled upper stages and Apollo spacecraft — ≈ 771 t.",
+    "steps": "R = \\frac{2\\,077 + 771}{771}",
+    "set": {
+     "mprop": 2077,
+     "mf": 771
+    },
+    "answer": {
+     "out": "R",
+     "value": 3.694,
+     "text": "so ζ ≈ 72.9 % of the whole stack was burned in the first 2½ minutes."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "mprop",
+      "sym": "m_p",
+      "label": "Propellant mass",
+      "unit": "t",
+      "value": 2077,
+      "min": 0.01,
+      "max": 5000,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "mf",
+      "sym": "m_f",
+      "label": "Final (burnout) mass",
+      "unit": "t",
+      "value": 771,
+      "min": 0.01,
+      "max": 5000,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "R",
+      "sym": "R",
+      "label": "Mass ratio",
+      "expr": "(mprop+mf)/mf",
+      "unit": ""
+     },
+     {
+      "id": "zeta",
+      "sym": "\\zeta",
+      "label": "Propellant fraction",
+      "expr": "100*mprop/(mprop+mf)",
+      "unit": "%",
+      "sig": 3
+     },
+     {
+      "id": "m0",
+      "sym": "m_0",
+      "label": "Initial mass",
+      "expr": "mprop+mf",
+      "unit": "t",
+      "div": 1000
+     }
+    ],
+    "presets": [
+     {
+      "label": "Saturn V S-IC burn",
+      "set": {
+       "mprop": 2077,
+       "mf": 771
+      }
+     },
+     {
+      "label": "S-IVB stage alone",
+      "set": {
+       "mprop": 105.3,
+       "mf": 15.2
+      }
+     },
+     {
+      "label": "Soda can (for fun)",
+      "set": {
+       "mprop": 0.00033,
+       "mf": 1.5e-05
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "mprop",
+    "y": "R",
+    "logx": true,
+    "logy": true,
+    "caption": "Mass ratio against propellant load for the chosen burnout mass."
+   },
+   "refs": [
+    {
+     "label": "NASA Glenn Research Center — Mass Ratios",
+     "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/mass-ratios/"
+    },
+    {
+     "label": "Wikipedia — S-IC",
+     "url": "https://en.wikipedia.org/wiki/S-IC"
+    }
+   ]
+  },
+  {
+   "id": "multistage",
+   "chapter": "rockets",
+   "title": "Multi-stage Δv",
+   "aka": "Staging",
+   "tags": [
+    "staging",
+    "Saturn V",
+    "delta-v",
+    "Apollo"
+   ],
+   "latex": "\\Delta v_{total} = \\sum_{i=1}^{n} I_{sp,i}\\,g_0\\,\\ln\\frac{m_{0,i}}{m_{f,i}}",
+   "legend": [
+    {
+     "sym": "\\Delta v_{total}",
+     "desc": "Ideal velocity change of the whole vehicle",
+     "unit": "m/s"
+    },
+    {
+     "sym": "I_{sp,i}",
+     "desc": "Specific impulse of stage $i$",
+     "unit": "s"
+    },
+    {
+     "sym": "m_{0,i}",
+     "desc": "Mass when stage $i$ ignites (it and everything above it)",
+     "unit": "kg"
+    },
+    {
+     "sym": "m_{f,i}",
+     "desc": "Mass when stage $i$ burns out, $m_{0,i} - m_{p,i}$",
+     "unit": "kg"
+    }
+   ],
+   "meaning": "Staging beats the rocket equation by throwing away empty tanks and heavy engines as soon as they stop being useful. Each stage runs the rocket equation on a lighter vehicle, and the Δv values simply add. That is why every orbital launcher so far has used at least two stages.",
+   "example": {
+    "title": "Saturn V: pad to the Moon",
+    "text": "Payload (Apollo spacecraft) 43.5 t. S-IC: 2 077 t propellant, 137 t dry, $I_{sp}\\approx 283$ s averaged over the climb. S-II: 427 t / 43 t, 424 s. S-IVB: 105.3 t / 15.2 t, 424 s (rounded published figures).",
+    "steps": "\\Delta v = 283g_0\\ln\\tfrac{2848}{771} + 424g_0\\ln\\tfrac{634}{207} + 424g_0\\ln\\tfrac{164}{58.7}",
+    "set": {
+     "pay": 43.5,
+     "p1": 2077,
+     "d1": 137,
+     "i1": 283,
+     "p2": 427,
+     "d2": 43,
+     "i2": 424,
+     "p3": 105.3,
+     "d3": 15.2,
+     "i3": 424
+    },
+    "answer": {
+     "out": "dvt",
+     "value": 12.55,
+     "text": "ideal (3.63 + 4.65 + 4.27 km/s): enough for ≈ 9.4 km/s to orbit including gravity and drag losses, plus ≈ 3.1 km/s for trans-lunar injection."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "pay",
+      "sym": "m_{pay}",
+      "label": "Payload",
+      "unit": "t",
+      "value": 43.5,
+      "min": 0.1,
+      "max": 200,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "p1",
+      "sym": "m_{p,1}",
+      "label": "Stage 1 propellant",
+      "unit": "t",
+      "value": 2077,
+      "min": 1,
+      "max": 5000,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "d1",
+      "sym": "m_{d,1}",
+      "label": "Stage 1 dry mass",
+      "unit": "t",
+      "value": 137,
+      "min": 0.1,
+      "max": 500,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "i1",
+      "sym": "I_{sp,1}",
+      "label": "Stage 1 Isp",
+      "unit": "s",
+      "value": 283,
+      "min": 150,
+      "max": 470,
+      "step": 1
+     },
+     {
+      "id": "p2",
+      "sym": "m_{p,2}",
+      "label": "Stage 2 propellant",
+      "unit": "t",
+      "value": 427,
+      "min": 0.1,
+      "max": 2000,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "d2",
+      "sym": "m_{d,2}",
+      "label": "Stage 2 dry mass",
+      "unit": "t",
+      "value": 43,
+      "min": 0.1,
+      "max": 500,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "i2",
+      "sym": "I_{sp,2}",
+      "label": "Stage 2 Isp",
+      "unit": "s",
+      "value": 424,
+      "min": 150,
+      "max": 470,
+      "step": 1
+     },
+     {
+      "id": "p3",
+      "sym": "m_{p,3}",
+      "label": "Stage 3 propellant",
+      "unit": "t",
+      "value": 105.3,
+      "min": 0,
+      "max": 1000,
+      "step": 0.1,
+      "mul": 1000
+     },
+     {
+      "id": "d3",
+      "sym": "m_{d,3}",
+      "label": "Stage 3 dry mass",
+      "unit": "t",
+      "value": 15.2,
+      "min": 0,
+      "max": 200,
+      "step": 0.1,
+      "mul": 1000
+     },
+     {
+      "id": "i3",
+      "sym": "I_{sp,3}",
+      "label": "Stage 3 Isp",
+      "unit": "s",
+      "value": 424,
+      "min": 150,
+      "max": 470,
+      "step": 1
+     }
+    ],
+    "outputs": [
+     {
+      "id": "dvt",
+      "sym": "\\Delta v_{total}",
+      "label": "Total ideal Δv",
+      "expr": "dv1+dv2+dv3",
+      "unit": "km/s",
+      "div": 1000,
+      "after": true
+     },
+     {
+      "id": "m01",
+      "sym": "m_{0,1}",
+      "label": "Liftoff mass",
+      "expr": "pay+p1+d1+p2+d2+p3+d3",
+      "unit": "t",
+      "div": 1000
+     },
+     {
+      "id": "dv1",
+      "sym": "\\Delta v_1",
+      "label": "Stage 1",
+      "expr": "i1*g0*log((pay+p1+d1+p2+d2+p3+d3)/(pay+d1+p2+d2+p3+d3))",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "dv2",
+      "sym": "\\Delta v_2",
+      "label": "Stage 2",
+      "expr": "i2*g0*log((pay+p2+d2+p3+d3)/(pay+d2+p3+d3))",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "dv3",
+      "sym": "\\Delta v_3",
+      "label": "Stage 3",
+      "expr": "(p3+d3) > 0 ? i3*g0*log((pay+p3+d3)/(pay+d3)) : 0",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "pf",
+      "sym": "m_{pay}/m_0",
+      "label": "Payload fraction",
+      "expr": "100*pay/(pay+p1+d1+p2+d2+p3+d3)",
+      "unit": "%",
+      "sig": 3
+     }
+    ],
+    "presets": [
+     {
+      "label": "Saturn V",
+      "set": {
+       "pay": 43.5,
+       "p1": 2077,
+       "d1": 137,
+       "i1": 283,
+       "p2": 427,
+       "d2": 43,
+       "i2": 424,
+       "p3": 105.3,
+       "d3": 15.2,
+       "i3": 424
+      }
+     },
+     {
+      "label": "Single stage (all in one)",
+      "set": {
+       "pay": 43.5,
+       "p1": 2609.3,
+       "d1": 195.2,
+       "i1": 283,
+       "p2": 0.1,
+       "d2": 0.1,
+       "i2": 424,
+       "p3": 0,
+       "d3": 0,
+       "i3": 424
+      }
+     },
+     {
+      "label": "Two-stage kerosene",
+      "set": {
+       "pay": 17,
+       "p1": 411,
+       "d1": 25.6,
+       "i1": 297,
+       "p2": 107.5,
+       "d2": 3.9,
+       "i2": 348,
+       "p3": 0,
+       "d3": 0,
+       "i3": 348
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "stack",
+    "parts": [
+     "dv1",
+     "dv2",
+     "dv3"
+    ],
+    "labels": [
+     "Stage 1",
+     "Stage 2",
+     "Stage 3"
+    ],
+    "refs": [
+     {
+      "x": 9.4,
+      "label": "LEO ≈ 9.4"
+     },
+     {
+      "x": 12.5,
+      "label": "LEO + TLI ≈ 12.5"
+     }
+    ],
+    "caption": "Each stage's contribution to the ideal Δv (km/s)."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Saturn V",
+     "url": "https://en.wikipedia.org/wiki/Saturn_V"
+    },
+    {
+     "label": "Wikipedia — Multistage rocket",
+     "url": "https://en.wikipedia.org/wiki/Multistage_rocket"
+    }
+   ]
+  },
+  {
+   "id": "drag",
+   "chapter": "rockets",
+   "title": "Drag equation",
+   "aka": "Aerodynamic drag force",
+   "tags": [
+    "drag",
+    "aerodynamics",
+    "drag coefficient",
+    "ascent"
+   ],
+   "latex": "D = \\tfrac12\\,\\rho\\,v^2\\,C_D\\,A",
+   "legend": [
+    {
+     "sym": "D",
+     "desc": "Drag force opposing motion through the air",
+     "unit": "N"
+    },
+    {
+     "sym": "\\rho",
+     "desc": "Air density",
+     "unit": "kg/m³"
+    },
+    {
+     "sym": "v",
+     "desc": "Speed relative to the air",
+     "unit": "m/s"
+    },
+    {
+     "sym": "C_D",
+     "desc": "Drag coefficient (shape; varies with Mach number)",
+     "unit": "—"
+    },
+    {
+     "sym": "A",
+     "desc": "Reference (frontal) area",
+     "unit": "m²"
+    }
+   ],
+   "meaning": "Drag grows with the square of speed and in direct proportion to air density. Launch vehicles are slim and pointed to keep $C_D A$ small and climb out of the dense lower air before going fast. Capsules do the opposite on the way home: blunt, high-drag shapes that shed speed high up.",
+   "example": {
+    "title": "A 3.66 m-diameter rocket at 10 km altitude",
+    "text": "Air density at 10 km $\\rho = 0.4135$ kg/m³ (U.S. Standard Atmosphere 1976), $v = 500$ m/s, $C_D = 0.3$ (illustrative), $A = \\pi(1.83)^2 = 10.52$ m².",
+    "steps": "D = \\tfrac12\\times0.4135\\times500^2\\times0.3\\times10.52",
+    "set": {
+     "rho": 0.4135,
+     "v": 500,
+     "cd": 0.3,
+     "A": 10.52
+    },
+    "answer": {
+     "out": "D",
+     "value": 163.1,
+     "text": "about 16.6 tonnes-force pushing back on the vehicle."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "rho",
+      "sym": "\\rho",
+      "label": "Air density",
+      "unit": "kg/m³",
+      "value": 0.4135,
+      "min": 1e-06,
+      "max": 1.5,
+      "log": true
+     },
+     {
+      "id": "v",
+      "sym": "v",
+      "label": "Speed",
+      "unit": "m/s",
+      "value": 500,
+      "min": 0,
+      "max": 3000,
+      "step": 1
+     },
+     {
+      "id": "cd",
+      "sym": "C_D",
+      "label": "Drag coefficient",
+      "unit": "",
+      "value": 0.3,
+      "min": 0.05,
+      "max": 2.5,
+      "step": 0.01
+     },
+     {
+      "id": "A",
+      "sym": "A",
+      "label": "Reference area",
+      "unit": "m²",
+      "value": 10.52,
+      "min": 0.01,
+      "max": 100,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "D",
+      "sym": "D",
+      "label": "Drag force",
+      "expr": "0.5*rho*v*v*cd*A",
+      "unit": "kN",
+      "div": 1000
+     },
+     {
+      "id": "q",
+      "sym": "q",
+      "label": "Dynamic pressure",
+      "expr": "0.5*rho*v*v",
+      "unit": "kPa",
+      "div": 1000
+     }
+    ],
+    "presets": [
+     {
+      "label": "Rocket at 10 km",
+      "set": {
+       "rho": 0.4135,
+       "v": 500,
+       "cd": 0.3,
+       "A": 10.52
+      }
+     },
+     {
+      "label": "Skydiver",
+      "set": {
+       "rho": 1.0,
+       "v": 55,
+       "cd": 1.0,
+       "A": 0.7
+      }
+     },
+     {
+      "label": "Capsule at 60 km",
+      "set": {
+       "rho": 0.00031,
+       "v": 7000,
+       "cd": 1.3,
+       "A": 11.95
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "v",
+    "y": "D",
+    "logx": false,
+    "logy": false,
+    "caption": "Drag grows with the square of speed."
+   },
+   "refs": [
+    {
+     "label": "NASA Glenn Research Center — Drag Equation",
+     "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/"
+    }
+   ]
+  },
+  {
+   "id": "dynamic-pressure",
+   "chapter": "rockets",
+   "title": "Dynamic pressure and Max-Q",
+   "aka": "Max Q",
+   "tags": [
+    "Max-Q",
+    "dynamic pressure",
+    "throttle bucket",
+    "ascent"
+   ],
+   "latex": "q = \\tfrac12\\,\\rho(h)\\,v^2,\\qquad \\rho(h) \\approx \\rho_0\\,e^{-h/H}",
+   "legend": [
+    {
+     "sym": "q",
+     "desc": "Dynamic pressure: the kinetic energy per unit volume of the oncoming air",
+     "unit": "Pa"
+    },
+    {
+     "sym": "\\rho_0",
+     "desc": "Sea-level air density, 1.225 kg/m³",
+     "unit": "kg/m³"
+    },
+    {
+     "sym": "H",
+     "desc": "Density scale height, here 8.5 km (simple exponential model)",
+     "unit": "m"
+    },
+    {
+     "sym": "h, v",
+     "desc": "Altitude and airspeed",
+     "unit": "m, m/s"
+    }
+   ],
+   "meaning": "During launch the rocket speeds up while the air thins out, so $q$ rises, peaks and falls. That peak is 'Max-Q', the moment of greatest aerodynamic stress, typically about a minute after liftoff at 10–14 km. Many rockets throttle down through it — a 'throttle bucket'.",
+   "example": {
+    "title": "A typical Max-Q",
+    "text": "Altitude $h = 11$ km, speed $v = 420$ m/s, exponential atmosphere.",
+    "steps": "q = \\tfrac12\\times\\left(1.225\\,e^{-11/8.5}\\right)\\times420^2",
+    "set": {
+     "alt": 11,
+     "v": 420
+    },
+    "answer": {
+     "out": "q",
+     "value": 29.62,
+     "text": "about 30 kPa, the same order as the Space Shuttle's Max-Q of ≈ 35 kPa."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "alt",
+      "sym": "h",
+      "label": "Altitude",
+      "unit": "km",
+      "value": 11,
+      "min": 0,
+      "max": 80,
+      "step": 0.1,
+      "mul": 1000
+     },
+     {
+      "id": "v",
+      "sym": "v",
+      "label": "Speed",
+      "unit": "m/s",
+      "value": 420,
+      "min": 0,
+      "max": 3000,
+      "step": 1
+     }
+    ],
+    "outputs": [
+     {
+      "id": "q",
+      "sym": "q",
+      "label": "Dynamic pressure",
+      "expr": "0.5*1.225*exp(-alt/8500)*v*v",
+      "unit": "kPa",
+      "div": 1000
+     },
+     {
+      "id": "rho",
+      "sym": "\\rho",
+      "label": "Air density (model)",
+      "expr": "1.225*exp(-alt/8500)",
+      "unit": "kg/m³"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Max-Q",
+      "set": {
+       "alt": 11,
+       "v": 420
+      }
+     },
+     {
+      "label": "Airliner cruise",
+      "set": {
+       "alt": 11,
+       "v": 250
+      }
+     },
+     {
+      "label": "Mach 5 at 30 km",
+      "set": {
+       "alt": 30,
+       "v": 1500
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "alt",
+    "y": "q",
+    "logx": false,
+    "logy": false,
+    "series": {
+     "input": "v",
+     "values": [
+      300,
+      600
+     ]
+    },
+    "caption": "q against altitude at your speed (bright) and at 300 and 600 m/s."
+   },
+   "refs": [
+    {
+     "label": "NASA Glenn Research Center — Dynamic Pressure",
+     "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/dynamic-pressure-2/"
+    },
+    {
+     "label": "Wikipedia — Max q",
+     "url": "https://en.wikipedia.org/wiki/Max_q"
+    }
+   ]
+  },
+  {
+   "id": "gravity-loss",
+   "chapter": "rockets",
+   "title": "Gravity loss",
+   "aka": "Gravity drag",
+   "tags": [
+    "gravity loss",
+    "ascent",
+    "thrust-to-weight",
+    "delta-v budget"
+   ],
+   "latex": "\\Delta v_g = \\int_0^{t_b} g\\,\\sin\\gamma\\;dt \\;\\approx\\; g\\,t_b\\,\\overline{\\sin\\gamma}",
+   "legend": [
+    {
+     "sym": "\\Delta v_g",
+     "desc": "Velocity lost to gravity during the burn",
+     "unit": "m/s"
+    },
+    {
+     "sym": "g",
+     "desc": "Local gravitational acceleration",
+     "unit": "m/s²"
+    },
+    {
+     "sym": "t_b",
+     "desc": "Burn time",
+     "unit": "s"
+    },
+    {
+     "sym": "\\gamma",
+     "desc": "Flight-path angle above the horizon ($90^\\circ$ = straight up)",
+     "unit": "rad"
+    }
+   ],
+   "meaning": "Every second a rocket spends climbing, gravity steals $g\\sin\\gamma$ metres per second of the velocity its engines produce. Burning faster (a higher thrust-to-weight ratio) and pitching over towards horizontal sooner both cut the loss — but pitching over too early means more drag in dense air. Real launches lose roughly 1–1.5 km/s this way.",
+   "example": {
+    "title": "A first-stage burn",
+    "text": "150 s burn at $g = 9.81$ m/s² with an average flight-path angle of 50°.",
+    "steps": "\\Delta v_g \\approx 9.80665\\times150\\times\\sin 50^\\circ",
+    "set": {
+     "g": 9.80665,
+     "tb": 150,
+     "gam": 50
+    },
+    "answer": {
+     "out": "dvg",
+     "value": 1127,
+     "text": "over a kilometre per second that the engines had to supply but that never became speed."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "g",
+      "sym": "g",
+      "label": "Gravity",
+      "unit": "m/s²",
+      "value": 9.80665,
+      "min": 0.5,
+      "max": 25,
+      "step": 0.01
+     },
+     {
+      "id": "tb",
+      "sym": "t_b",
+      "label": "Burn time",
+      "unit": "s",
+      "value": 150,
+      "min": 1,
+      "max": 1000,
+      "log": true
+     },
+     {
+      "id": "gam",
+      "sym": "\\bar\\gamma",
+      "label": "Average flight-path angle",
+      "unit": "°",
+      "value": 50,
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "mul": "PI/180"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "dvg",
+      "sym": "\\Delta v_g",
+      "label": "Gravity loss",
+      "expr": "g*tb*sin(gam)",
+      "unit": "m/s"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth first stage",
+      "set": {
+       "g": 9.80665,
+       "tb": 150,
+       "gam": 50
+      }
+     },
+     {
+      "label": "Lunar ascent",
+      "set": {
+       "g": 1.62,
+       "tb": 430,
+       "gam": 15
+      }
+     },
+     {
+      "label": "Straight up, 60 s",
+      "set": {
+       "g": 9.80665,
+       "tb": 60,
+       "gam": 90
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "gam",
+    "y": "dvg",
+    "logx": false,
+    "logy": false,
+    "caption": "Loss against average flight-path angle: steep climbs pay the most."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Gravity drag",
+     "url": "https://en.wikipedia.org/wiki/Gravity_drag"
+    },
+    {
+     "label": "R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics",
+     "url": "http://www.braeunig.us/space/orbmech.htm"
+    }
+   ]
+  },
+  {
+   "id": "barometric",
+   "chapter": "atmosphere",
+   "title": "Barometric formula and scale height",
+   "aka": "Isothermal atmosphere",
+   "tags": [
+    "pressure",
+    "scale height",
+    "Mars",
+    "Titan",
+    "Everest"
+   ],
+   "latex": "p(h) = p_0\\,e^{-h/H},\\qquad H = \\frac{R\\,T}{\\mathcal{M}\\,g}",
+   "legend": [
+    {
+     "sym": "p, p_0",
+     "desc": "Pressure at height $h$ and at the surface",
+     "unit": "Pa"
+    },
+    {
+     "sym": "H",
+     "desc": "Scale height: climb by $H$ and pressure falls by a factor $e \\approx 2.718$",
+     "unit": "m"
+    },
+    {
+     "sym": "R",
+     "desc": "Molar gas constant, 8.314 J mol⁻¹ K⁻¹",
+     "unit": "J/(mol·K)"
+    },
+    {
+     "sym": "T",
+     "desc": "Temperature (assumed constant with height)",
+     "unit": "K"
+    },
+    {
+     "sym": "\\mathcal{M}",
+     "desc": "Molar mass of the gas",
+     "unit": "kg/mol"
+    },
+    {
+     "sym": "g",
+     "desc": "Surface gravity",
+     "unit": "m/s²"
+    }
+   ],
+   "meaning": "Each layer of air is squashed by the weight of all the air above it, which makes pressure fall off exponentially. A warm atmosphere of light gas on a low-gravity world is puffy (large $H$); a cold, heavy one on a massive planet hugs the ground. Earth's scale height is about 8 km.",
+   "example": {
+    "title": "Air pressure on the summit of Everest",
+    "text": "$h = 8\\,849$ m, $T = 288$ K, dry air $\\mathcal M = 0.02896$ kg/mol, $p_0 = 101.3$ kPa.",
+    "steps": "H = \\frac{8.314\\times288.15}{0.02896\\times9.807} = 8.43\\ \\text{km},\\quad p = 101.3\\,e^{-8.849/8.43}",
+    "set": {
+     "T": 288.15,
+     "Mm": 0.0289647,
+     "g": 9.80665,
+     "alt": 8.849,
+     "p0": 101.325
+    },
+    "answer": {
+     "out": "p",
+     "value": 35.49,
+     "text": "about a third of sea-level pressure (measured ≈ 34 kPa — the real atmosphere is colder aloft)."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "T",
+      "sym": "T",
+      "label": "Temperature",
+      "unit": "K",
+      "value": 288.15,
+      "min": 50,
+      "max": 1000,
+      "step": 0.5
+     },
+     {
+      "id": "Mm",
+      "sym": "\\mathcal{M}",
+      "label": "Gas",
+      "type": "select",
+      "options": [
+       {
+        "label": "Earth air (28.96 g/mol)",
+        "value": 0.0289647
+       },
+       {
+        "label": "Carbon dioxide (44.01 g/mol)",
+        "value": 0.04401
+       },
+       {
+        "label": "Nitrogen (28.01 g/mol)",
+        "value": 0.0280134
+       },
+       {
+        "label": "Hydrogen–helium (2.3 g/mol)",
+        "value": 0.0023
+       }
+      ],
+      "value": 0.0289647
+     },
+     {
+      "id": "g",
+      "sym": "g",
+      "label": "Gravity",
+      "unit": "m/s²",
+      "value": 9.80665,
+      "min": 0.1,
+      "max": 30,
+      "step": 0.01
+     },
+     {
+      "id": "alt",
+      "sym": "h",
+      "label": "Altitude",
+      "unit": "km",
+      "value": 8.849,
+      "min": 0,
+      "max": 200,
+      "step": 0.1,
+      "mul": 1000
+     },
+     {
+      "id": "p0",
+      "sym": "p_0",
+      "label": "Surface pressure",
+      "unit": "kPa",
+      "value": 101.325,
+      "min": 0.1,
+      "max": 10000,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "p",
+      "sym": "p",
+      "label": "Pressure at h",
+      "expr": "p0*exp(-alt*Mm*g/(Rgas*T))",
+      "unit": "kPa",
+      "div": 1000
+     },
+     {
+      "id": "H",
+      "sym": "H",
+      "label": "Scale height",
+      "expr": "Rgas*T/(Mm*g)",
+      "unit": "km",
+      "div": 1000
+     },
+     {
+      "id": "frac",
+      "sym": "p/p_0",
+      "label": "Fraction of surface",
+      "expr": "100*exp(-alt*Mm*g/(Rgas*T))",
+      "unit": "%",
+      "sig": 3
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth",
+      "set": {
+       "T": 288.15,
+       "Mm": 0.0289647,
+       "g": 9.80665,
+       "p0": 101.325
+      }
+     },
+     {
+      "label": "Mars",
+      "set": {
+       "T": 210,
+       "Mm": 0.04401,
+       "g": 3.721,
+       "p0": 0.61
+      }
+     },
+     {
+      "label": "Venus",
+      "set": {
+       "T": 737,
+       "Mm": 0.04401,
+       "g": 8.87,
+       "p0": 9200
+      }
+     },
+     {
+      "label": "Titan",
+      "set": {
+       "T": 94,
+       "Mm": 0.0280134,
+       "g": 1.352,
+       "p0": 146.7
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "alt",
+    "y": "p",
+    "logx": false,
+    "logy": true,
+    "xmin": 0,
+    "xmax": 100,
+    "caption": "Pressure on a log scale is a straight line: an exponential fall-off."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Scale height",
+     "url": "https://en.wikipedia.org/wiki/Scale_height"
+    },
+    {
+     "label": "Wikipedia — Barometric formula",
+     "url": "https://en.wikipedia.org/wiki/Barometric_formula"
+    }
+   ]
+  },
+  {
+   "id": "speed-of-sound",
+   "chapter": "atmosphere",
+   "title": "Speed of sound and Mach number",
+   "aka": "Acoustic speed in an ideal gas",
+   "tags": [
+    "Mach",
+    "sound",
+    "supersonic",
+    "Concorde"
+   ],
+   "latex": "a = \\sqrt{\\frac{\\gamma\\,R\\,T}{\\mathcal{M}}},\\qquad M = \\frac{v}{a}",
+   "legend": [
+    {
+     "sym": "a",
+     "desc": "Speed of sound",
+     "unit": "m/s"
+    },
+    {
+     "sym": "\\gamma",
+     "desc": "Ratio of specific heats (1.40 for air, ≈ 1.29 for CO₂)",
+     "unit": "—"
+    },
+    {
+     "sym": "R",
+     "desc": "Molar gas constant",
+     "unit": "J/(mol·K)"
+    },
+    {
+     "sym": "T",
+     "desc": "Absolute temperature",
+     "unit": "K"
+    },
+    {
+     "sym": "\\mathcal{M}",
+     "desc": "Molar mass",
+     "unit": "kg/mol"
+    },
+    {
+     "sym": "M",
+     "desc": "Mach number, speed as a multiple of $a$",
+     "unit": "—"
+    }
+   ],
+   "meaning": "Sound is a pressure wave carried by molecules bumping into each other, so it travels at roughly the speed of those molecules — which depends only on temperature and molecular mass, not on pressure. Above Mach 1 the air ahead cannot 'hear' you coming, and shock waves form.",
+   "example": {
+    "title": "Concorde at cruise",
+    "text": "In the stratosphere $T = 216.65$ K. Concorde cruised near $v = 600$ m/s.",
+    "steps": "a = \\sqrt{\\frac{1.4\\times8.314\\times216.65}{0.02896}} = 295\\ \\text{m/s},\\qquad M = \\frac{600}{295}",
+    "set": {
+     "T": 216.65,
+     "gam": 1.4,
+     "Mm": 0.0289647,
+     "v": 600
+    },
+    "answer": {
+     "out": "M",
+     "value": 2.033,
+     "text": "Mach 2 — twice the local speed of sound."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "T",
+      "sym": "T",
+      "label": "Temperature",
+      "unit": "K",
+      "value": 216.65,
+      "min": 50,
+      "max": 2000,
+      "step": 0.5
+     },
+     {
+      "id": "gam",
+      "sym": "\\gamma",
+      "label": "Heat-capacity ratio",
+      "unit": "",
+      "value": 1.4,
+      "min": 1.05,
+      "max": 1.67,
+      "step": 0.01
+     },
+     {
+      "id": "Mm",
+      "sym": "\\mathcal{M}",
+      "label": "Gas",
+      "type": "select",
+      "options": [
+       {
+        "label": "Earth air",
+        "value": 0.0289647
+       },
+       {
+        "label": "Carbon dioxide (Mars, Venus)",
+        "value": 0.04401
+       },
+       {
+        "label": "Helium",
+        "value": 0.0040026
+       }
+      ],
+      "value": 0.0289647
+     },
+     {
+      "id": "v",
+      "sym": "v",
+      "label": "Speed",
+      "unit": "m/s",
+      "value": 600,
+      "min": 0,
+      "max": 8000,
+      "step": 1
+     }
+    ],
+    "outputs": [
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Mach number",
+      "expr": "v/sqrt(gam*Rgas*T/Mm)",
+      "unit": ""
+     },
+     {
+      "id": "a",
+      "sym": "a",
+      "label": "Speed of sound",
+      "expr": "sqrt(gam*Rgas*T/Mm)",
+      "unit": "m/s"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Sea level, 15 °C",
+      "set": {
+       "T": 288.15,
+       "gam": 1.4,
+       "Mm": 0.0289647
+      }
+     },
+     {
+      "label": "Concorde",
+      "set": {
+       "T": 216.65,
+       "gam": 1.4,
+       "Mm": 0.0289647,
+       "v": 600
+      }
+     },
+     {
+      "label": "Mars surface",
+      "set": {
+       "T": 210,
+       "gam": 1.29,
+       "Mm": 0.04401,
+       "v": 240
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "T",
+    "y": "a",
+    "logx": false,
+    "logy": false,
+    "yzero": true,
+    "caption": "Speed of sound grows as √T."
+   },
+   "refs": [
+    {
+     "label": "NASA Glenn Research Center — Speed of Sound",
+     "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/speed-of-sound-interactive/"
+    },
+    {
+     "label": "NASA Glenn Research Center — Role of the Mach Number",
+     "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/role-of-the-mach-number/"
+    }
+   ]
+  },
+  {
+   "id": "stagnation-temperature",
+   "chapter": "atmosphere",
+   "title": "Stagnation temperature",
+   "aka": "Total temperature",
+   "tags": [
+    "heating",
+    "SR-71",
+    "Mach",
+    "isentropic"
+   ],
+   "latex": "T_0 = T\\left(1 + \\frac{\\gamma-1}{2}\\,M^2\\right)",
+   "legend": [
+    {
+     "sym": "T_0",
+     "desc": "Stagnation (total) temperature: air brought to rest against the vehicle",
+     "unit": "K"
+    },
+    {
+     "sym": "T",
+     "desc": "Static temperature of the free air",
+     "unit": "K"
+    },
+    {
+     "sym": "\\gamma",
+     "desc": "Ratio of specific heats",
+     "unit": "—"
+    },
+    {
+     "sym": "M",
+     "desc": "Mach number",
+     "unit": "—"
+    }
+   ],
+   "meaning": "When fast-moving air is slowed to a stop on a nose or leading edge, its kinetic energy turns back into heat. The temperature rise grows with the square of the Mach number, which is why supersonic aircraft need heat-resistant skins. For true re-entry speeds the formula over-predicts, because the air molecules break apart and absorb energy.",
+   "example": {
+    "title": "The SR-71 Blackbird at Mach 3.2",
+    "text": "Stratospheric air $T = 216.65$ K, $\\gamma = 1.4$.",
+    "steps": "T_0 = 216.65\\left(1 + 0.2\\times3.2^2\\right)",
+    "set": {
+     "T": 216.65,
+     "gam": 1.4,
+     "M": 3.2
+    },
+    "answer": {
+     "out": "T0",
+     "value": 660.3,
+     "text": "about 387 °C — the aircraft's titanium skin got hot enough to stretch in flight."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "T",
+      "sym": "T",
+      "label": "Air temperature",
+      "unit": "K",
+      "value": 216.65,
+      "min": 50,
+      "max": 400,
+      "step": 0.05
+     },
+     {
+      "id": "gam",
+      "sym": "\\gamma",
+      "label": "Heat-capacity ratio",
+      "unit": "",
+      "value": 1.4,
+      "min": 1.1,
+      "max": 1.67,
+      "step": 0.01
+     },
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Mach number",
+      "unit": "",
+      "value": 3.2,
+      "min": 0,
+      "max": 30,
+      "step": 0.1
+     }
+    ],
+    "outputs": [
+     {
+      "id": "T0",
+      "sym": "T_0",
+      "label": "Stagnation temperature",
+      "expr": "T*(1 + (gam-1)/2*M*M)",
+      "unit": "K"
+     },
+     {
+      "id": "T0c",
+      "sym": "T_0",
+      "label": "In Celsius",
+      "expr": "T*(1 + (gam-1)/2*M*M) - 273.15",
+      "unit": "°C"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Airliner (M 0.85)",
+      "set": {
+       "T": 216.65,
+       "gam": 1.4,
+       "M": 0.85
+      }
+     },
+     {
+      "label": "Concorde (M 2.04)",
+      "set": {
+       "T": 216.65,
+       "gam": 1.4,
+       "M": 2.04
+      }
+     },
+     {
+      "label": "SR-71 (M 3.2)",
+      "set": {
+       "T": 216.65,
+       "gam": 1.4,
+       "M": 3.2
+      }
+     },
+     {
+      "label": "X-15 (M 6.7)",
+      "set": {
+       "T": 216.65,
+       "gam": 1.4,
+       "M": 6.7
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "M",
+    "y": "T0",
+    "logx": false,
+    "logy": true,
+    "caption": "Stagnation temperature against Mach number (ideal gas)."
+   },
+   "refs": [
+    {
+     "label": "NASA Glenn Research Center — Stagnation Temperature",
+     "url": "https://www.grc.nasa.gov/www/BGH/stagtmp.html"
+    },
+    {
+     "label": "NASA Glenn Research Center — Isentropic Flow Equations",
+     "url": "https://www.grc.nasa.gov/www/k-12/airplane/isentrop.html"
+    }
+   ]
+  },
+  {
+   "id": "sutton-graves",
+   "chapter": "atmosphere",
+   "title": "Sutton–Graves stagnation-point heat flux",
+   "aka": "Convective heating correlation",
+   "tags": [
+    "re-entry",
+    "heat shield",
+    "Apollo",
+    "heat flux"
+   ],
+   "latex": "\\dot q_s = k\\,\\sqrt{\\frac{\\rho}{R_n}}\\;v^3",
+   "legend": [
+    {
+     "sym": "\\dot q_s",
+     "desc": "Convective heat flux at the stagnation point (the nose)",
+     "unit": "W/m²"
+    },
+    {
+     "sym": "k",
+     "desc": "Atmosphere constant: $1.7415\\times10^{-4}$ for Earth, $1.9027\\times10^{-4}$ for Mars",
+     "unit": "kg^½ m⁻¹"
+    },
+    {
+     "sym": "\\rho",
+     "desc": "Free-stream air density",
+     "unit": "kg/m³"
+    },
+    {
+     "sym": "R_n",
+     "desc": "Nose radius of the vehicle",
+     "unit": "m"
+    },
+    {
+     "sym": "v",
+     "desc": "Entry speed",
+     "unit": "m/s"
+    }
+   ],
+   "meaning": "Kenneth Sutton and Randolph Graves (NASA Langley, 1971) fitted this to detailed boundary-layer calculations. Heating grows with the cube of speed, so a lunar return at 11 km/s heats the nose about 3.4 times as hard as a return from orbit at 7.5 km/s. It also explains the blunt-body idea: a bigger nose radius means less heat flux, which is why capsules are wide and rounded, not pointed.",
+   "example": {
+    "title": "An Apollo-style lunar return",
+    "text": "At about 60 km altitude $\\rho = 3.1\\times10^{-4}$ kg/m³, speed 11 km/s, heat-shield radius of curvature $R_n = 4.69$ m.",
+    "steps": "\\dot q_s = 1.7415\\times10^{-4}\\sqrt{\\frac{3.1\\times10^{-4}}{4.69}}\\;(11\\,000)^3",
+    "set": {
+     "k": 0.00017415,
+     "rho": 0.00031,
+     "Rn": 4.69,
+     "v": 11
+    },
+    "answer": {
+     "out": "q",
+     "value": 188.4,
+     "text": "about 1.9 MW per square metre from convection alone (at lunar-return speeds, radiation from the hot shock layer adds more)."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "k",
+      "sym": "k",
+      "label": "Atmosphere",
+      "type": "select",
+      "options": [
+       {
+        "label": "Earth (1.7415e-4)",
+        "value": 0.00017415
+       },
+       {
+        "label": "Mars (1.9027e-4)",
+        "value": 0.00019027
+       }
+      ],
+      "value": 0.00017415
+     },
+     {
+      "id": "rho",
+      "sym": "\\rho",
+      "label": "Air density",
+      "unit": "kg/m³",
+      "value": 0.00031,
+      "min": 1e-07,
+      "max": 0.1,
+      "log": true
+     },
+     {
+      "id": "Rn",
+      "sym": "R_n",
+      "label": "Nose radius",
+      "unit": "m",
+      "value": 4.69,
+      "min": 0.05,
+      "max": 10,
+      "log": true
+     },
+     {
+      "id": "v",
+      "sym": "v",
+      "label": "Speed",
+      "unit": "km/s",
+      "value": 11,
+      "min": 0.5,
+      "max": 16,
+      "step": 0.05,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "q",
+      "sym": "\\dot q_s",
+      "label": "Heat flux",
+      "expr": "k*sqrt(rho/Rn)*v**3",
+      "unit": "W/cm²",
+      "div": 10000.0
+     },
+     {
+      "id": "qM",
+      "sym": "\\dot q_s",
+      "label": "In MW/m²",
+      "expr": "k*sqrt(rho/Rn)*v**3",
+      "unit": "MW/m²",
+      "div": 1000000.0
+     }
+    ],
+    "presets": [
+     {
+      "label": "Lunar return",
+      "set": {
+       "k": 0.00017415,
+       "rho": 0.00031,
+       "Rn": 4.69,
+       "v": 11
+      }
+     },
+     {
+      "label": "Return from LEO",
+      "set": {
+       "k": 0.00017415,
+       "rho": 0.00031,
+       "Rn": 4.69,
+       "v": 7.5
+      }
+     },
+     {
+      "label": "Mars entry",
+      "set": {
+       "k": 0.00019027,
+       "rho": 0.0001,
+       "Rn": 1.1,
+       "v": 5.5
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "v",
+    "y": "q",
+    "logx": false,
+    "logy": true,
+    "caption": "Heat flux climbs with the cube of speed."
+   },
+   "refs": [
+    {
+     "label": "Sutton & Graves (1971), NASA TR R-376 (NASA Technical Reports Server)",
+     "url": "https://ntrs.nasa.gov/api/citations/19720003329/downloads/19720003329.pdf"
+    },
+    {
+     "label": "Wikipedia — Planar reentry equations",
+     "url": "https://en.wikipedia.org/wiki/Planar_reentry_equations"
+    }
+   ]
+  },
+  {
+   "id": "ballistic-coefficient",
+   "chapter": "atmosphere",
+   "title": "Ballistic coefficient",
+   "aka": "Mass per unit drag area",
+   "tags": [
+    "re-entry",
+    "deceleration",
+    "capsule",
+    "g-load"
+   ],
+   "latex": "\\beta = \\frac{m}{C_D\\,A},\\qquad a_{drag} = \\frac{\\rho\\,v^2}{2\\,\\beta}",
+   "legend": [
+    {
+     "sym": "\\beta",
+     "desc": "Ballistic coefficient",
+     "unit": "kg/m²"
+    },
+    {
+     "sym": "m",
+     "desc": "Vehicle mass",
+     "unit": "kg"
+    },
+    {
+     "sym": "C_D, A",
+     "desc": "Drag coefficient and reference area",
+     "unit": "—, m²"
+    },
+    {
+     "sym": "a_{drag}",
+     "desc": "Deceleration caused by drag",
+     "unit": "m/s²"
+    },
+    {
+     "sym": "\\rho, v",
+     "desc": "Air density and speed",
+     "unit": "kg/m³, m/s"
+    }
+   ],
+   "meaning": "One number that says how easily the atmosphere slows a falling object. Low $\\beta$ (light and draggy: a capsule, a parachute) decelerates high in thin air where heating is gentler; high $\\beta$ (dense and slim: a meteorite, a warhead) punches deep before slowing. Entry, descent and landing designers juggle it against heat-shield mass.",
+   "example": {
+    "title": "The Apollo command module",
+    "text": "Entry mass ≈ 5 560 kg, diameter 3.9 m ($A = 11.95$ m²), $C_D \\approx 1.3$ (illustrative).",
+    "steps": "\\beta = \\frac{5\\,560}{1.3\\times11.95}",
+    "set": {
+     "m": 5560,
+     "cd": 1.3,
+     "d": 3.9,
+     "rho": 0.00031,
+     "v": 11
+    },
+    "answer": {
+     "out": "beta",
+     "value": 358.0,
+     "text": "kg/m²; at 60 km and 11 km/s that means about 5.3 g of deceleration."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "m",
+      "sym": "m",
+      "label": "Mass",
+      "unit": "kg",
+      "value": 5560,
+      "min": 1,
+      "max": 100000.0,
+      "log": true
+     },
+     {
+      "id": "cd",
+      "sym": "C_D",
+      "label": "Drag coefficient",
+      "unit": "",
+      "value": 1.3,
+      "min": 0.1,
+      "max": 2.5,
+      "step": 0.01
+     },
+     {
+      "id": "d",
+      "sym": "d",
+      "label": "Diameter",
+      "unit": "m",
+      "value": 3.9,
+      "min": 0.1,
+      "max": 20,
+      "log": true
+     },
+     {
+      "id": "rho",
+      "sym": "\\rho",
+      "label": "Air density",
+      "unit": "kg/m³",
+      "value": 0.00031,
+      "min": 1e-07,
+      "max": 1.3,
+      "log": true
+     },
+     {
+      "id": "v",
+      "sym": "v",
+      "label": "Speed",
+      "unit": "km/s",
+      "value": 11,
+      "min": 0.1,
+      "max": 16,
+      "step": 0.05,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "beta",
+      "sym": "\\beta",
+      "label": "Ballistic coefficient",
+      "expr": "m/(cd*PI*d*d/4)",
+      "unit": "kg/m²"
+     },
+     {
+      "id": "adrag",
+      "sym": "a_{drag}",
+      "label": "Deceleration",
+      "expr": "rho*v*v/(2*m/(cd*PI*d*d/4))/g0",
+      "unit": "g"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Apollo CM",
+      "set": {
+       "m": 5560,
+       "cd": 1.3,
+       "d": 3.9
+      }
+     },
+     {
+      "label": "Soyuz descent module",
+      "set": {
+       "m": 2950,
+       "cd": 1.3,
+       "d": 2.2
+      }
+     },
+     {
+      "label": "1 kg iron meteoroid",
+      "set": {
+       "m": 1,
+       "cd": 1.0,
+       "d": 0.063
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "rho",
+    "y": "adrag",
+    "logx": true,
+    "logy": true,
+    "caption": "Deceleration (in g) against air density at the chosen speed."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Ballistic coefficient",
+     "url": "https://en.wikipedia.org/wiki/Ballistic_coefficient"
+    },
+    {
+     "label": "Wikipedia — Planar reentry equations",
+     "url": "https://en.wikipedia.org/wiki/Planar_reentry_equations"
+    }
+   ]
+  },
+  {
+   "id": "stefan-boltzmann",
+   "chapter": "light",
+   "title": "Stefan–Boltzmann law",
+   "aka": "Luminosity of a blackbody sphere",
+   "tags": [
+    "luminosity",
+    "temperature",
+    "Sun",
+    "blackbody"
+   ],
+   "latex": "L = 4\\pi R^2\\,\\sigma\\,T^4",
+   "legend": [
+    {
+     "sym": "L",
+     "desc": "Luminosity: total power radiated",
+     "unit": "W"
+    },
+    {
+     "sym": "R",
+     "desc": "Radius of the star",
+     "unit": "m"
+    },
+    {
+     "sym": "\\sigma",
+     "desc": "Stefan–Boltzmann constant",
+     "unit": "W m⁻² K⁻⁴"
+    },
+    {
+     "sym": "T",
+     "desc": "Effective surface temperature",
+     "unit": "K"
+    }
+   ],
+   "meaning": "Each square metre of a hot surface radiates $\\sigma T^4$ watts, so doubling the temperature multiplies the power by sixteen. Multiply by the surface area of a sphere and you have a star's total output. This is how astronomers estimate the sizes of stars they can never resolve: measure $L$ and $T$, solve for $R$.",
+   "example": {
+    "title": "The Sun's power output",
+    "text": "IAU nominal values: $R_\\odot = 6.957\\times10^{8}$ m, $T_{eff} = 5\\,772$ K.",
+    "steps": "L = 4\\pi\\,(6.957\\times10^{8})^2\\,(5.670\\times10^{-8})\\,(5\\,772)^4",
+    "set": {
+     "R": 1,
+     "T": 5772
+    },
+    "answer": {
+     "out": "L",
+     "value": 3.828e+26,
+     "text": "watts — the IAU nominal solar luminosity."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "R",
+      "sym": "R",
+      "label": "Radius",
+      "unit": "R☉",
+      "value": 1,
+      "min": 0.01,
+      "max": 1000,
+      "log": true,
+      "mul": "Rsun"
+     },
+     {
+      "id": "T",
+      "sym": "T",
+      "label": "Surface temperature",
+      "unit": "K",
+      "value": 5772,
+      "min": 2000,
+      "max": 50000,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "L",
+      "sym": "L",
+      "label": "Luminosity",
+      "expr": "4*PI*R*R*sigma*T**4",
+      "unit": "W"
+     },
+     {
+      "id": "Ls",
+      "sym": "L/L_\\odot",
+      "label": "In solar luminosities",
+      "expr": "4*PI*R*R*sigma*T**4/Lsun",
+      "unit": "L☉"
+     },
+     {
+      "id": "flux",
+      "sym": "\\sigma T^4",
+      "label": "Surface flux",
+      "expr": "sigma*T**4",
+      "unit": "MW/m²",
+      "div": 1000000.0
+     }
+    ],
+    "presets": [
+     {
+      "label": "Sun",
+      "set": {
+       "R": 1,
+       "T": 5772
+      }
+     },
+     {
+      "label": "Sirius A",
+      "set": {
+       "R": 1.711,
+       "T": 9940
+      }
+     },
+     {
+      "label": "Proxima Centauri",
+      "set": {
+       "R": 0.154,
+       "T": 3042
+      }
+     },
+     {
+      "label": "Rigel",
+      "set": {
+       "R": 78.9,
+       "T": 12100
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "T",
+    "y": "Ls",
+    "logx": true,
+    "logy": true,
+    "series": {
+     "input": "R",
+     "values": [
+      0.1,
+      10,
+      100
+     ]
+    },
+    "caption": "Luminosity against temperature for your radius (bright) and for 0.1, 10 and 100 R☉."
+   },
+   "refs": [
+    {
+     "label": "OpenStax University Physics III §6.2 — Blackbody Radiation (LibreTexts)",
+     "url": "https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/06:_Photons_and_Matter_Waves/6.02:_Blackbody_Radiation"
+    },
+    {
+     "label": "Prša et al. — IAU 2015 Resolution B3 (nominal solar & planetary constants)",
+     "url": "https://arxiv.org/abs/1510.07674"
+    }
+   ]
+  },
+  {
+   "id": "wien",
+   "chapter": "light",
+   "title": "Wien's displacement law",
+   "aka": "Peak wavelength of a blackbody",
+   "tags": [
+    "colour",
+    "temperature",
+    "peak wavelength",
+    "CMB"
+   ],
+   "latex": "\\lambda_{max} = \\frac{b}{T}",
+   "legend": [
+    {
+     "sym": "\\lambda_{max}",
+     "desc": "Wavelength at which the blackbody spectrum peaks",
+     "unit": "m"
+    },
+    {
+     "sym": "b",
+     "desc": "Wien's displacement constant, $2.898\\times10^{-3}$ m·K",
+     "unit": "m·K"
+    },
+    {
+     "sym": "T",
+     "desc": "Temperature",
+     "unit": "K"
+    }
+   ],
+   "meaning": "Hotter objects glow at shorter wavelengths. A stove ring goes from dull red to orange as it heats; stars run from red (cool) through yellow and white to blue (hot). One division gives a star's temperature from its colour, a person's glow in the thermal infrared, or the microwave peak of the Big Bang's afterglow.",
+   "example": {
+    "title": "Where does sunlight peak?",
+    "text": "Sun's effective temperature $T = 5\\,772$ K.",
+    "steps": "\\lambda_{max} = \\frac{2.8978\\times10^{-3}}{5\\,772}",
+    "set": {
+     "T": 5772
+    },
+    "answer": {
+     "out": "lam",
+     "value": 502.0,
+     "text": "nm — blue-green, right in the middle of the band our eyes evolved to see."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "T",
+      "sym": "T",
+      "label": "Temperature",
+      "unit": "K",
+      "value": 5772,
+      "min": 2.7,
+      "max": 100000,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "lam",
+      "sym": "\\lambda_{max}",
+      "label": "Peak wavelength",
+      "expr": "bWien/T",
+      "unit": "nm",
+      "div": 1e-09
+     },
+     {
+      "id": "lamum",
+      "sym": "\\lambda_{max}",
+      "label": "In micrometres",
+      "expr": "bWien/T",
+      "unit": "µm",
+      "div": 1e-06
+     }
+    ],
+    "presets": [
+     {
+      "label": "Cosmic microwave background",
+      "set": {
+       "T": 2.72548
+      }
+     },
+     {
+      "label": "Human skin",
+      "set": {
+       "T": 306
+      }
+     },
+     {
+      "label": "Sun",
+      "set": {
+       "T": 5772
+      }
+     },
+     {
+      "label": "Rigel",
+      "set": {
+       "T": 12100
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "T",
+    "y": "lam",
+    "logx": true,
+    "logy": true,
+    "yband": [
+     380,
+     750
+    ],
+    "caption": "Peak wavelength against temperature; the shaded band is visible light."
+   },
+   "refs": [
+    {
+     "label": "OpenStax University Physics III §6.2 — Blackbody Radiation (LibreTexts)",
+     "url": "https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/06:_Photons_and_Matter_Waves/6.02:_Blackbody_Radiation"
+    },
+    {
+     "label": "Wikipedia — Wien's displacement law",
+     "url": "https://en.wikipedia.org/wiki/Wien%27s_displacement_law"
+    }
+   ]
+  },
+  {
+   "id": "planck",
+   "chapter": "light",
+   "title": "Planck's law",
+   "aka": "Blackbody spectral radiance",
+   "tags": [
+    "spectrum",
+    "blackbody",
+    "quantum",
+    "colour"
+   ],
+   "latex": "B_\\lambda(\\lambda, T) = \\frac{2hc^2}{\\lambda^5}\\;\\frac{1}{e^{hc/(\\lambda k_B T)} - 1}",
+   "legend": [
+    {
+     "sym": "B_\\lambda",
+     "desc": "Spectral radiance: power per area, per solid angle, per wavelength",
+     "unit": "W sr⁻¹ m⁻³"
+    },
+    {
+     "sym": "\\lambda",
+     "desc": "Wavelength",
+     "unit": "m"
+    },
+    {
+     "sym": "T",
+     "desc": "Temperature",
+     "unit": "K"
+    },
+    {
+     "sym": "h, c, k_B",
+     "desc": "Planck constant, speed of light, Boltzmann constant",
+     "unit": "—"
+    }
+   ],
+   "meaning": "Max Planck's 1900 formula for the full spectrum of a hot object — the first equation of quantum physics. It assumes light is emitted in packets of energy $hc/\\lambda$, which suppresses the short-wavelength end and cured the 'ultraviolet catastrophe'. Integrate it and you get the Stefan–Boltzmann law; find its peak and you get Wien's law.",
+   "example": {
+    "title": "The Sun's spectrum at 500 nm",
+    "text": "$T = 5\\,772$ K, $\\lambda = 500$ nm. The exponent is $hc/\\lambda k_B T = 4.985$.",
+    "steps": "B_\\lambda = \\frac{2(6.626\\times10^{-34})(2.998\\times10^{8})^2}{(5\\times10^{-7})^5}\\cdot\\frac{1}{e^{4.985}-1}",
+    "set": {
+     "T": 5772,
+     "lam": 500
+    },
+    "answer": {
+     "out": "B",
+     "value": 26.24,
+     "text": "kW per square metre per steradian per nanometre, near the top of the curve."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "T",
+      "sym": "T",
+      "label": "Temperature",
+      "unit": "K",
+      "value": 5772,
+      "min": 1000,
+      "max": 30000,
+      "log": true
+     },
+     {
+      "id": "lam",
+      "sym": "\\lambda",
+      "label": "Wavelength",
+      "unit": "nm",
+      "value": 500,
+      "min": 100,
+      "max": 5000,
+      "log": true,
+      "mul": 1e-09
+     }
+    ],
+    "outputs": [
+     {
+      "id": "B",
+      "sym": "B_\\lambda",
+      "label": "Spectral radiance",
+      "expr": "2*h*c*c/lam**5/expm1(h*c/(lam*kB*T))",
+      "unit": "kW sr⁻¹ m⁻² nm⁻¹",
+      "div": 1000000000000.0
+     },
+     {
+      "id": "pk",
+      "sym": "\\lambda_{max}",
+      "label": "Peak wavelength",
+      "expr": "bWien/T",
+      "unit": "nm",
+      "div": 1e-09
+     }
+    ],
+    "presets": [
+     {
+      "label": "Red dwarf (3 000 K)",
+      "set": {
+       "T": 3000
+      }
+     },
+     {
+      "label": "Sun (5 772 K)",
+      "set": {
+       "T": 5772
+      }
+     },
+     {
+      "label": "Sirius (9 940 K)",
+      "set": {
+       "T": 9940
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "lam",
+    "y": "B",
+    "logx": false,
+    "logy": false,
+    "xmin": 100,
+    "xmax": 2500,
+    "band": [
+     380,
+     750
+    ],
+    "rainbow": true,
+    "series": {
+     "input": "T",
+     "values": [
+      3500,
+      5772,
+      8000
+     ]
+    },
+    "marker": true,
+    "ytoggle": true,
+    "caption": "Planck curves: your temperature (bright) against 3 500 K, 5 772 K and 8 000 K. Toggle a log axis to compare them."
+   },
+   "refs": [
+    {
+     "label": "OpenStax University Physics III §6.2 — Blackbody Radiation (LibreTexts)",
+     "url": "https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/06:_Photons_and_Matter_Waves/6.02:_Blackbody_Radiation"
+    },
+    {
+     "label": "Wikipedia — Planck's law",
+     "url": "https://en.wikipedia.org/wiki/Planck%27s_law"
+    }
+   ]
+  },
+  {
+   "id": "inverse-square",
+   "chapter": "light",
+   "title": "Inverse-square law of flux",
+   "aka": "Solar constant; insolation",
+   "tags": [
+    "flux",
+    "solar constant",
+    "solar power",
+    "distance"
+   ],
+   "latex": "F = \\frac{L}{4\\pi d^2}",
+   "legend": [
+    {
+     "sym": "F",
+     "desc": "Flux: power per unit area arriving at distance $d$",
+     "unit": "W/m²"
+    },
+    {
+     "sym": "L",
+     "desc": "Luminosity of the source",
+     "unit": "W"
+    },
+    {
+     "sym": "d",
+     "desc": "Distance from the source",
+     "unit": "m"
+    }
+   ],
+   "meaning": "A star's light spreads over an ever-larger sphere, whose area grows as $d^2$. Twice as far, a quarter of the light. This sets the solar power available to spacecraft (why missions beyond Jupiter use nuclear power), the temperature of planets, and — with a known luminosity — the distance to a star.",
+   "example": {
+    "title": "The solar constant at Earth",
+    "text": "$L_\\odot = 3.828\\times10^{26}$ W, $d = 1$ AU $= 1.496\\times10^{11}$ m.",
+    "steps": "F = \\frac{3.828\\times10^{26}}{4\\pi\\,(1.496\\times10^{11})^2}",
+    "set": {
+     "L": 1,
+     "d": 1
+    },
+    "answer": {
+     "out": "F",
+     "value": 1361,
+     "text": "W/m² — what satellites measure above the atmosphere (≈ 1 361 W/m²)."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "L",
+      "sym": "L",
+      "label": "Luminosity",
+      "unit": "L☉",
+      "value": 1,
+      "min": 0.0001,
+      "max": 1000000.0,
+      "log": true,
+      "mul": "Lsun"
+     },
+     {
+      "id": "d",
+      "sym": "d",
+      "label": "Distance",
+      "unit": "AU",
+      "value": 1,
+      "min": 0.01,
+      "max": 100000.0,
+      "log": true,
+      "mul": "AU"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "F",
+      "sym": "F",
+      "label": "Flux",
+      "expr": "L/(4*PI*d*d)",
+      "unit": "W/m²"
+     },
+     {
+      "id": "rel",
+      "sym": "F/F_\\oplus",
+      "label": "Relative to Earth",
+      "expr": "L/(4*PI*d*d)/(Lsun/(4*PI*AU*AU))",
+      "unit": "×"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth",
+      "set": {
+       "L": 1,
+       "d": 1
+      }
+     },
+     {
+      "label": "Mars",
+      "set": {
+       "L": 1,
+       "d": 1.524
+      }
+     },
+     {
+      "label": "Jupiter (Juno)",
+      "set": {
+       "L": 1,
+       "d": 5.2
+      }
+     },
+     {
+      "label": "Pluto",
+      "set": {
+       "L": 1,
+       "d": 39.5
+      }
+     },
+     {
+      "label": "Voyager 1 (~165 AU)",
+      "set": {
+       "L": 1,
+       "d": 165
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "d",
+    "y": "F",
+    "logx": true,
+    "logy": true,
+    "xmin": 0.1,
+    "xmax": 200,
+    "marks": [
+     {
+      "x": 0.387,
+      "label": "Mercury"
+     },
+     {
+      "x": 1,
+      "label": "Earth"
+     },
+     {
+      "x": 5.2,
+      "label": "Jupiter"
+     },
+     {
+      "x": 30.07,
+      "label": "Neptune"
+     }
+    ],
+    "caption": "Flux against distance, with planets marked on the curve."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Inverse-square law",
+     "url": "https://en.wikipedia.org/wiki/Inverse-square_law"
+    },
+    {
+     "label": "Prša et al. — IAU 2015 Resolution B3 (nominal solar & planetary constants)",
+     "url": "https://arxiv.org/abs/1510.07674"
+    }
+   ]
+  },
+  {
+   "id": "magnitude",
+   "chapter": "light",
+   "title": "Apparent magnitude and distance modulus",
+   "aka": "Pogson's magnitude scale",
+   "tags": [
+    "magnitude",
+    "brightness",
+    "distance modulus",
+    "Sirius"
+   ],
+   "latex": "m_1 - m_2 = -2.5\\log_{10}\\frac{F_1}{F_2},\\qquad m - M = 5\\log_{10}\\frac{d}{10\\ \\text{pc}}",
+   "legend": [
+    {
+     "sym": "m",
+     "desc": "Apparent magnitude (how bright it looks; smaller is brighter)",
+     "unit": "mag"
+    },
+    {
+     "sym": "M",
+     "desc": "Absolute magnitude (how bright it would look from 10 parsecs)",
+     "unit": "mag"
+    },
+    {
+     "sym": "F_1/F_2",
+     "desc": "Ratio of measured fluxes",
+     "unit": "—"
+    },
+    {
+     "sym": "d",
+     "desc": "Distance",
+     "unit": "pc"
+    }
+   ],
+   "meaning": "Astronomers still use the ancient Greek scale, made precise by Norman Pogson in 1856: 5 magnitudes is exactly a factor of 100 in brightness, and bigger numbers are fainter. The distance modulus $m - M$ is the inverse-square law in magnitude form: compare how bright a star looks with how bright it really is, and you get its distance.",
+   "example": {
+    "title": "How bright is the Sun in our sky?",
+    "text": "Sun: $M = 4.83$. Distance 1 AU $= 4.848\\times10^{-6}$ pc.",
+    "steps": "m = 4.83 + 5\\log_{10}\\frac{4.848\\times10^{-6}}{10}",
+    "set": {
+     "Mabs": 4.83,
+     "d": 4.8481368e-06
+    },
+    "answer": {
+     "out": "m",
+     "value": -26.74,
+     "text": "about 13 billion times brighter than Sirius (m = −1.46)."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "Mabs",
+      "sym": "M",
+      "label": "Absolute magnitude",
+      "unit": "mag",
+      "value": 4.83,
+      "min": -10,
+      "max": 20,
+      "step": 0.01
+     },
+     {
+      "id": "d",
+      "sym": "d",
+      "label": "Distance",
+      "unit": "pc",
+      "value": 4.8481368e-06,
+      "min": 1e-06,
+      "max": 1000000000.0,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "m",
+      "sym": "m",
+      "label": "Apparent magnitude",
+      "expr": "Mabs + 5*log10(d/10)",
+      "unit": "mag"
+     },
+     {
+      "id": "vs6",
+      "sym": "F/F_{6}",
+      "label": "Brightness vs naked-eye limit (m = 6)",
+      "expr": "pow(10, -0.4*(Mabs + 5*log10(d/10) - 6))",
+      "unit": "×"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Sun from Earth",
+      "set": {
+       "Mabs": 4.83,
+       "d": 4.8481368e-06
+      }
+     },
+     {
+      "label": "Sun from α Centauri",
+      "set": {
+       "Mabs": 4.83,
+       "d": 1.34
+      }
+     },
+     {
+      "label": "Sirius",
+      "set": {
+       "Mabs": 1.42,
+       "d": 2.64
+      }
+     },
+     {
+      "label": "Sun in Andromeda",
+      "set": {
+       "Mabs": 4.83,
+       "d": 765000
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "d",
+    "y": "m",
+    "logx": true,
+    "logy": false,
+    "yinvert": true,
+    "yzero": false,
+    "hlines": [
+     {
+      "y": 6,
+      "label": "naked-eye limit m ≈ 6"
+     }
+    ],
+    "caption": "Apparent magnitude against distance (brighter is up)."
+   },
+   "refs": [
+    {
+     "label": "OpenStax Astronomy 2e §17.4 — Using spectra to measure stellar radius, composition, and motion",
+     "url": "https://openstax.org/books/astronomy-2e/pages/17-4-using-spectra-to-measure-stellar-radius-composition-and-motion"
+    },
+    {
+     "label": "Wikipedia — Distance modulus",
+     "url": "https://en.wikipedia.org/wiki/Distance_modulus"
+    }
+   ]
+  },
+  {
+   "id": "doppler",
+   "chapter": "light",
+   "title": "Doppler shift",
+   "aka": "Relativistic Doppler effect (radial)",
+   "tags": [
+    "Doppler",
+    "redshift",
+    "blueshift",
+    "exoplanets",
+    "radial velocity"
+   ],
+   "latex": "1 + z = \\frac{\\lambda_{obs}}{\\lambda_{emit}} = \\sqrt{\\frac{1+\\beta}{1-\\beta}} \\;\\approx\\; 1 + \\frac{v}{c}\\quad(v \\ll c)",
+   "legend": [
+    {
+     "sym": "z",
+     "desc": "Redshift (negative means blueshift)",
+     "unit": "—"
+    },
+    {
+     "sym": "\\lambda_{obs}, \\lambda_{emit}",
+     "desc": "Observed and emitted wavelength",
+     "unit": "m"
+    },
+    {
+     "sym": "\\beta = v/c",
+     "desc": "Radial speed as a fraction of light speed (positive = receding)",
+     "unit": "—"
+    }
+   ],
+   "meaning": "Light from a source moving away is stretched to longer, redder wavelengths; from one approaching, squeezed bluer. Measuring the shift of known spectral lines gives a star's speed towards or away from us. Tiny periodic shifts of a few metres per second revealed the first exoplanet around a Sun-like star, 51 Pegasi b, in 1995.",
+   "example": {
+    "title": "Hydrogen-alpha from a star receding at 30 km/s",
+    "text": "Rest wavelength of the H-alpha line: 656.28 nm.",
+    "steps": "\\Delta\\lambda \\approx \\lambda\\,\\frac{v}{c} = 656.28\\ \\text{nm}\\times\\frac{30}{299\\,792}",
+    "set": {
+     "v": 30,
+     "lam0": 656.28
+    },
+    "answer": {
+     "out": "dlam",
+     "value": 0.06568,
+     "text": "nm — a shift of one part in 10 000, easily measured by a spectrograph."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "v",
+      "sym": "v",
+      "label": "Radial velocity",
+      "unit": "km/s",
+      "value": 30,
+      "min": -1000,
+      "max": 1000,
+      "step": 1,
+      "mul": 1000,
+      "hardMin": -299792,
+      "hardMax": 299792
+     },
+     {
+      "id": "lam0",
+      "sym": "\\lambda_{emit}",
+      "label": "Rest wavelength",
+      "unit": "nm",
+      "value": 656.28,
+      "min": 100,
+      "max": 2000,
+      "step": 0.01,
+      "mul": 1e-09
+     }
+    ],
+    "outputs": [
+     {
+      "id": "dlam",
+      "sym": "\\Delta\\lambda",
+      "label": "Wavelength shift",
+      "expr": "lam0*(sqrt((1+v/c)/(1-v/c)) - 1)",
+      "unit": "nm",
+      "div": 1e-09
+     },
+     {
+      "id": "lobs",
+      "sym": "\\lambda_{obs}",
+      "label": "Observed wavelength",
+      "expr": "lam0*sqrt((1+v/c)/(1-v/c))",
+      "unit": "nm",
+      "div": 1e-09,
+      "sig": 7
+     },
+     {
+      "id": "z",
+      "sym": "z",
+      "label": "Redshift",
+      "expr": "sqrt((1+v/c)/(1-v/c)) - 1",
+      "unit": ""
+     },
+     {
+      "id": "zc",
+      "sym": "v/c",
+      "label": "Classical estimate",
+      "expr": "v/c",
+      "unit": ""
+     }
+    ],
+    "presets": [
+     {
+      "label": "Star at 30 km/s",
+      "set": {
+       "v": 30,
+       "lam0": 656.28
+      }
+     },
+     {
+      "label": "Andromeda (−300 km/s)",
+      "set": {
+       "v": -300,
+       "lam0": 656.28
+      }
+     },
+     {
+      "label": "Earth's wobble on the Sun",
+      "set": {
+       "v": 9e-05,
+       "lam0": 500
+      }
+     },
+     {
+      "label": "Quasar jet (0.5 c)",
+      "set": {
+       "v": 149896,
+       "lam0": 121.567
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "v",
+    "y": [
+     "z",
+     "zc"
+    ],
+    "logx": false,
+    "logy": true,
+    "xmin": 1000,
+    "xmax": 290000,
+    "caption": "Relativistic redshift (bright) versus the classical v/c (dim): they part company above ~0.1 c."
+   },
+   "refs": [
+    {
+     "label": "OpenStax Astronomy 2e §5.6 — The Doppler Effect",
+     "url": "https://openstax.org/books/astronomy-2e/pages/5-6-the-doppler-effect"
+    },
+    {
+     "label": "Wikipedia — Relativistic Doppler effect",
+     "url": "https://en.wikipedia.org/wiki/Relativistic_Doppler_effect"
+    }
+   ]
+  },
+  {
+   "id": "parallax",
+   "chapter": "light",
+   "title": "Parallax distance",
+   "aka": "Definition of the parsec",
+   "tags": [
+    "parallax",
+    "parsec",
+    "Gaia",
+    "Proxima Centauri"
+   ],
+   "latex": "d\\ [\\text{pc}] = \\frac{1}{p\\ [\\text{arcsec}]}",
+   "legend": [
+    {
+     "sym": "d",
+     "desc": "Distance to the star",
+     "unit": "pc"
+    },
+    {
+     "sym": "p",
+     "desc": "Parallax angle: half the star's apparent shift over a year",
+     "unit": "arcsec"
+    }
+   ],
+   "meaning": "As Earth circles the Sun, nearby stars appear to shift back and forth against distant ones. The bigger the wobble, the closer the star. A star with a parallax of one arcsecond is one parsec away (3.26 light-years) — that is the definition of the parsec. The European Space Agency's (ESA) Gaia mission has measured parallaxes of more than a billion stars.",
+   "example": {
+    "title": "Distance to Proxima Centauri, our nearest star",
+    "text": "Gaia Data Release 3 (DR3) parallax: $p = 768.07$ milliarcseconds.",
+    "steps": "d = \\frac{1}{0.76807}\\ \\text{pc}",
+    "set": {
+     "p": 768.07
+    },
+    "answer": {
+     "out": "d",
+     "value": 1.302,
+     "text": "pc = 4.25 light-years = 268 500 AU."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "p",
+      "sym": "p",
+      "label": "Parallax",
+      "unit": "mas",
+      "value": 768.07,
+      "min": 0.01,
+      "max": 1000,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "d",
+      "sym": "d",
+      "label": "Distance",
+      "expr": "1000/p",
+      "unit": "pc"
+     },
+     {
+      "id": "dly",
+      "sym": "d",
+      "label": "In light-years",
+      "expr": "1000/p*pc/ly",
+      "unit": "ly"
+     },
+     {
+      "id": "dau",
+      "sym": "d",
+      "label": "In AU",
+      "expr": "1000/p*pc/AU",
+      "unit": "AU"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Proxima Centauri",
+      "set": {
+       "p": 768.07
+      }
+     },
+     {
+      "label": "Sirius",
+      "set": {
+       "p": 379.21
+      }
+     },
+     {
+      "label": "Vega",
+      "set": {
+       "p": 130.23
+      }
+     },
+     {
+      "label": "Galactic Centre (≈ 0.12 mas)",
+      "set": {
+       "p": 0.12
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "p",
+    "y": "dly",
+    "logx": true,
+    "logy": true,
+    "caption": "Distance (light-years) against parallax."
+   },
+   "refs": [
+    {
+     "label": "ESA — Gaia: Parallax",
+     "url": "https://www.esa.int/Science_Exploration/Space_Science/Gaia/Parallax"
+    },
+    {
+     "label": "ESA Science & Technology — Measuring stellar distances by parallax",
+     "url": "https://sci.esa.int/web/gaia/-/53278-measuring-stellar-distances-by-parallax"
+    }
+   ]
+  },
+  {
+   "id": "mass-luminosity",
+   "chapter": "light",
+   "title": "Mass–luminosity relation",
+   "aka": "Main-sequence scaling",
+   "tags": [
+    "stars",
+    "main sequence",
+    "lifetime",
+    "Alpha Centauri"
+   ],
+   "latex": "\\frac{L}{L_\\odot} \\approx \\begin{cases} 0.23\\,(M/M_\\odot)^{2.3} & M < 0.43\\,M_\\odot\\\\ (M/M_\\odot)^{4} & 0.43 \\le M/M_\\odot < 2\\\\ 1.4\\,(M/M_\\odot)^{3.5} & 2 \\le M/M_\\odot < 55\\\\ 32\\,000\\,(M/M_\\odot) & M \\ge 55\\,M_\\odot\\end{cases}",
+   "legend": [
+    {
+     "sym": "L/L_\\odot",
+     "desc": "Luminosity in units of the Sun's",
+     "unit": "—"
+    },
+    {
+     "sym": "M/M_\\odot",
+     "desc": "Mass in units of the Sun's",
+     "unit": "—"
+    },
+    {
+     "sym": "t",
+     "desc": "Main-sequence lifetime, $t \\approx 10^{10}\\,\\text{yr}\\times(M/M_\\odot)/(L/L_\\odot)$",
+     "unit": "yr"
+    }
+   ],
+   "meaning": "For stars fusing hydrogen in their cores (the main sequence), luminosity climbs steeply with mass: a star twice the Sun's mass is about sixteen times brighter. Since fuel only grows in proportion to mass, massive stars burn out in a few million years while red dwarfs will shine for trillions. This is an empirical fit, good to tens of per cent.",
+   "example": {
+    "title": "Alpha Centauri A",
+    "text": "Mass $M = 1.1\\,M_\\odot$ (in the $M^4$ range).",
+    "steps": "L \\approx 1.1^{4}\\,L_\\odot",
+    "set": {
+     "M": 1.1
+    },
+    "answer": {
+     "out": "L",
+     "value": 1.464,
+     "text": "L☉, close to the measured ≈ 1.5 L☉, with a main-sequence life of about 7.5 billion years."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Stellar mass",
+      "unit": "M☉",
+      "value": 1.1,
+      "min": 0.08,
+      "max": 150,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "L",
+      "sym": "L",
+      "label": "Luminosity",
+      "expr": "M < 0.43 ? 0.23*pow(M, 2.3) : M < 2 ? pow(M, 4) : M < 55 ? 1.4*pow(M, 3.5) : 32000*M",
+      "unit": "L☉"
+     },
+     {
+      "id": "t",
+      "sym": "t",
+      "label": "Main-sequence lifetime",
+      "expr": "1e10*yr*M/L",
+      "unit": "s",
+      "fmt": "time"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Proxima Centauri",
+      "set": {
+       "M": 0.122
+      }
+     },
+     {
+      "label": "Sun",
+      "set": {
+       "M": 1
+      }
+     },
+     {
+      "label": "Sirius A",
+      "set": {
+       "M": 2.06
+      }
+     },
+     {
+      "label": "O-type giant (60 M☉)",
+      "set": {
+       "M": 60
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "M",
+    "y": "L",
+    "logx": true,
+    "logy": true,
+    "points": [
+     {
+      "x": 0.122,
+      "y": 0.00157,
+      "label": "Proxima"
+     },
+     {
+      "x": 1,
+      "y": 1,
+      "label": "Sun"
+     },
+     {
+      "x": 1.1,
+      "y": 1.52,
+      "label": "α Cen A"
+     },
+     {
+      "x": 2.06,
+      "y": 25.4,
+      "label": "Sirius A"
+     }
+    ],
+    "caption": "The fitted relation with measured stars (dots)."
+   },
+   "refs": [
+    {
+     "label": "OpenStax Astronomy 2e §18.2 — Measuring Stellar Masses",
+     "url": "https://openstax.org/books/astronomy-2e/pages/18-2-measuring-stellar-masses"
+    },
+    {
+     "label": "Wikipedia — Mass–luminosity relation",
+     "url": "https://en.wikipedia.org/wiki/Mass%E2%80%93luminosity_relation"
+    }
+   ]
+  },
+  {
+   "id": "eddington",
+   "chapter": "light",
+   "title": "Eddington luminosity",
+   "aka": "Eddington limit",
+   "tags": [
+    "quasars",
+    "accretion",
+    "black holes",
+    "radiation pressure"
+   ],
+   "latex": "L_{Edd} = \\frac{4\\pi\\,G\\,M\\,m_p\\,c}{\\sigma_T} \\approx 1.26\\times10^{31}\\left(\\frac{M}{M_\\odot}\\right)\\ \\text{W}",
+   "legend": [
+    {
+     "sym": "L_{Edd}",
+     "desc": "Luminosity at which radiation pressure balances gravity",
+     "unit": "W"
+    },
+    {
+     "sym": "M",
+     "desc": "Mass of the star or black hole",
+     "unit": "kg"
+    },
+    {
+     "sym": "m_p",
+     "desc": "Proton mass",
+     "unit": "kg"
+    },
+    {
+     "sym": "\\sigma_T",
+     "desc": "Thomson cross-section of the electron",
+     "unit": "m²"
+    }
+   ],
+   "meaning": "Light pushes. Shine too brightly and the outward push of photons on electrons (which drag protons with them) beats gravity's pull, blowing gas away. Arthur Eddington derived this ceiling in the 1920s. It caps how bright a star can be and how fast a black hole can swallow gas — the brightest quasars shine near it.",
+   "example": {
+    "title": "The Eddington limit of the Sun",
+    "text": "$M = 1\\,M_\\odot$.",
+    "steps": "L_{Edd} = \\frac{4\\pi(1.327\\times10^{20})(1.673\\times10^{-27})(2.998\\times10^{8})}{6.652\\times10^{-29}}",
+    "set": {
+     "M": 1
+    },
+    "answer": {
+     "out": "L",
+     "value": 1.257e+31,
+     "text": "W ≈ 33 000 L☉. The Sun shines at only 0.003 % of its limit."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Mass",
+      "unit": "M☉",
+      "value": 1,
+      "min": 0.1,
+      "max": 100000000000.0,
+      "log": true,
+      "mul": "Msun"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "L",
+      "sym": "L_{Edd}",
+      "label": "Eddington luminosity",
+      "expr": "4*PI*G*M*mp*c/sigmaT",
+      "unit": "W"
+     },
+     {
+      "id": "Ls",
+      "sym": "L_{Edd}",
+      "label": "In solar luminosities",
+      "expr": "4*PI*G*M*mp*c/sigmaT/Lsun",
+      "unit": "L☉"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Sun",
+      "set": {
+       "M": 1
+      }
+     },
+     {
+      "label": "Stellar black hole (10 M☉)",
+      "set": {
+       "M": 10
+      }
+     },
+     {
+      "label": "Sagittarius A*",
+      "set": {
+       "M": 4300000.0
+      }
+     },
+     {
+      "label": "M87*",
+      "set": {
+       "M": 6500000000.0
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "M",
+    "y": "L",
+    "logx": true,
+    "logy": true,
+    "caption": "The limit grows in direct proportion to mass."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Eddington luminosity",
+     "url": "https://en.wikipedia.org/wiki/Eddington_luminosity"
+    },
+    {
+     "label": "NIST — CODATA 2018 fundamental physical constants",
+     "url": "https://physics.nist.gov/cuu/Constants/"
+    }
+   ]
+  },
+  {
+   "id": "lorentz-factor",
+   "chapter": "relativity",
+   "title": "Lorentz factor",
+   "aka": "Gamma factor",
+   "tags": [
+    "special relativity",
+    "gamma",
+    "speed of light"
+   ],
+   "latex": "\\gamma = \\frac{1}{\\sqrt{1 - v^2/c^2}}",
+   "legend": [
+    {
+     "sym": "\\gamma",
+     "desc": "Lorentz factor (1 at rest, infinite at light speed)",
+     "unit": "—"
+    },
+    {
+     "sym": "v",
+     "desc": "Relative speed",
+     "unit": "m/s"
+    },
+    {
+     "sym": "c",
+     "desc": "Speed of light in vacuum, 299 792 458 m/s (exact)",
+     "unit": "m/s"
+    }
+   ],
+   "meaning": "The one number behind special relativity: moving clocks tick slow by $\\gamma$, moving rulers shrink by $\\gamma$, and kinetic energy is $(\\gamma - 1)mc^2$. It stays within a whisker of 1 at everyday and even spaceflight speeds, then shoots to infinity as $v \\to c$ — which is why nothing with mass reaches light speed.",
+   "example": {
+    "title": "A spaceship at 90 % of light speed",
+    "text": "$v = 0.9\\,c$.",
+    "steps": "\\gamma = \\frac{1}{\\sqrt{1 - 0.9^2}} = \\frac{1}{\\sqrt{0.19}}",
+    "set": {
+     "beta": 90
+    },
+    "answer": {
+     "out": "gamma",
+     "value": 2.294,
+     "text": "one year aboard is 2.29 years for the people back home."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "beta",
+      "sym": "v/c",
+      "label": "Speed",
+      "unit": "% of c",
+      "value": 90,
+      "min": 0,
+      "max": 99.99,
+      "step": 0.01,
+      "mul": 0.01,
+      "hardMax": 99.9999999
+     }
+    ],
+    "outputs": [
+     {
+      "id": "gamma",
+      "sym": "\\gamma",
+      "label": "Lorentz factor",
+      "expr": "1/sqrt(1-beta*beta)",
+      "unit": ""
+     },
+     {
+      "id": "len",
+      "sym": "1/\\gamma",
+      "label": "Length contraction",
+      "expr": "sqrt(1-beta*beta)",
+      "unit": "×"
+     },
+     {
+      "id": "ke",
+      "sym": "(\\gamma-1)c^2",
+      "label": "Kinetic energy per kg",
+      "expr": "(1/sqrt(1-beta*beta)-1)*c*c",
+      "unit": "J/kg"
+     }
+    ],
+    "presets": [
+     {
+      "label": "ISS (0.0026 %)",
+      "set": {
+       "beta": 0.00256
+      }
+     },
+     {
+      "label": "Parker Solar Probe (0.064 %)",
+      "set": {
+       "beta": 0.064
+      }
+     },
+     {
+      "label": "50 %",
+      "set": {
+       "beta": 50
+      }
+     },
+     {
+      "label": "99 %",
+      "set": {
+       "beta": 99
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "beta",
+    "y": "gamma",
+    "logx": false,
+    "logy": true,
+    "xmin": 0,
+    "xmax": 99.5,
+    "caption": "γ is flat for most speeds, then explodes near c."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Lorentz factor",
+     "url": "https://en.wikipedia.org/wiki/Lorentz_factor"
+    }
+   ]
+  },
+  {
+   "id": "time-dilation",
+   "chapter": "relativity",
+   "title": "Special-relativistic time dilation",
+   "aka": "Moving clocks run slow",
+   "tags": [
+    "time dilation",
+    "ISS",
+    "Scott Kelly",
+    "twin paradox"
+   ],
+   "latex": "\\Delta t = \\gamma\\,\\Delta\\tau \\quad\\Rightarrow\\quad \\Delta t - \\Delta\\tau \\approx \\frac{v^2}{2c^2}\\,\\Delta t\\quad (v \\ll c)",
+   "legend": [
+    {
+     "sym": "\\Delta t",
+     "desc": "Time elapsed for the stay-at-home observer",
+     "unit": "s"
+    },
+    {
+     "sym": "\\Delta\\tau",
+     "desc": "Proper time elapsed on the moving clock",
+     "unit": "s"
+    },
+    {
+     "sym": "\\gamma",
+     "desc": "Lorentz factor",
+     "unit": "—"
+    },
+    {
+     "sym": "v",
+     "desc": "Speed of the moving clock",
+     "unit": "m/s"
+    }
+   ],
+   "meaning": "A clock moving relative to you ticks slower, by the factor $\\gamma$. At everyday speeds the effect is tiny but real: atomic clocks flown around the world (Hafele and Keating, 1971) and clocks in orbit confirm it. Astronauts come home very slightly younger than they would otherwise be.",
+   "example": {
+    "title": "Scott Kelly's Year in Space",
+    "text": "340 days aboard the ISS at $v \\approx 7.66$ km/s (special-relativistic part only; the gravitational effect partly offsets it).",
+    "steps": "\\Delta t - \\Delta\\tau \\approx \\frac{(7\\,660)^2}{2\\,(2.998\\times10^{8})^2}\\times340\\times86\\,400\\ \\text{s}",
+    "set": {
+     "v": 7.66,
+     "T": 340
+    },
+    "answer": {
+     "out": "lag",
+     "value": 0.009589,
+     "text": "about 9.6 milliseconds younger than his twin, from speed alone."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "v",
+      "sym": "v",
+      "label": "Speed",
+      "unit": "km/s",
+      "value": 7.66,
+      "min": 0.001,
+      "max": 299000,
+      "log": true,
+      "mul": 1000
+     },
+     {
+      "id": "T",
+      "sym": "\\Delta t",
+      "label": "Duration (Earth time)",
+      "unit": "days",
+      "value": 340,
+      "min": 0.01,
+      "max": 36525,
+      "log": true,
+      "mul": "day"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "lag",
+      "sym": "\\Delta t - \\Delta\\tau",
+      "label": "Traveller's clock falls behind by",
+      "expr": "-T*expm1(0.5*log1p(-((v/c)**2)))",
+      "unit": "s",
+      "fmt": "time"
+     },
+     {
+      "id": "gm1",
+      "sym": "\\gamma - 1",
+      "label": "γ − 1",
+      "expr": "expm1(-0.5*log1p(-((v/c)**2)))",
+      "unit": ""
+     },
+     {
+      "id": "tau",
+      "sym": "\\Delta\\tau",
+      "label": "Traveller's elapsed time",
+      "expr": "T*exp(0.5*log1p(-((v/c)**2)))",
+      "unit": "s",
+      "fmt": "time"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Year in Space (ISS)",
+      "set": {
+       "v": 7.66,
+       "T": 340
+      }
+     },
+     {
+      "label": "Airliner, 1 day",
+      "set": {
+       "v": 0.25,
+       "T": 1
+      }
+     },
+     {
+      "label": "Muon at 0.998 c",
+      "set": {
+       "v": 299192,
+       "T": 2.55e-08
+      }
+     },
+     {
+      "label": "Interstellar (0.9 c, 10 yr)",
+      "set": {
+       "v": 269813,
+       "T": 3652.5
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "v",
+    "y": "gm1",
+    "logx": true,
+    "logy": true,
+    "caption": "γ − 1 against speed: it grows as v² until close to c."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Time dilation",
+     "url": "https://en.wikipedia.org/wiki/Time_dilation"
+    },
+    {
+     "label": "Ashby (2003), Relativity in the Global Positioning System — Living Reviews in Relativity",
+     "url": "https://link.springer.com/article/10.12942/lrr-2003-1"
+    }
+   ]
+  },
+  {
+   "id": "mass-energy",
+   "chapter": "relativity",
+   "title": "Mass–energy equivalence",
+   "aka": "E = mc²",
+   "tags": [
+    "energy",
+    "nuclear",
+    "fusion",
+    "Einstein"
+   ],
+   "latex": "E = m\\,c^2",
+   "legend": [
+    {
+     "sym": "E",
+     "desc": "Rest energy",
+     "unit": "J"
+    },
+    {
+     "sym": "m",
+     "desc": "Mass",
+     "unit": "kg"
+    },
+    {
+     "sym": "c",
+     "desc": "Speed of light",
+     "unit": "m/s"
+    }
+   ],
+   "meaning": "Albert Einstein's 1905 result: mass is a form of energy, and $c^2$ (about $9\\times10^{16}$) is the exchange rate. Nuclear reactions release energy by converting a small fraction of mass — the Sun turns about 4 million tonnes of mass into sunlight every second, and a fusion reaction converts about 0.7 % of the hydrogen's mass.",
+   "example": {
+    "title": "The energy in one gram of matter",
+    "text": "$m = 1$ g $= 10^{-3}$ kg.",
+    "steps": "E = 10^{-3}\\times(2.998\\times10^{8})^2",
+    "set": {
+     "m": 0.001
+    },
+    "answer": {
+     "out": "E",
+     "value": 89880000000000.0,
+     "text": "joules ≈ 21.5 kilotons of TNT — more than the Hiroshima bomb (≈ 15 kt)."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "m",
+      "sym": "m",
+      "label": "Mass converted",
+      "unit": "kg",
+      "value": 0.001,
+      "min": 1e-12,
+      "max": 10000000000.0,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "E",
+      "sym": "E",
+      "label": "Energy",
+      "expr": "m*c*c",
+      "unit": "J"
+     },
+     {
+      "id": "kt",
+      "sym": "E",
+      "label": "In kilotons of TNT",
+      "expr": "m*c*c/ktTNT",
+      "unit": "kt"
+     },
+     {
+      "id": "TWh",
+      "sym": "E",
+      "label": "In terawatt-hours",
+      "expr": "m*c*c/3.6e15",
+      "unit": "TWh"
+     }
+    ],
+    "presets": [
+     {
+      "label": "One gram",
+      "set": {
+       "m": 0.001
+      }
+     },
+     {
+      "label": "Sun, every second",
+      "set": {
+       "m": 4260000000.0
+      }
+     },
+     {
+      "label": "Proton",
+      "set": {
+       "m": 1.67262192369e-27
+      }
+     }
+    ]
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Mass–energy equivalence",
+     "url": "https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence"
+    },
+    {
+     "label": "NIST — CODATA 2018 fundamental physical constants",
+     "url": "https://physics.nist.gov/cuu/Constants/"
+    }
+   ]
+  },
+  {
+   "id": "schwarzschild",
+   "chapter": "relativity",
+   "title": "Schwarzschild radius",
+   "aka": "Event-horizon radius of a non-rotating black hole",
+   "tags": [
+    "black hole",
+    "event horizon",
+    "Sagittarius A*",
+    "M87*"
+   ],
+   "latex": "r_s = \\frac{2GM}{c^2}",
+   "legend": [
+    {
+     "sym": "r_s",
+     "desc": "Radius of the event horizon",
+     "unit": "m"
+    },
+    {
+     "sym": "M",
+     "desc": "Mass of the black hole",
+     "unit": "kg"
+    },
+    {
+     "sym": "G, c",
+     "desc": "Gravitational constant and speed of light",
+     "unit": "—"
+    }
+   ],
+   "meaning": "Karl Schwarzschild found this in 1916, weeks after Einstein published general relativity. Squeeze any mass inside this radius and not even light can climb out. It is also the radius at which the Newtonian escape velocity would equal $c$. It scales linearly with mass: about 3 km per solar mass.",
+   "example": {
+    "title": "If the Sun were a black hole",
+    "text": "$GM_\\odot = 1.327\\times10^{20}$ m³/s².",
+    "steps": "r_s = \\frac{2\\times1.327\\times10^{20}}{(2.998\\times10^{8})^2}",
+    "set": {
+     "M": 1
+    },
+    "answer": {
+     "out": "rs",
+     "value": 2.953,
+     "text": "km — the whole Sun crushed to the size of a small town."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Mass",
+      "unit": "M☉",
+      "value": 1,
+      "min": 1e-07,
+      "max": 100000000000.0,
+      "log": true,
+      "mul": "Msun"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "rs",
+      "sym": "r_s",
+      "label": "Schwarzschild radius",
+      "expr": "2*G*M/(c*c)",
+      "unit": "km",
+      "div": 1000
+     },
+     {
+      "id": "rsau",
+      "sym": "r_s",
+      "label": "In AU",
+      "expr": "2*G*M/(c*c)/AU",
+      "unit": "AU"
+     },
+     {
+      "id": "rho",
+      "sym": "\\bar\\rho",
+      "label": "Mean density inside",
+      "expr": "M/(4/3*PI*(2*G*M/(c*c))**3)",
+      "unit": "kg/m³"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth",
+      "set": {
+       "M": 3.0035e-06
+      }
+     },
+     {
+      "label": "Sun",
+      "set": {
+       "M": 1
+      }
+     },
+     {
+      "label": "Cygnus X-1 (21 M☉)",
+      "set": {
+       "M": 21.2
+      }
+     },
+     {
+      "label": "Sagittarius A*",
+      "set": {
+       "M": 4300000.0
+      }
+     },
+     {
+      "label": "M87*",
+      "set": {
+       "M": 6500000000.0
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "M",
+    "y": "rs",
+    "logx": true,
+    "logy": true,
+    "marks": [
+     {
+      "x": 1,
+      "label": "Sun"
+     },
+     {
+      "x": 4300000.0,
+      "label": "Sgr A*"
+     },
+     {
+      "x": 6500000000.0,
+      "label": "M87*"
+     }
+    ],
+    "caption": "Horizon size is directly proportional to mass."
+   },
+   "refs": [
+    {
+     "label": "A. Hamilton (JILA, University of Colorado) — More about the Schwarzschild geometry",
+     "url": "https://jila.colorado.edu/~ajsh/courses/bh/schwp.html"
+    },
+    {
+     "label": "Wikipedia — Schwarzschild radius",
+     "url": "https://en.wikipedia.org/wiki/Schwarzschild_radius"
+    }
+   ]
+  },
+  {
+   "id": "gravitational-time-dilation",
+   "chapter": "relativity",
+   "title": "Gravitational time dilation and redshift",
+   "aka": "Clocks run slow in a gravity well",
+   "tags": [
+    "general relativity",
+    "redshift",
+    "neutron star",
+    "Interstellar"
+   ],
+   "latex": "\\frac{d\\tau}{dt} = \\sqrt{1 - \\frac{r_s}{r}},\\qquad 1 + z = \\left(1 - \\frac{r_s}{r}\\right)^{-1/2}",
+   "legend": [
+    {
+     "sym": "d\\tau/dt",
+     "desc": "Rate of a clock at radius $r$ compared with one far away",
+     "unit": "—"
+    },
+    {
+     "sym": "r_s",
+     "desc": "Schwarzschild radius of the mass, $2GM/c^2$",
+     "unit": "m"
+    },
+    {
+     "sym": "r",
+     "desc": "Distance from the centre ($r > r_s$)",
+     "unit": "m"
+    },
+    {
+     "sym": "z",
+     "desc": "Gravitational redshift of light climbing out to infinity",
+     "unit": "—"
+    }
+   ],
+   "meaning": "In general relativity, clocks deeper in a gravitational well tick more slowly, and light climbing out loses energy and reddens. On Earth's surface the effect is about 60 microseconds per day relative to deep space; at a neutron star's surface clocks run 20 % slow; at the event horizon of a black hole they appear to stop.",
+   "example": {
+    "title": "The surface of a neutron star",
+    "text": "$M = 1.4\\,M_\\odot$ ($r_s = 4.13$ km), radius $r = 12$ km.",
+    "steps": "1+z = \\left(1 - \\frac{4.13}{12}\\right)^{-1/2}",
+    "set": {
+     "M": 1.4,
+     "r": 12
+    },
+    "answer": {
+     "out": "z",
+     "value": 0.2352,
+     "text": "so surface clocks run at 81 % of the rate of distant clocks, and X-ray lines arrive 24 % redder."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Mass",
+      "unit": "M☉",
+      "value": 1.4,
+      "min": 1e-07,
+      "max": 10000000000.0,
+      "log": true,
+      "mul": "Msun"
+     },
+     {
+      "id": "r",
+      "sym": "r",
+      "label": "Distance from centre",
+      "unit": "km",
+      "value": 12,
+      "min": 0.001,
+      "max": 1000000000000.0,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "z",
+      "sym": "z",
+      "label": "Gravitational redshift",
+      "expr": "2*G*M/(c*c) < r ? expm1(-0.5*log1p(-2*G*M/(c*c*r))) : NaN",
+      "unit": "",
+      "hint": "— means r is inside the horizon"
+     },
+     {
+      "id": "rate",
+      "sym": "d\\tau/dt",
+      "label": "Clock rate",
+      "expr": "2*G*M/(c*c) < r ? sqrt(1 - 2*G*M/(c*c*r)) : NaN",
+      "unit": "",
+      "sig": 10
+     },
+     {
+      "id": "lost",
+      "sym": "\\Delta\\tau",
+      "label": "Time lost per day",
+      "expr": "2*G*M/(c*c) < r ? -86400*expm1(0.5*log1p(-2*G*M/(c*c*r))) : NaN",
+      "unit": "s",
+      "fmt": "time"
+     },
+     {
+      "id": "rrs",
+      "sym": "r/r_s",
+      "label": "Distance in horizon radii",
+      "expr": "r*c*c/(2*G*M)",
+      "unit": ""
+     }
+    ],
+    "presets": [
+     {
+      "label": "Earth surface",
+      "set": {
+       "M": 3.0035e-06,
+       "r": 6371
+      }
+     },
+     {
+      "label": "Sun surface",
+      "set": {
+       "M": 1,
+       "r": 695700
+      }
+     },
+     {
+      "label": "White dwarf (Sirius B)",
+      "set": {
+       "M": 1.02,
+       "r": 5840
+      }
+     },
+     {
+      "label": "Neutron star",
+      "set": {
+       "M": 1.4,
+       "r": 12
+      }
+     },
+     {
+      "label": "3 r_s from Sgr A*",
+      "set": {
+       "M": 4300000.0,
+       "r": 38100000
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "r",
+    "y": "rate",
+    "logx": true,
+    "logy": false,
+    "xmin": "1.0005*2*G*M/(c*c)",
+    "xmax": "60*2*G*M/(c*c)",
+    "yzero": true,
+    "caption": "Clock rate from the horizon (0) out to 60 horizon radii."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Gravitational redshift",
+     "url": "https://en.wikipedia.org/wiki/Gravitational_redshift"
+    },
+    {
+     "label": "Ashby (2003), Relativity in the Global Positioning System — Living Reviews in Relativity",
+     "url": "https://link.springer.com/article/10.12942/lrr-2003-1"
+    }
+   ]
+  },
+  {
+   "id": "hawking",
+   "chapter": "relativity",
+   "title": "Hawking temperature",
+   "aka": "Black-hole evaporation",
+   "tags": [
+    "Hawking radiation",
+    "quantum",
+    "black hole",
+    "evaporation"
+   ],
+   "latex": "T_H = \\frac{\\hbar\\,c^3}{8\\pi\\,G\\,M\\,k_B},\\qquad t_{evap} \\approx \\frac{5120\\,\\pi\\,G^2 M^3}{\\hbar\\,c^4}",
+   "legend": [
+    {
+     "sym": "T_H",
+     "desc": "Temperature of the black hole's thermal radiation",
+     "unit": "K"
+    },
+    {
+     "sym": "M",
+     "desc": "Black-hole mass",
+     "unit": "kg"
+    },
+    {
+     "sym": "\\hbar",
+     "desc": "Reduced Planck constant",
+     "unit": "J s"
+    },
+    {
+     "sym": "k_B",
+     "desc": "Boltzmann constant",
+     "unit": "J/K"
+    },
+    {
+     "sym": "t_{evap}",
+     "desc": "Time to evaporate completely (photons only, idealised)",
+     "unit": "s"
+    }
+   ],
+   "meaning": "Stephen Hawking showed in 1974 that quantum effects make black holes glow faintly, like a blackbody. Bigger black holes are colder: a stellar-mass one is far colder than the 2.7 K cosmic background, so today it absorbs more than it emits. Only tiny black holes would be hot enough to evaporate within the age of the Universe.",
+   "example": {
+    "title": "A black hole with the mass of the Sun",
+    "text": "$M = 1.989\\times10^{30}$ kg.",
+    "steps": "T_H = \\frac{(1.055\\times10^{-34})(2.998\\times10^{8})^3}{8\\pi\\,(6.674\\times10^{-11})(1.989\\times10^{30})(1.381\\times10^{-23})}",
+    "set": {
+     "M": 1.98841e+30
+    },
+    "answer": {
+     "out": "TH",
+     "value": 6.17e-08,
+     "text": "K — sixty billionths of a kelvin, with an evaporation time of about 10⁶⁷ years."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "M",
+      "sym": "M",
+      "label": "Mass",
+      "unit": "kg",
+      "value": 1.98841e+30,
+      "min": 100000.0,
+      "max": 1e+41,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "TH",
+      "sym": "T_H",
+      "label": "Hawking temperature",
+      "expr": "hbar*c**3/(8*PI*G*M*kB)",
+      "unit": "K"
+     },
+     {
+      "id": "tev",
+      "sym": "t_{evap}",
+      "label": "Evaporation time",
+      "expr": "5120*PI*G*G*M**3/(hbar*c**4)",
+      "unit": "s",
+      "fmt": "time"
+     },
+     {
+      "id": "Ms",
+      "sym": "M/M_\\odot",
+      "label": "Mass in solar masses",
+      "expr": "M/Msun",
+      "unit": "M☉"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Sun mass",
+      "set": {
+       "M": 1.98841e+30
+      }
+     },
+     {
+      "label": "Moon mass (≈ CMB temperature)",
+      "set": {
+       "M": 7.346e+22
+      }
+     },
+     {
+      "label": "Mountain (10¹² kg)",
+      "set": {
+       "M": 1000000000000.0
+      }
+     },
+     {
+      "label": "Sagittarius A*",
+      "set": {
+       "M": 8.55e+36
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "M",
+    "y": "TH",
+    "logx": true,
+    "logy": true,
+    "hlines": [
+     {
+      "y": 2.72548,
+      "label": "CMB 2.725 K"
+     }
+    ],
+    "caption": "Hawking temperature against mass; above the line a black hole is hotter than the cosmic background."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Hawking radiation",
+     "url": "https://en.wikipedia.org/wiki/Hawking_radiation"
+    },
+    {
+     "label": "NIST — CODATA 2018 fundamental physical constants",
+     "url": "https://physics.nist.gov/cuu/Constants/"
+    }
+   ]
+  },
+  {
+   "id": "gps-clock",
+   "chapter": "relativity",
+   "title": "GPS clock correction",
+   "aka": "Why satellite navigation needs relativity",
+   "tags": [
+    "GPS",
+    "navigation",
+    "clocks",
+    "general relativity",
+    "special relativity"
+   ],
+   "latex": "\\begin{aligned}\\frac{\\Delta f}{f} &\\approx \\underbrace{\\frac{GM_\\oplus}{c^2}\\left(\\frac{1}{R_\\oplus} - \\frac{1}{r}\\right)}_{\\text{gravity: faster}} - \\underbrace{\\frac{v^2}{2c^2}}_{\\text{speed: slower}}\\\\ v &= \\sqrt{\\frac{GM_\\oplus}{r}}\\end{aligned}",
+   "legend": [
+    {
+     "sym": "\\Delta f/f",
+     "desc": "Fractional rate difference, orbiting clock minus ground clock",
+     "unit": "—"
+    },
+    {
+     "sym": "GM_\\oplus",
+     "desc": "Earth's gravitational parameter",
+     "unit": "m³/s²"
+    },
+    {
+     "sym": "R_\\oplus",
+     "desc": "Earth's radius (ground clock)",
+     "unit": "m"
+    },
+    {
+     "sym": "r, v",
+     "desc": "Orbit radius and orbital speed of the satellite",
+     "unit": "m, m/s"
+    }
+   ],
+   "meaning": "Global Positioning System (GPS) clocks sit higher in Earth's gravity well, so general relativity makes them run fast by about 45.7 μs a day; their orbital speed makes them run slow by about 7.2 μs a day. The net is about +38 μs/day. Light travels 11 km in 38 μs, so without correction positions would drift by kilometres every day. The satellite clocks are deliberately tuned slightly slow before launch.",
+   "example": {
+    "title": "A GPS satellite",
+    "text": "Orbit radius $r = 26\\,562$ km, ground clock at $R_\\oplus = 6\\,371$ km.",
+    "steps": "\\begin{aligned}\\Delta t_g &= \\frac{3.986\\times10^{14}}{c^2}\\left(\\frac{1}{6.371\\times10^{6}} - \\frac{1}{2.6562\\times10^{7}}\\right)\\times86\\,400\\ \\text{s}\\\\ \\Delta t_v &= -\\frac{3.986\\times10^{14}}{2c^2\\,(2.6562\\times10^{7})}\\times86\\,400\\ \\text{s}\\end{aligned}",
+    "set": {
+     "r": 26562
+    },
+    "answer": {
+     "out": "net",
+     "value": 38.5,
+     "text": "μs per day fast (45.72 from gravity − 7.21 from speed), ≈ 11.5 km of ranging error per day if ignored."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "r",
+      "sym": "r",
+      "label": "Orbit radius",
+      "unit": "km",
+      "value": 26562,
+      "min": 6500,
+      "max": 500000,
+      "log": true,
+      "mul": 1000
+     }
+    ],
+    "outputs": [
+     {
+      "id": "net",
+      "sym": "\\Delta t",
+      "label": "Net clock gain per day",
+      "expr": "86400*(GMearth/(c*c)*(1/Rearth - 1/r) - GMearth/(2*r*c*c))",
+      "unit": "μs/day",
+      "div": 1e-06
+     },
+     {
+      "id": "grav",
+      "sym": "\\Delta t_{g}",
+      "label": "Gravity part",
+      "expr": "86400*GMearth/(c*c)*(1/Rearth - 1/r)",
+      "unit": "μs/day",
+      "div": 1e-06
+     },
+     {
+      "id": "vel",
+      "sym": "\\Delta t_{v}",
+      "label": "Speed part",
+      "expr": "-86400*GMearth/(2*r*c*c)",
+      "unit": "μs/day",
+      "div": 1e-06
+     },
+     {
+      "id": "err",
+      "sym": "c\\,\\Delta t",
+      "label": "Range error per day",
+      "expr": "c*86400*(GMearth/(c*c)*(1/Rearth - 1/r) - GMearth/(2*r*c*c))",
+      "unit": "km",
+      "div": 1000
+     }
+    ],
+    "presets": [
+     {
+      "label": "ISS",
+      "set": {
+       "r": 6791
+      }
+     },
+     {
+      "label": "GPS",
+      "set": {
+       "r": 26562
+      }
+     },
+     {
+      "label": "Galileo",
+      "set": {
+       "r": 29600
+      }
+     },
+     {
+      "label": "Geostationary",
+      "set": {
+       "r": 42164
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "r",
+    "y": [
+     "net",
+     "grav",
+     "vel"
+    ],
+    "logx": true,
+    "logy": false,
+    "xmin": 6500,
+    "xmax": 100000,
+    "yzero": true,
+    "hlines": [
+     {
+      "y": 0,
+      "label": ""
+     }
+    ],
+    "marks": [
+     {
+      "x": 6791,
+      "label": "ISS"
+     },
+     {
+      "x": 9557,
+      "label": "1.5 R⊕: no net effect"
+     },
+     {
+      "x": 26562,
+      "label": "GPS"
+     }
+    ],
+    "caption": "Net (bright), gravity and speed terms against orbit radius. Below 1.5 R⊕ orbiting clocks run slow."
+   },
+   "refs": [
+    {
+     "label": "Ashby (2003), Relativity in the Global Positioning System — Living Reviews in Relativity",
+     "url": "https://link.springer.com/article/10.12942/lrr-2003-1"
+    }
+   ]
+  },
+  {
+   "id": "hubble-lemaitre",
+   "chapter": "cosmology",
+   "title": "Hubble–Lemaître law",
+   "aka": "Recession velocity and the Hubble time",
+   "tags": [
+    "expansion",
+    "Hubble constant",
+    "Hubble tension",
+    "galaxies"
+   ],
+   "latex": "v = H_0\\,d,\\qquad t_H = \\frac{1}{H_0}",
+   "legend": [
+    {
+     "sym": "v",
+     "desc": "Recession velocity of a galaxy",
+     "unit": "km/s"
+    },
+    {
+     "sym": "H_0",
+     "desc": "Hubble constant (expansion rate today)",
+     "unit": "km s⁻¹ Mpc⁻¹"
+    },
+    {
+     "sym": "d",
+     "desc": "Proper distance to the galaxy",
+     "unit": "Mpc"
+    },
+    {
+     "sym": "t_H",
+     "desc": "Hubble time: a rough age scale of the Universe",
+     "unit": "s"
+    }
+   ],
+   "meaning": "Georges Lemaître (1927) and Edwin Hubble (1929) found that galaxies recede at speeds proportional to their distance — the signature of a uniformly expanding Universe. Early-Universe measurements (Planck: 67.4) and nearby supernova distances (SH0ES: ≈ 73) disagree slightly; that 'Hubble tension' is one of cosmology's open problems.",
+   "example": {
+    "title": "A galaxy 100 megaparsecs away",
+    "text": "Roughly the distance of the Coma Cluster, with $H_0 = 67.4$ km/s/Mpc (Planck 2018).",
+    "steps": "v = 67.4\\ \\tfrac{\\text{km/s}}{\\text{Mpc}}\\times100\\ \\text{Mpc}",
+    "set": {
+     "H0": 67.4,
+     "d": 100
+    },
+    "answer": {
+     "out": "v",
+     "value": 6740,
+     "text": "km/s (z ≈ 0.022); the Hubble time is 14.5 billion years."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "H0",
+      "sym": "H_0",
+      "label": "Hubble constant",
+      "unit": "km/s/Mpc",
+      "value": 67.4,
+      "min": 50,
+      "max": 90,
+      "step": 0.1,
+      "mul": "1e3/Mpc"
+     },
+     {
+      "id": "d",
+      "sym": "d",
+      "label": "Distance",
+      "unit": "Mpc",
+      "value": 100,
+      "min": 0.1,
+      "max": 5000,
+      "log": true,
+      "mul": "Mpc"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "v",
+      "sym": "v",
+      "label": "Recession velocity",
+      "expr": "H0*d",
+      "unit": "km/s",
+      "div": 1000
+     },
+     {
+      "id": "tH",
+      "sym": "t_H",
+      "label": "Hubble time",
+      "expr": "1/H0",
+      "unit": "Gyr",
+      "div": "1e9*yr"
+     },
+     {
+      "id": "z",
+      "sym": "z",
+      "label": "Redshift (low-z estimate)",
+      "expr": "H0*d/c",
+      "unit": ""
+     }
+    ],
+    "presets": [
+     {
+      "label": "Planck 2018 (67.4)",
+      "set": {
+       "H0": 67.4
+      }
+     },
+     {
+      "label": "SH0ES (73.0)",
+      "set": {
+       "H0": 73.0
+      }
+     },
+     {
+      "label": "Virgo Cluster (16.5 Mpc)",
+      "set": {
+       "d": 16.5
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "d",
+    "y": "v",
+    "logx": false,
+    "logy": false,
+    "xmin": 0,
+    "xmax": 500,
+    "series": {
+     "input": "H0",
+     "values": [
+      67.4,
+      73.0
+     ]
+    },
+    "caption": "Velocity against distance for your H₀ (bright) and for the Planck and SH0ES values."
+   },
+   "refs": [
+    {
+     "label": "NASA Science — Hubble Cosmological Redshift",
+     "url": "https://science.nasa.gov/mission/hubble/science/science-behind-the-discoveries/hubble-cosmological-redshift/"
+    },
+    {
+     "label": "Planck Collaboration (2018), Cosmological parameters",
+     "url": "https://arxiv.org/abs/1807.06209"
+    }
+   ]
+  },
+  {
+   "id": "redshift-scale-factor",
+   "chapter": "cosmology",
+   "title": "Cosmological redshift and scale factor",
+   "aka": "Stretching of light by expansion",
+   "tags": [
+    "redshift",
+    "scale factor",
+    "JWST",
+    "GN-z11",
+    "infrared"
+   ],
+   "latex": "1 + z = \\frac{\\lambda_{obs}}{\\lambda_{emit}} = \\frac{a(t_{obs})}{a(t_{emit})} = \\frac{1}{a}",
+   "legend": [
+    {
+     "sym": "z",
+     "desc": "Cosmological redshift",
+     "unit": "—"
+    },
+    {
+     "sym": "a",
+     "desc": "Scale factor: size of the Universe then, relative to today ($a_0 = 1$)",
+     "unit": "—"
+    },
+    {
+     "sym": "\\lambda_{obs}, \\lambda_{emit}",
+     "desc": "Observed and emitted wavelengths",
+     "unit": "m"
+    }
+   ],
+   "meaning": "Cosmological redshift is not a Doppler shift through space: the wavelength of light stretches in step with space itself while it travels. A galaxy at $z = 10$ sent its light when every distance in the Universe was 11 times smaller. This is why the James Webb Space Telescope observes in the infrared: the ultraviolet light of the first galaxies arrives stretched.",
+   "example": {
+    "title": "Galaxy GN-z11",
+    "text": "Spectroscopic redshift $z = 10.60$. Its hydrogen Lyman-alpha line is emitted at 121.567 nm (ultraviolet).",
+    "steps": "\\lambda_{obs} = (1 + 10.60)\\times121.567\\ \\text{nm},\\qquad a = \\frac{1}{11.60}",
+    "set": {
+     "z": 10.6,
+     "lam": 121.567
+    },
+    "answer": {
+     "out": "lobs",
+     "value": 1410.2,
+     "text": "nm (1.41 µm, near-infrared); the Universe was 8.6 % of its present size."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "z",
+      "sym": "z",
+      "label": "Redshift",
+      "unit": "",
+      "value": 10.6,
+      "min": 0,
+      "max": 20,
+      "step": 0.01,
+      "hardMax": 100000.0
+     },
+     {
+      "id": "lam",
+      "sym": "\\lambda_{emit}",
+      "label": "Emitted wavelength",
+      "unit": "nm",
+      "value": 121.567,
+      "min": 50,
+      "max": 1000,
+      "step": 0.001,
+      "mul": 1e-09
+     }
+    ],
+    "outputs": [
+     {
+      "id": "lobs",
+      "sym": "\\lambda_{obs}",
+      "label": "Observed wavelength",
+      "expr": "(1+z)*lam",
+      "unit": "nm",
+      "div": 1e-09
+     },
+     {
+      "id": "a",
+      "sym": "a",
+      "label": "Scale factor",
+      "expr": "1/(1+z)",
+      "unit": ""
+     },
+     {
+      "id": "pct",
+      "sym": "a",
+      "label": "Size vs today",
+      "expr": "100/(1+z)",
+      "unit": "%",
+      "sig": 3
+     }
+    ],
+    "presets": [
+     {
+      "label": "Virgo Cluster (z = 0.004)",
+      "set": {
+       "z": 0.004
+      }
+     },
+     {
+      "label": "Quasar 3C 273 (z = 0.158)",
+      "set": {
+       "z": 0.158
+      }
+     },
+     {
+      "label": "GN-z11 (z = 10.6)",
+      "set": {
+       "z": 10.6
+      }
+     },
+     {
+      "label": "JADES-GS-z14-0 (z = 14.32)",
+      "set": {
+       "z": 14.32
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "z",
+    "y": "lobs",
+    "logx": false,
+    "logy": true,
+    "yband": [
+     380,
+     750
+    ],
+    "caption": "Observed wavelength against redshift; the band is visible light."
+   },
+   "refs": [
+    {
+     "label": "NASA Science — What is Cosmological Redshift?",
+     "url": "https://science.nasa.gov/asset/hubble/what-is-cosmological-redshift/"
+    },
+    {
+     "label": "Wikipedia — Scale factor (cosmology)",
+     "url": "https://en.wikipedia.org/wiki/Scale_factor_(cosmology)"
+    }
+   ]
+  },
+  {
+   "id": "friedmann",
+   "chapter": "cosmology",
+   "title": "Friedmann equation",
+   "aka": "Expansion rate of the Universe",
+   "tags": [
+    "Friedmann",
+    "dark energy",
+    "ΛCDM",
+    "expansion history"
+   ],
+   "latex": "\\begin{aligned} H^2 &= \\frac{8\\pi G}{3}\\rho - \\frac{k c^2}{a^2} + \\frac{\\Lambda c^2}{3}\\\\ H(z) &= H_0\\sqrt{\\Omega_r(1+z)^4 + \\Omega_m(1+z)^3 + \\Omega_k(1+z)^2 + \\Omega_\\Lambda}\\end{aligned}",
+   "legend": [
+    {
+     "sym": "H",
+     "desc": "Hubble parameter, $\\dot a/a$",
+     "unit": "s⁻¹"
+    },
+    {
+     "sym": "\\rho",
+     "desc": "Density of matter and radiation",
+     "unit": "kg/m³"
+    },
+    {
+     "sym": "k",
+     "desc": "Spatial curvature (0 = flat)",
+     "unit": "—"
+    },
+    {
+     "sym": "\\Lambda",
+     "desc": "Cosmological constant (dark energy)",
+     "unit": "m⁻²"
+    },
+    {
+     "sym": "\\Omega_r, \\Omega_m, \\Omega_\\Lambda",
+     "desc": "Today's radiation, matter and dark-energy densities as fractions of critical ($\\Omega_r \\approx 9.2\\times10^{-5}$ fixed here)",
+     "unit": "—"
+    },
+    {
+     "sym": "\\Omega_k",
+     "desc": "Curvature term, $1 - \\Omega_r - \\Omega_m - \\Omega_\\Lambda$",
+     "unit": "—"
+    }
+   ],
+   "meaning": "Alexander Friedmann derived this from general relativity in 1922. It is the energy budget of the expanding Universe: the expansion rate is set by what the Universe contains. Because radiation dilutes as $(1+z)^4$, matter as $(1+z)^3$ and dark energy not at all, each dominated in turn — radiation first, then matter, and now dark energy, which is making the expansion speed up.",
+   "example": {
+    "title": "The expansion rate when the Universe was half its size",
+    "text": "$z = 1$ with Planck 2018 values $H_0 = 67.4$, $\\Omega_m = 0.315$, $\\Omega_\\Lambda = 0.685$.",
+    "steps": "H(1) = 67.4\\sqrt{9.2\\times10^{-5}(2)^4 + 0.315\\,(2)^3 + \\Omega_k(2)^2 + 0.685}",
+    "set": {
+     "H0": 67.4,
+     "Om": 0.315,
+     "OL": 0.685,
+     "z": 1
+    },
+    "answer": {
+     "out": "Hz",
+     "value": 120.67,
+     "text": "km/s/Mpc — the Universe was expanding almost twice as fast (in this sense) 7.9 billion years ago."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "H0",
+      "sym": "H_0",
+      "label": "Hubble constant",
+      "unit": "km/s/Mpc",
+      "value": 67.4,
+      "min": 50,
+      "max": 90,
+      "step": 0.1
+     },
+     {
+      "id": "Om",
+      "sym": "\\Omega_m",
+      "label": "Matter density",
+      "unit": "",
+      "value": 0.315,
+      "min": 0,
+      "max": 1.5,
+      "step": 0.001
+     },
+     {
+      "id": "OL",
+      "sym": "\\Omega_\\Lambda",
+      "label": "Dark-energy density",
+      "unit": "",
+      "value": 0.685,
+      "min": 0,
+      "max": 1.5,
+      "step": 0.001
+     },
+     {
+      "id": "z",
+      "sym": "z",
+      "label": "Redshift",
+      "unit": "",
+      "value": 1,
+      "min": 0,
+      "max": 20,
+      "step": 0.01,
+      "hardMax": 100000.0
+     }
+    ],
+    "outputs": [
+     {
+      "id": "Hz",
+      "sym": "H(z)",
+      "label": "Expansion rate",
+      "expr": "H0*sqrt(9.2e-5*(1+z)**4 + Om*(1+z)**3 + (1-9.2e-5-Om-OL)*(1+z)**2 + OL)",
+      "unit": "km/s/Mpc"
+     },
+     {
+      "id": "Ok",
+      "sym": "\\Omega_k",
+      "label": "Curvature term",
+      "expr": "1-9.2e-5-Om-OL",
+      "unit": "",
+      "sig": 3
+     },
+     {
+      "id": "ratio",
+      "sym": "H/H_0",
+      "label": "Relative to today",
+      "expr": "sqrt(9.2e-5*(1+z)**4 + Om*(1+z)**3 + (1-9.2e-5-Om-OL)*(1+z)**2 + OL)",
+      "unit": "×"
+     }
+    ],
+    "presets": [
+     {
+      "label": "Planck 2018 ΛCDM",
+      "set": {
+       "H0": 67.4,
+       "Om": 0.315,
+       "OL": 0.685
+      }
+     },
+     {
+      "label": "Matter only (Einstein–de Sitter)",
+      "set": {
+       "H0": 67.4,
+       "Om": 1.0,
+       "OL": 0
+      }
+     },
+     {
+      "label": "Empty, open",
+      "set": {
+       "H0": 67.4,
+       "Om": 0.0,
+       "OL": 0
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "z",
+    "y": "Hz",
+    "logx": false,
+    "logy": true,
+    "xmin": 0,
+    "xmax": 10,
+    "caption": "Expansion rate against redshift for your cosmology."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Friedmann equations",
+     "url": "https://en.wikipedia.org/wiki/Friedmann_equations"
+    },
+    {
+     "label": "Planck Collaboration (2018), Cosmological parameters",
+     "url": "https://arxiv.org/abs/1807.06209"
+    }
+   ]
+  },
+  {
+   "id": "critical-density",
+   "chapter": "cosmology",
+   "title": "Critical density",
+   "aka": "Density of a flat Universe",
+   "tags": [
+    "critical density",
+    "flatness",
+    "Omega"
+   ],
+   "latex": "\\rho_c = \\frac{3H^2}{8\\pi G}",
+   "legend": [
+    {
+     "sym": "\\rho_c",
+     "desc": "Density that makes the Universe spatially flat",
+     "unit": "kg/m³"
+    },
+    {
+     "sym": "H",
+     "desc": "Hubble parameter",
+     "unit": "s⁻¹"
+    },
+    {
+     "sym": "G",
+     "desc": "Gravitational constant",
+     "unit": "m³ kg⁻¹ s⁻²"
+    }
+   ],
+   "meaning": "Set curvature and dark energy to zero in the Friedmann equation and solve for the density: that is the critical density, the dividing line between a Universe that would recollapse and one that expands forever. Cosmologists quote everything as a fraction of it ($\\Omega = \\rho/\\rho_c$). Observations say the total is within a fraction of a per cent of 1: space is flat.",
+   "example": {
+    "title": "Critical density today",
+    "text": "$H_0 = 67.4$ km/s/Mpc $= 2.184\\times10^{-18}$ s⁻¹.",
+    "steps": "\\rho_c = \\frac{3\\,(2.184\\times10^{-18})^2}{8\\pi\\,(6.674\\times10^{-11})}",
+    "set": {
+     "H": 67.4
+    },
+    "answer": {
+     "out": "rho",
+     "value": 8.533e-27,
+     "text": "kg/m³ — about 5 hydrogen atoms per cubic metre, emptier than any laboratory vacuum."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "H",
+      "sym": "H",
+      "label": "Hubble parameter",
+      "unit": "km/s/Mpc",
+      "value": 67.4,
+      "min": 10,
+      "max": 10000,
+      "log": true,
+      "mul": "1e3/Mpc"
+     }
+    ],
+    "outputs": [
+     {
+      "id": "rho",
+      "sym": "\\rho_c",
+      "label": "Critical density",
+      "expr": "3*H*H/(8*PI*G)",
+      "unit": "kg/m³"
+     },
+     {
+      "id": "np",
+      "sym": "n_p",
+      "label": "Protons per m³",
+      "expr": "3*H*H/(8*PI*G)/mp",
+      "unit": "m⁻³",
+      "sig": 3
+     },
+     {
+      "id": "msun",
+      "sym": "\\rho_c",
+      "label": "Solar masses per Mpc³",
+      "expr": "3*H*H/(8*PI*G)*Mpc**3/Msun",
+      "unit": "M☉/Mpc³",
+      "sig": 3
+     }
+    ],
+    "presets": [
+     {
+      "label": "Planck 2018",
+      "set": {
+       "H": 67.4
+      }
+     },
+     {
+      "label": "SH0ES",
+      "set": {
+       "H": 73.0
+      }
+     },
+     {
+      "label": "At z = 1 (120.7)",
+      "set": {
+       "H": 120.67
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "H",
+    "y": "rho",
+    "logx": true,
+    "logy": true,
+    "caption": "Critical density grows as H²."
+   },
+   "refs": [
+    {
+     "label": "Wikipedia — Friedmann equations",
+     "url": "https://en.wikipedia.org/wiki/Friedmann_equations"
+    },
+    {
+     "label": "Planck Collaboration (2018), Cosmological parameters",
+     "url": "https://arxiv.org/abs/1807.06209"
+    }
+   ]
+  },
+  {
+   "id": "cmb-temperature",
+   "chapter": "cosmology",
+   "title": "Temperature of the cosmic microwave background",
+   "aka": "CMB temperature scaling",
+   "tags": [
+    "CMB",
+    "recombination",
+    "Big Bang",
+    "microwave"
+   ],
+   "latex": "T(z) = T_0\\,(1 + z),\\qquad T_0 = 2.72548\\ \\text{K}",
+   "legend": [
+    {
+     "sym": "T(z)",
+     "desc": "Temperature of the background radiation at redshift $z$",
+     "unit": "K"
+    },
+    {
+     "sym": "T_0",
+     "desc": "Temperature measured today (Fixsen 2009, from COBE/FIRAS)",
+     "unit": "K"
+    },
+    {
+     "sym": "z",
+     "desc": "Redshift",
+     "unit": "—"
+    }
+   ],
+   "meaning": "The cosmic microwave background (CMB) is light from when the Universe first became transparent. Expansion stretches each photon's wavelength by $(1+z)$, and a stretched blackbody stays a blackbody with its temperature divided by $(1+z)$. Run it backwards and at $z \\approx 1\\,090$ the Universe was about 3 000 K — hot enough to keep hydrogen ionised, which is exactly when it cleared.",
+   "example": {
+    "title": "Temperature at recombination",
+    "text": "$z = 1\\,090$ (the CMB's last-scattering surface).",
+    "steps": "T = 2.72548\\ \\text{K}\\times(1 + 1\\,090)",
+    "set": {
+     "z": 1090
+    },
+    "answer": {
+     "out": "T",
+     "value": 2973.5,
+     "text": "K — the glow of a red dwarf's surface, filling all of space."
+    }
+   },
+   "calc": {
+    "inputs": [
+     {
+      "id": "z",
+      "sym": "z",
+      "label": "Redshift",
+      "unit": "",
+      "value": 1090,
+      "min": 0.001,
+      "max": 10000,
+      "log": true
+     }
+    ],
+    "outputs": [
+     {
+      "id": "T",
+      "sym": "T",
+      "label": "Radiation temperature",
+      "expr": "TCMB*(1+z)",
+      "unit": "K"
+     },
+     {
+      "id": "lp",
+      "sym": "\\lambda_{max}",
+      "label": "Peak wavelength",
+      "expr": "bWien/(TCMB*(1+z))",
+      "unit": "µm",
+      "div": 1e-06
+     }
+    ],
+    "presets": [
+     {
+      "label": "Today (z ≈ 0)",
+      "set": {
+       "z": 0.001
+      }
+     },
+     {
+      "label": "Quasar era (z = 2)",
+      "set": {
+       "z": 2
+      }
+     },
+     {
+      "label": "First galaxies (z = 10)",
+      "set": {
+       "z": 10
+      }
+     },
+     {
+      "label": "Recombination (z = 1 090)",
+      "set": {
+       "z": 1090
+      }
+     }
+    ]
+   },
+   "plot": {
+    "type": "xy",
+    "x": "z",
+    "y": "T",
+    "logx": true,
+    "logy": true,
+    "hlines": [
+     {
+      "y": 273.15,
+      "label": "water freezes"
+     }
+    ],
+    "caption": "Background temperature against redshift."
+   },
+   "refs": [
+    {
+     "label": "Fixsen (2009), The Temperature of the Cosmic Microwave Background",
+     "url": "https://arxiv.org/abs/0911.1955"
+    },
+    {
+     "label": "Planck Collaboration (2018), Cosmological parameters",
+     "url": "https://arxiv.org/abs/1807.06209"
+    }
+   ]
+  }
+ ]
+}

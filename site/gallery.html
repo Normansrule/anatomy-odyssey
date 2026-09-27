@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gallery · Cosmic Codex</title>
+<meta name="description" content="Fifty of the most celebrated space photographs ever taken, from the first frame shot from a V-2 rocket in 1946 to the James Webb Space Telescope, each with the story of why it matters.">
+<meta property="og:title" content="Gallery · Cosmic Codex">
+<meta property="og:description" content="Fifty of the most celebrated space photographs ever taken, from the first frame shot from a V-2 rocket in 1946 to the James Webb Space Telescope, each with the story of why it matters.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="assets/css/gallery.css">
+</head>
+<body data-page="gallery">
+<main class="gal">
+
+  <!-- ================= HERO: slow Ken Burns over one featured photograph ================= -->
+  <section class="gal-hero" id="hero" aria-label="Featured photograph">
+    <div class="gh-media" id="heroMedia" aria-hidden="true"></div>
+    <div class="gh-shade" aria-hidden="true"></div>
+    <div class="shell gh-copy">
+      <div class="eyebrow gh-in">Gallery · 1946 → 2022</div>
+      <h1 class="gh-in"><span class="gh-line">Fifty photographs</span> <span class="gh-line grad-text">that changed how we see.</span></h1>
+      <p class="lede gh-in">
+        From a grainy frame shot by a captured V-2 rocket to the infrared deep fields of the
+        James Webb Space Telescope (JWST): the pictures that showed us our planet, our Moon, our neighbours
+        and our place in the Universe, each with the story of why it matters.
+      </p>
+      <div class="row gh-in">
+        <a class="btn primary" href="#collection">Browse the collection</a>
+        <button class="btn" id="heroOpen" type="button">Open this photograph</button>
+      </div>
+      <div class="gh-stats gh-in">
+        <div class="stat"><div class="num"><span data-count="50">50</span></div><div class="lbl">Photographs</div></div>
+        <div class="stat"><div class="num"><span data-count="1946" data-nosep>1946</span></div><div class="lbl">First frame from space</div></div>
+        <div class="stat"><div class="num"><span data-count="6">6</span> <small>billion km</small></div><div class="lbl">Farthest view of Earth</div></div>
+      </div>
+    </div>
+    <div class="gh-caption" id="heroCaption" aria-live="polite">
+      <div class="gh-cap-text"><span class="gh-cap-title" id="heroTitle">Earthrise</span><span class="gh-cap-meta" id="heroMeta">Apollo 8 · 1968</span></div>
+      <div class="gh-dots" id="heroDots" role="group" aria-label="Featured photographs"></div>
+    </div>
+  </section>
+
+  <!-- ================= COLLECTION ================= -->
+  <section class="shell block gal-collection" id="collection" aria-labelledby="colTitle">
+    <div class="gal-head">
+      <div>
+        <div class="eyebrow reveal">The collection</div>
+        <h2 id="colTitle" class="reveal" data-delay="60">Every picture has a <span class="grad-text">story</span>.</h2>
+        <p class="lede reveal" data-delay="120">Filter by era, subject or source, from the National Aeronautics and Space Administration (NASA) and the European Space Agency (ESA) to the Soviet space programme, or search for a mission, a telescope or a person. Select any photograph for its full story, the camera that took it and a link to the original.</p>
+      </div>
+    </div>
+
+    <div class="gal-toolbar" id="toolbar">
+      <div class="gal-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <label for="q" class="sr-only">Search photographs</label>
+        <input type="search" id="q" placeholder="Search: Webb, Apollo, nebula, Mars…" autocomplete="off">
+      </div>
+      <div class="seg" role="group" aria-label="Sort order" id="sortSeg">
+        <button type="button" data-sort="asc" aria-pressed="true">Oldest first</button>
+        <button type="button" data-sort="desc" aria-pressed="false">Newest first</button>
+      </div>
+      <span class="gal-count mono" id="count" aria-live="polite">50 photographs</span>
+    </div>
+    <div class="gal-filters" id="filters"></div>
+
+    <div class="gal-grid" id="grid" aria-label="Photographs"></div>
+    <div class="gal-empty" id="empty" hidden>
+      <p>No photographs match those filters.</p>
+      <button class="btn small" type="button" id="resetFilters">Clear filters</button>
+    </div>
+  </section>
+
+  <!-- ================= ASTRONOMY PICTURE OF THE DAY (hidden if the API fails) ================= -->
+  <section class="shell block gal-apod" id="apod" hidden aria-labelledby="apodTitle">
+    <div class="eyebrow">Live from NASA</div>
+    <h2 id="apodTitle">Astronomy Picture of the Day</h2>
+    <p class="lede">Six random picks from NASA's Astronomy Picture of the Day (APOD) archive, running since 16 June 1995 and written by astronomers Robert Nemiroff and Jerry Bonnell. Reload the page for a new set.</p>
+    <div class="apod-strip" id="apodStrip"></div>
+  </section>
+
+  <!-- ================= ABOUT THE IMAGES ================= -->
+  <section class="shell block gal-about" aria-labelledby="aboutTitle">
+    <div class="grid grid-2">
+      <div class="reveal">
+        <div class="eyebrow">Where the pictures come from</div>
+        <h2 id="aboutTitle">Credits and licences</h2>
+        <p>NASA photographs are generally not copyrighted; they are credited here as NASA asks. Hubble and Webb images from the ESA/Hubble and ESA/Webb portals, and Event Horizon Telescope (EHT) images published by the European Southern Observatory (ESO), are licensed Creative Commons Attribution 4.0 (CC BY 4.0). Rosetta navigation-camera images are CC BY-SA 3.0 IGO. Some files are loaded through Wikimedia Commons, which mirrors the originals.</p>
+        <p class="muted">Every image links back to its source page. Use of NASA material does not imply endorsement.</p>
+      </div>
+      <div class="card reveal" data-delay="100">
+        <h3>Offline copy</h3>
+        <p>Images load live from NASA, ESA, ESO and Wikimedia servers. If one fails, the page searches the NASA Image and Video Library for a stand-in, and otherwise shows a titled placeholder. To keep a local copy of every photograph, run this once from the repository root:</p>
+        <pre><code>python3 scripts/fetch_gallery.py</code></pre>
+        <p class="muted" style="margin-top:10px">It saves the images to <code>site/assets/gallery/</code> and writes <code>site/data/gallery.local.json</code>, which this page prefers when present.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox gal-lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbTitle" aria-hidden="true">
+  <button class="btn small close" type="button" id="lbClose" aria-label="Close viewer (Escape)">✕ Close</button>
+  <button class="gal-lb-nav prev" type="button" id="lbPrev" aria-label="Previous photograph">←</button>
+  <button class="gal-lb-nav next" type="button" id="lbNext" aria-label="Next photograph">→</button>
+  <div class="gal-lb-body">
+    <div class="gal-lb-stage" id="lbStage">
+      <div class="g-ph" id="lbPh"><span class="g-ph-title" id="lbPhTitle"></span><span class="g-ph-credit" id="lbPhCredit"></span><span class="g-ph-state" id="lbPhState">Loading image…</span></div>
+      <img id="lbImg" alt="">
+    </div>
+    <aside class="gal-lb-info">
+      <div class="eyebrow" id="lbDate"></div>
+      <h2 id="lbTitle"></h2>
+      <p class="gal-lb-story" id="lbStory"></p>
+      <dl class="gal-lb-meta">
+        <div><dt>Mission</dt><dd id="lbMission"></dd></div>
+        <div><dt>Instrument</dt><dd id="lbInstrument"></dd></div>
+        <div><dt>Credit</dt><dd id="lbCredit"></dd></div>
+      </dl>
+      <div class="row gal-lb-tags" id="lbTags"></div>
+      <div class="row gal-lb-links">
+        <a class="btn small primary" id="lbSource" href="#" target="_blank" rel="noopener">Source page ↗</a>
+        <a class="btn small" id="lbFull" href="#" target="_blank" rel="noopener">Open image ↗</a>
+      </div>
+      <p class="hint gal-lb-hint"><kbd>←</kbd> <kbd>→</kbd> browse · <kbd>Esc</kbd> close · <span id="lbPos"></span></p>
+    </aside>
+  </div>
+</div>
+
+<script src="assets/js/codex.js"></script>
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="vendor/gsap/Flip.min.js"></script>
+<script type="module" src="assets/js/gallery.js"></script>
+</body>
+</html>

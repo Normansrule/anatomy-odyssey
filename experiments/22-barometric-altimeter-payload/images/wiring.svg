@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" font-family="Inter, Helvetica, Arial, sans-serif">
+  <title>Wiring: Raspberry Pi Pico + BMP280/BMP390 + battery</title>
+  <rect width="900" height="520" rx="18" fill="#0b0f1c"/>
+  <text x="32" y="44" font-size="20" font-weight="700" fill="#e9edff">Altimeter wiring</text>
+  <text x="32" y="68" font-size="13" fill="#8f98bd">Raspberry Pi Pico (top view, USB at the top) · I2C0 on GP4/GP5 · pin numbers are the physical pins</text>
+
+  <!-- Pico board -->
+  <rect x="300" y="100" width="190" height="380" rx="10" fill="#1d6b3e" stroke="#4ef0b8" stroke-width="1.5"/>
+  <rect x="370" y="88" width="50" height="26" rx="4" fill="#9aa3b8"/>
+  <text x="395" y="106" font-size="11" text-anchor="middle" fill="#0b0f1c" font-weight="700">USB</text>
+  <text x="395" y="300" font-size="18" text-anchor="middle" fill="#e9edff" font-weight="700">Pico</text>
+  <text x="395" y="320" font-size="11" text-anchor="middle" fill="#c3cae6">RP2040</text>
+  <circle cx="330" cy="140" r="5" fill="#ffc24b"/><text x="340" y="144" font-size="10" fill="#e9edff">LED</text>
+
+  <!-- left pins -->
+  <g font-size="11" fill="#e9edff">
+    <circle cx="312" cy="190" r="5" fill="#ffc24b"/><text x="322" y="194">6 · GP4 SDA</text>
+    <circle cx="312" cy="212" r="5" fill="#ffc24b"/><text x="322" y="216">7 · GP5 SCL</text>
+    <circle cx="312" cy="234" r="5" fill="#ffc24b"/><text x="322" y="238">8 · GND</text>
+    <circle cx="312" cy="432" r="5" fill="#ffc24b"/><text x="322" y="436">18 · GND</text>
+    <circle cx="312" cy="454" r="5" fill="#ffc24b"/><text x="322" y="458">20 · GP15</text>
+  </g>
+  <!-- right pins -->
+  <g font-size="11" fill="#e9edff" text-anchor="end">
+    <circle cx="478" cy="124" r="5" fill="#ffc24b"/><text x="468" y="128">VBUS · 40</text>
+    <circle cx="478" cy="146" r="5" fill="#ffc24b"/><text x="468" y="150">VSYS · 39</text>
+    <circle cx="478" cy="168" r="5" fill="#ffc24b"/><text x="468" y="172">GND · 38</text>
+    <circle cx="478" cy="212" r="5" fill="#ffc24b"/><text x="468" y="216">3V3(OUT) · 36</text>
+  </g>
+
+  <!-- sensor -->
+  <rect x="40" y="150" width="170" height="120" rx="8" fill="#3a2a78" stroke="#b18cff" stroke-width="1.5"/>
+  <text x="125" y="176" font-size="14" text-anchor="middle" fill="#e9edff" font-weight="700">BMP390 / BMP280</text>
+  <text x="125" y="194" font-size="11" text-anchor="middle" fill="#c3cae6">breakout board</text>
+  <g font-size="11" fill="#e9edff" text-anchor="end">
+    <text x="196" y="214">VIN</text><circle cx="204" cy="210" r="4" fill="#ffc24b"/>
+    <text x="196" y="232">GND</text><circle cx="204" cy="228" r="4" fill="#ffc24b"/>
+    <text x="196" y="250">SCL</text><circle cx="204" cy="246" r="4" fill="#ffc24b"/>
+    <text x="196" y="268">SDA</text><circle cx="204" cy="264" r="4" fill="#ffc24b"/>
+  </g>
+
+  <!-- wires sensor -> pico -->
+  <g fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M204 210 H240 V498 H520 V212 H478" stroke="#ff7a3d"/>          <!-- VIN to 3V3 -->
+    <path d="M204 228 H250 V234 H312" stroke="#8f98bd"/>                     <!-- GND -->
+    <path d="M204 246 H262 V212 H312" stroke="#7cc8ff"/>                     <!-- SCL -->
+    <path d="M204 264 H274 V190 H312" stroke="#4ef0b8"/>                     <!-- SDA -->
+  </g>
+  <text x="96" y="296" font-size="11" fill="#ff7a3d">3.3 V (red)</text>
+  <text x="96" y="312" font-size="11" fill="#7cc8ff">SCL (blue)</text>
+  <text x="96" y="328" font-size="11" fill="#4ef0b8">SDA (green)</text>
+  <text x="96" y="344" font-size="11" fill="#8f98bd">GND (grey)</text>
+
+  <!-- battery path -->
+  <rect x="660" y="110" width="200" height="70" rx="8" fill="#3b2410" stroke="#ff7a3d" stroke-width="1.5"/>
+  <text x="760" y="136" font-size="13" text-anchor="middle" fill="#e9edff" font-weight="700">1S LiPo 3.7 V (protected)</text>
+  <text x="760" y="154" font-size="11" text-anchor="middle" fill="#c3cae6">or 3 × AAA NiMH / 2 × AAA alkaline</text>
+  <text x="680" y="172" font-size="11" fill="#ff7a3d">+</text><text x="840" y="172" font-size="11" fill="#c3cae6">−</text>
+  <g fill="none" stroke-width="3" stroke-linecap="round">
+    <path d="M684 180 V230 H640" stroke="#ff7a3d"/>
+    <path d="M600 230 H580" stroke="#ff7a3d"/>
+    <path d="M560 230 H540 V146 H478" stroke="#ff7a3d"/>
+    <path d="M844 180 V200 H620 V168 H478" stroke="#8f98bd"/>
+  </g>
+  <!-- switch -->
+  <circle cx="640" cy="230" r="4" fill="#e9edff"/><circle cx="600" cy="230" r="4" fill="#e9edff"/>
+  <path d="M640 230 L604 216" stroke="#e9edff" stroke-width="2.5"/>
+  <text x="620" y="252" font-size="11" text-anchor="middle" fill="#c3cae6">power switch</text>
+  <!-- diode -->
+  <path d="M580 220 V240 L562 230 Z" fill="#ffc24b"/><path d="M560 220 V240" stroke="#ffc24b" stroke-width="3"/>
+  <text x="570" y="262" font-size="11" text-anchor="middle" fill="#c3cae6">Schottky diode</text>
+  <text x="570" y="276" font-size="10" text-anchor="middle" fill="#8f98bd">(e.g. 1N5817, so USB and</text>
+  <text x="570" y="289" font-size="10" text-anchor="middle" fill="#8f98bd">battery can both be connected)</text>
+
+  <!-- safe-mode jumper -->
+  <g fill="none" stroke-width="3" stroke-linecap="round">
+    <path d="M312 454 H270 V470" stroke="#b18cff"/><path d="M312 432 H250 V470" stroke="#8f98bd"/>
+  </g>
+  <rect x="240" y="466" width="40" height="14" rx="3" fill="#b18cff"/>
+  <text x="120" y="462" font-size="11" fill="#e9edff" text-anchor="middle">safe-mode jumper</text>
+  <text x="120" y="478" font-size="10" fill="#8f98bd" text-anchor="middle">fit = no logging (USB file access)</text>
+
+  <text x="640" y="360" font-size="12" fill="#e9edff" font-weight="700">Checklist</text>
+  <g font-size="11" fill="#c3cae6">
+    <text x="640" y="380">• sensor on 3V3(OUT), never on VSYS/VBUS</text>
+    <text x="640" y="398">• most breakouts already have I2C pull-ups</text>
+    <text x="640" y="416">• keep wires short, twist SDA/SCL with GND</text>
+    <text x="640" y="434">• shield the sensor from sunlight and gusts:</text>
+    <text x="652" y="450">a foam tuft over it, never a sealed box</text>
+    <text x="640" y="468">• payload bay needs static ports (see README)</text>
+  </g>
+</svg>

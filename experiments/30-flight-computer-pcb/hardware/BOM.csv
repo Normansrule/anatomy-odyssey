@@ -1,0 +1,28 @@
+References,Qty,Value,Description,Manufacturer,MPN,Footprint,LCSC,DigiKey,Side,Notes
+BZ1,1,PKLCS1212E4001,"Piezo sounder 4 kHz, 12x12 mm SMD",Murata,PKLCS1212E4001-R1,Buzzer_Beeper:Buzzer_Murata_PKLCS1212E,,,bottom,Drive at 4 kHz; J7 accepts a louder external beeper
+"C1,C2",2,4.7uF,MLCC 4.7 uF 25 V X5R 0805,Samsung,CL21A475KAQNNNE,Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,C1779,,top,
+C3,1,1uF,MLCC 1 uF 25 V X5R 0805,Samsung,CL21B105KAFNNNE,Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,C28323,,top,
+"C4,C9",2,10uF,MLCC 10 uF 25 V X5R 0805,Samsung,CL21A106KAYNNNE,Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,C15850,,bottom/top,SD write bursts draw ~100 mA
+"C5,C6,C7,C10,C11",5,100nF,MLCC 100 nF 50 V X7R 0805,Samsung,CL21B104KBCNNNC,Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,C49678,,bottom/top,
+"D1,D2",2,SS14,"Schottky diode 40 V 1 A, SMA",MDD,SS14,Diode_SMD:D_SMA,C2480,,top,"Battery -> VSYS OR-ing, as in Pico datasheet section 4.5; Stops the USB-C port back-feeding the Pico micro-USB"
+D3,1,GREEN,LED green 0805 (status),Hubei KENTO,KT-0805G,LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder,C2297,,bottom,
+D4,1,1N4148W,Switching diode SOD-123 (flyback for external magnetic beeper),Changjiang,1N4148W,Diode_SMD:D_SOD-123,C81598,,bottom,
+D5,1,RED,LED red 0805 (charging),Hubei KENTO,KT-0805R,LED_SMD:LED_0805_2012Metric_Pad1.15x1.40mm_HandSolder,C84256,,top,"On while charging, off when full"
+J1,1,USB-C (power only),"USB Type-C receptacle, 6-pin power only, top mount",GCT,USB4125-GF-A,Connector_USB:USB_C_Receptacle_GCT_USB4125-xx-x_6P_TopMnt_Horizontal,,2073-USB4125-GF-ACT-ND,top,Charge/power only; data uses the Pico's micro-USB
+J2,1,LiPo 1S,JST PH 2-pin vertical header (battery),JST,B2B-PH-K-S(LF)(SN),Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,,455-1704-ND,bottom,CHECK battery lead polarity: + on pin 1
+J3,1,PWR SW,2-pin 2.54 mm SMD header: external arming/screw switch,generic,2.54 mm 1x02 SMD header,Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical_SMD_Pin1Left,,,bottom,Jumper for bench use
+J4,1,microSD,microSD push-push socket with card detect,Hirose,DM3AT-SF-PEJM5,Connector_Card:microSD_HC_Hirose_DM3AT-SF-PEJM5,,HR1941CT-ND,bottom,"Bottom side, card slot at the board end"
+J5,1,RADIO (RFM95W),8-pin 2.54 mm SMD header: LoRa radio (experiment 31),generic,2.54 mm 1x08 SMD header,Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical_SMD_Pin1Left,,,bottom,
+J6,1,GPS UART,4-pin 2.54 mm SMD header: GPS module (3.3 V UART),generic,2.54 mm 1x04 SMD header,Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical_SMD_Pin1Left,,,bottom,GPS TX -> Pico GP1 (RX)
+J7,1,EXT BEEPER,2-pin 2.54 mm SMD header: optional external magnetic beeper,generic,2.54 mm 1x02 SMD header,Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical_SMD_Pin1Left,,,bottom,
+Q1,1,MMBT3904,"NPN transistor 40 V 200 mA, SOT-23",Changjiang,MMBT3904,Package_TO_SOT_SMD:SOT-23,C20526,,bottom,Low-side buzzer switch
+"R1,R2",2,5.1k,Resistor 5.1k 1% 0805,UNI-ROYAL,0805W8F5101T5E,Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,C27834,,top,Sink (UFP) pull-down on CC1; Sink (UFP) pull-down on CC2
+"R3,R8,R9",3,4.7k,Resistor 4.7k 1% 0805,UNI-ROYAL,0805W8F4701T5E,Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,C17673,,top,I2C pull-up; I_charge = 1000 V / R_PROG = 213 mA
+"R4,R5,R6,R7",4,1k,Resistor 1k 1% 0805,UNI-ROYAL,0805W8F1001T5E,Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,C17513,,bottom/top,Base resistor; Charge LED current ~2 mA; Pull-up: piezo swings ~VSYS peak-to-peak; Status LED ~1.5 mA
+"R10,R11,R12",3,100k,Resistor 100k 1% 0805,UNI-ROYAL,0805W8F1003T5E,Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,C17407,,bottom/top,Divider bottom; Divider top; Keeps sensors off until firmware starts
+"R13,R14,R15,R16",4,10k,Resistor 10k 1% 0805,UNI-ROYAL,0805W8F1002T5E,Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,C17414,,bottom,Keeps card deselected at boot; SD DAT0 pull-up; Unused DAT1 pull-up; Unused DAT2 pull-up
+U1,1,Raspberry Pi Pico,"Raspberry Pi Pico (RP2040, 2 MB flash), castellated module",Raspberry Pi Ltd,SC0915,cosmic_codex:RaspberryPi_Pico_Castellated_HandSolder,,2648-SC0915CT-ND,top,Pico W (SC0918) also fits; GP29/VSYS-sense differs on W
+U2,1,MCP73831-2-OT,"Li-ion/Li-Po linear charger 4.20 V, SOT-23-5",Microchip,MCP73831T-2ACI/OT,Package_TO_SOT_SMD:SOT-23-5,C424093,MCP73831T-2ACI/OTCT-ND,top,
+U3,1,LSM6DSO32,"6-axis IMU, +/-32 g accel, +/-2000 dps gyro, LGA-14L",STMicroelectronics,LSM6DSO32TR,Package_LGA:LGA-14_3x2.5mm_P0.5mm_LayoutBorder3x4y,,,top,Fine pitch: reflow (hot plate/hot air) or order assembled. SA0=GND -> I2C 0x6A
+U4,1,BMP390,"Barometric pressure sensor, LGA-10 2x2 mm",Bosch Sensortec,BMP390,cosmic_codex:Bosch_LGA-10_2x2mm_P0.5mm_BMP390,,,top,Fine pitch: reflow. SDO=VDDIO -> I2C 0x77. Shield from light and airflow with open-cell foam
+U5,1,AP2112K-3.3,"600 mA LDO 3.3 V, SOT-23-5",Diodes Inc,AP2112K-3.3TRG1,Package_TO_SOT_SMD:SOT-23-5,C51118,AP2112K-3.3TRG1DICT-ND,top,Firmware can power-cycle sensors + SD via EN

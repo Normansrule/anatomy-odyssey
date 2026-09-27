@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Timeline · Cosmic Codex</title>
+<meta name="description" content="More than a hundred milestones in spaceflight and space science, from Tsiolkovsky's rocket equation in 1903 to Artemis II's crewed flight around the Moon in 2026, filterable by agency and category.">
+<meta property="og:title" content="Timeline · Cosmic Codex">
+<meta property="og:description" content="More than a hundred milestones in spaceflight and space science, from Tsiolkovsky's rocket equation in 1903 to Artemis II's crewed flight around the Moon in 2026, filterable by agency and category.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="assets/css/timeline.css">
+</head>
+<body data-page="timeline">
+<main class="page tl-page">
+
+  <!-- ================= HERO ================= -->
+  <section class="shell tl-hero">
+    <div class="tl-hero-copy">
+      <div class="eyebrow reveal">Timeline · 1903 → 2026</div>
+      <h1 class="reveal" data-delay="80">A century of <span class="grad-text">reaching up.</span></h1>
+      <p class="lede reveal" data-delay="160">
+        From a schoolteacher's equation to astronauts looping around the Moon: the launches, landings, discoveries
+        and losses that built the space age. Scroll down the line, or filter by agency and by kind of milestone.
+      </p>
+      <div class="row reveal" data-delay="240">
+        <a class="btn primary" href="#tl-start">Start in 1903</a>
+        <button class="btn" type="button" id="jumpLatest">Jump to 2026</button>
+      </div>
+    </div>
+    <div class="tl-hero-stats reveal" data-delay="320">
+      <div class="stat"><div class="num"><span data-count="110" id="statEvents">110</span></div><div class="lbl">Milestones</div></div>
+      <div class="stat"><div class="num"><span data-count="123">123</span></div><div class="lbl">Years</div></div>
+      <div class="stat"><div class="num"><span data-count="8">8</span></div><div class="lbl">Agencies &amp; groups</div></div>
+    </div>
+    <div class="tl-hero-arc" aria-hidden="true">
+      <svg viewBox="0 0 600 320" preserveAspectRatio="none">
+        <defs><linearGradient id="arcg" x1="0" x2="1"><stop offset="0" stop-color="#7cc8ff" stop-opacity="0"/><stop offset=".4" stop-color="#7cc8ff"/><stop offset=".75" stop-color="#b18cff"/><stop offset="1" stop-color="#ff7a3d"/></linearGradient></defs>
+        <path id="arcPath" d="M0 310 C 180 300, 330 240, 420 150 S 560 20, 600 8" fill="none" stroke="url(#arcg)" stroke-width="2"/>
+        <circle r="4" fill="#fff" id="arcDot"><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#arcPath"/></animateMotion></circle>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ================= FILTERS ================= -->
+  <section class="shell tl-controls" id="filters" aria-label="Filter the timeline">
+    <div class="tl-fgroup" id="fAgency" role="group" aria-label="Agency"></div>
+    <div class="tl-fgroup" id="fCategory" role="group" aria-label="Category"></div>
+    <p class="tl-legend">Agencies: National Aeronautics and Space Administration (NASA), the Soviet space programme and Russia's Roscosmos, European Space Agency (ESA), China National Space Administration (CNSA), Indian Space Research Organisation (ISRO), Japan Aerospace Exploration Agency (JAXA), SpaceX, and other companies and collaborations.</p>
+    <div class="tl-status"><span id="tlCount" aria-live="polite">110 milestones</span><button class="btn small" type="button" id="tlReset" hidden>Clear filters</button></div>
+  </section>
+
+  <!-- ================= THE LINE ================= -->
+  <section class="shell tl-wrap" id="tl-start" aria-label="Timeline of spaceflight">
+    <div class="tl" id="tl">
+      <div class="tl-spine" aria-hidden="true"><div class="tl-fill" id="tlFill"></div><div class="tl-head" id="tlHead"></div></div>
+      <ol class="tl-list" id="tlList"></ol>
+      <p class="tl-empty" id="tlEmpty" hidden>No milestones match those filters.</p>
+    </div>
+  </section>
+
+  <!-- ================= NOTES ================= -->
+  <section class="shell block tl-notes">
+    <div class="callout ice reveal">
+      <strong>About the dates.</strong> Dates are in Coordinated Universal Time (UTC) where sources give it, otherwise local time at the launch site; a few launches fall on different calendar days depending on which you use. Each milestone links to a fuller account. Spotted an error? Open an issue on <a href="https://github.com/Normansrule/cosmic-codex/issues" rel="noopener">GitHub</a>.
+    </div>
+  </section>
+</main>
+
+<!-- Sticky decade scrubber (right rail on desktop, bottom bar on phones) -->
+<nav class="tl-rail" id="tlRail" aria-label="Jump to decade">
+  <div class="tl-rail-year" aria-hidden="true"><span id="railYear">1903</span></div>
+  <ol class="tl-rail-list" id="railList"></ol>
+  <button class="tl-rail-filter" type="button" id="railFilter" title="Back to filters">Filters</button>
+</nav>
+
+<script src="assets/js/codex.js"></script>
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="vendor/gsap/ScrambleTextPlugin.min.js"></script>
+<script type="module" src="assets/js/timeline.js"></script>
+</body>
+</html>

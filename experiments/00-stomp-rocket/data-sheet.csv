@@ -1,0 +1,4 @@
+trial,date,launcher,stomp_style,rocket_mass_g,fin_count,launch_angle_deg,distance_to_observer_m,sight_angle_deg,observer_eye_height_m,max_height_m,range_m,flight_time_s,wind,notes
+1,,2L bottle,,,3,90,20,,1.5,,,,,
+2,,2L bottle,,,3,90,20,,1.5,,,,,
+3,,2L bottle,,,3,90,20,,1.5,,,,,
