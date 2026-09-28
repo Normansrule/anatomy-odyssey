@@ -1,0 +1,163 @@
+{
+  "about": "Sources and real interacting-galaxy pairs for galaxies.html (Galaxy Collision). Numbers shown on the page come from these references or from the model equations in assets/js/galaxies-physics.js.",
+  "sources": [
+    {
+      "id": "toomre1972",
+      "cite": "Toomre, A. & Toomre, J. (1972), Galactic Bridges and Tails, The Astrophysical Journal 178, 623",
+      "url": "https://ui.adsabs.harvard.edu/abs/1972ApJ...178..623T/",
+      "used": "Restricted N-body method, prograde vs retrograde tails, Antennae and Mice models"
+    },
+    {
+      "id": "toomre1977",
+      "cite": "Toomre, A. (1977), Mergers and Some Consequences, in Evolution of Galaxies and Stellar Populations, Yale University Observatory, p. 401",
+      "url": "https://ui.adsabs.harvard.edu/abs/1977egsp.conf..401T/",
+      "used": "Mergers of spirals make ellipticals"
+    },
+    {
+      "id": "vdm2012",
+      "cite": "van der Marel, R. P. et al. (2012), The M31 Velocity Vector. III. Future Milky Way–M31–M33 Orbital Evolution, Merging, and Fate of the Sun, ApJ 753, 9",
+      "url": "https://arxiv.org/abs/1205.6865",
+      "used": "First pericentre 3.87 Gyr, merger 5.86 Gyr, pericentre ≈ 31 kpc; 85% chance the Sun ends farther from the centre"
+    },
+    {
+      "id": "vdm2012b",
+      "cite": "van der Marel, R. P. et al. (2012), The M31 Velocity Vector. II. Radial Orbit toward the Milky Way and Implied Local Group Mass, ApJ 753, 8",
+      "url": "https://arxiv.org/abs/1205.6864",
+      "used": "Distance 770 kpc and Galactocentric radial velocity −109.3 km/s used as the starting conditions"
+    },
+    {
+      "id": "vdm2019",
+      "cite": "van der Marel, R. P. et al. (2019), First Gaia Dynamics of the Andromeda System: DR2 Proper Motions, Orbits, and Rotation of M31 and M33, ApJ 872, 24",
+      "url": "https://arxiv.org/abs/1805.04079",
+      "used": "Revised first pericentre ≈ 4.5 Gyr at ≈ 130 kpc"
+    },
+    {
+      "id": "sawala2025",
+      "cite": "Sawala, T. et al. (2025), No certainty of a Milky Way–Andromeda collision, Nature Astronomy 9, 1206",
+      "url": "https://www.nature.com/articles/s41550-025-02563-1",
+      "used": "About 50% chance of a merger within 10 Gyr; ~2% chance of a collision within 4–5 Gyr"
+    },
+    {
+      "id": "esa-heic2508",
+      "cite": "ESA/Hubble (2 June 2025), Hubble casts doubt on certainty of galactic collision, heic2508",
+      "url": "https://esahubble.org/news/heic2508/",
+      "used": "Plain-language summary of Sawala et al. 2025"
+    },
+    {
+      "id": "cox2008",
+      "cite": "Cox, T. J. & Loeb, A. (2008), The collision between the Milky Way and Andromeda, MNRAS 386, 461",
+      "url": "https://arxiv.org/abs/0705.1170",
+      "used": "Full N-body comparison"
+    },
+    {
+      "id": "chandra1943",
+      "cite": "Chandrasekhar, S. (1943), Dynamical Friction. I. General Considerations, ApJ 97, 255",
+      "url": "https://ui.adsabs.harvard.edu/abs/1943ApJ....97..255C/",
+      "used": "Dynamical friction formula"
+    },
+    {
+      "id": "bt2008",
+      "cite": "Binney, J. & Tremaine, S. (2008), Galactic Dynamics, 2nd edition, Princeton University Press (eq. 8.7, §8.1; leapfrog §3.4)",
+      "url": "https://ui.adsabs.harvard.edu/abs/2008gady.book.....B/",
+      "used": "Friction, Coulomb logarithm, leapfrog integrator"
+    },
+    {
+      "id": "hernquist1990",
+      "cite": "Hernquist, L. (1990), An Analytical Model for Spherical Galaxies and Bulges, ApJ 356, 359",
+      "url": "https://ui.adsabs.harvard.edu/abs/1990ApJ...356..359H/",
+      "used": "Bulge and halo potential"
+    },
+    {
+      "id": "bhg2016",
+      "cite": "Bland-Hawthorn, J. & Gerhard, O. (2016), The Galaxy in Context: Structural, Kinematic, and Integrated Properties, ARA&A 54, 529",
+      "url": "https://arxiv.org/abs/1602.07702",
+      "used": "Milky Way disk scale length, bulge and disk masses"
+    },
+    {
+      "id": "gravity2019",
+      "cite": "GRAVITY Collaboration (2019), A geometric distance measurement to the Galactic center black hole with 0.3% uncertainty, A&A 625, L10",
+      "url": "https://arxiv.org/abs/1904.05721",
+      "used": "Sun's distance from the Galactic centre, R₀ = 8.178 kpc"
+    },
+    {
+      "id": "courteau2011",
+      "cite": "Courteau, S. et al. (2011), The Luminosity Profile and Structural Parameters of the Andromeda Galaxy, ApJ 739, 20",
+      "url": "https://arxiv.org/abs/1106.3564",
+      "used": "M31 disk scale length 5.3 kpc"
+    },
+    {
+      "id": "linshu1964",
+      "cite": "Lin, C. C. & Shu, F. H. (1964), On the Spiral Structure of Disk Galaxies, ApJ 140, 646",
+      "url": "https://ui.adsabs.harvard.edu/abs/1964ApJ...140..646L/",
+      "used": "Density-wave spiral pattern painted on young stars"
+    },
+    {
+      "id": "barnes1992",
+      "cite": "Barnes, J. E. & Hernquist, L. (1992), Dynamics of Interacting Galaxies, ARA&A 30, 705",
+      "url": "https://ui.adsabs.harvard.edu/abs/1992ARA%26A..30..705B/",
+      "used": "Review of tails, bridges, rings and mergers"
+    }
+  ],
+  "pairs": [
+    {
+      "name": "The Antennae",
+      "ids": "NGC 4038 / NGC 4039",
+      "distance": "about 45 million light-years",
+      "preset": "antennae",
+      "what": "Two spirals a few hundred million years after their first close pass. Two long, curved tidal tails arc away like an insect's antennae, while the colliding centres blaze with new star clusters.",
+      "links": [
+        {
+          "label": "ESA/Hubble: Antennae Galaxies reloaded",
+          "url": "https://esahubble.org/images/potw1345a/"
+        },
+        {
+          "label": "ESA/Hubble: The Antennae move closer",
+          "url": "https://esahubble.org/news/heic0812/"
+        }
+      ]
+    },
+    {
+      "name": "The Mice",
+      "ids": "NGC 4676 A / B",
+      "distance": "about 300 million light-years",
+      "preset": "mice",
+      "what": "Two galaxies just past their first close approach, each trailing one long, straight tail — the shape Toomre & Toomre matched with a prograde, nearly parabolic encounter.",
+      "links": [
+        {
+          "label": "ESA/Hubble: The Mice (Advanced Camera for Surveys)",
+          "url": "https://esahubble.org/images/heic0206h/"
+        }
+      ]
+    },
+    {
+      "name": "The Cartwheel",
+      "ids": "ESO 350-40",
+      "distance": "about 500 million light-years",
+      "preset": "cartwheel",
+      "what": "A small galaxy punched almost straight through a big disk. The sudden extra gravity pulled the disk inward, then it rebounded: an expanding ring wave, like a stone dropped in a pond.",
+      "links": [
+        {
+          "label": "ESA/Hubble: The Cartwheel Galaxy",
+          "url": "https://esahubble.org/images/opo9636a1/"
+        },
+        {
+          "label": "ESA/Webb: Cartwheel Galaxy (MIRI)",
+          "url": "https://esawebb.org/images/weic2211b/"
+        }
+      ]
+    },
+    {
+      "name": "Arp 273",
+      "ids": "UGC 1810 / UGC 1813",
+      "distance": "about 300 million light-years",
+      "preset": null,
+      "what": "A rose-shaped spiral distorted by a smaller companion that probably passed through it. Try the Cartwheel-like preset with the pericentre raised to a few kiloparsecs and the tilt increased.",
+      "links": [
+        {
+          "label": "ESA/Hubble: A rose made of galaxies",
+          "url": "https://esahubble.org/images/heic1107a/"
+        }
+      ]
+    }
+  ]
+}

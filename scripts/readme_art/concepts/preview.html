@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>README concept animations · preview</title>
+<style>
+  body { margin: 0; font: 14px -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; }
+  .col { padding: 24px 32px; }
+  .light { background: #ffffff; color: #1f2328; }
+  .dark { background: #0d1117; color: #e6edf3; }
+  h2 { font-size: 14px; font-weight: 600; margin: 28px 0 8px; opacity: .7; }
+  img { display: block; width: 100%; max-width: 800px; height: auto; }
+  img.sq { max-width: 480px; }
+</style>
+</head>
+<body>
+<div class="cols">
+  <div class="col light" id="L"></div>
+  <div class="col dark" id="D"></div>
+</div>
+<script>
+  // preview only (the SVGs themselves contain no script)
+  const figs = ["rocket-equation", "hohmann", "kepler-areas", "light-speed", "orbit-race", "hoverslam",
+    "black-hole-anatomy", "staging", "mars-edl", "learning-path", "scale-ladder"];
+  for (const id of ["L", "D"]) {
+    const el = document.getElementById(id);
+    el.innerHTML = `<h2>${id === "L" ? "GitHub light (#ffffff)" : "GitHub dark (#0d1117)"}</h2>` +
+      figs.map(f => `<h2>${f}.svg</h2><img ${f === "orbit-race" ? 'class="sq" ' : ""}src="../../../media/readme/concepts/${f}.svg" alt="${f}">`).join("");
+  }
+</script>
+</body>
+</html>

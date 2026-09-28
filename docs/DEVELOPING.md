@@ -47,6 +47,9 @@ cosmic-library/
 | earth | earth.html | sim — live satellites, launches, news |
 | sky | sky.html | sim — planetarium |
 | scale | scale.html | sim — powers-of-ten zoom |
+| builder | builder.html | sim — design a rocket and fly it |
+| space-weather | space-weather.html | sim — live solar wind, geomagnetic storms, aurora |
+| galaxies | galaxies.html | sim — Milky Way–Andromeda collision (GPU N-body) |
 
 ## Page skeleton
 

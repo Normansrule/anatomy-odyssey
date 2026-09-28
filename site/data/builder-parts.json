@@ -1,0 +1,288 @@
+{
+  "meta": {
+    "title": "Rocket Builder: parts catalogue and assumptions",
+    "read": "2026-09-28",
+    "units": {
+      "thrust": "kN (per engine; sea level = ambient 101.325 kPa, vacuum = no ambient pressure)",
+      "isp": "s (specific impulse; exhaust speed = Isp × g0, g0 = 9.80665 m/s²)",
+      "mass": "kg",
+      "length": "m"
+    },
+    "notes": [
+      "Engine and booster figures come from the English Wikipedia article linked with each part (infobox values, read on the date above) unless another source is named.",
+      "A field listed in 'estimated' is not published or could not be confirmed for this edition: it was chosen from photographs, related engines or physical reasoning. Please check it before citing, and open an issue if you have a better source.",
+      "Where only one of the two thrusts is published, the other is derived at constant mass flow: F_vac = F_sl × Isp_vac / Isp_sl. For vacuum engines the sea-level thrust is F_vac − p0·A_exit, which is what a vacuum bell would give before the exhaust separates from the nozzle wall.",
+      "Between sea level and vacuum the builder interpolates honestly: the mass flow is fixed, so thrust falls linearly with ambient pressure, F(p) = F_vac − p·A_exit, with A_exit = (F_vac − F_sl)/p0. Specific impulse follows as F(p)/(ṁ·g0)."
+    ],
+    "sources": [
+      { "id": "WF1", "label": "Wikipedia: Rocketdyne F-1", "url": "https://en.wikipedia.org/wiki/Rocketdyne_F-1" },
+      { "id": "WJ2", "label": "Wikipedia: Rocketdyne J-2", "url": "https://en.wikipedia.org/wiki/Rocketdyne_J-2" },
+      { "id": "WRS25", "label": "Wikipedia: RS-25", "url": "https://en.wikipedia.org/wiki/RS-25" },
+      { "id": "WRS68", "label": "Wikipedia: RS-68", "url": "https://en.wikipedia.org/wiki/RS-68" },
+      { "id": "WRL10", "label": "Wikipedia: RL10", "url": "https://en.wikipedia.org/wiki/RL10" },
+      { "id": "WMER", "label": "Wikipedia: SpaceX Merlin", "url": "https://en.wikipedia.org/wiki/SpaceX_Merlin" },
+      { "id": "BOOST", "label": "Cosmic Library data/booster.json (Merlin 1D, Falcon 9 Block 5 first stage)", "url": "booster.json" },
+      { "id": "WRAP", "label": "Wikipedia: SpaceX Raptor", "url": "https://en.wikipedia.org/wiki/SpaceX_Raptor" },
+      { "id": "WRD180", "label": "Wikipedia: RD-180", "url": "https://en.wikipedia.org/wiki/RD-180" },
+      { "id": "WBE4", "label": "Wikipedia: BE-4", "url": "https://en.wikipedia.org/wiki/BE-4" },
+      { "id": "WVUL", "label": "Wikipedia: Vulcain (rocket engine)", "url": "https://en.wikipedia.org/wiki/Vulcain_(rocket_engine)" },
+      { "id": "WRUT", "label": "Wikipedia: Rutherford (rocket engine)", "url": "https://en.wikipedia.org/wiki/Rutherford_(rocket_engine)" },
+      { "id": "WELE", "label": "Wikipedia: Rocket Lab Electron", "url": "https://en.wikipedia.org/wiki/Rocket_Lab_Electron" },
+      { "id": "WSRB", "label": "Wikipedia: Space Shuttle Solid Rocket Booster", "url": "https://en.wikipedia.org/wiki/Space_Shuttle_Solid_Rocket_Booster" },
+      { "id": "WGEM", "label": "Wikipedia: GEM 63", "url": "https://en.wikipedia.org/wiki/GEM_63" },
+      { "id": "WSV", "label": "Wikipedia: Saturn V", "url": "https://en.wikipedia.org/wiki/Saturn_V" },
+      { "id": "WF9", "label": "Wikipedia: Falcon 9", "url": "https://en.wikipedia.org/wiki/Falcon_9" },
+      { "id": "WA11", "label": "Wikipedia: Apollo 11", "url": "https://en.wikipedia.org/wiki/Apollo_11" },
+      { "id": "FER", "label": "NASA MSFC: Saturn V Flight Evaluation Report AS-506 (1969)", "url": "https://ntrs.nasa.gov/citations/19900066485" },
+      { "id": "WJWST", "label": "Wikipedia: James Webb Space Telescope", "url": "https://en.wikipedia.org/wiki/James_Webb_Space_Telescope" },
+      { "id": "WZAR", "label": "Wikipedia: Zarya (ISS module)", "url": "https://en.wikipedia.org/wiki/Zarya_(ISS_module)" },
+      { "id": "WSKY", "label": "Wikipedia: Skylab", "url": "https://en.wikipedia.org/wiki/Skylab" },
+      { "id": "WDRA", "label": "Wikipedia: SpaceX Dragon 2", "url": "https://en.wikipedia.org/wiki/SpaceX_Dragon_2" },
+      { "id": "WM20", "label": "Wikipedia: Mars 2020", "url": "https://en.wikipedia.org/wiki/Mars_2020" },
+      { "id": "CDS", "label": "Cal Poly: CubeSat Design Specification", "url": "https://www.cubesat.org/cubesatinfo" },
+      { "id": "WRP1", "label": "Wikipedia: RP-1", "url": "https://en.wikipedia.org/wiki/RP-1" },
+      { "id": "WLOX", "label": "Wikipedia: Liquid oxygen", "url": "https://en.wikipedia.org/wiki/Liquid_oxygen" },
+      { "id": "WLH2", "label": "Wikipedia: Liquid hydrogen", "url": "https://en.wikipedia.org/wiki/Liquid_hydrogen" },
+      { "id": "WCH4", "label": "Wikipedia: Methane (liquid density at the boiling point)", "url": "https://en.wikipedia.org/wiki/Methane" },
+      { "id": "WDV", "label": "Wikipedia: Delta-v budget", "url": "https://en.wikipedia.org/wiki/Delta-v_budget" },
+      { "id": "WET", "label": "Wikipedia: Space Shuttle external tank", "url": "https://en.wikipedia.org/wiki/Space_Shuttle_external_tank" },
+      { "id": "EST", "label": "Estimate for this page (see the note on the item)", "url": "" }
+    ]
+  },
+
+  "propellants": {
+    "kerolox": {
+      "name": "Kerosene + oxygen", "short": "RP-1 / LOX", "letter": "K",
+      "fuel": "RP-1 (rocket-grade kerosene)", "rhoFuel": 810, "rhoOx": 1141, "mixture": 2.5,
+      "sigma": 0.040,
+      "color": "#f2f0ea", "accent": "#ff9a4a",
+      "why": "Dense and easy to store: big thrust from compact tanks, so it is the classic first-stage propellant. The exhaust is sooty and orange.",
+      "sources": ["WRP1", "WLOX", "WSV", "BOOST"],
+      "sigmaNote": "Checked against the Saturn V first stage (S-IC: about 89 t of structure for 2,150 t of propellant, 4.1 %) and the Falcon 9 first stage (about 18 t for 411 t, 4.4 %)."
+    },
+    "hydrolox": {
+      "name": "Hydrogen + oxygen", "short": "LH₂ / LOX", "letter": "H",
+      "fuel": "liquid hydrogen", "rhoFuel": 70.85, "rhoOx": 1141, "mixture": 6.0,
+      "sigma": 0.065,
+      "color": "#e98a3c", "accent": "#8fb0ff",
+      "why": "The highest specific impulse of any common propellant, but hydrogen is 14 times less dense than water: huge, insulated, heavier tanks. The exhaust is nearly invisible.",
+      "sources": ["WLH2", "WLOX", "WSV", "WET"],
+      "sigmaNote": "Between the Saturn V second stage (S-II: about 29 t of structure for 446 t, 6.5 %) and the third (S-IVB, about 11 % including its attitude-control modules); the lightweight Space Shuttle external tank managed 3.6 %."
+    },
+    "methalox": {
+      "name": "Methane + oxygen", "short": "CH₄ / LOX", "letter": "M",
+      "fuel": "liquid methane", "rhoFuel": 422.6, "rhoOx": 1141, "mixture": 3.6,
+      "sigma": 0.045,
+      "color": "#c9ced6", "accent": "#b690ff",
+      "why": "A middle road: better specific impulse than kerosene, burns clean (good for reuse), and can in principle be made on Mars from water and carbon dioxide.",
+      "sources": ["WCH4", "WLOX", "EST"],
+      "sigmaNote": "Estimate between kerosene and hydrogen stages; stainless-steel methane stages are heavy but simple."
+    }
+  },
+
+  "tanks": {
+    "usableFraction": 0.80,
+    "usableNote": "Only about 80 % of a tank section's cylinder volume holds usable propellant: the rest is domes, intertank or common bulkhead, thrust structure and ullage gas space. The Saturn V's stages manage about 0.7; Falcon 9's first stage, with chilled, densified propellant, nearly 1.0.",
+    "sizePenalty": 0.6,
+    "sizeNote": "Small stages are relatively heavier (walls cannot be thinner than a practical minimum, and avionics and plumbing do not shrink): structure fraction = σ × (1 + 0.6 m / diameter). This reproduces the Electron (≈ 6 %), Falcon 9 (≈ 4.7 %) and Saturn V first stage (≈ 4.2 %) within about 10 %.",
+    "interstageKgPerM2": 70,
+    "interstageNote": "Interstage, separation system and adapters: 70 kg per m² of the upper stage's cross-section (Saturn V's S-IC/S-II interstage: 4.6 t for 79 m², about 58 kg/m²). Estimate.",
+    "minLength": 0.8, "maxLength": 90,
+    "diameters": [
+      { "d": 1.2, "label": "1.2 m", "like": "small-launcher class (Electron)" },
+      { "d": 2.4, "label": "2.4 m", "like": "Delta II class" },
+      { "d": 3.7, "label": "3.7 m", "like": "Falcon 9 class (3.66 m)" },
+      { "d": 5.4, "label": "5.4 m", "like": "Ariane 6 / Vulcan class" },
+      { "d": 6.6, "label": "6.6 m", "like": "Saturn IB / S-IVB class" },
+      { "d": 8.4, "label": "8.4 m", "like": "Shuttle external tank / SLS core" },
+      { "d": 9.0, "label": "9 m", "like": "Starship class" },
+      { "d": 10.1, "label": "10.1 m", "like": "Saturn V class" }
+    ]
+  },
+
+  "engines": [
+    {
+      "id": "f1", "name": "F-1", "family": "kerolox", "cycle": "gas generator",
+      "fSL": 6770, "fVac": 7770, "ispSL": 263, "ispVac": 304, "mass": 8391,
+      "exitD": 3.76, "length": 5.79, "minThrottle": 1,
+      "flew": "Saturn V first stage (S-IC), 1967–1973",
+      "sources": ["WF1"], "estimated": []
+    },
+    {
+      "id": "j2", "name": "J-2", "family": "hydrolox", "cycle": "gas generator",
+      "fSL": 486.2, "fVac": 1033.1, "ispSL": 200, "ispVac": 421, "mass": 1788,
+      "exitD": 1.96, "length": 3.38, "minThrottle": 1,
+      "flew": "Saturn V second and third stages, Saturn IB upper stage",
+      "sources": ["WJ2"], "estimated": ["exitD"]
+    },
+    {
+      "id": "rs25", "name": "RS-25", "family": "hydrolox", "cycle": "staged combustion",
+      "fSL": 1860, "fVac": 2279, "ispSL": 366, "ispVac": 452.3, "mass": 3527,
+      "exitD": 2.4, "length": 4.3, "minThrottle": 0.61,
+      "flew": "Space Shuttle main engines; Space Launch System core stage",
+      "note": "Thrust at 109 % of rated power level; throttles down to 67 % (0.61 of that).",
+      "sources": ["WRS25"], "estimated": []
+    },
+    {
+      "id": "rs68a", "name": "RS-68A", "family": "hydrolox", "cycle": "gas generator",
+      "fSL": 3137, "fVac": 3560, "ispSL": 362, "ispVac": 411, "mass": 6747,
+      "exitD": 2.43, "length": 5.2, "minThrottle": 0.55,
+      "flew": "Delta IV common booster cores, 2012–2024",
+      "sources": ["WRS68"], "estimated": ["exitD"]
+    },
+    {
+      "id": "rl10", "name": "RL10B-2", "family": "hydrolox", "cycle": "expander", "vacuumOnly": true,
+      "fSL": null, "fVac": 110, "ispSL": null, "ispVac": 465.5, "mass": 301,
+      "exitD": 2.15, "length": 4.15, "minThrottle": 1,
+      "flew": "Delta IV upper stage; SLS interim upper stage",
+      "note": "Vacuum engine with a carbon extendable nozzle.",
+      "sources": ["WRL10"], "estimated": []
+    },
+    {
+      "id": "merlin", "name": "Merlin 1D", "family": "kerolox", "cycle": "gas generator",
+      "fSL": 845, "fVac": 914, "ispSL": 282, "ispVac": 311, "mass": 470,
+      "exitD": 0.92, "length": 2.9, "minThrottle": 0.57,
+      "flew": "Falcon 9 and Falcon Heavy first stages (sea-level version)",
+      "sources": ["WMER", "BOOST"], "estimated": ["exitD", "length"]
+    },
+    {
+      "id": "mvac", "name": "Merlin Vacuum", "family": "kerolox", "cycle": "gas generator", "vacuumOnly": true,
+      "fSL": null, "fVac": 981, "ispSL": null, "ispVac": 348, "mass": 490,
+      "exitD": 3.3, "length": 4.9, "minThrottle": 0.39,
+      "flew": "Falcon 9 second stage",
+      "sources": ["WMER"], "estimated": ["mass", "exitD", "length", "minThrottle"]
+    },
+    {
+      "id": "raptor", "name": "Raptor 2", "family": "methalox", "cycle": "full-flow staged combustion",
+      "fSL": 2256, "fVac": null, "ispSL": 327, "ispVac": 347, "mass": 1630,
+      "exitD": 1.3, "length": 3.1, "minThrottle": 0.4,
+      "flew": "Starship Super Heavy booster and ship (sea-level version)",
+      "note": "Vacuum thrust derived at constant mass flow: 2,256 kN × 347 s / 327 s.",
+      "sources": ["WRAP"], "estimated": ["exitD", "minThrottle"]
+    },
+    {
+      "id": "rvac", "name": "Raptor Vacuum", "family": "methalox", "cycle": "full-flow staged combustion", "vacuumOnly": true,
+      "fSL": null, "fVac": 2530, "ispSL": null, "ispVac": 363, "mass": 1600,
+      "exitD": 2.3, "length": 4.6, "minThrottle": 0.4,
+      "flew": "Starship upper stage (outer ring)",
+      "note": "Figures for the version flown alongside Raptor 2 vary between sources; SpaceX has quoted about 380 s as a goal.",
+      "sources": ["WRAP"], "estimated": ["fVac", "ispVac", "mass", "exitD", "length", "minThrottle"]
+    },
+    {
+      "id": "rd180", "name": "RD-180", "family": "kerolox", "cycle": "oxidizer-rich staged combustion",
+      "fSL": 3830, "fVac": 4152, "ispSL": 311.3, "ispVac": 338.4, "mass": 5480,
+      "exitD": 1.43, "chambers": 2, "length": 3.56, "minThrottle": 0.47,
+      "flew": "Atlas III and Atlas V first stage (two chambers, one set of turbopumps)",
+      "sources": ["WRD180"], "estimated": []
+    },
+    {
+      "id": "be4", "name": "BE-4", "family": "methalox", "cycle": "oxidizer-rich staged combustion",
+      "fSL": 2400, "fVac": null, "ispSL": 310, "ispVac": 340, "mass": 2400,
+      "exitD": 1.9, "length": 5.7, "minThrottle": 0.5,
+      "flew": "Vulcan Centaur first stage; New Glenn first stage",
+      "note": "Sea-level thrust 2,400 kN (550,000 lbf). Specific impulse has not been published; the values here are typical of methane staged-combustion engines.",
+      "sources": ["WBE4"], "estimated": ["ispSL", "ispVac", "mass", "exitD", "length", "minThrottle"]
+    },
+    {
+      "id": "vulcain", "name": "Vulcain 2.1", "family": "hydrolox", "cycle": "gas generator",
+      "fSL": null, "fVac": 1370, "ispSL": 310, "ispVac": 431, "mass": 2100,
+      "exitD": 2.15, "length": 3.6, "minThrottle": 1,
+      "flew": "Ariane 6 core stage",
+      "note": "Sea-level thrust derived at constant mass flow.",
+      "sources": ["WVUL"], "estimated": ["ispSL", "mass", "exitD", "length"]
+    },
+    {
+      "id": "rutherford", "name": "Rutherford", "family": "kerolox", "cycle": "electric pump-fed",
+      "fSL": 24.9, "fVac": null, "ispSL": 290, "ispVac": 311, "mass": 35,
+      "exitD": 0.25, "length": 0.6, "minThrottle": 1,
+      "flew": "Electron first stage (nine engines, 224 kN at liftoff)",
+      "note": "Sea-level thrust = the Electron's published 224.3 kN liftoff thrust ÷ 9. Battery-powered electric pumps.",
+      "sources": ["WRUT", "WELE"], "estimated": ["ispSL", "exitD", "length"]
+    },
+    {
+      "id": "rutherfordvac", "name": "Rutherford Vacuum", "family": "kerolox", "cycle": "electric pump-fed", "vacuumOnly": true,
+      "fSL": null, "fVac": 25.8, "ispSL": null, "ispVac": 343, "mass": 35,
+      "exitD": 0.6, "length": 1.0, "minThrottle": 1,
+      "flew": "Electron second stage",
+      "sources": ["WRUT"], "estimated": ["mass", "exitD", "length"]
+    }
+  ],
+
+  "boosters": [
+    {
+      "id": "srb", "name": "Shuttle solid booster", "fullName": "Space Shuttle Solid Rocket Booster (four segments)",
+      "gross": 590000, "prop": 500000, "burn": 124, "ispSL": 242, "ispVac": 268,
+      "diameter": 3.71, "length": 45.46,
+      "peakSL": 12500,
+      "profile": [[0, 1.0], [0.04, 1.0], [0.2, 0.96], [0.33, 0.76], [0.45, 0.74], [0.6, 0.84], [0.8, 0.74], [0.9, 0.46], [0.96, 0.14], [1, 0]],
+      "profileNote": "Solid boosters cannot throttle: the grain is shaped so thrust dips through maximum dynamic pressure (max-q). This curve is a simplified shape of the published thrust trace; its peak gives ≈ 12.3 MN at liftoff (published: about 12.5 MN).",
+      "flew": "Space Shuttle, 1981–2011 (two per launch)",
+      "sources": ["WSRB"], "estimated": ["profile"]
+    },
+    {
+      "id": "gem63", "name": "GEM 63", "fullName": "Graphite Epoxy Motor 63",
+      "gross": 49300, "prop": 44200, "burn": 94, "ispSL": 245, "ispVac": 275,
+      "diameter": 1.6, "length": 20.1,
+      "peakSL": 1663,
+      "profile": [[0, 1.0], [0.1, 0.98], [0.5, 0.86], [0.8, 0.76], [0.92, 0.42], [1, 0]],
+      "profileNote": "Simplified thrust curve (estimate).",
+      "flew": "Atlas V strap-on booster (up to five)",
+      "sources": ["WGEM"], "estimated": ["ispSL", "ispVac", "profile"]
+    }
+  ],
+
+  "fairings": [
+    { "d": 1.2, "mass": 50, "len": 2.5, "label": "1.2 m fairing", "sources": ["EST"], "note": "Small carbon-composite fairing (estimate)." },
+    { "d": 2.5, "mass": 600, "len": 6.5, "label": "2.5 m fairing", "sources": ["EST"], "note": "Estimate." },
+    { "d": 4.0, "mass": 1300, "len": 10, "label": "4 m fairing", "sources": ["EST"], "note": "Estimate." },
+    { "d": 5.2, "mass": 1900, "len": 13.1, "label": "5.2 m fairing", "sources": ["WF9"], "note": "Falcon-class composite fairing: about 1.9 t for both halves (widely quoted; not in the infobox)." },
+    { "d": 5.4, "mass": 2600, "len": 17, "label": "5.4 m fairing", "sources": ["EST"], "note": "Ariane / Vulcan class long fairing (estimate)." },
+    { "d": 8.4, "mass": 9000, "len": 27, "label": "8.4 m fairing", "sources": ["EST"], "note": "Heavy-lift class (estimate)." },
+    { "d": 10.1, "mass": 12000, "len": 30, "label": "10 m fairing", "sources": ["EST"], "note": "Saturn-scale (estimate)." }
+  ],
+  "fairingJettisonAlt": 110000,
+  "fairingJettisonNote": "Fairings are dropped once aerodynamic heating is negligible, typically at 100–120 km.",
+
+  "payloads": [
+    { "id": "cubesat", "name": "3U CubeSat", "mass": 4, "d": 0.3, "h": 0.4, "dest": "leo", "shape": "cube",
+      "note": "Three 10 cm cubes; the specification allows about 4 kg for a 3U (newer revisions allow up to 6 kg).", "sources": ["CDS"] },
+    { "id": "smallsat", "name": "Small Earth-observation satellite", "mass": 300, "d": 0.9, "h": 1.4, "dest": "leo", "shape": "sat",
+      "note": "A small-launcher-class payload (the Electron's quoted capacity class, about 300 kg).", "sources": ["WELE"] },
+    { "id": "comsat", "name": "Geostationary communications satellite", "mass": 6000, "d": 3.8, "h": 6.5, "dest": "gto", "shape": "sat",
+      "note": "A large geostationary satellite goes first to a geostationary transfer orbit (GTO); 6 t is typical of the heaviest (estimate).", "sources": ["EST"] },
+    { "id": "jwst", "name": "Space telescope (JWST-class)", "mass": 6161, "d": 4.5, "h": 10.5, "dest": "l2", "shape": "scope",
+      "note": "The James Webb Space Telescope launched folded, 6,161 kg, under a 5.4 m fairing, straight onto a path to the Sun–Earth L2 point.", "sources": ["WJWST"] },
+    { "id": "rover", "name": "Mars rover mission (Perseverance-class)", "mass": 3649, "d": 4.5, "h": 4.0, "dest": "mars", "shape": "aeroshell",
+      "note": "Cruise stage, aeroshell, descent stage and rover together.", "sources": ["WM20"], "estimated": ["mass"] },
+    { "id": "capsule", "name": "Crew capsule (Dragon-class)", "mass": 12500, "d": 4.0, "h": 8.1, "dest": "leo", "shape": "capsule", "noFairing": true,
+      "note": "Capsule plus unpressurised trunk. The abort engines are built into the capsule, so there is no escape tower to drop.", "sources": ["WDRA"], "estimated": ["mass"] },
+    { "id": "zarya", "name": "Space-station module (Zarya-class)", "mass": 19323, "d": 4.1, "h": 12.6, "dest": "leo", "shape": "module",
+      "note": "The first module of the International Space Station (ISS), launched in 1998.", "sources": ["WZAR"] },
+    { "id": "apollo", "name": "Apollo-class Moon ship", "mass": 45704, "d": 6.6, "h": 24.6, "dest": "moon", "shape": "apollo", "noFairing": true,
+      "tower": 4170,
+      "note": "Command and service module (28,801 kg) + lunar module (15,103 kg) + adapter (≈ 1,800 kg), with a 4,170 kg launch escape tower that is dropped early in the second-stage burn.", "sources": ["WA11", "FER"], "estimated": [] },
+    { "id": "skylab", "name": "Space station (Skylab-class)", "mass": 77088, "d": 6.6, "h": 26, "dest": "leo", "shape": "module",
+      "note": "Skylab, launched on the first two stages of a Saturn V in 1973.", "sources": ["WSKY"] },
+    { "id": "custom", "name": "Mass simulator", "mass": 10000, "d": 3.0, "h": 5.0, "dest": "leo", "shape": "ballast", "custom": true, "min": 0, "max": 200000,
+      "note": "Dead weight you choose, as used on test flights.", "sources": ["EST"] }
+  ],
+
+  "destinations": {
+    "leo": { "name": "Low Earth orbit (LEO)", "short": "LEO", "dv": 9400, "extra": 0,
+      "note": "About 7.8 km/s of orbital speed at 200 km, plus 1.5–2 km/s of gravity, drag and steering losses, minus up to 0.4 km/s from the Earth's rotation when launching east. 9.3–10 km/s is quoted; 9.4 km/s is a common round figure." },
+    "gto": { "name": "Geostationary transfer orbit (GTO)", "short": "GTO", "dv": 9400, "extra": 2440,
+      "note": "A burn of about 2.44 km/s in LEO raises the far point to 35,786 km." },
+    "moon": { "name": "Moon (trans-lunar injection)", "short": "Moon", "dv": 9400, "extra": 3200,
+      "note": "About 3.1–3.2 km/s in LEO puts a spacecraft on a path to the Moon (Apollo's trans-lunar injection)." },
+    "l2": { "name": "Sun–Earth L2", "short": "L2", "dv": 9400, "extra": 3200,
+      "note": "Roughly the same energy as a trip to the Moon." },
+    "mars": { "name": "Mars (trans-Mars injection)", "short": "Mars", "dv": 9400, "extra": 3600,
+      "note": "About 3.6 km/s from LEO in a good launch window (Hohmann-like transfer)." }
+  },
+  "dvSources": ["WDV"],
+
+  "site": {
+    "latitude": 28.5, "azimuth": 90,
+    "note": "A generic coastal launch site at 28.5° N, launching due east: the Earth's rotation gives a free 408 m/s."
+  }
+}

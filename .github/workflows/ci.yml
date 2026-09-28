@@ -11,8 +11,8 @@ jobs:
     name: Python simulations & experiment tools
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
@@ -34,7 +34,13 @@ jobs:
     name: Firmware host tests (C++)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      # The host tests generate synthetic flights and check the star-tracker
+      # maths with small Python scripts that need NumPy.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install numpy matplotlib
       - run: make -C experiments/30-flight-computer-pcb/firmware/test
       - run: make -C experiments/31-lora-telemetry-ground-station/firmware
       - run: make -C experiments/32-barn-door-star-tracker/firmware/test
@@ -43,8 +49,8 @@ jobs:
     name: Site data checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - run: node --no-warnings scripts/check_equations.mjs
@@ -55,5 +61,7 @@ jobs:
           node --no-warnings scripts/test_booster.mjs
           node --no-warnings scripts/test_moon_physics.mjs
           node --no-warnings scripts/test_mars_edl.mjs
+          node --no-warnings scripts/test_builder.mjs
+          node --no-warnings scripts/test_space_weather.mjs
       - name: JSON files parse
         run: for f in site/data/*.json; do node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || exit 1; done

@@ -1,6 +1,7 @@
 # make check   - verify the header copies match firmware/common (and experiment 30) and
 #                syntax-check both sketches against the mock Arduino headers of experiment 30
 # make sync    - copy firmware/common/*.h into the sketch folders and experiment 30
+# make clean   - remove build/
 MOCK = ../../30-flight-computer-pcb/firmware/test/mock
 EXP30 = ../../30-flight-computer-pcb/firmware/flight_logger
 CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -Wno-unused-parameter -fsyntax-only -I$(MOCK) -include Arduino.h
@@ -23,4 +24,7 @@ sync:
 	cp common/telemetry_packet.h common/radio_config.h range_test_tx/
 	cp common/telemetry_packet.h $(EXP30)/
 
-.PHONY: check sync
+clean:
+	rm -rf build
+
+.PHONY: check sync clean
