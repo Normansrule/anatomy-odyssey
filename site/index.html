@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Cosmic Codex · An open atlas of space and spaceflight</title>
+<title>Cosmic Library · An open atlas of space and spaceflight</title>
 <meta name="description" content="Launch a Saturn V, orbit a black hole, cut open the Sun, walk around Space Shuttle Endeavour, and learn the equations, documents and hands-on builds behind spaceflight.">
-<meta property="og:title" content="Cosmic Codex">
+<meta property="og:title" content="Cosmic Library">
 <meta property="og:description" content="An open atlas of space and spaceflight: interactive 3D simulations, 47 equations, iconic photographs, primary documents and hands-on builds.">
-<meta property="og:image" content="assets/img/screens/black-hole.jpg">
+<meta property="og:image" content="https://normansrule.github.io/cosmic-library/assets/img/screens/black-hole.jpg">
 <meta name="theme-color" content="#04050a">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,9 +27,9 @@
   <div class="shell hero-inner">
     <div class="hero-copy">
       <div class="eyebrow reveal">An open atlas of space &amp; spaceflight</div>
-      <h1 id="hero-title" class="reveal" data-delay="80"><span class="grad-text">Cosmic Codex</span></h1>
-      <p class="lede reveal" data-delay="160">Launch a Saturn V. Fall toward a black hole. Cut the Sun open. Walk around Space Shuttle Endeavour.
-        Then learn the equations, read the engineers' own documents, and build the experiments yourself, from a paper rocket to a flight computer you design.</p>
+      <h1 id="hero-title" class="reveal" data-delay="80"><span class="grad-text">Cosmic Library</span></h1>
+      <p class="lede reveal" data-delay="160">Launch a Saturn V, land a booster on a drone ship, fly Eagle down to Tranquility Base and survive Mars' seven minutes of terror.
+        Track every satellite overhead right now, read tonight's sky, and zoom from a proton to the edge of the universe. Then learn the equations, read the engineers' own documents, and build the experiments yourself.</p>
       <div class="row reveal" data-delay="240">
         <a class="btn flame" href="launch.html">🚀 Launch a Saturn V</a>
         <a class="btn" href="#fly">Explore the atlas ↓</a>
@@ -44,7 +44,7 @@
   <!-- ============ STATS ============ -->
   <section id="stats" class="stats-band">
     <div class="shell grid stats-grid">
-      <div class="stat reveal"><div class="num"><span data-count="12">0</span></div><div class="lbl">interactive pages</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="19">0</span></div><div class="lbl">interactive pages</div></div>
       <div class="stat reveal" data-delay="60"><div class="num"><span data-count="47">0</span></div><div class="lbl">equations with calculators</div></div>
       <div class="stat reveal" data-delay="120"><div class="num"><span data-count="50">0</span></div><div class="lbl">iconic photographs</div></div>
       <div class="stat reveal" data-delay="180"><div class="num"><span data-count="110">0</span></div><div class="lbl">milestones, 1903–2026</div></div>
@@ -58,53 +58,118 @@
     <div class="shell">
       <div class="section-head">
         <div class="eyebrow reveal">01 · Fly it</div>
-        <h2 class="reveal">Six simulations you can touch</h2>
-        <p class="lede reveal">Each one is driven by the real equations: a trajectory integrated from Apollo 11's stage data, light rays bent through Schwarzschild spacetime, planets placed by the Jet Propulsion Laboratory's (JPL) orbital elements.</p>
+        <h2 class="reveal">Launch, land, and land again</h2>
+        <p class="lede reveal">Four playable missions driven by real flight data: Apollo 11's stage masses and burn times, a reusable booster's hoverslam, the lunar module's descent engine, and Perseverance's entry profile. Each one lands within a few percent of what really happened.</p>
       </div>
-
       <div class="bento">
         <a class="card spot beam bento-xl reveal" href="launch.html">
-          <div class="media"><img src="assets/img/screens/launch.jpg" alt="The Saturn V first stage separating from the second stage above the curve of the Earth." loading="lazy"></div>
-          <div class="chip-row"><span class="chip flame">3D · physics</span><span class="chip">Apollo 11 · 1969</span></div>
+          <div class="media"><img src="assets/img/screens/launch.jpg" alt="The Saturn V first stage separating above the curve of the Earth." loading="lazy"></div>
+          <div class="chip-row"><span class="chip flame">3D · physics</span><span class="chip ">Apollo 11 · 1969</span></div>
           <h3>Saturn V launch</h3>
-          <p>Count down from T−10 on Launch Complex 39A, feel ignition, clear the tower and ride all three stages to a 185 km parking orbit. Six cameras, time warp, live telemetry, and the rocket equation checked against what the engines actually delivered.</p>
+          <p>Count down from T−10 on Launch Complex 39A, clear the tower and ride all three stages to a 185 km parking orbit. Six cameras, time warp, live telemetry, and the rocket equation checked against what the engines actually delivered.</p>
           <span class="go" aria-hidden="true">→</span>
         </a>
-        <a class="card spot reveal" data-delay="60" href="black-hole.html">
-          <div class="media"><img src="assets/img/screens/black-hole.jpg" alt="A ray-traced black hole with its accretion disk lensed over and under the shadow." loading="lazy"></div>
-          <div class="chip-row"><span class="chip nebula">ray tracing</span></div>
-          <h3>Black hole</h3>
-          <p>Every pixel is a light ray traced backwards through curved spacetime. Tilt the disk, switch off Doppler beaming, then fall in.</p>
+
+        <a class="card spot  reveal" data-delay="60" href="booster.html">
+          <div class="media"><img src="assets/img/screens/booster.jpg" alt="A reusable booster firing its single landing engine just above a drone ship." loading="lazy"></div>
+          <div class="chip-row"><span class="chip ice">playable</span><span class="chip ">hoverslam</span></div>
+          <h3>Booster landing</h3>
+          <p>Flip, boostback, entry burn, grid fins, then a single-engine landing burn that cannot hover. Fly it yourself or watch a transparent autopilot do it.</p>
           <span class="go" aria-hidden="true">→</span>
         </a>
-        <a class="card spot reveal" data-delay="120" href="shuttle.html">
+
+        <a class="card spot  reveal" data-delay="120" href="moon-landing.html">
+          <div class="media"><img src="assets/img/screens/moon-landing.jpg" alt="The Apollo lunar module a few metres above the Moon, engine blowing dust." loading="lazy"></div>
+          <div class="chip-row"><span class="chip sol">playable</span><span class="chip ">102:45:40</span></div>
+          <h3>Moon landing</h3>
+          <p>Fly Eagle from powered descent to touchdown, take over in P66 like Armstrong, and land with the fuel he had left.</p>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+
+        <a class="card spot  reveal" data-delay="60" href="mars-landing.html">
+          <div class="media"><img src="assets/img/screens/mars-landing.jpg" alt="The Mars 2020 aeroshell glowing during entry." loading="lazy"></div>
+          <div class="chip-row"><span class="chip flame">EDL</span><span class="chip ">Jezero · 2021</span></div>
+          <h3>Mars landing</h3>
+          <p>Perseverance's seven minutes of terror: plasma, parachute, sky crane. Watch it, or make the engineers' decisions yourself.</p>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+
+        <a class="card spot  reveal" data-delay="120" href="shuttle.html">
           <div class="media"><img src="assets/img/screens/shuttle.jpg" alt="Space Shuttle Endeavour stacked vertically with its orange external tank and two white boosters." loading="lazy"></div>
-          <div class="chip-row"><span class="chip ice">Los Angeles</span></div>
+          <div class="chip-row"><span class="chip ice">Los Angeles</span><span class="chip ">25 missions</span></div>
           <h3>Space Shuttle Endeavour</h3>
-          <p>The California Science Center's orbiter, stacked for launch as in the new Samuel Oschin Air and Space Center. Open the bay, deploy the arm, explore 25 missions.</p>
+          <p>The California Science Center's orbiter, stacked for launch as in the new Samuel Oschin Air and Space Center. Open the bay, deploy the arm.</p>
           <span class="go" aria-hidden="true">→</span>
         </a>
-        <a class="card spot reveal" data-delay="60" href="sun.html">
-          <div class="media"><img src="assets/img/screens/sun.jpg" alt="The Sun cut open to show its core, radiative zone and convective zone with labels." loading="lazy"></div>
-          <div class="chip-row"><span class="chip sol">5 wavelengths</span></div>
-          <h3>The Sun</h3>
-          <p>Boiling granulation, sunspots and prominences. Switch to the Solar Dynamics Observatory's (SDO) ultraviolet views, trigger a flare, or slice it open.</p>
+
+        <a class="card spot  reveal" data-delay="180" href="hangar.html">
+          <div class="media"><img src="assets/img/screens/hangar.jpg" alt="Twenty-six rockets standing side by side at true scale next to the Statue of Liberty." loading="lazy"></div>
+          <div class="chip-row"><span class="chip nebula">26 rockets</span><span class="chip ">one scale</span></div>
+          <h3>Rocket hangar</h3>
+          <p>From the V-2 to Starship, every major rocket at true size. Sort, filter and compare height, thrust and payload.</p>
           <span class="go" aria-hidden="true">→</span>
         </a>
-        <a class="card spot reveal" data-delay="120" href="solar-system.html">
-          <div class="media"><img src="assets/img/screens/solar-system.jpg" alt="A 3D orrery of the solar system with orbits, labels and the asteroid belt." loading="lazy"></div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="explore" class="block">
+    <div class="shell">
+      <div class="section-head">
+        <div class="eyebrow reveal">02 · Explore it</div>
+        <h2 class="reveal">From low Earth orbit to the edge of the universe</h2>
+        <p class="lede reveal">Live satellites, tonight's sky over your city, every planet where it really is, and light bent around a black hole. Every position is computed in your browser from the same models professionals use.</p>
+      </div>
+      <div class="bento">
+        <a class="card spot beam bento-xl reveal" href="earth.html">
+          <div class="media"><img src="assets/img/screens/earth.jpg" alt="A 3D Earth surrounded by thousands of satellite dots." loading="lazy"></div>
+          <div class="chip-row"><span class="chip aurora-chip">live</span><span class="chip ">SGP4</span></div>
+          <h3>Live Earth orbit</h3>
+          <p>Every tracked satellite overhead right now from CelesTrak data, when the ISS next passes over you, upcoming launches with countdowns, and the latest space news.</p>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+
+        <a class="card spot  reveal" data-delay="60" href="sky.html">
+          <div class="media"><img src="assets/img/screens/sky.jpg" alt="The summer Milky Way and constellations over Los Angeles." loading="lazy"></div>
+          <div class="chip-row"><span class="chip nebula">planetarium</span><span class="chip ">5,044 stars</span></div>
+          <h3>Night sky</h3>
+          <p>The real sky for any place and time: constellations, planets, the Moon's phase, rise and set times, and tonight's highlights.</p>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+
+        <a class="card spot  reveal" data-delay="120" href="scale.html">
+          <div class="media"><img src="assets/img/screens/scale.jpg" alt="Endeavour, the Statue of Liberty and a Saturn V side by side on a ruler." loading="lazy"></div>
+          <div class="chip-row"><span class="chip sol">42 powers of ten</span><span class="chip ">tour</span></div>
+          <h3>Cosmic scale</h3>
+          <p>One continuous zoom from a proton to the observable universe, with how long light takes to cross each one.</p>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+
+        <a class="card spot  reveal" data-delay="60" href="solar-system.html">
+          <div class="media"><img src="assets/img/screens/solar-system.jpg" alt="A 3D orrery of the solar system with orbits and the asteroid belt." loading="lazy"></div>
           <div class="chip-row"><span class="chip aurora-chip">live ephemeris</span></div>
           <h3>Solar system</h3>
-          <p>Every planet where it really is today, from JPL's Keplerian elements. Fly to any world, see light-time from Earth, find the next opposition.</p>
+          <p>Every planet where it really is today, from JPL's orbital elements. Fly to any world and see light-time from Earth.</p>
           <span class="go" aria-hidden="true">→</span>
         </a>
-        <a class="card spot reveal" data-delay="180" href="orbits.html">
-          <div class="media"><img src="assets/img/screens/orbits.jpg" alt="The Earth–Moon rotating frame coloured by effective potential with the five Lagrange points marked." loading="lazy"></div>
-          <div class="chip-row"><span class="chip ice">5 labs</span></div>
-          <h3>Orbit Lab</h3>
-          <p>Newton's cannonball, Kepler's equal areas, Hohmann transfers, gravity assists and Lagrange points, each with the equation beside it.</p>
+
+        <a class="card spot  reveal" data-delay="120" href="sun.html">
+          <div class="media"><img src="assets/img/screens/sun.jpg" alt="The Sun cut open to show its layers." loading="lazy"></div>
+          <div class="chip-row"><span class="chip sol">5 wavelengths</span></div>
+          <h3>The Sun</h3>
+          <p>Granulation, sunspots and prominences in five wavelengths. Trigger a flare, or slice it open to the core.</p>
           <span class="go" aria-hidden="true">→</span>
         </a>
+
+        <a class="card spot  reveal" data-delay="180" href="black-hole.html">
+          <div class="media"><img src="assets/img/screens/black-hole.jpg" alt="A ray-traced black hole with its lensed accretion disk." loading="lazy"></div>
+          <div class="chip-row"><span class="chip nebula">ray tracing</span></div>
+          <h3>Black hole</h3>
+          <p>Every pixel is a light ray traced through curved spacetime. Tilt the disk, switch off Doppler beaming, then fall in.</p>
+          <span class="go" aria-hidden="true">→</span>
+        </a>
+
       </div>
     </div>
   </section>
@@ -118,8 +183,9 @@
   <section id="learn" class="block">
     <div class="shell">
       <div class="section-head">
-        <div class="eyebrow reveal">02 · Learn it</div>
+        <div class="eyebrow reveal">03 · Learn it</div>
         <h2 class="reveal">The maths, the pictures, the history, the paperwork</h2>
+        <p class="lede reveal">Start with the <a href="orbits.html">Orbit Lab</a>: Newton's cannonball, Kepler's laws, Hohmann transfers, gravity assists and Lagrange points, each with its equation beside it. Then go deeper:</p>
       </div>
 
       <div class="learn-grid">
@@ -167,7 +233,7 @@
   <section id="build" class="block build">
     <div class="shell">
       <div class="section-head">
-        <div class="eyebrow reveal">03 · Build it</div>
+        <div class="eyebrow reveal">04 · Build it</div>
         <h2 class="reveal">From the kitchen table to a flight computer you designed</h2>
         <p class="lede reveal">Twenty step-by-step builds in five stages. Each has a bill of materials, the physics, a data sheet, and where it applies, 3D-printable parts (OpenSCAD + STL), firmware and a KiCad printed circuit board (PCB).</p>
       </div>
@@ -181,8 +247,8 @@
       </ol>
       <div class="row" style="margin-top:22px">
         <a class="btn primary" href="experiments.html">Start at the pad →</a>
-        <a class="btn" href="https://github.com/Normansrule/cosmic-codex/tree/main/experiments">Browse the files on GitHub ↗</a>
-        <a class="btn" href="https://github.com/Normansrule/cosmic-codex/blob/main/experiments/SAFETY.md">Safety code ↗</a>
+        <a class="btn" href="https://github.com/Normansrule/cosmic-library/tree/main/experiments">Browse the files on GitHub ↗</a>
+        <a class="btn" href="https://github.com/Normansrule/cosmic-library/blob/main/experiments/SAFETY.md">Safety code ↗</a>
       </div>
     </div>
   </section>
@@ -191,7 +257,7 @@
   <section id="compute" class="block">
     <div class="shell">
       <div class="section-head">
-        <div class="eyebrow reveal">04 · Compute it</div>
+        <div class="eyebrow reveal">05 · Compute it</div>
         <h2 class="reveal">A Python toolkit for doing real astrodynamics</h2>
         <p class="lede reveal">Seven command-line simulations with tests: a black hole ray tracer, a symplectic N-body integrator, a multistage ascent model, a Lambert solver for Earth–Mars launch windows, a transit search, stellar physics and ground tracks.</p>
       </div>
@@ -204,7 +270,7 @@
         <figure class="reveal" data-delay="300"><img src="assets/img/sims/ground_track.jpg" alt="Ground track of a space-station-like orbit over a world map." loading="lazy"><figcaption>Ground track of an ISS-like orbit</figcaption></figure>
       </div>
       <pre class="term reveal"><code><span class="c"># clone, install, run</span>
-git clone https://github.com/Normansrule/cosmic-codex.git &amp;&amp; cd cosmic-codex
+git clone https://github.com/Normansrule/cosmic-library.git &amp;&amp; cd cosmic-library
 python3 -m venv .venv &amp;&amp; source .venv/bin/activate
 pip install -r simulations/requirements.txt
 python simulations/run.py blackhole        <span class="c"># → outputs/black_hole.png</span>
@@ -222,7 +288,7 @@ python -m pytest simulations/tests -q      <span class="c"># physics checks</spa
       <div class="grid grid-3">
         <div class="card reveal"><h3>Engines</h3><p><a href="https://threejs.org">three.js</a> for every 3D scene, <a href="https://gsap.com">GSAP</a> for motion, <a href="https://katex.org">KaTeX</a> for equations, NumPy and Matplotlib for the Python toolkit. All vendored, so the site works without a build step.</p></div>
         <div class="card reveal" data-delay="60"><h3>Design references</h3><p>Interaction ideas re-implemented in plain CSS and JavaScript from <a href="https://github.com/magicuidesign/magicui">Magic UI</a>, <a href="https://github.com/DavidHDev/react-bits">React Bits</a>, <a href="https://animate-ui.com/">Animate UI</a> and <a href="https://github.com/ibelick/motion-primitives">Motion Primitives</a>; explorable-explanation style from <a href="https://github.com/bbycroft/llm-viz">llm-viz</a> and <a href="https://github.com/poloclub/transformer-explainer">Transformer Explainer</a>; 3D craft from <a href="https://github.com/brunosimon/folio-2019">Bruno Simon's folio</a>.</p></div>
-        <div class="card reveal" data-delay="120"><h3>Data &amp; imagery</h3><p>NASA, the Jet Propulsion Laboratory (JPL), ESA, the California Science Center and many others. Every number on every page carries its source; see <a href="https://github.com/Normansrule/cosmic-codex/blob/main/CREDITS.md">CREDITS.md</a>. Not affiliated with or endorsed by any of them.</p></div>
+        <div class="card reveal" data-delay="120"><h3>Data &amp; imagery</h3><p>NASA, the Jet Propulsion Laboratory (JPL), ESA, the California Science Center and many others. Every number on every page carries its source; see <a href="https://github.com/Normansrule/cosmic-library/blob/main/CREDITS.md">CREDITS.md</a>. Not affiliated with or endorsed by any of them.</p></div>
       </div>
     </div>
   </section>

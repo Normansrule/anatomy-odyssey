@@ -1,4 +1,4 @@
-# Experiments — the Cosmic Codex build ladder
+# Experiments — the Cosmic Library build ladder
 
 Twenty hands-on builds that climb from a paper rocket on the kitchen table to a certified high-power
 flight, a near-space balloon and a home-made radio telescope. Each rung reuses what you learned on the
@@ -23,7 +23,7 @@ Every tutorial folder has the same shape:
 | **Record & analyse** | a `data-sheet.csv` template and, where it helps, a Python analysis script |
 | **Troubleshooting** · **Going further** · **References** | for when it doesn't work, and for when it does |
 
-Browse them visually on the website: **<https://normansrule.github.io/cosmic-codex/experiments.html>**
+Browse them visually on the website: **<https://normansrule.github.io/cosmic-library/experiments.html>**
 (3D viewer for every printable part).
 
 ---

@@ -16,7 +16,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const data = JSON.parse(readFileSync(join(ROOT, "site/data/equations.json"), "utf8"));
 const K = core.makeScope(data.constants);
 const NUM = core.numbering(data);
-const SITE = "https://normansrule.github.io/cosmic-codex/equations.html";
+const SITE = "https://normansrule.github.io/cosmic-library/equations.html";
 
 /* Markdown turns "\," "\;" "\!" "\ " and "\\" into escapes in some renderers.
    Rewrite them as control words so the LaTeX survives any Markdown pass. */

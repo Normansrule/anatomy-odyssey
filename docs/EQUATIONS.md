@@ -1,6 +1,6 @@
 # The Equation Atlas
 
-> 47 equations of space science and spaceflight, each with a symbol legend, a plain-language meaning and a worked example with real numbers. The [interactive edition](https://normansrule.github.io/cosmic-codex/equations.html) adds a live calculator and plot for every one.
+> 47 equations of space science and spaceflight, each with a symbol legend, a plain-language meaning and a worked example with real numbers. The [interactive edition](https://normansrule.github.io/cosmic-library/equations.html) adds a live calculator and plot for every one.
 >
 > *This file is generated from [`site/data/equations.json`](../site/data/equations.json) by [`scripts/build_equations_md.mjs`](../scripts/build_equations_md.mjs). Every worked-example result is recomputed and checked by [`scripts/check_equations.mjs`](../scripts/check_equations.mjs). Edit the JSON, not this file.*
 
@@ -98,7 +98,7 @@ $$
 
 **Result: 1.982 × 10²⁰ N** — about 20 billion billion newtons — enough to raise tides of metres in the oceans.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#newton-gravitation) · Sources: [NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics](https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/) · [Wikipedia — Newton's law of universal gravitation](https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#newton-gravitation) · Sources: [NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics](https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/) · [Wikipedia — Newton's law of universal gravitation](https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation)
 
 <a id="kepler-first"></a>
 
@@ -127,7 +127,7 @@ $$
 
 **Result: 1.381 AU** — about 206.7 million km; at aphelion Mars is 1.666 AU away — a 21 % swing.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#kepler-first) · Sources: [NASA Science — Orbits and Kepler's Laws](https://science.nasa.gov/solar-system/orbits-and-keplers-laws/) · [Wikipedia — Kepler's laws of planetary motion](https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#kepler-first) · Sources: [NASA Science — Orbits and Kepler's Laws](https://science.nasa.gov/solar-system/orbits-and-keplers-laws/) · [Wikipedia — Kepler's laws of planetary motion](https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion)
 
 <a id="kepler-second"></a>
 
@@ -157,7 +157,7 @@ $$
 
 **Result: 30.29 km/s** — at perihelion (early January) versus 29.29 km/s at aphelion (early July) — 3.4 % faster.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#kepler-second) · Sources: [NASA Science — Orbits and Kepler's Laws](https://science.nasa.gov/solar-system/orbits-and-keplers-laws/) · [Wikipedia — Kepler's laws of planetary motion](https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#kepler-second) · Sources: [NASA Science — Orbits and Kepler's Laws](https://science.nasa.gov/solar-system/orbits-and-keplers-laws/) · [Wikipedia — Kepler's laws of planetary motion](https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion)
 
 <a id="kepler-third"></a>
 
@@ -186,7 +186,7 @@ $$
 
 **Result: 1.881 yr** — that is 687 Earth days.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#kepler-third) · Sources: [NASA Science — Orbits and Kepler's Laws](https://science.nasa.gov/solar-system/orbits-and-keplers-laws/) · [Wikipedia — Kepler's laws of planetary motion](https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#kepler-third) · Sources: [NASA Science — Orbits and Kepler's Laws](https://science.nasa.gov/solar-system/orbits-and-keplers-laws/) · [Wikipedia — Kepler's laws of planetary motion](https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion)
 
 <a id="vis-viva"></a>
 
@@ -215,7 +215,7 @@ $$
 
 **Result: 10.24 km/s** — about 2.45 km/s faster than a circular orbit at the same height (7.78 km/s).
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#vis-viva) · Sources: [R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics](http://www.braeunig.us/space/orbmech.htm) · [Wikipedia — Vis-viva equation](https://en.wikipedia.org/wiki/Vis-viva_equation)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#vis-viva) · Sources: [R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics](http://www.braeunig.us/space/orbmech.htm) · [Wikipedia — Vis-viva equation](https://en.wikipedia.org/wiki/Vis-viva_equation)
 
 <a id="orbital-period"></a>
 
@@ -243,7 +243,7 @@ $$
 
 **Result: 92.82 min** — ≈ 92.8 minutes — about 15.5 orbits and 16 sunrises a day.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#orbital-period) · Sources: [NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics](https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/) · [Wikipedia — Orbital period](https://en.wikipedia.org/wiki/Orbital_period)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#orbital-period) · Sources: [NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics](https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/) · [Wikipedia — Orbital period](https://en.wikipedia.org/wiki/Orbital_period)
 
 <a id="circular-velocity"></a>
 
@@ -271,7 +271,7 @@ $$
 
 **Result: 7.661 km/s** — about 27 600 km/h — London to New York in 12 minutes.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#circular-velocity) · Sources: [NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics](https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/) · [Wikipedia — Circular orbit](https://en.wikipedia.org/wiki/Circular_orbit)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#circular-velocity) · Sources: [NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics](https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/) · [Wikipedia — Circular orbit](https://en.wikipedia.org/wiki/Circular_orbit)
 
 <a id="escape-velocity"></a>
 
@@ -299,7 +299,7 @@ $$
 
 **Result: 11.19 km/s** — roughly 40 000 km/h. From the Moon's surface it is only 2.38 km/s.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#escape-velocity) · Sources: [NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics](https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/) · [Wikipedia — Escape velocity](https://en.wikipedia.org/wiki/Escape_velocity)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#escape-velocity) · Sources: [NASA/JPL — Basics of Space Flight, Chapter 3: Gravity & Mechanics](https://science.nasa.gov/learn/basics-of-space-flight/chapter3-3/) · [Wikipedia — Escape velocity](https://en.wikipedia.org/wiki/Escape_velocity)
 
 <a id="hohmann"></a>
 
@@ -328,7 +328,7 @@ $$
 
 **Result: 3.893 km/s** — 2.43 + 1.47 km/s, with a 5.3-hour coast. (A real GEO transfer also changes inclination, which costs more.)
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#hohmann) · Sources: [R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics](http://www.braeunig.us/space/orbmech.htm) · [Wikipedia — Hohmann transfer orbit](https://en.wikipedia.org/wiki/Hohmann_transfer_orbit)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#hohmann) · Sources: [R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics](http://www.braeunig.us/space/orbmech.htm) · [Wikipedia — Hohmann transfer orbit](https://en.wikipedia.org/wiki/Hohmann_transfer_orbit)
 
 <a id="sphere-of-influence"></a>
 
@@ -356,7 +356,7 @@ $$
 
 **Result: 924,649 km** — about 2.4 times the Moon's distance.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#sphere-of-influence) · Sources: [Wikipedia — Sphere of influence (astrodynamics)](https://en.wikipedia.org/wiki/Sphere_of_influence_(astrodynamics)) · [R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics](http://www.braeunig.us/space/orbmech.htm)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#sphere-of-influence) · Sources: [Wikipedia — Sphere of influence (astrodynamics)](https://en.wikipedia.org/wiki/Sphere_of_influence_(astrodynamics)) · [R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics](http://www.braeunig.us/space/orbmech.htm)
 
 <a id="hill-sphere"></a>
 
@@ -384,7 +384,7 @@ $$
 
 **Result: 1.472 × 10⁶ km** — about 1.47 million km; the Moon, at 0.38 million km, is comfortably inside.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#hill-sphere) · Sources: [Wikipedia — Hill sphere](https://en.wikipedia.org/wiki/Hill_sphere) · [NASA Science — What is a Lagrange Point?](https://science.nasa.gov/resource/what-is-a-lagrange-point/)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#hill-sphere) · Sources: [Wikipedia — Hill sphere](https://en.wikipedia.org/wiki/Hill_sphere) · [NASA Science — What is a Lagrange Point?](https://science.nasa.gov/resource/what-is-a-lagrange-point/)
 
 <a id="roche-limit"></a>
 
@@ -412,7 +412,7 @@ $$
 
 **Result: 18,364 km** — about 18 400 km (rigid-body limit 9 490 km). Today the Moon is 21 times farther away.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#roche-limit) · Sources: [Wikipedia — Roche limit](https://en.wikipedia.org/wiki/Roche_limit)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#roche-limit) · Sources: [Wikipedia — Roche limit](https://en.wikipedia.org/wiki/Roche_limit)
 
 <a id="l1-distance"></a>
 
@@ -440,7 +440,7 @@ $$
 
 **Result: 1.497 × 10⁶ km** — about 1.5 million km — four times farther than the Moon. (The approximation errs by about 1 % here.)
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#l1-distance) · Sources: [NASA Science — What is a Lagrange Point?](https://science.nasa.gov/resource/what-is-a-lagrange-point/) · [Wikipedia — Lagrange point](https://en.wikipedia.org/wiki/Lagrange_point)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#l1-distance) · Sources: [NASA Science — What is a Lagrange Point?](https://science.nasa.gov/resource/what-is-a-lagrange-point/) · [Wikipedia — Lagrange point](https://en.wikipedia.org/wiki/Lagrange_point)
 
 ---
 
@@ -478,7 +478,7 @@ $$
 
 **Result: 6.145 km/s** — about two-thirds of what it takes to reach low Earth orbit (≈ 9.4 km/s including losses).
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#tsiolkovsky) · Sources: [NASA Glenn Research Center — Ideal Rocket Equation](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ideal-rocket-equation/) · [Wikipedia — Tsiolkovsky rocket equation](https://en.wikipedia.org/wiki/Tsiolkovsky_rocket_equation)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#tsiolkovsky) · Sources: [NASA Glenn Research Center — Ideal Rocket Equation](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ideal-rocket-equation/) · [Wikipedia — Tsiolkovsky rocket equation](https://en.wikipedia.org/wiki/Tsiolkovsky_rocket_equation)
 
 <a id="thrust-equation"></a>
 
@@ -508,7 +508,7 @@ $$
 
 **Result: 6,757 kN** — about 6.76 MN; the pressure term costs 338 kN at sea level and becomes a bonus of 756 kN in vacuum. (The real F-1 made about 6.77 MN at sea level.)
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#thrust-equation) · Sources: [NASA Glenn Research Center — Rocket Thrust Equation](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/rocket-thrust-equation/)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#thrust-equation) · Sources: [NASA Glenn Research Center — Rocket Thrust Equation](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/rocket-thrust-equation/)
 
 <a id="specific-impulse"></a>
 
@@ -538,7 +538,7 @@ $$
 
 **Result: 452.1 s** — matching the published ≈ 452 s; exhaust velocity ≈ 4.43 km/s.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#specific-impulse) · Sources: [NASA Glenn Research Center — Specific Impulse](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/specific-impulse/) · [Wikipedia — Specific impulse](https://en.wikipedia.org/wiki/Specific_impulse)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#specific-impulse) · Sources: [NASA Glenn Research Center — Specific Impulse](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/specific-impulse/) · [Wikipedia — Specific impulse](https://en.wikipedia.org/wiki/Specific_impulse)
 
 <a id="mass-ratio"></a>
 
@@ -568,7 +568,7 @@ $$
 
 **Result: 3.694 ** — so ζ ≈ 72.9 % of the whole stack was burned in the first 2½ minutes.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#mass-ratio) · Sources: [NASA Glenn Research Center — Mass Ratios](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/mass-ratios/) · [Wikipedia — S-IC](https://en.wikipedia.org/wiki/S-IC)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#mass-ratio) · Sources: [NASA Glenn Research Center — Mass Ratios](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/mass-ratios/) · [Wikipedia — S-IC](https://en.wikipedia.org/wiki/S-IC)
 
 <a id="multistage"></a>
 
@@ -597,7 +597,7 @@ $$
 
 **Result: 12.55 km/s** — ideal (3.63 + 4.65 + 4.27 km/s): enough for ≈ 9.4 km/s to orbit including gravity and drag losses, plus ≈ 3.1 km/s for trans-lunar injection.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#multistage) · Sources: [Wikipedia — Saturn V](https://en.wikipedia.org/wiki/Saturn_V) · [Wikipedia — Multistage rocket](https://en.wikipedia.org/wiki/Multistage_rocket)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#multistage) · Sources: [Wikipedia — Saturn V](https://en.wikipedia.org/wiki/Saturn_V) · [Wikipedia — Multistage rocket](https://en.wikipedia.org/wiki/Multistage_rocket)
 
 <a id="drag"></a>
 
@@ -627,7 +627,7 @@ $$
 
 **Result: 163.1 kN** — about 16.6 tonnes-force pushing back on the vehicle.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#drag) · Sources: [NASA Glenn Research Center — Drag Equation](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#drag) · Sources: [NASA Glenn Research Center — Drag Equation](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/)
 
 <a id="dynamic-pressure"></a>
 
@@ -656,7 +656,7 @@ $$
 
 **Result: 29.62 kPa** — about 30 kPa, the same order as the Space Shuttle's Max-Q of ≈ 35 kPa.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#dynamic-pressure) · Sources: [NASA Glenn Research Center — Dynamic Pressure](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/dynamic-pressure-2/) · [Wikipedia — Max q](https://en.wikipedia.org/wiki/Max_q)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#dynamic-pressure) · Sources: [NASA Glenn Research Center — Dynamic Pressure](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/dynamic-pressure-2/) · [Wikipedia — Max q](https://en.wikipedia.org/wiki/Max_q)
 
 <a id="gravity-loss"></a>
 
@@ -685,7 +685,7 @@ $$
 
 **Result: 1,127 m/s** — over a kilometre per second that the engines had to supply but that never became speed.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#gravity-loss) · Sources: [Wikipedia — Gravity drag](https://en.wikipedia.org/wiki/Gravity_drag) · [R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics](http://www.braeunig.us/space/orbmech.htm)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#gravity-loss) · Sources: [Wikipedia — Gravity drag](https://en.wikipedia.org/wiki/Gravity_drag) · [R. A. Braeunig — Rocket & Space Technology: Orbital Mechanics](http://www.braeunig.us/space/orbmech.htm)
 
 ---
 
@@ -724,7 +724,7 @@ $$
 
 **Result: 35.49 kPa** — about a third of sea-level pressure (measured ≈ 34 kPa — the real atmosphere is colder aloft).
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#barometric) · Sources: [Wikipedia — Scale height](https://en.wikipedia.org/wiki/Scale_height) · [Wikipedia — Barometric formula](https://en.wikipedia.org/wiki/Barometric_formula)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#barometric) · Sources: [Wikipedia — Scale height](https://en.wikipedia.org/wiki/Scale_height) · [Wikipedia — Barometric formula](https://en.wikipedia.org/wiki/Barometric_formula)
 
 <a id="speed-of-sound"></a>
 
@@ -755,7 +755,7 @@ $$
 
 **Result: 2.033 ** — Mach 2 — twice the local speed of sound.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#speed-of-sound) · Sources: [NASA Glenn Research Center — Speed of Sound](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/speed-of-sound-interactive/) · [NASA Glenn Research Center — Role of the Mach Number](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/role-of-the-mach-number/)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#speed-of-sound) · Sources: [NASA Glenn Research Center — Speed of Sound](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/speed-of-sound-interactive/) · [NASA Glenn Research Center — Role of the Mach Number](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/role-of-the-mach-number/)
 
 <a id="stagnation-temperature"></a>
 
@@ -784,7 +784,7 @@ $$
 
 **Result: 660.3 K** — about 387 °C — the aircraft's titanium skin got hot enough to stretch in flight.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#stagnation-temperature) · Sources: [NASA Glenn Research Center — Stagnation Temperature](https://www.grc.nasa.gov/www/BGH/stagtmp.html) · [NASA Glenn Research Center — Isentropic Flow Equations](https://www.grc.nasa.gov/www/k-12/airplane/isentrop.html)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#stagnation-temperature) · Sources: [NASA Glenn Research Center — Stagnation Temperature](https://www.grc.nasa.gov/www/BGH/stagtmp.html) · [NASA Glenn Research Center — Isentropic Flow Equations](https://www.grc.nasa.gov/www/k-12/airplane/isentrop.html)
 
 <a id="sutton-graves"></a>
 
@@ -814,7 +814,7 @@ $$
 
 **Result: 188.4 W/cm²** — about 1.9 MW per square metre from convection alone (at lunar-return speeds, radiation from the hot shock layer adds more).
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#sutton-graves) · Sources: [Sutton & Graves (1971), NASA TR R-376 (NASA Technical Reports Server)](https://ntrs.nasa.gov/api/citations/19720003329/downloads/19720003329.pdf) · [Wikipedia — Planar reentry equations](https://en.wikipedia.org/wiki/Planar_reentry_equations)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#sutton-graves) · Sources: [Sutton & Graves (1971), NASA TR R-376 (NASA Technical Reports Server)](https://ntrs.nasa.gov/api/citations/19720003329/downloads/19720003329.pdf) · [Wikipedia — Planar reentry equations](https://en.wikipedia.org/wiki/Planar_reentry_equations)
 
 <a id="ballistic-coefficient"></a>
 
@@ -844,7 +844,7 @@ $$
 
 **Result: 358 kg/m²** — kg/m²; at 60 km and 11 km/s that means about 5.3 g of deceleration.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#ballistic-coefficient) · Sources: [Wikipedia — Ballistic coefficient](https://en.wikipedia.org/wiki/Ballistic_coefficient) · [Wikipedia — Planar reentry equations](https://en.wikipedia.org/wiki/Planar_reentry_equations)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#ballistic-coefficient) · Sources: [Wikipedia — Ballistic coefficient](https://en.wikipedia.org/wiki/Ballistic_coefficient) · [Wikipedia — Planar reentry equations](https://en.wikipedia.org/wiki/Planar_reentry_equations)
 
 ---
 
@@ -881,7 +881,7 @@ $$
 
 **Result: 3.828 × 10²⁶ W** — watts — the IAU nominal solar luminosity.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#stefan-boltzmann) · Sources: [OpenStax University Physics III §6.2 — Blackbody Radiation (LibreTexts)](https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/06:_Photons_and_Matter_Waves/6.02:_Blackbody_Radiation) · [Prša et al. — IAU 2015 Resolution B3 (nominal solar & planetary constants)](https://arxiv.org/abs/1510.07674)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#stefan-boltzmann) · Sources: [OpenStax University Physics III §6.2 — Blackbody Radiation (LibreTexts)](https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/06:_Photons_and_Matter_Waves/6.02:_Blackbody_Radiation) · [Prša et al. — IAU 2015 Resolution B3 (nominal solar & planetary constants)](https://arxiv.org/abs/1510.07674)
 
 <a id="wien"></a>
 
@@ -909,7 +909,7 @@ $$
 
 **Result: 502 nm** — nm — blue-green, right in the middle of the band our eyes evolved to see.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#wien) · Sources: [OpenStax University Physics III §6.2 — Blackbody Radiation (LibreTexts)](https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/06:_Photons_and_Matter_Waves/6.02:_Blackbody_Radiation) · [Wikipedia — Wien's displacement law](https://en.wikipedia.org/wiki/Wien%27s_displacement_law)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#wien) · Sources: [OpenStax University Physics III §6.2 — Blackbody Radiation (LibreTexts)](https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/06:_Photons_and_Matter_Waves/6.02:_Blackbody_Radiation) · [Wikipedia — Wien's displacement law](https://en.wikipedia.org/wiki/Wien%27s_displacement_law)
 
 <a id="planck"></a>
 
@@ -938,7 +938,7 @@ $$
 
 **Result: 26.24 kW sr⁻¹ m⁻² nm⁻¹** — kW per square metre per steradian per nanometre, near the top of the curve.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#planck) · Sources: [OpenStax University Physics III §6.2 — Blackbody Radiation (LibreTexts)](https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/06:_Photons_and_Matter_Waves/6.02:_Blackbody_Radiation) · [Wikipedia — Planck's law](https://en.wikipedia.org/wiki/Planck%27s_law)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#planck) · Sources: [OpenStax University Physics III §6.2 — Blackbody Radiation (LibreTexts)](https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_III_-_Optics_and_Modern_Physics_(OpenStax)/06:_Photons_and_Matter_Waves/6.02:_Blackbody_Radiation) · [Wikipedia — Planck's law](https://en.wikipedia.org/wiki/Planck%27s_law)
 
 <a id="inverse-square"></a>
 
@@ -966,7 +966,7 @@ $$
 
 **Result: 1,361 W/m²** — W/m² — what satellites measure above the atmosphere (≈ 1 361 W/m²).
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#inverse-square) · Sources: [Wikipedia — Inverse-square law](https://en.wikipedia.org/wiki/Inverse-square_law) · [Prša et al. — IAU 2015 Resolution B3 (nominal solar & planetary constants)](https://arxiv.org/abs/1510.07674)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#inverse-square) · Sources: [Wikipedia — Inverse-square law](https://en.wikipedia.org/wiki/Inverse-square_law) · [Prša et al. — IAU 2015 Resolution B3 (nominal solar & planetary constants)](https://arxiv.org/abs/1510.07674)
 
 <a id="magnitude"></a>
 
@@ -995,7 +995,7 @@ $$
 
 **Result: −26.74 mag** — about 13 billion times brighter than Sirius (m = −1.46).
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#magnitude) · Sources: [OpenStax Astronomy 2e §17.4 — Using spectra to measure stellar radius, composition, and motion](https://openstax.org/books/astronomy-2e/pages/17-4-using-spectra-to-measure-stellar-radius-composition-and-motion) · [Wikipedia — Distance modulus](https://en.wikipedia.org/wiki/Distance_modulus)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#magnitude) · Sources: [OpenStax Astronomy 2e §17.4 — Using spectra to measure stellar radius, composition, and motion](https://openstax.org/books/astronomy-2e/pages/17-4-using-spectra-to-measure-stellar-radius-composition-and-motion) · [Wikipedia — Distance modulus](https://en.wikipedia.org/wiki/Distance_modulus)
 
 <a id="doppler"></a>
 
@@ -1023,7 +1023,7 @@ $$
 
 **Result: 0.06568 nm** — nm — a shift of one part in 10 000, easily measured by a spectrograph.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#doppler) · Sources: [OpenStax Astronomy 2e §5.6 — The Doppler Effect](https://openstax.org/books/astronomy-2e/pages/5-6-the-doppler-effect) · [Wikipedia — Relativistic Doppler effect](https://en.wikipedia.org/wiki/Relativistic_Doppler_effect)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#doppler) · Sources: [OpenStax Astronomy 2e §5.6 — The Doppler Effect](https://openstax.org/books/astronomy-2e/pages/5-6-the-doppler-effect) · [Wikipedia — Relativistic Doppler effect](https://en.wikipedia.org/wiki/Relativistic_Doppler_effect)
 
 <a id="parallax"></a>
 
@@ -1050,7 +1050,7 @@ $$
 
 **Result: 1.302 pc** — pc = 4.25 light-years = 268 500 AU.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#parallax) · Sources: [ESA — Gaia: Parallax](https://www.esa.int/Science_Exploration/Space_Science/Gaia/Parallax) · [ESA Science & Technology — Measuring stellar distances by parallax](https://sci.esa.int/web/gaia/-/53278-measuring-stellar-distances-by-parallax)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#parallax) · Sources: [ESA — Gaia: Parallax](https://www.esa.int/Science_Exploration/Space_Science/Gaia/Parallax) · [ESA Science & Technology — Measuring stellar distances by parallax](https://sci.esa.int/web/gaia/-/53278-measuring-stellar-distances-by-parallax)
 
 <a id="mass-luminosity"></a>
 
@@ -1078,7 +1078,7 @@ $$
 
 **Result: 1.464 L☉** — L☉, close to the measured ≈ 1.5 L☉, with a main-sequence life of about 7.5 billion years.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#mass-luminosity) · Sources: [OpenStax Astronomy 2e §18.2 — Measuring Stellar Masses](https://openstax.org/books/astronomy-2e/pages/18-2-measuring-stellar-masses) · [Wikipedia — Mass–luminosity relation](https://en.wikipedia.org/wiki/Mass%E2%80%93luminosity_relation)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#mass-luminosity) · Sources: [OpenStax Astronomy 2e §18.2 — Measuring Stellar Masses](https://openstax.org/books/astronomy-2e/pages/18-2-measuring-stellar-masses) · [Wikipedia — Mass–luminosity relation](https://en.wikipedia.org/wiki/Mass%E2%80%93luminosity_relation)
 
 <a id="eddington"></a>
 
@@ -1107,7 +1107,7 @@ $$
 
 **Result: 1.257 × 10³¹ W** — W ≈ 33 000 L☉. The Sun shines at only 0.003 % of its limit.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#eddington) · Sources: [Wikipedia — Eddington luminosity](https://en.wikipedia.org/wiki/Eddington_luminosity) · [NIST — CODATA 2018 fundamental physical constants](https://physics.nist.gov/cuu/Constants/)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#eddington) · Sources: [Wikipedia — Eddington luminosity](https://en.wikipedia.org/wiki/Eddington_luminosity) · [NIST — CODATA 2018 fundamental physical constants](https://physics.nist.gov/cuu/Constants/)
 
 ---
 
@@ -1143,7 +1143,7 @@ $$
 
 **Result: 2.294 ** — one year aboard is 2.29 years for the people back home.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#lorentz-factor) · Sources: [Wikipedia — Lorentz factor](https://en.wikipedia.org/wiki/Lorentz_factor)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#lorentz-factor) · Sources: [Wikipedia — Lorentz factor](https://en.wikipedia.org/wiki/Lorentz_factor)
 
 <a id="time-dilation"></a>
 
@@ -1172,7 +1172,7 @@ $$
 
 **Result: 9.589 ms** — about 9.6 milliseconds younger than his twin, from speed alone.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#time-dilation) · Sources: [Wikipedia — Time dilation](https://en.wikipedia.org/wiki/Time_dilation) · [Ashby (2003), Relativity in the Global Positioning System — Living Reviews in Relativity](https://link.springer.com/article/10.12942/lrr-2003-1)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#time-dilation) · Sources: [Wikipedia — Time dilation](https://en.wikipedia.org/wiki/Time_dilation) · [Ashby (2003), Relativity in the Global Positioning System — Living Reviews in Relativity](https://link.springer.com/article/10.12942/lrr-2003-1)
 
 <a id="mass-energy"></a>
 
@@ -1200,7 +1200,7 @@ $$
 
 **Result: 8.988 × 10¹³ J** — joules ≈ 21.5 kilotons of TNT — more than the Hiroshima bomb (≈ 15 kt).
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#mass-energy) · Sources: [Wikipedia — Mass–energy equivalence](https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence) · [NIST — CODATA 2018 fundamental physical constants](https://physics.nist.gov/cuu/Constants/)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#mass-energy) · Sources: [Wikipedia — Mass–energy equivalence](https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence) · [NIST — CODATA 2018 fundamental physical constants](https://physics.nist.gov/cuu/Constants/)
 
 <a id="schwarzschild"></a>
 
@@ -1228,7 +1228,7 @@ $$
 
 **Result: 2.953 km** — km — the whole Sun crushed to the size of a small town.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#schwarzschild) · Sources: [A. Hamilton (JILA, University of Colorado) — More about the Schwarzschild geometry](https://jila.colorado.edu/~ajsh/courses/bh/schwp.html) · [Wikipedia — Schwarzschild radius](https://en.wikipedia.org/wiki/Schwarzschild_radius)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#schwarzschild) · Sources: [A. Hamilton (JILA, University of Colorado) — More about the Schwarzschild geometry](https://jila.colorado.edu/~ajsh/courses/bh/schwp.html) · [Wikipedia — Schwarzschild radius](https://en.wikipedia.org/wiki/Schwarzschild_radius)
 
 <a id="gravitational-time-dilation"></a>
 
@@ -1257,7 +1257,7 @@ $$
 
 **Result: 0.2352 ** — so surface clocks run at 81 % of the rate of distant clocks, and X-ray lines arrive 24 % redder.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#gravitational-time-dilation) · Sources: [Wikipedia — Gravitational redshift](https://en.wikipedia.org/wiki/Gravitational_redshift) · [Ashby (2003), Relativity in the Global Positioning System — Living Reviews in Relativity](https://link.springer.com/article/10.12942/lrr-2003-1)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#gravitational-time-dilation) · Sources: [Wikipedia — Gravitational redshift](https://en.wikipedia.org/wiki/Gravitational_redshift) · [Ashby (2003), Relativity in the Global Positioning System — Living Reviews in Relativity](https://link.springer.com/article/10.12942/lrr-2003-1)
 
 <a id="hawking"></a>
 
@@ -1287,7 +1287,7 @@ $$
 
 **Result: 6.17 × 10⁻⁸ K** — K — sixty billionths of a kelvin, with an evaporation time of about 10⁶⁷ years.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#hawking) · Sources: [Wikipedia — Hawking radiation](https://en.wikipedia.org/wiki/Hawking_radiation) · [NIST — CODATA 2018 fundamental physical constants](https://physics.nist.gov/cuu/Constants/)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#hawking) · Sources: [Wikipedia — Hawking radiation](https://en.wikipedia.org/wiki/Hawking_radiation) · [NIST — CODATA 2018 fundamental physical constants](https://physics.nist.gov/cuu/Constants/)
 
 <a id="gps-clock"></a>
 
@@ -1316,7 +1316,7 @@ $$
 
 **Result: 38.51 μs/day** — μs per day fast (45.72 from gravity − 7.21 from speed), ≈ 11.5 km of ranging error per day if ignored.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#gps-clock) · Sources: [Ashby (2003), Relativity in the Global Positioning System — Living Reviews in Relativity](https://link.springer.com/article/10.12942/lrr-2003-1)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#gps-clock) · Sources: [Ashby (2003), Relativity in the Global Positioning System — Living Reviews in Relativity](https://link.springer.com/article/10.12942/lrr-2003-1)
 
 ---
 
@@ -1353,7 +1353,7 @@ $$
 
 **Result: 6,740 km/s** — km/s (z ≈ 0.022); the Hubble time is 14.5 billion years.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#hubble-lemaitre) · Sources: [NASA Science — Hubble Cosmological Redshift](https://science.nasa.gov/mission/hubble/science/science-behind-the-discoveries/hubble-cosmological-redshift/) · [Planck Collaboration (2018), Cosmological parameters](https://arxiv.org/abs/1807.06209)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#hubble-lemaitre) · Sources: [NASA Science — Hubble Cosmological Redshift](https://science.nasa.gov/mission/hubble/science/science-behind-the-discoveries/hubble-cosmological-redshift/) · [Planck Collaboration (2018), Cosmological parameters](https://arxiv.org/abs/1807.06209)
 
 <a id="redshift-scale-factor"></a>
 
@@ -1381,7 +1381,7 @@ $$
 
 **Result: 1,410 nm** — nm (1.41 µm, near-infrared); the Universe was 8.6 % of its present size.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#redshift-scale-factor) · Sources: [NASA Science — What is Cosmological Redshift?](https://science.nasa.gov/asset/hubble/what-is-cosmological-redshift/) · [Wikipedia — Scale factor (cosmology)](https://en.wikipedia.org/wiki/Scale_factor_(cosmology))
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#redshift-scale-factor) · Sources: [NASA Science — What is Cosmological Redshift?](https://science.nasa.gov/asset/hubble/what-is-cosmological-redshift/) · [Wikipedia — Scale factor (cosmology)](https://en.wikipedia.org/wiki/Scale_factor_(cosmology))
 
 <a id="friedmann"></a>
 
@@ -1412,7 +1412,7 @@ $$
 
 **Result: 120.7 km/s/Mpc** — km/s/Mpc — the Universe was expanding almost twice as fast (in this sense) 7.9 billion years ago.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#friedmann) · Sources: [Wikipedia — Friedmann equations](https://en.wikipedia.org/wiki/Friedmann_equations) · [Planck Collaboration (2018), Cosmological parameters](https://arxiv.org/abs/1807.06209)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#friedmann) · Sources: [Wikipedia — Friedmann equations](https://en.wikipedia.org/wiki/Friedmann_equations) · [Planck Collaboration (2018), Cosmological parameters](https://arxiv.org/abs/1807.06209)
 
 <a id="critical-density"></a>
 
@@ -1440,7 +1440,7 @@ $$
 
 **Result: 8.533 × 10⁻²⁷ kg/m³** — kg/m³ — about 5 hydrogen atoms per cubic metre, emptier than any laboratory vacuum.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#critical-density) · Sources: [Wikipedia — Friedmann equations](https://en.wikipedia.org/wiki/Friedmann_equations) · [Planck Collaboration (2018), Cosmological parameters](https://arxiv.org/abs/1807.06209)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#critical-density) · Sources: [Wikipedia — Friedmann equations](https://en.wikipedia.org/wiki/Friedmann_equations) · [Planck Collaboration (2018), Cosmological parameters](https://arxiv.org/abs/1807.06209)
 
 <a id="cmb-temperature"></a>
 
@@ -1468,7 +1468,7 @@ $$
 
 **Result: 2,973 K** — K — the glow of a red dwarf's surface, filling all of space.
 
-[Open the live calculator ↗](https://normansrule.github.io/cosmic-codex/equations.html#cmb-temperature) · Sources: [Fixsen (2009), The Temperature of the Cosmic Microwave Background](https://arxiv.org/abs/0911.1955) · [Planck Collaboration (2018), Cosmological parameters](https://arxiv.org/abs/1807.06209)
+[Open the live calculator ↗](https://normansrule.github.io/cosmic-library/equations.html#cmb-temperature) · Sources: [Fixsen (2009), The Temperature of the Cosmic Microwave Background](https://arxiv.org/abs/0911.1955) · [Planck Collaboration (2018), Cosmological parameters](https://arxiv.org/abs/1807.06209)
 
 ---
 

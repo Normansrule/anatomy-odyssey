@@ -11,7 +11,7 @@ when you pick the rocket up. A Python script plots the flight.
 
 > [!CAUTION]
 > The altimeter is **only a passenger**: it records, it never controls anything. Do not connect it to
-> any igniter, ejection charge or pyrotechnic device — that is out of scope for Cosmic Codex. Follow the
+> any igniter, ejection charge or pyrotechnic device — that is out of scope for Cosmic Library. Follow the
 > NAR code ([../SAFETY.md](../SAFETY.md)): the payload counts toward the 1,500 g limit, and the rocket
 > must be re-checked for stability with the payload installed. Use a protected LiPo cell or AAA cells
 > (§7).

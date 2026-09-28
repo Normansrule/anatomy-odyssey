@@ -228,10 +228,10 @@ def write_footprints():
 def write_lib_tables():
     (KICAD / "sym-lib-table").write_text(
         '(sym_lib_table\n  (version 7)\n  (lib (name "cosmic_codex")(type "KiCad")'
-        '(uri "${KIPRJMOD}/cosmic_codex.kicad_sym")(options "")(descr "Cosmic Codex parts"))\n)\n')
+        '(uri "${KIPRJMOD}/cosmic_codex.kicad_sym")(options "")(descr "Cosmic Library parts"))\n)\n')
     (KICAD / "fp-lib-table").write_text(
         '(fp_lib_table\n  (version 7)\n  (lib (name "cosmic_codex")(type "KiCad")'
-        '(uri "${KIPRJMOD}/cosmic_codex.pretty")(options "")(descr "Cosmic Codex footprints"))\n)\n')
+        '(uri "${KIPRJMOD}/cosmic_codex.pretty")(options "")(descr "Cosmic Library footprints"))\n)\n')
 
 
 if __name__ == "__main__":

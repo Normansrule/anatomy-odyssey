@@ -1,5 +1,5 @@
 // fincan.scad — parametric slide-on fin can for paper model-rocket body tubes.
-// Cosmic Codex · experiments/21-3d-printed-model-rocket · MIT licence
+// Cosmic Library · experiments/21-3d-printed-model-rocket · MIT licence
 //
 // The sleeve slides over the aft end of the body tube and is glued with epoxy or CA.
 // Fins are tapered (thicker at the root) and have printed root fillets.

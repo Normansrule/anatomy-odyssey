@@ -5,7 +5,7 @@ supervising anyone under 18**. Nothing here is worth an injury. If a step in any
 conflict with this page, **this page wins**.
 
 > [!CAUTION]
-> **Cosmic Codex never teaches you to make propellant, rocket motors, igniters, ejection charges,
+> **Cosmic Library never teaches you to make propellant, rocket motors, igniters, ejection charges,
 > fireworks or anything pyrotechnic.** Do not mix chemicals to make things burn, fizz violently or
 > explode, and do not modify commercial motors. Real rocketry is safe *because* the dangerous part is
 > made by a licensed manufacturer and certified by an independent body.

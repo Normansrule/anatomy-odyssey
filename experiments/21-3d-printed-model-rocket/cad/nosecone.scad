@@ -1,5 +1,5 @@
 // nosecone.scad — parametric, hollow, 3D-printable model-rocket nose cone.
-// Cosmic Codex · experiments/21-3d-printed-model-rocket · MIT licence
+// Cosmic Library · experiments/21-3d-printed-model-rocket · MIT licence
 //
 // Print TIP UP, no supports: 2–3 perimeters, 0.16–0.2 mm layers, 10–15 % infill.
 // The shoulder is open at the bottom; a printed cross-bar inside the shoulder is the

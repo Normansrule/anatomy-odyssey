@@ -1,4 +1,4 @@
-"""Shared visual identity for every Cosmic Codex figure.
+"""Shared visual identity for every Cosmic Library figure.
 
 A single dark theme keeps the gallery coherent with the website
 (``site/assets/css/codex.css``): near-black background, quiet grid, light
@@ -71,7 +71,7 @@ def _available_fonts():
 
 
 def apply() -> None:
-    """Install the Cosmic Codex rcParams (idempotent)."""
+    """Install the Cosmic Library rcParams (idempotent)."""
     plt.rcParams.update(
         {
             "figure.facecolor": BG,
@@ -126,7 +126,7 @@ def header(fig, title: str, subtitle: str = "", x: float = 0.035, y: float = 0.9
 
 def footer(fig, source: str, note: str = "") -> None:
     """Small signature line: which script made the figure and the key reference."""
-    fig.text(0.035, 0.018, f"cosmic-codex  ·  {source}", fontsize=7.5, color=MUTED, va="bottom")
+    fig.text(0.035, 0.018, f"cosmic-library  ·  {source}", fontsize=7.5, color=MUTED, va="bottom")
     if note:
         fig.text(0.965, 0.018, note, fontsize=7.5, color=MUTED, va="bottom", ha="right")
 

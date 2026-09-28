@@ -1,4 +1,4 @@
-/* Cosmic Codex — Gallery
+/* Cosmic Library — Gallery
  *
  * Data:    data/gallery.json (curated) + data/gallery.local.json (written by
  *          scripts/fetch_gallery.py; when it lists an id, the local file wins).

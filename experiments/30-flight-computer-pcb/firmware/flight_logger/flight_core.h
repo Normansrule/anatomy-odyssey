@@ -1,4 +1,4 @@
-// flight_core.h - portable flight logic for the Cosmic Codex CC-FL1 data logger
+// flight_core.h - portable flight logic for the Cosmic Library CC-FL1 data logger
 // ---------------------------------------------------------------------------------
 // Everything in this file is plain C++17 with no Arduino dependency, so the exact
 // same code runs on the RP2040 and in the host-side test harness (firmware/test).

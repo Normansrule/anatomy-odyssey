@@ -1,4 +1,4 @@
-"""Cosmic Codex telemetry frame v1 - Python side of firmware/common/telemetry_packet.h.
+"""Cosmic Library telemetry frame v1 - Python side of firmware/common/telemetry_packet.h.
 
 34 bytes, little-endian:
     magic 'CC' | version u8 | state u8 | seq u16 | t_ms u32 | alt_dm i32 | vel_dms i16 | acc_cg i16 |

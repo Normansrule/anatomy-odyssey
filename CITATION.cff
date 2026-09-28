@@ -1,12 +1,12 @@
 cff-version: 1.2.0
-message: "If you use Cosmic Codex in teaching or research, please cite it as below."
-title: "Cosmic Codex: an open atlas of space and spaceflight"
+message: "If you use Cosmic Library in teaching or research, please cite it as below."
+title: "Cosmic Library: an open atlas of space and spaceflight"
 type: software
 authors:
   - family-names: Norman
     given-names: Aleksander
-repository-code: "https://github.com/Normansrule/cosmic-codex"
-url: "https://normansrule.github.io/cosmic-codex/"
+repository-code: "https://github.com/Normansrule/cosmic-library"
+url: "https://normansrule.github.io/cosmic-library/"
 license: MIT
 version: 1.0.0
 date-released: 2026-09-26

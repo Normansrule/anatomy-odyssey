@@ -103,7 +103,7 @@ def analyse(r, cg=None, verbose=True):
 
 EXAMPLES = [
     {   # a BT-60, 18 mm-motor rocket built from the experiment-21 printed parts
-        "name": "Cosmic Codex BT-60 (printed von Kármán nose + 3-fin can, 300 mm tube)",
+        "name": "Cosmic Library BT-60 (printed von Kármán nose + 3-fin can, 300 mm tube)",
         "diameter": 41.6, "length": 445.6,
         "nose": {"shape": "vonkarman", "length": 145.6},
         "fins": {"count": 3, "root": 85.2, "tip": 37.4, "span": 68.4, "sweep": 47.8,

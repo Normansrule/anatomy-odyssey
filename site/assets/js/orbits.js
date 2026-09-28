@@ -1812,7 +1812,7 @@ function setMode(id, push = true) {
   $$(".ol-modes button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === id)));
   $$("#explain .ol-x, #panel .ol-c").forEach((s) => { s.hidden = s.dataset.mode !== id; });
   cv.setAttribute("aria-label", cur.label);
-  document.title = `Orbit Lab · ${{ cannon: "Newton's Cannonball", kepler: "Kepler's Laws", hohmann: "Hohmann Transfer", assist: "Gravity Assist", lagrange: "Lagrange Points" }[id]} · Cosmic Codex`;
+  document.title = `Orbit Lab · ${{ cannon: "Newton's Cannonball", kepler: "Kepler's Laws", hohmann: "Hohmann Transfer", assist: "Gravity Assist", lagrange: "Lagrange Points" }[id]} · Cosmic Library`;
   if (push && location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
   explain.scrollTop = 0;
   measure(false);

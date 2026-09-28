@@ -1,4 +1,4 @@
-** Drc report for /home/claude/cosmic-codex/experiments/30-flight-computer-pcb/hardware/kicad/cc-flight-logger.kicad_pcb **
+** Drc report for /home/claude/cosmic-library/experiments/30-flight-computer-pcb/hardware/kicad/cc-flight-logger.kicad_pcb **
 ** Created on 2026-09-26 21:12:27 **
 
 ** Found 84 DRC violations **

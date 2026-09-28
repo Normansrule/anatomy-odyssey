@@ -1,4 +1,4 @@
-// rocketlib.scad — shared dimensions and profile maths for Cosmic Codex rocket parts.
+// rocketlib.scad — shared dimensions and profile maths for Cosmic Library rocket parts.
 // Units: millimetres. Z axis = rocket axis, +Z points toward the nose.
 //
 // Body-tube sizes are the nominal Estes-standard values (inches → mm):

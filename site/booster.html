@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Booster Landing · Cosmic Library</title>
+<meta name="description" content="Fly a Falcon 9-class reusable first stage back to Earth: flip, boostback, entry burn, grid-fin steering and a one-engine hoverslam onto a rocking drone ship or a coastal landing zone, with a transparent autopilot and live physics.">
+<meta property="og:title" content="Booster Landing · Cosmic Library">
+<meta property="og:description" content="Fly a Falcon 9-class reusable first stage back to Earth: flip, boostback, entry burn, grid-fin steering and a one-engine hoverslam onto a rocking drone ship or a coastal landing zone, with a transparent autopilot and live physics.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="assets/css/booster.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body class="sim" data-page="booster">
+  <div class="stage" id="stage" role="img" aria-label="Real-time 3-D scene: a sooty, reusable rocket first stage falling back through the atmosphere toward a landing platform, driven by a live physics simulation."></div>
+  <div class="loading" id="loading"><div class="bx-loader"><span></span>Recovering the booster…</div></div>
+
+  <!-- title + scenario picker -->
+  <div class="hud hud-title bx-title" id="title">
+    <div class="eyebrow">Reusable first stage · recovery</div>
+    <h1>Booster <span class="grad-text">Landing</span></h1>
+    <p>A Falcon 9-class first stage has just let go of its upper stage. Bring it home: flip, brake, steer with the grid fins and finish with a one-engine <em>hoverslam</em>. It cannot hover, so the engine has to reach zero speed exactly at zero height.</p>
+    <div class="bx-scen" id="scen" role="group" aria-label="Scenario">
+      <button data-s="ship" aria-pressed="true"><b>Drone ship</b><span>70 km · 2.25 km/s · at sea</span></button>
+      <button data-s="rtls" aria-pressed="false"><b>Return to launch site</b><span>67 km · boostback · coast</span></button>
+      <button data-s="final" aria-pressed="false"><b>Final approach</b><span>3 km · terminal velocity</span></button>
+    </div>
+    <div class="bx-go">
+      <button class="btn flame small" id="flyBtn">Fly it yourself</button>
+      <button class="btn primary small" id="autoBtn">Watch the autopilot</button>
+    </div>
+    <p class="hint bx-keys"><kbd>W</kbd><kbd>S</kbd> throttle · <kbd>A</kbd><kbd>D</kbd> attitude · <kbd>Space</kbd> ignite / cut · <kbd>G</kbd> legs · <kbd>1</kbd><kbd>3</kbd><kbd>9</kbd> engines · <kbd>H</kbd> retrograde hold · <kbd>P</kbd> autopilot · <kbd>C</kbd> camera · <kbd>[</kbd><kbd>]</kbd> time warp</p>
+  </div>
+
+  <!-- phase clock -->
+  <div class="bx-clock" id="clock" aria-live="off">
+    <div class="bx-t"><span class="bx-tl">T+</span><span id="tVal">00:00</span><span class="bx-tl2">after separation</span></div>
+    <div class="bx-phase" id="phase">Stage separation</div>
+    <div class="bx-chips" id="chips" aria-hidden="true">
+      <i data-p="flip">Flip</i><i data-p="boostback">Boostback</i><i data-p="coast">Coast</i><i data-p="entry">Entry burn</i><i data-p="aero">Grid fins</i><i data-p="landing">Landing burn</i><i data-p="done">Touchdown</i>
+    </div>
+    <div class="bx-mini" id="mini" aria-hidden="true">
+      <span><b id="mAlt">0</b> m</span><span>↓ <b id="mVy">0</b> m/s</span><span>→ <b id="mVx">0</b> m/s</span><span><b id="mProp">0</b> %</span>
+    </div>
+  </div>
+
+  <!-- event captions -->
+  <div class="bx-caption" id="caption" aria-live="polite"></div>
+
+  <!-- flight display: altitude tape with the hoverslam marker, attitude, throttle -->
+  <div class="hud bx-fd" id="fd">
+    <canvas id="fdc" width="480" height="272" aria-label="Flight display: altitude tape with the ideal landing-burn start marker, attitude indicator and throttle"></canvas>
+    <div class="bx-ap" id="apState">AUTOPILOT</div>
+  </div>
+
+  <!-- landmark labels projected from 3-D -->
+  <div class="bx-label" id="lblTarget"><i></i><span>Landing target</span><b></b></div>
+  <div class="bx-label amber" id="lblPred"><i></i><span>Predicted touchdown</span><b></b></div>
+
+  <!-- telemetry + explanations -->
+  <aside class="hud hud-panel bx-panel" id="panel" aria-label="Telemetry and explanations">
+    <button class="hud-collapse" id="collapse">▼ HIDE</button>
+    <h2>Telemetry</h2>
+    <div class="readouts">
+      <div class="readout"><div class="k">Altitude</div><div class="v" id="rAlt">0<small>m</small></div></div>
+      <div class="readout"><div class="k">Vertical speed</div><div class="v" id="rVy">0<small>m/s</small></div></div>
+      <div class="readout"><div class="k">Horizontal speed</div><div class="v" id="rVx">0<small>m/s</small></div></div>
+      <div class="readout"><div class="k">Attitude · AoA</div><div class="v" id="rAtt">0°</div></div>
+      <div class="readout"><div class="k">Throttle</div><div class="v" id="rThr">80<small>%</small></div></div>
+      <div class="readout"><div class="k">Engines lit</div><div class="v" id="rEng">0</div></div>
+      <div class="readout wide"><div class="k">Propellant</div><div class="v" id="rProp">0<small>kg</small></div><div class="bx-bar"><i id="propBar"></i></div></div>
+      <div class="readout"><div class="k">Thrust / weight</div><div class="v" id="rTW">0</div></div>
+      <div class="readout"><div class="k">Dyn. pressure q</div><div class="v" id="rQ">0<small>kPa</small></div></div>
+      <div class="readout"><div class="k">Mach</div><div class="v" id="rMach">0</div></div>
+      <div class="readout"><div class="k">Heating <span class="bx-sub">stagnation</span></div><div class="v" id="rHeat">0<small>kW/m²</small></div></div>
+      <div class="readout"><div class="k">Time to impact</div><div class="v" id="rTti">—</div></div>
+      <div class="readout"><div class="k">Burn-start altitude</div><div class="v bx-amber" id="rBurn">—</div></div>
+      <div class="readout wide"><div class="k">Predicted touchdown</div><div class="v" id="rPred">—</div></div>
+    </div>
+    <canvas class="bx-profile" id="profile" width="600" height="230" aria-label="Altitude against distance to the target: flown path, predicted path and target"></canvas>
+
+    <h2>The hoverslam</h2>
+    <div class="bx-eq" data-tex="h_{\text{burn}} = \dfrac{v^2}{2\,a_{\text{net}}}"></div>
+    <div class="bx-eq" data-tex="a_{\text{net}} = \dfrac{n\,F(\tau)}{m} - g + \dfrac{D}{2m}"></div>
+    <p class="bx-live" id="eqLive">—</p>
+    <p class="bx-p">One engine at its <b>minimum</b> throttle still pushes harder than the empty stage weighs (thrust-to-weight <span id="twMinTxt">≈ 2</span>), so the booster cannot hover. It must light at the right height so the speed reaches zero just as the legs touch. Light too early and it stops in mid-air and climbs; too late and it hits. The amber <b>burn&nbsp;now</b> marker on the altitude tape is this formula, live, at your current throttle; drag (<i>D</i>) helps too, but fades as the stage slows, so only half of it is counted.</p>
+    <p class="bx-p">The autopilot plans at 80 % throttle, so it can push harder or softer, and flares for the last 40 m at a gentler deceleration: <span class="mono" id="apPlan">—</span>.</p>
+
+    <h2>Why land a booster?</h2>
+    <p class="bx-p">The first stage is the expensive part: about 60 % of the cost of the whole rocket, by Elon Musk's account; in 2020 he put the cost of refurbishing a landed booster at about $250,000 and the marginal cost of a reused launch at about $15 million (claims reported by ElonX, not audited figures). Landing is not free either. The propellant kept for the return is propellant not used to push the payload: the published geostationary transfer orbit (GTO) capacity is 8.3 t when the stage is thrown away, 5.5 t with a drone-ship landing and 3.5 t with a return to the launch site.</p>
+    <div class="bx-pay" id="pay" aria-label="Payload to geostationary transfer orbit by recovery mode"></div>
+    <p class="bx-p">That is why far-flying missions land on a ship: turning around to fly home (the <b>boostback</b>) costs much more than letting the stage coast down-range.</p>
+
+    <h2>The entry burn</h2>
+    <p class="bx-p">Around 55 km the stage is falling at over 1.5 km/s into thickening air. Aerodynamic heating grows roughly with <span class="mono">√ρ · v³</span> (Sutton–Graves) and the load with <span class="mono">q = ½ρv²</span>, so a few hundred m/s removed up high pays off many times over. Three engines fire into the oncoming flow; their exhaust wraps back around the stage as a hot but protective cushion.</p>
+    <p class="bx-p mono bx-small" id="entryCmp">—</p>
+
+    <h2>Grid fins</h2>
+    <p class="bx-p">Four lattice fins swing out near the top of the stage. The air flows <i>through</i> their small cells, so they still work at large angles of attack and at supersonic speed, and need little force to twist. They were aluminium at first; the current ones are cast and machined titanium, which SpaceX has described as surviving re-entry without the ablative coating the aluminium fins needed. With the engines off, the long body itself acts as a wing: to glide <i>toward</i> the target, the stage tilts its top <i>away</i> from it. Once the landing engine lights, thrust dominates and the steering sense flips.</p>
+
+    <h2>History</h2>
+    <ol class="bx-hist" id="hist"></ol>
+
+    <h2>Vehicle data</h2>
+    <div class="table-wrap"><table class="data bx-table" id="vtab"><tr><td>Loading…</td></tr></table></div>
+    <p class="hint">Numbers from <a href="data/booster.json">data/booster.json</a>; items marked <b>est.</b> are estimates. The Merlin sea-level thrust (845 kN), specific impulse (Isp: 282 s sea level, 311 s vacuum), the 482 kN minimum throttle and the 22.2 t empty mass come from the Wikipedia articles on the Merlin engine and on Falcon 9 Block 5. Separation states are representative, not a specific flight. Landing propellant reserves are not published: the loads here are what this model's autopilot needs plus a margin.</p>
+
+    <h2>Settings</h2>
+    <div class="field"><span class="lbl">Rendering quality</span>
+      <div class="seg" id="quality" role="group" aria-label="Rendering quality">
+        <button data-q="low" aria-pressed="false">Low</button><button data-q="high" aria-pressed="true">High</button>
+      </div>
+    </div>
+    <label class="switch">Engine sound (synthesised) <input type="checkbox" id="audio"></label>
+    <label class="switch">Show predicted path <input type="checkbox" id="showPred" checked></label>
+    <label class="switch">Camera shake <input type="checkbox" id="shake" checked></label>
+    <p class="hint">Physics: planar rigid body (down-range, altitude, pitch) over a spherical Earth, 4th-order Runge–Kutta at 50 Hz, U.S. Standard Atmosphere 1976, Mach-dependent drag, Jorgensen body lift, grid-fin lift and drag, gimballed thrust with ambient-pressure loss, propellant flow ṁ = F/(Isp·g₀). Tested in Node: <span class="mono">scripts/test_booster.mjs</span>. Not affiliated with SpaceX.</p>
+  </aside>
+
+  <!-- controls -->
+  <div class="hud hud-bottom bx-controls" id="controls">
+    <div class="bx-row">
+    <div class="bx-group">
+      <button class="btn small bx-apbtn" id="apBtn" aria-pressed="false" title="Autopilot (P)">Autopilot</button>
+      <button class="btn flame small" id="ignBtn" title="Ignite / cut off (Space)">Ignite</button>
+      <button class="btn small" id="legBtn" title="Deploy legs (G)">Legs</button>
+    </div>
+    <div class="bx-group">
+      <span class="bx-lbl">Engines</span>
+      <div class="seg" id="engs" role="group" aria-label="Engines to light">
+        <button data-n="1" aria-pressed="true">1</button><button data-n="3" aria-pressed="false">3</button><button data-n="9" aria-pressed="false">9</button>
+      </div>
+      <button class="btn small" id="holdBtn" aria-pressed="false" title="Retrograde hold (H)">Retro hold</button>
+    </div>
+    </div>
+    <div class="bx-row">
+    <div class="bx-group">
+      <span class="bx-lbl">Time</span>
+      <div class="seg" id="warp" role="group" aria-label="Time warp">
+        <button data-w="1" aria-pressed="true">1×</button><button data-w="3" aria-pressed="false">3×</button><button data-w="10" aria-pressed="false">10×</button><button data-w="30" aria-pressed="false">30×</button>
+      </div>
+      <button class="btn small" id="pauseBtn" aria-pressed="false">Pause</button>
+    </div>
+    <div class="bx-group">
+      <span class="bx-lbl">Camera</span>
+      <div class="seg bx-cams" id="cams" role="group" aria-label="Camera">
+        <button data-c="auto" aria-pressed="true">Director</button><button data-c="chase" aria-pressed="false">Chase</button><button data-c="deck" aria-pressed="false">Deck</button><button data-c="wide" aria-pressed="false">Wide</button><button data-c="onboard" aria-pressed="false">Onboard</button>
+      </div>
+      <button class="btn small" id="restartBtn">Restart</button>
+    </div>
+    </div>
+  </div>
+
+  <!-- touch controls (phones) -->
+  <div class="bx-touch" id="touch" role="group" aria-label="Touch flight controls">
+    <div class="bx-pad">
+      <button data-k="left" aria-label="Tilt left">◀</button><button data-k="right" aria-label="Tilt right">▶</button>
+    </div>
+    <div class="bx-mid">
+      <button data-k="ign" class="bx-ign">IGNITE</button>
+      <div><button data-k="legs">LEGS</button><button data-k="ap">AUTO</button><button data-k="cam">CAM</button><button data-k="warp">1×</button></div>
+    </div>
+    <div class="bx-pad v">
+      <button data-k="up" aria-label="Throttle up">▲</button><button data-k="down" aria-label="Throttle down">▼</button>
+    </div>
+  </div>
+
+  <!-- outcome -->
+  <div class="bx-out" id="out" role="dialog" aria-modal="true" aria-labelledby="outTitle" hidden>
+    <div class="card bx-outc">
+      <div class="eyebrow" id="outEyebrow">Touchdown</div>
+      <h2 id="outTitle">Booster landed</h2>
+      <div class="bx-score"><b id="outScore">0</b><span>/ 100</span></div>
+      <table class="bx-checks" id="outChecks"></table>
+      <p class="bx-p" id="outText"></p>
+      <div class="row bx-outb">
+        <button class="btn flame small" id="againBtn">Fly again</button>
+        <button class="btn primary small" id="watchBtn">Watch the autopilot do it</button>
+        <button class="btn small" id="closeOut">Look around</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/codex.js"></script>
+  <script src="vendor/katex/katex.min.js"></script>
+  <script type="module" src="assets/js/booster.js"></script>
+</body>
+</html>

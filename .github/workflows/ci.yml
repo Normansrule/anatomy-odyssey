@@ -49,5 +49,11 @@ jobs:
           node-version: 22
       - run: node --no-warnings scripts/check_equations.mjs
       - run: node --no-warnings scripts/test_ephemeris.mjs
+      - name: Flight-model and astronomy tests
+        run: |
+          node --no-warnings scripts/test_sky.mjs
+          node --no-warnings scripts/test_booster.mjs
+          node --no-warnings scripts/test_moon_physics.mjs
+          node --no-warnings scripts/test_mars_edl.mjs
       - name: JSON files parse
         run: for f in site/data/*.json; do node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || exit 1; done

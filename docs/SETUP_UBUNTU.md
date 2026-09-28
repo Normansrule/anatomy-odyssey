@@ -1,6 +1,6 @@
 # From a blank Ubuntu terminal to a live site
 
-These steps take you from a fresh Ubuntu machine (22.04, 24.04 or newer; native or Windows Subsystem for Linux 2 (WSL2)) to Cosmic Codex running locally and published on GitHub Pages. Copy each block into the terminal in order.
+These steps take you from a fresh Ubuntu machine (22.04, 24.04 or newer; native or Windows Subsystem for Linux 2 (WSL2)) to Cosmic Library running locally and published on GitHub Pages. Copy each block into the terminal in order.
 
 ## 1 · Install the tools
 
@@ -26,12 +26,12 @@ git config --global user.name  "Aleksander Norman"
 git config --global user.email "you@example.com"      # the email on your GitHub account
 git config --global init.defaultBranch main
 
-ssh-keygen -t ed25519 -C "cosmic-codex" -f ~/.ssh/id_ed25519 -N ""   # skip if you already have a key
+ssh-keygen -t ed25519 -C "cosmic-library" -f ~/.ssh/id_ed25519 -N ""   # skip if you already have a key
 gh auth login --git-protocol ssh --web                               # choose GitHub.com; uploads the key
 ssh -T git@github.com                                                # should greet you by username
 ```
 
-> **Several GitHub accounts on one machine?** Give the second account its own key and an SSH host alias in `~/.ssh/config`, for example `Host github-normansrule` → `HostName github.com`, `IdentityFile ~/.ssh/id_ed25519_normansrule`, and use `git@github-normansrule:Normansrule/cosmic-codex.git` as the remote in step 4.
+> **Several GitHub accounts on one machine?** Give the second account its own key and an SSH host alias in `~/.ssh/config`, for example `Host github-normansrule` → `HostName github.com`, `IdentityFile ~/.ssh/id_ed25519_normansrule`, and use `git@github-normansrule:Normansrule/cosmic-library.git` as the remote in step 4.
 
 ## 3 · Get the code
 
@@ -39,16 +39,16 @@ ssh -T git@github.com                                                # should gr
 
 ```bash
 mkdir -p ~/projects && cd ~/projects
-git clone git@github.com:Normansrule/cosmic-codex.git
-cd cosmic-codex
+git clone git@github.com:Normansrule/cosmic-library.git
+cd cosmic-library
 ```
 
 **or**, if you have the release zip (on WSL2 the Windows Downloads folder is `/mnt/c/Users/<you>/Downloads`):
 
 ```bash
 mkdir -p ~/projects && cd ~/projects
-unzip /mnt/c/Users/<you>/Downloads/cosmic-codex.zip
-cd cosmic-codex
+unzip /mnt/c/Users/<you>/Downloads/cosmic-library.zip
+cd cosmic-library
 ```
 
 > Create the project in its own folder. If your home directory is itself a git repository, never run `git init` or `git add .` directly in `~`.
@@ -67,12 +67,12 @@ Open **http://localhost:8000** (on WSL2 the Windows browser reaches it directly)
 ```bash
 git init
 git add .
-git commit -m "Cosmic Codex: an open atlas of space and spaceflight"
+git commit -m "Cosmic Library: an open atlas of space and spaceflight"
 
-gh repo create Normansrule/cosmic-codex --public \
+gh repo create Normansrule/cosmic-library --public \
   --description "An open atlas of space & spaceflight: 3D simulations, equations, documents and hands-on builds" \
-  --homepage "https://normansrule.github.io/cosmic-codex/"
-git remote add origin git@github.com:Normansrule/cosmic-codex.git   # or your SSH alias
+  --homepage "https://normansrule.github.io/cosmic-library/"
+git remote add origin git@github.com:Normansrule/cosmic-library.git   # or your SSH alias
 git push -u origin main
 ```
 
@@ -81,20 +81,20 @@ Workflow files in `.github/workflows/` must be pushed over SSH, or with a token 
 ## 6 · Switch on GitHub Pages (deployed by GitHub Actions)
 
 ```bash
-gh api -X POST repos/Normansrule/cosmic-codex/pages -f build_type=workflow \
-  || gh api -X PUT repos/Normansrule/cosmic-codex/pages -f build_type=workflow
+gh api -X POST repos/Normansrule/cosmic-library/pages -f build_type=workflow \
+  || gh api -X PUT repos/Normansrule/cosmic-library/pages -f build_type=workflow
 gh workflow run pages.yml
 gh run watch                                     # wait for the green tick
 ```
 
 Or in the browser: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-The site goes live at **https://normansrule.github.io/cosmic-codex/**. Every later push that changes `site/` redeploys it automatically, and every push runs the test workflow.
+The site goes live at **https://normansrule.github.io/cosmic-library/**. Every later push that changes `site/` redeploys it automatically, and every push runs the test workflow.
 
 ## 7 · Day-to-day
 
 ```bash
-cd ~/projects/cosmic-codex
+cd ~/projects/cosmic-library
 source .venv/bin/activate
 python simulations/run.py blackhole --gif        # render into outputs/
 python scripts/fetch_gallery.py                  # optional: offline copy of gallery images

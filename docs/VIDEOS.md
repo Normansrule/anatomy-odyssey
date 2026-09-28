@@ -1,6 +1,6 @@
 # Videos: what to watch
 
-Curated English-language channels and videos that pair well with Cosmic Codex. This file mirrors the *Watch* section of the [Library page](../site/library.html) and the `channels` / `videos` arrays in [`site/data/library.json`](../site/data/library.json).
+Curated English-language channels and videos that pair well with Cosmic Library. This file mirrors the *Watch* section of the [Library page](../site/library.html) and the `channels` / `videos` arrays in [`site/data/library.json`](../site/data/library.json).
 
 Every link was checked against web search results on 26 September 2026. Channel names are shown as text only (no logos).
 

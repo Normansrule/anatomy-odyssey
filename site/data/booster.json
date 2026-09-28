@@ -1,0 +1,249 @@
+{
+  "title": "Reusable booster landing: vehicle data and sources",
+  "note": "Numbers used by site/assets/js/booster-physics.js. 'estimate' marks values that are not published and were chosen from photographs, reference drawings or physical reasoning. scripts/test_booster.mjs checks that the physics constants match this file.",
+  "vehicle": {
+    "name": "Falcon 9 Block 5-class reusable first stage",
+    "rows": [
+      {
+        "k": "Height (nozzle exits to top of interstage)",
+        "v": 42.6,
+        "unit": "m",
+        "src": "B5",
+        "note": "41.2 m is also quoted"
+      },
+      {
+        "k": "Diameter",
+        "v": 3.66,
+        "unit": "m",
+        "src": "B5",
+        "note": "quoted as 3.7 m"
+      },
+      {
+        "k": "Empty (dry) mass",
+        "v": 22200,
+        "unit": "kg",
+        "src": "B5",
+        "estimate": true,
+        "note": "published estimate; others give up to about 25.6 t"
+      },
+      {
+        "k": "Propellant capacity (LOX + RP-1)",
+        "v": 410900,
+        "unit": "kg",
+        "src": "B5",
+        "note": "287,400 kg liquid oxygen + 123,500 kg kerosene"
+      },
+      {
+        "k": "Engines",
+        "v": 9,
+        "unit": "",
+        "src": "B5",
+        "note": "sea-level kerosene/oxygen engines, 8 around 1"
+      },
+      {
+        "k": "Thrust per engine, sea level",
+        "v": 845,
+        "unit": "kN",
+        "src": "M1D"
+      },
+      {
+        "k": "Thrust per engine, vacuum (derived)",
+        "v": 932,
+        "unit": "kN",
+        "src": "M1D",
+        "note": "845 kN × 311 s / 282 s; B5 lists 914 kN"
+      },
+      {
+        "k": "Specific impulse, sea level",
+        "v": 282,
+        "unit": "s",
+        "src": "M1D"
+      },
+      {
+        "k": "Specific impulse, vacuum",
+        "v": 311,
+        "unit": "s",
+        "src": "M1D"
+      },
+      {
+        "k": "Minimum throttle (one engine)",
+        "v": 482,
+        "unit": "kN",
+        "src": "B5",
+        "note": "57 % of 845 kN; the engine page mentions 40 % for later refinements"
+      },
+      {
+        "k": "Mass flow per engine, full throttle",
+        "v": 305.6,
+        "unit": "kg/s",
+        "src": "derived",
+        "note": "F / (Isp · g₀)"
+      },
+      {
+        "k": "Grid fins",
+        "v": 4,
+        "unit": "",
+        "src": "B5",
+        "note": "cast and machined titanium; ≈ 1.2 × 1.5 m each (estimate)"
+      },
+      {
+        "k": "Landing legs",
+        "v": 4,
+        "unit": "",
+        "src": "F9",
+        "note": "span ≈ 18 m (estimate from photographs)"
+      },
+      {
+        "k": "Engine gimbal range",
+        "v": 5,
+        "unit": "°",
+        "src": "estimate",
+        "estimate": true
+      },
+      {
+        "k": "Reaction control torque (nitrogen thrusters)",
+        "v": 90,
+        "unit": "kN·m",
+        "src": "estimate",
+        "estimate": true,
+        "note": "chosen so a flip takes ≈ 30 s"
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "ship",
+      "name": "Drone-ship landing",
+      "altitude_km": 70,
+      "speed_m_s": 2250,
+      "flight_path_deg": 31,
+      "propellant_kg": 18500,
+      "ship_downrange_km": 571,
+      "note": "Propellant at separation is a model estimate: what this model's autopilot needs plus ≈ 3 t margin. Landing reserves are not published."
+    },
+    {
+      "id": "rtls",
+      "name": "Return to launch site",
+      "altitude_km": 67,
+      "speed_m_s": 1700,
+      "flight_path_deg": 38,
+      "propellant_kg": 44000,
+      "landing_zone_km": -70,
+      "note": "Model estimate: boostback, entry and landing burns plus ≈ 4 t margin."
+    },
+    {
+      "id": "final",
+      "name": "Final approach",
+      "altitude_km": 3,
+      "speed_m_s": "terminal (≈ 225)",
+      "propellant_kg": 4500,
+      "note": "Practice allowance."
+    }
+  ],
+  "payloadPenalty": {
+    "gto_expended_kg": 8300,
+    "gto_droneship_kg": 5500,
+    "gto_rtls_kg": 3500,
+    "src": "F9"
+  },
+  "economics": [
+    {
+      "text": "The first stage is about 60 % of the cost of the rocket, the second stage about 20 %.",
+      "who": "Elon Musk, as reported by ElonX",
+      "src": "ELONX"
+    },
+    {
+      "text": "Marginal cost of a reused launch about $15 million; refurbishing a booster about $250,000.",
+      "who": "Elon Musk, Aviation Week interview, May 2020 (claims, not audited figures)",
+      "src": "ELONX"
+    },
+    {
+      "text": "Block 5 was designed to fly ten times with minor maintenance, and potentially up to 100 times with refurbishment.",
+      "who": "Wikipedia, Falcon 9 Block 5",
+      "src": "B5"
+    }
+  ],
+  "history": [
+    {
+      "date": "1993-08-18",
+      "text": "The Delta Clipper Experimental (DC-X) makes its first vertical take-off and landing, a sub-scale test of a reusable rocket."
+    },
+    {
+      "date": "2012–2013",
+      "text": "The Grasshopper test vehicle hops up to 744 m and lands on its legs."
+    },
+    {
+      "date": "2015-11-23",
+      "text": "Blue Origin's New Shepard lands vertically after a suborbital flight to space."
+    },
+    {
+      "date": "2015-12-21",
+      "text": "First landing of an orbital-class booster: Falcon 9 Flight 20 (Orbcomm OG2) returns to Landing Zone 1, Cape Canaveral, at 8:29 pm local time (01:29 UTC on 22 December)."
+    },
+    {
+      "date": "2016-04-08",
+      "text": "First landing on a drone ship at sea (CRS-8 mission)."
+    },
+    {
+      "date": "2017-03-30",
+      "text": "First re-flight of a landed orbital booster (SES-10)."
+    }
+  ],
+  "sources": {
+    "B5": {
+      "title": "Falcon 9 Block 5",
+      "publisher": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Falcon_9_Block_5"
+    },
+    "M1D": {
+      "title": "SpaceX Merlin",
+      "publisher": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/SpaceX_Merlin"
+    },
+    "F9": {
+      "title": "Falcon 9",
+      "publisher": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Falcon_9"
+    },
+    "FL20": {
+      "title": "Falcon 9 flight 20",
+      "publisher": "Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Falcon_9_flight_20"
+    },
+    "ELONX": {
+      "title": "How much does it cost to launch a reused Falcon 9?",
+      "publisher": "ElonX.net",
+      "url": "https://www.elonx.net/how-much-does-it-cost-to-launch-a-reused-falcon-9-elon-musk-explains-why-reusability-is-worth-it/"
+    },
+    "MECO": {
+      "title": "What is MECO? Main engine cut-off and stage separation",
+      "publisher": "Orbital Radar glossary",
+      "url": "https://orbitalradar.com/glossary/meco"
+    },
+    "USSA": {
+      "title": "U.S. Standard Atmosphere, 1976",
+      "publisher": "NOAA / NASA / USAF",
+      "url": ""
+    },
+    "JOR": {
+      "title": "Prediction of static aerodynamic characteristics for slender bodies alone and with lifting surfaces to very high angles of attack (TR R-474)",
+      "publisher": "L. H. Jorgensen, NASA, 1977",
+      "url": ""
+    },
+    "SG": {
+      "title": "A general stagnation-point convective heating equation for arbitrary gas mixtures (TR R-376)",
+      "publisher": "K. Sutton & R. A. Graves, NASA, 1971",
+      "url": ""
+    },
+    "HOE": {
+      "title": "Fluid-Dynamic Drag",
+      "publisher": "S. F. Hoerner, 1965",
+      "url": ""
+    },
+    "GF": {
+      "title": "Grid fins: a new concept for missile stability and control (AIAA 93-0035)",
+      "publisher": "W. D. Washington & M. S. Miller, 1993",
+      "url": ""
+    }
+  }
+}

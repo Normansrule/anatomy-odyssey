@@ -1,4 +1,4 @@
-/* Cosmic Codex: Solar System orrery (solar-system.html).
+/* Cosmic Library: Solar System orrery (solar-system.html).
  *
  * Positions: ./ephemeris.js (JPL / Standish Table 1 Keplerian elements,
  * Kepler's equation by Newton iteration). Physical data: data/planets.json

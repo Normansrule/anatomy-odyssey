@@ -1,4 +1,4 @@
-// telemetry_packet.h - Cosmic Codex telemetry frame v1 (34 bytes, little-endian)
+// telemetry_packet.h - Cosmic Library telemetry frame v1 (34 bytes, little-endian)
 // ---------------------------------------------------------------------------------
 // Shared by the flight logger (experiment 30) and the LoRa ground station (experiment 31).
 // The canonical copy lives in experiments/31-lora-telemetry-ground-station/firmware/common/;

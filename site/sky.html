@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Night Sky · Cosmic Library</title>
+<meta name="description" content="A planetarium in your browser: the real sky for any place and time, with 5,000 stars, the Milky Way, planets, the Moon's phase, rise and set times and what to see tonight.">
+<meta property="og:title" content="Night Sky · Cosmic Library">
+<meta property="og:description" content="A planetarium in your browser: the real sky for any place and time, with 5,000 stars, the Milky Way, planets, the Moon's phase, rise and set times and what to see tonight.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="assets/css/sky.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/","satellite.js":"./vendor/satellite/index.js"}}</script>
+</head>
+<body class="sim" data-page="sky">
+  <div class="stage" id="stage">
+    <canvas id="overlay" class="sky-overlay" tabindex="0" role="img" aria-label="Planetarium view of the sky. Drag to look around, scroll or pinch to zoom, click a star, planet or deep-sky object for details. Arrow keys pan, plus and minus zoom."></canvas>
+  </div>
+
+  <div class="hud hud-title sky-title">
+    <div class="eyebrow"><span id="liveDot" class="sky-live"></span><span id="eyebrowTxt">Planetarium · live</span></div>
+    <h1><span class="sky-h1-a">The sky over</span> <button class="sky-place" id="placeBtn" title="Change location">Los Angeles</button></h1>
+    <p>Every star, planet and the Moon placed for this place and moment, from the Hipparcos catalogue and Jet Propulsion Laboratory (JPL) orbital elements.</p>
+    <div class="sky-search" role="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input type="search" id="search" placeholder="Find a star, planet, constellation, M42…" autocomplete="off" spellcheck="false" aria-label="Search the sky" aria-controls="searchList" aria-expanded="false" role="combobox" aria-autocomplete="list">
+      <kbd class="sky-kbd">/</kbd>
+      <ul class="sky-results" id="searchList" role="listbox" hidden></ul>
+    </div>
+  </div>
+
+  <aside class="hud hud-panel sky-panel" id="panel" aria-label="Planetarium controls">
+    <button class="hud-collapse">▼ HIDE</button>
+    <div class="seg sky-tabs" role="tablist" aria-label="Panels">
+      <button type="button" role="tab" data-tab="tonight" aria-pressed="true" aria-selected="true" id="tab-tonight">Tonight</button>
+      <button type="button" role="tab" data-tab="sky" aria-pressed="false" aria-selected="false" id="tab-sky">Sky</button>
+      <button type="button" role="tab" data-tab="place" aria-pressed="false" aria-selected="false" id="tab-place">Place</button>
+      <button type="button" role="tab" data-tab="learn" aria-pressed="false" aria-selected="false" id="tab-learn">Learn</button>
+    </div>
+
+    <!-- ============ TONIGHT ============ -->
+    <section class="sky-tab" data-pane="tonight" role="tabpanel" aria-labelledby="tab-tonight">
+      <div class="sky-tonight-head">
+        <div>
+          <div class="k" id="tnDate">Tonight</div>
+          <div class="sky-tn-place" id="tnPlace">Los Angeles</div>
+        </div>
+        <div class="sky-moonchip" id="tnMoonChip" title="Moon phase"></div>
+      </div>
+      <div class="sky-night" id="tnChart" aria-label="Chart of when the Sun, Moon and planets are up tonight"></div>
+      <div class="readouts sky-tn-times" id="tnTimes"></div>
+      <h2>Planets</h2>
+      <ul class="sky-list" id="tnPlanets"></ul>
+      <h2>Five highlights</h2>
+      <p class="hint" id="tnPrime">Well placed at 21:30.</p>
+      <ol class="sky-list sky-highlights" id="tnHighlights"></ol>
+      <p class="hint" id="tnZone"></p>
+      <p class="hint sky-credit-in">Stars, names, constellation figures and boundaries, Milky Way and Messier data: <a href="https://github.com/ofrohn/d3-celestial" rel="noopener">d3-celestial</a> by Olaf Frohn (BSD-3-Clause), from the Hipparcos catalogue and the International Astronomical Union (IAU).</p>
+    </section>
+
+    <!-- ============ SKY (layers) ============ -->
+    <section class="sky-tab" data-pane="sky" role="tabpanel" aria-labelledby="tab-sky" hidden>
+      <h2>Show</h2>
+      <div class="sky-toggles">
+        <label class="switch">Constellation lines <kbd>C</kbd><input type="checkbox" data-layer="lines" checked></label>
+        <label class="switch">Constellation names <kbd>V</kbd><input type="checkbox" data-layer="names" checked></label>
+        <label class="switch">Constellation boundaries <kbd>B</kbd><input type="checkbox" data-layer="bounds"></label>
+        <label class="switch">Star names <kbd>L</kbd><input type="checkbox" data-layer="starNames" checked></label>
+        <label class="switch">Messier objects <kbd>M</kbd><input type="checkbox" data-layer="messier"></label>
+        <label class="switch">Planet labels <kbd>P</kbd><input type="checkbox" data-layer="planets" checked></label>
+        <label class="switch">Ecliptic <kbd>K</kbd><input type="checkbox" data-layer="ecliptic" checked></label>
+        <label class="switch">Altitude–azimuth grid <kbd>Z</kbd><input type="checkbox" data-layer="azGrid"></label>
+        <label class="switch">Equatorial grid <kbd>E</kbd><input type="checkbox" data-layer="eqGrid"></label>
+        <label class="switch">Ground <kbd>G</kbd><input type="checkbox" data-layer="ground" checked></label>
+        <label class="switch">Atmosphere <kbd>A</kbd><input type="checkbox" data-layer="atm" checked></label>
+        <label class="switch">Twinkling<input type="checkbox" data-layer="twinkle" checked></label>
+      </div>
+      <h2>Sky darkness</h2>
+      <div class="field">
+        <label for="bortle">Bortle class <output id="bortleOut">3 · rural</output></label>
+        <input type="range" id="bortle" min="1" max="9" step="1" value="3">
+      </div>
+      <p class="hint" id="bortleHint">Naked-eye limiting magnitude about 6.8. Downtown Los Angeles is class 8–9, where only about 50 stars show; the catalogue here stops at magnitude 6.</p>
+      <h2>View</h2>
+      <div class="field">
+        <label for="fov">Field of view <output id="fovOut">110°</output></label>
+        <input type="range" id="fov" min="0" max="1000" step="1" value="700" aria-label="Field of view">
+      </div>
+      <div class="sky-look" role="group" aria-label="Look toward">
+        <button class="btn small" data-look="0">N</button><button class="btn small" data-look="90">E</button><button class="btn small" data-look="180">S</button><button class="btn small" data-look="270">W</button><button class="btn small" data-look="zenith">Zenith</button>
+      </div>
+      <p class="hint sky-credit-in">Stars, names, constellation figures and boundaries, Milky Way and Messier data: <a href="https://github.com/ofrohn/d3-celestial" rel="noopener">d3-celestial</a> by Olaf Frohn (BSD-3-Clause), from the Hipparcos catalogue and the International Astronomical Union (IAU).</p>
+      <p class="hint">Projection: stereographic, like a fisheye lens that keeps shapes true, so constellations do not distort at the edges.</p>
+    </section>
+
+    <!-- ============ PLACE ============ -->
+    <section class="sky-tab" data-pane="place" role="tabpanel" aria-labelledby="tab-place" hidden>
+      <h2>Where</h2>
+      <div class="sky-places" id="presets" role="group" aria-label="Preset locations"></div>
+      <button class="btn small sky-geo" id="geoBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" fill="currentColor"/><circle cx="12" cy="12" r="7.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 1.5v3.5M12 19v3.5M1.5 12H5M19 12h3.5" stroke="currentColor" stroke-width="1.6"/></svg>Use my location</button>
+      <p class="hint" id="geoMsg">Your position never leaves your browser.</p>
+      <div class="sky-coords">
+        <div class="field"><label for="latIn">Latitude <span>° N</span></label><input type="number" id="latIn" min="-90" max="90" step="0.01" value="34.05"></div>
+        <div class="field"><label for="lonIn">Longitude <span>° E</span></label><input type="number" id="lonIn" min="-180" max="180" step="0.01" value="-118.25"></div>
+      </div>
+      <h2>Clock</h2>
+      <div class="seg" role="group" aria-label="Time zone for displayed times">
+        <button type="button" data-tz="viewer" aria-pressed="true">Your time zone</button>
+        <button type="button" data-tz="site" aria-pressed="false">Site's time zone</button>
+      </div>
+      <p class="hint" id="tzHint"></p>
+      <h2>Right now</h2>
+      <div class="readouts">
+        <div class="readout"><div class="k">Local Sidereal Time (LST)</div><div class="v" id="rLst">—</div></div>
+        <div class="readout"><div class="k">Julian Day (JD)</div><div class="v" id="rJd">—</div></div>
+        <div class="readout"><div class="k">Sun altitude</div><div class="v" id="rSun">—</div></div>
+        <div class="readout"><div class="k">Sky</div><div class="v sky-v-small" id="rPhase">—</div></div>
+      </div>
+    </section>
+
+    <!-- ============ LEARN ============ -->
+    <section class="sky-tab sky-learn" data-pane="learn" role="tabpanel" aria-labelledby="tab-learn" hidden>
+      <h3>Why the sky turns: sidereal and solar days</h3>
+      <p>Earth spins once relative to the stars in a <b>sidereal day</b>. Because it also moves about 1/365 of the way around the Sun each day, it must turn a little further, about 0.9856°, before the Sun returns to the meridian: the <b>solar day</b> of 24 hours.</p>
+      <div class="tex" data-tex="T_{\text{sid}} = \frac{T_{\odot}}{1 + 1/365.2422} = 23^{\text{h}}\,56^{\text{m}}\,4.09^{\text{s}}"></div>
+      <p>So every star rises about 3 minutes 56 seconds earlier each night. The clock that follows the stars is the <b>Local Sidereal Time (LST)</b>: the Right Ascension (RA) now crossing your meridian. The International Astronomical Union (IAU) 2006 definition builds it from the Earth Rotation Angle (ERA), with <i>D</i><sub>U</sub> the days since 2000 January 1, 12:00 Universal Time (UT):</p>
+      <div class="tex" data-tex="\begin{aligned}\theta_{\text{ERA}} = 360^\circ\,(&0.7790572732640 \\ &+ 1.00273781191135448\,D_U)\end{aligned}"></div>
+      <div class="tex" data-tex="\text{LST} = \theta_{\text{ERA}} + \text{(precession terms)} + \lambda_{\text{east}}"></div>
+      <p class="sky-live-line" id="lLst"></p>
+      <button class="btn small" id="demoSid">Watch one sidereal day at 3600×</button>
+
+      <h3>From the celestial sphere to your horizon</h3>
+      <p>A star has fixed equatorial coordinates, Right Ascension <i>α</i> and Declination <i>δ</i> (after precession from the J2000 catalogue epoch to today). Its <b>hour angle</b> tells how far it has turned past your meridian:</p>
+      <div class="tex" data-tex="H = \text{LST} - \alpha"></div>
+      <p>Spherical trigonometry on the triangle pole–zenith–star gives altitude <i>a</i> and azimuth <i>A</i> (from north through east) at latitude <i>φ</i>:</p>
+      <div class="tex" data-tex="\sin a = \sin\varphi\,\sin\delta + \cos\varphi\,\cos\delta\,\cos H"></div>
+      <div class="tex" data-tex="\tan A = \frac{-\cos\delta\,\sin H}{\sin\delta\,\cos\varphi - \cos\delta\,\cos H\,\sin\varphi}"></div>
+      <p>Near the horizon the air bends starlight upward. Sæmundsson's formula gives the lift <i>R</i> in arcminutes for a true altitude <i>h</i> in degrees: about 29′ at the horizon, more than the Moon's diameter, which is why the Sun is still visible for a moment after it has geometrically set.</p>
+      <div class="tex" data-tex="R = \frac{1.02'}{\tan\!\left(h + \frac{10.3}{h + 5.11}\right)}"></div>
+      <p class="sky-live-line" id="lSel">Click any star to see these numbers for it.</p>
+
+      <h3>Why your sky depends on latitude</h3>
+      <p>The celestial pole stands at an altitude equal to your latitude, so Polaris is a compass and a sextant at once. Stars closer to the pole than that never set; stars as close to the opposite pole never rise:</p>
+      <div class="tex" data-tex="\delta > 90^\circ - \varphi \;\Rightarrow\; \text{circumpolar} \qquad \delta < -(90^\circ - \varphi) \;\Rightarrow\; \text{never rises}"></div>
+      <div class="tex" data-tex="\text{hidden fraction of the sky} = \tfrac{1}{2}\,(1 - \cos\varphi)"></div>
+      <p class="sky-live-line" id="lLat"></p>
+      <div class="sky-look"><button class="btn small" data-demo="pole">Look at the celestial pole</button><button class="btn small" data-demo="south">Visit the South Pole</button><button class="btn small" data-demo="equator">Stand on the equator</button></div>
+
+      <h3>Why it depends on the season</h3>
+      <p>The Sun creeps eastward along the ecliptic by about 1° a day, so the part of the sky that is opposite the Sun, and up at midnight, moves by 2 hours of RA each month. Orion rules winter evenings and Scorpius summer ones because the Sun stands in Scorpius in late November and in Orion's neighbour Taurus in early June.</p>
+      <p class="sky-live-line" id="lSeason"></p>
+      <button class="btn small" id="demoSeason">Step one month at 21:00</button>
+      <p class="hint">Sources: J. Meeus, <i>Astronomical Algorithms</i> (2nd ed.) chapters 12, 13, 16, 21, 41, 48; International Earth Rotation and Reference Systems Service (IERS) Conventions 2010, chapter 5.</p>
+    </section>
+  </aside>
+
+  <section class="hud sky-info" id="info" aria-live="polite" hidden>
+    <button class="sky-info-close" id="infoClose" aria-label="Close details">×</button>
+    <header class="sky-info-head">
+      <span class="sky-swatch" id="infoSwatch"></span>
+      <div>
+        <div class="eyebrow" id="infoKind">Star</div>
+        <h3 id="infoName">Sirius</h3>
+        <div class="sky-info-sub" id="infoSub"></div>
+      </div>
+    </header>
+    <p class="sky-info-note" id="infoNote"></p>
+    <div class="sky-info-rst" id="infoRst"></div>
+    <div class="readouts sky-info-grid" id="infoGrid"></div>
+    <p class="hint" id="infoSrc"></p>
+  </section>
+
+  <div class="hud hud-bottom sky-dock" role="group" aria-label="Time controls">
+    <div class="sky-dock-row">
+      <div class="sky-clock">
+        <div class="sky-clock-t" id="clockT">21:30</div>
+        <label class="sky-clock-d"><span class="sr-only">Date and time</span><input type="datetime-local" id="dtPick" step="60"><span id="clockZ">PDT</span></label>
+      </div>
+      <div class="sky-transport">
+        <button class="sky-ic" data-step="-1440" title="Back one day" aria-label="Back one day">−1d</button>
+        <button class="sky-ic" data-step="-60" title="Back one hour" aria-label="Back one hour">−1h</button>
+        <button class="sky-ic" id="revBtn" aria-pressed="false" title="Reverse time (R)" aria-label="Reverse time"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6 3 12l8 6zM21 6l-8 6 8 6z"/></svg></button>
+        <button class="sky-ic sky-play" id="playBtn" title="Play or pause (Space)" aria-label="Pause">
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="i-pause"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="i-play"><path d="M7 4l13 8-13 8z"/></svg></button>
+        <button class="sky-ic" data-step="60" title="Forward one hour" aria-label="Forward one hour">+1h</button>
+        <button class="sky-ic" data-step="1440" title="Forward one day" aria-label="Forward one day">+1d</button>
+      </div>
+      <div class="seg sky-speed" role="group" aria-label="Speed">
+        <button type="button" data-speed="1" aria-pressed="true">1×</button>
+        <button type="button" data-speed="60" aria-pressed="false">60×</button>
+        <button type="button" data-speed="3600" aria-pressed="false">3600×</button>
+      </div>
+      <button class="btn small sky-now" id="nowBtn" title="Jump to the present (N)">Now</button>
+    </div>
+    <div class="sky-slider">
+      <input type="range" id="tod" min="0" max="1439" step="1" value="1290" aria-label="Time of day">
+      <div class="sky-ticks" aria-hidden="true"><span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>24h</span></div>
+    </div>
+  </div>
+
+  <div class="hud sky-compass" id="compass" aria-live="off">
+    <div class="sky-compass-dir" id="cmpDir">S 180°</div>
+    <div class="sky-compass-sub" id="cmpSub">alt 30° · FOV 110°</div>
+    <div class="sky-zoom"><button class="sky-ic" id="zoomOut" aria-label="Zoom out">−</button><button class="sky-ic" id="zoomIn" aria-label="Zoom in">+</button></div>
+  </div>
+
+  <p class="sky-credit hint">Stars, constellations, Milky Way and Messier data: <a href="https://github.com/ofrohn/d3-celestial" rel="noopener">d3-celestial</a> by Olaf Frohn (BSD-3-Clause), from Hipparcos and the International Astronomical Union (IAU).</p>
+
+  <div class="sky-toast" id="toast" role="status"></div>
+  <div class="loading" id="loading"><div class="sky-load"><div class="sky-load-ring"></div><span id="loadTxt">Loading 5,044 stars</span></div></div>
+
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="assets/js/codex.js"></script>
+  <script type="module" src="assets/js/sky.js"></script>
+</body>
+</html>

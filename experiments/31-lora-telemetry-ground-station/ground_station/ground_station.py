@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cosmic Codex LoRa ground station: serial -> live plots + map, with a simulated input mode.
+"""Cosmic Library LoRa ground station: serial -> live plots + map, with a simulated input mode.
 
     python3 ground_station.py --simulate                      # no hardware: a simulated flight, live
     python3 ground_station.py --simulate --speed 5            # 5x real time
@@ -196,7 +196,7 @@ class Station:
         last = self.track()[-1] if self.track() else (0, 0, 0)
         # altitudes are above the pad; "relativeToGround" is the closest KML altitude mode
         Path(path).write_text(f"""<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Cosmic Codex flight</name>
+<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Cosmic Library flight</name>
 <Style id="trk"><LineStyle><color>ff3478eb</color><width>3</width></LineStyle></Style>
 <Placemark><name>track</name><styleUrl>#trk</styleUrl><LineString><extrude>1</extrude>
 <altitudeMode>relativeToGround</altitudeMode><coordinates>{coords}</coordinates></LineString></Placemark>
@@ -223,7 +223,7 @@ class Dashboard:
         self.ax_map = self.fig.add_subplot(gs[0:2, 1])
         self.ax_rf = self.fig.add_subplot(gs[2, 1])
         self.ax_txt = self.fig.add_subplot(gs[:, 2])
-        self.fig.suptitle("Cosmic Codex ground station", x=0.01, ha="left", color=INK, fontsize=13, weight="bold")
+        self.fig.suptitle("Cosmic Library ground station", x=0.01, ha="left", color=INK, fontsize=13, weight="bold")
 
     def _style(self, ax, title):
         ax.set_facecolor(SURFACE)

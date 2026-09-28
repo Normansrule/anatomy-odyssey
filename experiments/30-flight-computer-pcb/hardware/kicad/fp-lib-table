@@ -1,4 +1,4 @@
 (fp_lib_table
   (version 7)
-  (lib (name "cosmic_codex")(type "KiCad")(uri "${KIPRJMOD}/cosmic_codex.pretty")(options "")(descr "Cosmic Codex footprints"))
+  (lib (name "cosmic_codex")(type "KiCad")(uri "${KIPRJMOD}/cosmic_codex.pretty")(options "")(descr "Cosmic Library footprints"))
 )

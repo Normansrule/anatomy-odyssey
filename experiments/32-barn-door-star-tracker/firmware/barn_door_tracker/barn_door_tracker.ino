@@ -1,4 +1,4 @@
-// Cosmic Codex barn-door star tracker - Arduino Nano/Uno (or any Arduino-compatible board)
+// Cosmic Library barn-door star tracker - Arduino Nano/Uno (or any Arduino-compatible board)
 // 28BYJ-48 stepper + ULN2003 driver board, M6 x 1.0 threaded rod, tangent-corrected sidereal rate.
 //
 // Controls

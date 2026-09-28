@@ -1,8 +1,8 @@
 # Credits & licences
 
-Cosmic Codex stands on the work of many people and institutions. This file lists every library, dataset, image source and reference used. Each page's source code also cites its numbers inline.
+Cosmic Library stands on the work of many people and institutions. This file lists every library, dataset, image source and reference used. Each page's source code also cites its numbers inline.
 
-> Cosmic Codex is an independent educational project. It is **not affiliated with or endorsed by** NASA, the Jet Propulsion Laboratory (JPL), SpaceX, the European Space Agency (ESA), the California Science Center or any other organisation named here. No agency insignia or company logos are used anywhere in this repository.
+> Cosmic Library is an independent educational project. It is **not affiliated with or endorsed by** NASA, the Jet Propulsion Laboratory (JPL), SpaceX, the European Space Agency (ESA), the California Science Center or any other organisation named here. No agency insignia or company logos are used anywhere in this repository.
 
 ## Libraries (vendored in `site/vendor/`)
 
@@ -11,6 +11,8 @@ Cosmic Codex stands on the work of many people and institutions. This file lists
 | [three.js](https://threejs.org) | r186 | MIT | Every 3D scene; add-ons: OrbitControls, EffectComposer, UnrealBloomPass, OutputPass, FXAAPass, Sky, Line2, CSS2DRenderer, STLLoader, RoomEnvironment, RoundedBoxGeometry, BufferGeometryUtils |
 | [GSAP](https://gsap.com) | 3.15 | GSAP Standard "no charge" licence | Camera moves, ScrollTrigger, Flip, ScrambleText |
 | [KaTeX](https://katex.org) | 0.18 | MIT | Equation rendering |
+| [satellite.js](https://github.com/shashwatak/satellite-js) | 7.1 | MIT | SGP4 orbit propagation on the Live Earth Orbit page |
+| [d3-celestial](https://github.com/ofrohn/d3-celestial) data | 0.7 | BSD-3-Clause (Olaf Frohn) | Stars, star names, constellation figures and boundaries, Milky Way, Messier objects (`site/data/sky/`) |
 
 Python toolkit: NumPy, SciPy, Matplotlib, Pillow, imageio, pytest (BSD / MIT-style licences). Optional: lightkurve, astropy.
 
@@ -69,5 +71,19 @@ Python toolkit: NumPy, SciPy, Matplotlib, Pillow, imageio, pytest (BSD / MIT-sty
 **Library.** Links out to documents from NASA, JPL, STScI, ESA, MIT OpenCourseWare, SpaceX, ULA, Rocket Lab, Blue Origin, Arianespace, JAXA, the FAA, Tripoli, NAR, Cal Poly, CelesTrak, Jonathan McDowell (GCAT), Robert Braeunig, and the publishers of the textbooks listed. Nothing is copied or hosted. Systems-engineering definitions follow NASA SP-2016-6105 Rev 2 and NASA's Technology Readiness Level definitions.
 
 **Experiments.** NAR Model Rocket Safety Code · Tripoli Rocketry Association · FAA 14 CFR Part 101 · 47 CFR Parts 15 and 97 (eCFR) · NFPA 1122 · NASA Glenn water-rocket pages · Barrowman (1966/67) · Crowell (1996), nose-cone profiles · Uehara et al. (2003), crater scaling · Rayleigh (1891), pinhole optics · Kuglin & Hines (1975), phase correlation · NIST Atomic Spectra Database · Bosch BMP280/BMP390 datasheets · Balanis, *Antenna Theory* · Brand & Blitz (1993) · Seager & Mallén-Ornelas (2003) · Young (1967) · NASA Exoplanet Watch · AAVSO · OpenRocket · KiCad libraries (CC BY-SA 4.0 with the KiCad library exception) · arduino-pico (Earle Philhower) · Adafruit BMP3XX and LSM6DS libraries · Sandeep Mistry's arduino-LoRa · OpenSCAD · trimesh · MicroPython.
+
+**Booster landing.** Wikipedia: "Falcon 9 Block 5", "SpaceX Merlin", "Falcon 9", "Falcon 9 flight 20" · ElonX.net · Orbital Radar staging glossary · U.S. Standard Atmosphere 1976 · Jorgensen, NASA TR R-474 · Sutton & Graves, NASA TR R-376 · Hoerner, *Fluid-Dynamic Drag* · Washington & Miller, AIAA 93-0035. Vehicle masses and aerodynamics are published estimates, flagged in `site/data/booster.json`.
+
+**Moon landing.** *Apollo 11 Mission Report* (MSC-00171) and Press Kit · Apollo Lunar Surface Journal (E. M. Jones), public-domain transcripts · NASA TN D-6846 (Bennett), TN D-7143 (descent engine), TN D-6850 (landing gear) · NASA NTRS 20260001760 (touchdown dynamics) · A. R. Klumpp, R-695 (lunar descent guidance) · hashes after C. Wellons and M. O'Neill (PCG); regolith lighting after Hapke.
+
+**Mars landing.** NASA/JPL *Mars 2020 Perseverance Landing Press Kit* (2021) · "Assessment of the Mars 2020 EDL Simulation" (NTRS 20210024480) · MEDLI2 MEADS reconstruction (NTRS 20210024320) · McGrew et al., Mars 2020 entry guidance (NTRS 20240015538) · MSL parachute reconstruction (NTRS 20130012763) · Braun & Manning (2006) · NASA Glenn Mars atmosphere model · NASA Mars Fact Sheet.
+
+**Rocket hangar.** English Wikipedia infoboxes for all 26 vehicles (read 27 Sep 2026) · NASA MSFC AS-506 Flight Evaluation Report · NASA SLS Reference Guide · SpaceX *Falcon User's Guide* · JAXA H3 · This Day in Aviation · Space.com (Starship V3). Unverified figures are flagged in `site/data/rockets.json`.
+
+**Live Earth orbit.** [CelesTrak](https://celestrak.org) General Perturbations data (T. S. Kelso) · [The Space Devs](https://thespacedevs.com) Launch Library 2 and Spaceflight News API · Natural Earth land mask (public domain) · ESA Space Environment Report 2025 and ESA Space Debris Office statistics · gps.gov, ESA/EUSPA orbit parameters · SpaceX FCC filings (Starlink shells) · NASA (ISS dimensions). News thumbnails belong to their publishers and are shown as links.
+
+**Night sky.** d3-celestial (Olaf Frohn) · J. Meeus, *Astronomical Algorithms* · IERS Conventions 2010 · Ballesteros (2012), colour to temperature · Griffith Observatory / U.S. Naval Observatory 2026 sunrise and sunset table (test reference).
+
+**Cosmic scale.** Natural Earth 1:50m and 1:10m land polygons (public domain) via `world-atlas` and `topojson-client` (ISC) · Planck Collaboration (2020), *A&A* 641, A6 · Wittkowski et al. (2012), VY Canis Majoris · Evans & Fung (1972), red blood cell shape · every object's own source in `site/data/scale.json`.
 
 **Python toolkit.** Natural Earth 1:110m land polygons (public domain) · CIE 1931 2° colour-matching functions (CIE 018:2019) · Chenciner & Montgomery (2000) · Doyle et al. (2011), Kepler-16 · Kovács, Zucker & Mazeh (2002), BLS · SpaceX *Falcon User's Guide*.

@@ -1,4 +1,4 @@
-// Cosmic Codex - barn-door star tracker, printed parts
+// Cosmic Library - barn-door star tracker, printed parts
 // ---------------------------------------------------------------------------
 // "Type 1" tracker: a straight M6 x 1.0 threaded rod, perpendicular to the base board at
 // distance R from the hinge, turned by a 28BYJ-48 stepper. A nut carriage rides up the rod and

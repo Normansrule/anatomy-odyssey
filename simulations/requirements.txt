@@ -1,4 +1,4 @@
-# Cosmic Codex simulations - core dependencies (Python 3.10+)
+# Cosmic Library simulations - core dependencies (Python 3.10+)
 numpy>=1.24
 scipy>=1.10
 matplotlib>=3.7

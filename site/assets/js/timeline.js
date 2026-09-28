@@ -1,4 +1,4 @@
-/* Cosmic Codex — Timeline
+/* Cosmic Library — Timeline
  *
  * Data: data/timeline.json (events, agency colours, category names, decade
  * summaries). Images reuse the gallery's local copies when

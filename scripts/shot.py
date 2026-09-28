@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screenshot a Cosmic Codex page in headless Chromium (WebGL via SwiftShader).
+"""Screenshot a Cosmic Library page in headless Chromium (WebGL via SwiftShader).
 
     python scripts/shot.py launch.html out.png [--wait 4000] [--w 1440 --h 900]
         [--click "#launchBtn"] [--eval "js code"] [--full]

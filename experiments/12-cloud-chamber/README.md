@@ -142,7 +142,7 @@ Use [`data-sheet.csv`](data-sheet.csv): one row per minute, tallying each track 
   drop with ventilation?
 - Put two small **neodymium magnets** under the plate: electrons curve; muons barely do (why?).
 - Compare rates at **different altitudes** on a trip (the muon flux rises with altitude).
-- See the Cosmic Codex [equations page](https://normansrule.github.io/cosmic-codex/equations.html) for
+- See the Cosmic Library [equations page](https://normansrule.github.io/cosmic-library/equations.html) for
   relativity and the [hydrogen-line telescope](../43-hydrogen-line-radio-telescope/) for another way to
   "see" the invisible.
 

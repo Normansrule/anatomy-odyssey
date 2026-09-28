@@ -1,5 +1,5 @@
 # main.py — barometric flight logger for Raspberry Pi Pico / Pico W + BMP280 or BMP390.
-# Cosmic Codex · experiments/22-barometric-altimeter-payload · MIT licence
+# Cosmic Library · experiments/22-barometric-altimeter-payload · MIT licence
 #
 # Copy bmp.py, flightlogic.py and main.py to the Pico (Thonny: File ▸ Save as ▸ Raspberry Pi Pico).
 # On power-up it:

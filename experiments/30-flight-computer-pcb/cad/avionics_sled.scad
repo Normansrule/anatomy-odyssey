@@ -1,4 +1,4 @@
-// Cosmic Codex - CC-FL1 avionics sled for a 38 mm airframe / coupler
+// Cosmic Library - CC-FL1 avionics sled for a 38 mm airframe / coupler
 // ---------------------------------------------------------------------------
 // Holds the 80 x 30 x 1.6 mm flight-logger PCB edge-on in two slotted rails,
 // a 1S Li-Po (8 x 25 x 40 mm "802540" cell) on a shelf under the board, and

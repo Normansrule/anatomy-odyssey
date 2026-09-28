@@ -1,4 +1,4 @@
-/* Cosmic Codex · Saturn V (Apollo 11) ascent physics
+/* Cosmic Library · Saturn V (Apollo 11) ascent physics
  * ---------------------------------------------------------------------------
  * A 2-D point-mass trajectory in the flight plane, integrated with fixed-step
  * fourth-order Runge–Kutta in an Earth-centred inertial frame.

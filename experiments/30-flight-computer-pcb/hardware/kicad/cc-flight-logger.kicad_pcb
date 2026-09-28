@@ -3110,7 +3110,7 @@
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp bc11cf9c-05be-42f4-a8dd-99334c742e12))
   (gr_line (start 178.5 130) (end 101.5 130)
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp c47694c9-d439-461a-b995-2ed28be7403d))
-  (gr_text "cosmic-codex  CC-FL1" (at 120 128.9) (layer "B.SilkS") (tstamp 0089bbad-8a4c-4b87-a87b-e98e03563677)
+  (gr_text "cosmic-library  CC-FL1" (at 120 128.9) (layer "B.SilkS") (tstamp 0089bbad-8a4c-4b87-a87b-e98e03563677)
     (effects (font (size 0.8 0.8) (thickness 0.12)) (justify mirror))
   )
   (gr_text "DATA LOGGER ONLY" (at 120 101.1) (layer "B.SilkS") (tstamp c8606df5-3542-4faf-b962-c46b0dcac26d)

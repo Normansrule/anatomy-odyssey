@@ -1,4 +1,4 @@
-// Cosmic Codex LoRa ground receiver - Raspberry Pi Pico + RFM95W (SX1276), arduino-pico core.
+// Cosmic Library LoRa ground receiver - Raspberry Pi Pico + RFM95W (SX1276), arduino-pico core.
 // Prints one line per packet on USB serial (115200 baud) for ground_station.py:
 //     RX,<rssi dBm>,<snr dB>,<hex payload>      a telemetry frame that passed the CRC
 //     BAD,<rssi>,<snr>,<length>                 wrong length / magic / CRC

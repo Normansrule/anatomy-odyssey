@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Moon Landing · Cosmic Library</title>
+<meta name="description" content="Fly the Apollo 11 Lunar Module Eagle from Powered Descent Initiation to Tranquility Base: a real-time 3-D descent with the real engine, guidance programs P63, P64 and P66, the Landing Point Designator, program alarms and the propellant that ran low.">
+<meta property="og:title" content="Moon Landing · Cosmic Library">
+<meta property="og:description" content="Fly the Apollo 11 Lunar Module Eagle from Powered Descent Initiation to Tranquility Base: a real-time 3-D descent with the real engine, guidance programs P63, P64 and P66, the Landing Point Designator, program alarms and the propellant that ran low.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="assets/css/moon-landing.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body class="sim" data-page="moon-landing">
+  <div class="stage" id="stage" role="img" aria-label="Real-time 3-D scene: the Apollo 11 Lunar Module Eagle, gold foil descent stage and grey ascent stage, above the cratered Sea of Tranquility under a low Sun, with the Earth high in the black sky."></div>
+  <div class="loading" id="loading"><div class="ml-loader"><span></span>Undocking Eagle…</div></div>
+
+  <!-- commander's window: Landing Point Designator reticle (drawn over the 3-D view) -->
+  <svg class="ml-window" id="winSvg" aria-hidden="true"></svg>
+  <!-- Mission Control trajectory plot (full-screen camera mode) -->
+  <div class="ml-plotwrap" id="plotWrap" aria-hidden="true">
+    <canvas id="plotFull" aria-label="Mission Control plot: altitude against range to the landing site, planned and flown"></canvas>
+  </div>
+
+  <!-- title, start options -->
+  <div class="hud hud-title ml-title" id="title">
+    <div class="eyebrow">Apollo 11 · 20 July 1969 · Sea of Tranquility</div>
+    <h1>Moon <span class="grad-text">Landing</span></h1>
+    <p>Fly the Lunar Module (LM) "Eagle" down to the Moon with Apollo 11's engine, guidance programs and propellant. The computer flies until you take over.</p>
+    <div class="ml-starts" id="starts" role="group" aria-label="Where to start">
+      <button class="ml-start" data-s="pdi" aria-pressed="true"><b>Powered Descent Initiation</b><span>15 km up at 1.7 km/s · the whole 12-minute descent</span></button>
+      <button class="ml-start" data-s="high" aria-pressed="false"><b>High Gate · P64</b><span>2.3 km · see the site, steer with the Landing Point Designator (LPD)</span></button>
+      <button class="ml-start" data-s="low" aria-pressed="false"><b>Low Gate · P66</b><span>400 ft, 58 ft/s forward · boulders ahead, fuel running down</span></button>
+    </div>
+    <div class="ml-go">
+      <div class="seg" id="who" role="group" aria-label="Who flies">
+        <button data-w="fly" aria-pressed="true">I'll fly</button><button data-w="watch" aria-pressed="false">Watch Armstrong</button>
+      </div>
+      <button class="btn flame" id="goBtn">Begin descent</button>
+    </div>
+    <p class="hint ml-keys"><kbd>Space</kbd> start / pause · <kbd>P</kbd> take over (P66) · <kbd>↑</kbd><kbd>↓</kbd> descent rate ±1 ft/s · <kbd>←</kbd><kbd>→</kbd> pitch / redesignate · <kbd>1</kbd>–<kbd>6</kbd> cameras · <kbd>[</kbd><kbd>]</kbd> time</p>
+  </div>
+
+  <!-- mission clock -->
+  <div class="ml-clock" id="clock">
+    <div class="ml-get" title="Ground Elapsed Time (GET): hours, minutes and seconds since launch"><span class="ml-getl">GET</span> <span id="get">102:33:05</span></div>
+    <div class="ml-phase" id="phase">Awaiting Powered Descent Initiation</div>
+    <div class="ml-mini" id="mini" aria-hidden="true"><span><b id="mAlt">—</b> alt</span><span><b id="mRate">—</b> rate</span><span><b id="mFuel">—</b> fuel</span></div>
+  </div>
+
+  <!-- live call-outs -->
+  <div class="ml-callouts" id="callouts" aria-live="polite"></div>
+
+  <!-- cockpit dock: DSKY-inspired panel + instruments -->
+  <div class="hud ml-dock" id="dock">
+    <div class="ml-dsky" aria-label="Display and Keyboard (DSKY)-style computer display">
+      <div class="ml-dsky-top">
+        <div class="ml-lamps">
+          <i id="lUplink">UPLINK<br>ACTY</i><i id="lTemp">TEMP</i><i id="lProg" class="amber">PROG</i>
+          <i id="lRestart" class="amber">RESTART</i><i id="lAlt" class="amber">ALT</i><i id="lVel" class="amber">VEL</i>
+        </div>
+        <div class="ml-el">
+          <div class="ml-elrow"><span class="ml-comp" id="compActy">COMP<br>ACTY</span><span class="ml-cell"><em>PROG</em><b id="dProg">63</b></span></div>
+          <div class="ml-elrow"><span class="ml-cell"><em>VERB</em><b id="dVerb">16</b></span><span class="ml-cell"><em>NOUN</em><b id="dNoun">63</b></span></div>
+          <div class="ml-reg"><b id="dR1">+00000</b><small id="cR1">range 0.1 nmi</small></div>
+          <div class="ml-reg"><b id="dR2">+00000</b><small id="cR2">alt rate ft/s</small></div>
+          <div class="ml-reg"><b id="dR3">+00000</b><small id="cR3">altitude ft</small></div>
+        </div>
+      </div>
+      <div class="ml-caution">
+        <i id="lQty" title="Descent propellant low-level sensor">DES QTY</i>
+        <i id="lContact" class="blue" title="A contact probe has touched the surface">CONTACT</i>
+        <i id="lMaster" class="red" title="Master alarm">MASTER<br>ALARM</i>
+      </div>
+    </div>
+    <div class="ml-inst">
+      <div class="ml-big">
+        <div class="ml-k">Altitude <span class="ml-sub">above the ground</span></div>
+        <div class="ml-v"><b id="iAlt">15.2</b><small id="iAltU">km</small><span class="ml-alt2" id="iAltFt">49,900 ft</span></div>
+      </div>
+      <div class="ml-grid">
+        <div><div class="ml-k">Alt rate</div><div class="ml-sv"><b id="iRate">0.0</b><small>m/s</small></div><div class="ml-ft" id="iRateFt">0 ft/s</div></div>
+        <div><div class="ml-k">Forward</div><div class="ml-sv"><b id="iFwd">1,695</b><small>m/s</small></div><div class="ml-ft" id="iFwdFt">5,560 ft/s</div></div>
+        <div class="ml-att"><div class="ml-k">Pitch</div><svg viewBox="-24 -24 48 48" aria-hidden="true"><line x1="-22" y1="10" x2="22" y2="10" class="gnd"/><g id="attG"><rect x="-6" y="-8" width="12" height="9" rx="1"/><path d="M-9 1h18l-3 6h-12z"/><line x1="-9" y1="7" x2="-14" y2="12"/><line x1="9" y1="7" x2="14" y2="12"/><line x1="0" y1="7" x2="0" y2="18" class="thr" id="attThr"/></g></svg><div class="ml-sv"><b id="iPitch">88</b><small>°</small></div></div>
+      </div>
+      <div class="ml-bar" aria-label="Throttle">
+        <div class="ml-k">Throttle <span id="iThrTxt">10 %</span></div>
+        <div class="ml-track thr"><i class="band" style="left:60%;width:32.5%" title="Not used: 60–92.5 %"></i><i class="ftp" style="left:92.5%" title="Fixed Throttle Point 92.5 %"></i><i class="fill" id="iThr"></i></div>
+      </div>
+      <div class="ml-bar" aria-label="Descent propellant">
+        <div class="ml-k">Propellant <span id="iFuelTxt">99 %</span> <span class="ml-bingo" id="iBingo"></span></div>
+        <div class="ml-track fuel"><i class="low" style="left:5.6%" title="Low-level sensor ≈5.6 %"></i><i class="fill" id="iFuel"></i></div>
+      </div>
+      <div class="ml-mode"><span id="iMode">AUTO · P63 braking</span><span id="iRod"></span></div>
+    </div>
+  </div>
+
+  <!-- P66 / LPD touch controls (phones, and a click alternative on desktop) -->
+  <div class="ml-pad" id="pad" aria-label="Hand controls">
+    <div class="ml-padcol"><span class="ml-padl" id="padRodL">Rate of descent</span>
+      <button class="ml-pb" id="rodUp" aria-label="Slower descent, plus 1 foot per second">▲<small>+1 ft/s</small></button>
+      <button class="ml-pb" id="rodDn" aria-label="Faster descent, minus 1 foot per second">▼<small>−1 ft/s</small></button>
+    </div>
+    <div class="ml-padcol"><span class="ml-padl" id="padAcaL">Pitch</span>
+      <div class="ml-padrow">
+        <button class="ml-pb" id="acaBack" aria-label="Pitch back (brake)">◀<small id="acaBackS">back</small></button>
+        <button class="ml-pb" id="acaFwd" aria-label="Pitch forward">▶<small id="acaFwdS">fwd</small></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- telemetry, explanations, settings -->
+  <aside class="hud hud-panel ml-panel" id="panel" aria-label="Flight data, Mission Control plot, explanations and settings">
+    <button class="hud-collapse" id="collapse">▼ HIDE</button>
+    <h2>Right now</h2>
+    <div class="ml-now" id="now"><b>Powered Descent Initiation.</b> Eagle is 15 km above the Moon, moving at 1.7 km/s — nearly orbital speed, so it barely falls. The Descent Propulsion System (DPS) will burn for about twelve minutes to cancel that speed.</div>
+    <h2>Mission Control plot</h2>
+    <canvas class="ml-plot" id="plot" width="600" height="330" aria-label="Altitude against range to the landing site: planned (dashed) and flown (solid)"></canvas>
+    <div class="ml-legend"><span><i style="--c:var(--muted)"></i>planned (automatic)</span><span><i style="--c:var(--sol)"></i>flown</span><span><i style="--c:var(--aurora)"></i>High / Low Gate</span></div>
+    <h2>Flight log</h2>
+    <ol class="ml-log" id="log"></ol>
+
+    <h2>How it works</h2>
+    <details class="ml-x" open>
+      <summary>The three phases of the descent</summary>
+      <p>The descent was planned in three phases (F. V. Bennett, NASA Technical Note (TN) D-6846), each a separate program in the Lunar Guidance Computer (LGC). The clock shows Ground Elapsed Time (GET) since launch: Powered Descent Initiation (PDI) came at 102:33:05.</p>
+      <table class="ml-tab">
+        <tr><th>Program</th><th>Phase</th><th>What happens</th></tr>
+        <tr><td>P63</td><td>Braking</td><td>Full thrust, engine pointing almost straight ahead, windows first down then up. Cancels ≈1.5 km/s in 8½ minutes. Ends at <b>High Gate</b>: ≈7,000 ft, ≈4.5 nautical miles out.</td></tr>
+        <tr><td>P64</td><td>Approach</td><td>The LM pitches toward upright so the crew can see the site ahead, 16° below them. The Landing Point Designator (LPD) shows where the computer is going. Ends at <b>Low Gate</b>: 500 ft, 60 ft/s forward, 16 ft/s down.</td></tr>
+        <tr><td>P66</td><td>Landing</td><td>Rate Of Descent (ROD) mode: the commander flies attitude with the hand controller; the computer holds the descent rate he sets, 1 ft/s per click of a switch.</td></tr>
+      </table>
+    </details>
+    <details class="ml-x">
+      <summary>The guidance equation</summary>
+      <p>P63 and P64 command an acceleration that is a quadratic function of time (A. R. Klumpp, MIT Draper Laboratory, 1971):</p>
+      <div class="ml-eq">a = a<sub>T</sub> − 6 (v + v<sub>T</sub>) / T + 12 (r<sub>T</sub> − r) / T²</div>
+      <p>r, v are where Eagle is and how fast it moves; r<sub>T</sub>, v<sub>T</sub>, a<sub>T</sub> are the target (High Gate, then the landing point); T is the time to go, chosen so the jerk at the target matches a planned value. Subtract gravity and you get the thrust vector: its direction is the attitude, its size the throttle. The computer re-solved this every 2 seconds. This page uses the same law with its own tuned targets.</p>
+      <p><b>The throttle band.</b> The DPS could throttle between 10 % and 60 % of its 10,500 lbf (46.7 kN) rating, or run at a Fixed Throttle Point (FTP) of 92.5 %. The range between was avoided because of throat erosion and mixture-ratio control (NASA TN D-7143), so the braking phase runs at FTP and the guidance is aimed so that "throttle down" happens about 6½ minutes in — on Apollo 11 at 386 s, two seconds after the prediction.</p>
+    </details>
+    <details class="ml-x">
+      <summary>Why land with the Sun only 10° high?</summary>
+      <p>Craters and boulders are only visible by their shadows. With the Sun low behind them (planned 10.9°, at most 13.6°), every bump throws a long shadow toward the crew, and their 16° line of sight to the site stays above the "Sun line", where features would wash out (Bennett, TN D-6846). That tied each landing site to about one day a month, soon after local sunrise, when the Sun stood between 7° and 20° behind the approaching LM.</p>
+      <p>Look for the bright halo around Eagle's own shadow: the <i>opposition surge</i>. Looking directly away from the Sun, each grain hides its own shadow. Aldrin saw it: "I got the shadow out there."</p>
+    </details>
+    <details class="ml-x">
+      <summary>Program alarms 1202 and 1201</summary>
+      <p>Five minutes after ignition the Display and Keyboard (DSKY) lit the PROG lamp: "It's a 1202." It meant <i>executive overflow</i>: the computer's scheduler had run out of core sets (1201: out of Vector Accumulator, VAC, areas). A mis-phased power supply for the rendezvous radar made its interface steal about 13 % of the computer's time.</p>
+      <p>The Executive was designed for exactly this: it restarted, dropped low-priority jobs and kept flying. Guidance Officer Steve Bales, advised by Jack Garman who had written the list of alarm codes, called "Go" within seconds. Turn the alarms on in Settings to see them happen at the same moments as on 20 July.</p>
+    </details>
+    <details class="ml-x">
+      <summary>The Apollo Guidance Computer (AGC)</summary>
+      <ul class="ml-ul">
+        <li>2,048 words of erasable magnetic-core memory and 36,864 words of fixed "core rope" memory, woven by hand; 16-bit words.</li>
+        <li>A 2.048 MHz clock, integrated circuits (about 5,600 three-input NOR gates), about 32 kg.</li>
+        <li>The crew talked to it in <i>verbs</i> and <i>nouns</i>: V16 N68 means "monitor (verb 16) the landing data (noun 68)".</li>
+        <li>Its priority-scheduled Executive and restart protection are why the 1202 alarms did not end the landing.</li>
+      </ul>
+    </details>
+    <details class="ml-x">
+      <summary>Contact light, touchdown and propellant</summary>
+      <p>Probes 5.6 ft (1.71 m) long hung under three footpads — not the ladder leg. When one touched, a blue CONTACT light came on and the crew shut the engine down. The landing gear was certified for up to 10 ft/s (3 m/s) down, 4 ft/s (1.2 m/s) sideways, 6° of tilt and 12° slopes (NASA TN D-6850). Eagle touched down at about 1.7 ft/s down and 2.1 ft/s sideways, 0.8° pitch and 2.6° roll.</p>
+      <p>The low-level light latched about 36 s early because the propellant sloshed (TN D-7143), so the "60 seconds" and "30 seconds" calls — seconds to <i>Bingo</i>, when the crew had 20 s to land or abort — sounded worse than reality. About 770 lb were left, 670 lb usable: roughly 45 s of flying on top of the abort reserve (Apollo Lunar Surface Journal), 63.5 s of hover to the emptiest tank (TN D-7143).</p>
+    </details>
+    <details class="ml-x">
+      <summary>Six landings</summary>
+      <div class="table-wrap"><table class="data ml-land" id="landings"><tr><th>Mission</th><th>LM</th><th>Site</th><th>Margin</th></tr></table></div>
+      <p class="hint">Only margins verified against a primary source are shown; the others are in each mission report, section 8.</p>
+    </details>
+
+    <h2>Settings</h2>
+    <div class="field"><span class="lbl">Rendering quality</span>
+      <div class="seg" id="quality" role="group" aria-label="Rendering quality">
+        <button data-q="low" aria-pressed="false">Low</button><button data-q="high" aria-pressed="true">High</button><button data-q="ultra" aria-pressed="false">Ultra</button>
+      </div>
+    </div>
+    <label class="switch">Program alarms 1202 / 1201 <input type="checkbox" id="alarms"></label>
+    <label class="switch">Apollo 11 call-outs <input type="checkbox" id="calls" checked></label>
+    <label class="switch">Sound (synthesised) <input type="checkbox" id="audio"></label>
+    <p class="hint">Physics: 2-D flight in the orbital plane with inverse-square lunar gravity (1.62 m/s² at the surface), Runge–Kutta 4 at 50 Hz, one pitch axis driven by the Reaction Control System (RCS). LM mass at PDI ≈14.9 t with 8.1 t of descent propellant (Apollo 11 Press Kit less the Descent Orbit Insertion burn); specific impulse (Isp) 311 s at full thrust, 285 s at 10 %. Cross-range, slosh and engine gimbal are not modelled. Numbers and their sources: <a href="data/apollo11-descent.json">apollo11-descent.json</a>.</p>
+    <h2>Sources</h2>
+    <ul class="ml-src">
+      <li>Apollo 11 Mission Report, MSC-00171 (NASA, 1969)</li>
+      <li>E. M. Jones (ed.), Apollo Lunar Surface Journal: "The First Lunar Landing"</li>
+      <li>F. V. Bennett, Apollo Experience Report — Mission Planning for LM Descent and Ascent, NASA TN D-6846 (1972)</li>
+      <li>Apollo Experience Report — Descent Propulsion System, NASA TN D-7143 (1973)</li>
+      <li>Apollo Experience Report — LM Landing Gear Subsystem, NASA TN D-6850 (1972)</li>
+      <li>A. R. Klumpp, Apollo Lunar Descent Guidance, MIT Draper Laboratory R-695 (1971)</li>
+      <li>Apollo 11 Press Kit (NASA, 1969)</li>
+    </ul>
+  </aside>
+
+  <!-- controls -->
+  <div class="hud hud-bottom ml-controls" id="controls">
+    <div class="ml-group">
+      <button class="btn small" id="pauseBtn" aria-pressed="false" disabled>Pause</button>
+      <button class="btn small" id="restartBtn">Restart</button>
+      <button class="btn small flame" id="takeBtn" disabled>Take over · P66</button>
+    </div>
+    <div class="ml-group">
+      <span class="ml-lbl">Time</span>
+      <div class="seg" id="warp" role="group" aria-label="Time warp">
+        <button data-w="1" aria-pressed="true">1×</button><button data-w="2" aria-pressed="false">2×</button><button data-w="5" aria-pressed="false">5×</button><button data-w="10" aria-pressed="false">10×</button><button data-w="20" aria-pressed="false">20×</button>
+      </div>
+    </div>
+    <div class="ml-group">
+      <span class="ml-lbl">View</span>
+      <div class="seg ml-cams" id="cams" role="group" aria-label="Camera">
+        <button data-c="auto" aria-pressed="true">Director</button><button data-c="window" aria-pressed="false">Window</button><button data-c="chase" aria-pressed="false">Chase</button><button data-c="side" aria-pressed="false">Side</button><button data-c="plot" aria-pressed="false">Plot</button><button data-c="orbit" aria-pressed="false">Free</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- program-alarm explainer -->
+  <div class="ml-alarm" id="alarm" role="status" aria-live="assertive" hidden>
+    <div class="ml-alarm-h"><span class="ml-alarm-code" id="alarmCode">1202</span><span>PROGRAM ALARM</span></div>
+    <p id="alarmText"></p>
+    <button class="btn small" id="alarmGo">Go — continue</button>
+  </div>
+
+  <!-- outcome -->
+  <div class="ml-result" id="result" hidden>
+    <div class="hud ml-result-card">
+      <div class="eyebrow" id="resEyebrow">Touchdown</div>
+      <h2 id="resTitle">The Eagle has landed</h2>
+      <blockquote class="ml-quote" id="resQuote"></blockquote>
+      <table class="ml-restab" id="resTab"></table>
+      <p class="hint" id="resNote"></p>
+      <div class="row"><button class="btn flame small" id="resAgain">Fly again</button><button class="btn small" id="resLow">Try Low Gate</button><button class="btn small" id="resLook">Look around</button></div>
+    </div>
+  </div>
+
+  <script src="assets/js/codex.js"></script>
+  <script type="module" src="assets/js/moon-landing.js"></script>
+</body>
+</html>

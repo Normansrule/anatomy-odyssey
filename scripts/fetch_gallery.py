@@ -30,7 +30,7 @@ DATA = os.path.join(SITE, "data", "gallery.json")
 LOCAL = os.path.join(SITE, "data", "gallery.local.json")
 OUT = os.path.join(SITE, "assets", "gallery")
 # Wikimedia asks for a descriptive User-Agent: https://meta.wikimedia.org/wiki/User-Agent_policy
-UA = "CosmicCodexGalleryFetcher/1.0 (https://github.com/Normansrule/cosmic-codex; educational, non-commercial)"
+UA = "CosmicLibraryGalleryFetcher/1.0 (https://github.com/Normansrule/cosmic-library; educational, non-commercial)"
 EXT = {"image/jpeg": ".jpg", "image/jpg": ".jpg", "image/png": ".png", "image/webp": ".webp", "image/gif": ".gif", "image/tiff": ".tif"}
 
 

@@ -1,6 +1,6 @@
 // motor_mount.scad — centering rings, engine blocks and a one-piece motor mount
 // for 18 mm and 24 mm certified model-rocket motors.
-// Cosmic Codex · experiments/21-3d-printed-model-rocket · MIT licence
+// Cosmic Library · experiments/21-3d-printed-model-rocket · MIT licence
 //
 //   part = "ring"   centering ring: motor tube (BT-20 / BT-50) → body tube
 //   part = "block"  engine block (thrust ring) glued inside the FORWARD end of the paper motor tube

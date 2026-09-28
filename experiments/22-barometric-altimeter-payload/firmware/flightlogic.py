@@ -1,7 +1,7 @@
 # flightlogic.py — hardware-free flight logic for the barometric altimeter.
 # Runs unchanged on MicroPython (the Pico) and on desktop CPython (the unit tests),
 # so the exact code that flies is the code that is tested with synthetic flights.
-# Cosmic Codex · experiments/22-barometric-altimeter-payload · MIT licence
+# Cosmic Library · experiments/22-barometric-altimeter-payload · MIT licence
 
 # International Standard Atmosphere, troposphere (ICAO Doc 7488 / US Standard Atmosphere 1976):
 #   h = (T0 / L) * (1 - (p / p0) ** (R * L / (g0 * M)))

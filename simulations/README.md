@@ -1,4 +1,4 @@
-# Cosmic Codex · Simulations
+# Cosmic Library · Simulations
 
 Seven small, readable physics engines written in NumPy. Each one turns a handful of equations into a picture. Every module:
 

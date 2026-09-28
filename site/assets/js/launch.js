@@ -1,4 +1,4 @@
-/* Cosmic Codex · Launch — the Apollo 11 Saturn V from Pad 39A to Earth orbit.
+/* Cosmic Library · Launch — the Apollo 11 Saturn V from Pad 39A to Earth orbit.
  *
  * Rendering: Three.js r186 (vendored). One full-screen shader draws the planet,
  * ocean and a single-scattering atmosphere (so the sky fades to black with

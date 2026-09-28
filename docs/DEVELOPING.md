@@ -1,11 +1,11 @@
-# Developing Cosmic Codex
+# Developing Cosmic Library
 
 How the repository is put together, so every page looks and behaves like part of one product.
 
 ## Layout
 
 ```
-cosmic-codex/
+cosmic-library/
 ├── site/                  ← the GitHub Pages website (static, no build step)
 │   ├── index.html         ← landing page
 │   ├── <page>.html        ← one file per page (see list below)
@@ -15,7 +15,8 @@ cosmic-codex/
 │   ├── assets/js/<page>.js    ← page logic (ES module)
 │   ├── assets/img/            ← favicon, small original SVGs
 │   ├── data/*.json            ← curated data (gallery, library, timeline …)
-│   └── vendor/                ← Three.js r186, GSAP 3.15, KaTeX 0.18 (vendored: no CDN needed)
+│   ├── data/sky/              ← star catalogue, constellations, Milky Way, Messier (d3-celestial, BSD-3)
+│   └── vendor/                ← Three.js r186, GSAP 3.15, KaTeX 0.18, satellite.js 7.1 (vendored: no CDN needed)
 ├── simulations/           ← Python simulations (NumPy/Matplotlib) + tests
 ├── experiments/           ← hands-on builds, levels 0 → 4, with CAD / PCB / code
 ├── docs/                  ← long-form Markdown (engineering primers, references, videos)
@@ -23,7 +24,7 @@ cosmic-codex/
 └── scripts/               ← setup, local server, screenshot tool
 ```
 
-## Pages (the nav is generated from this list in `codex.js`)
+## Pages (the grouped nav — Fly / Explore / Learn / Build — is generated from the PAGES list in `codex.js`)
 
 | id | file | archetype |
 |---|---|---|
@@ -39,6 +40,13 @@ cosmic-codex/
 | timeline | timeline.html | atlas |
 | library | library.html | atlas |
 | experiments | experiments.html | atlas |
+| booster | booster.html | sim — reusable booster landing |
+| moon-landing | moon-landing.html | sim — Apollo lunar module descent |
+| mars-landing | mars-landing.html | sim — Mars 2020 entry, descent and landing |
+| hangar | hangar.html | sim — rockets side by side to scale |
+| earth | earth.html | sim — live satellites, launches, news |
+| sky | sky.html | sim — planetarium |
+| scale | scale.html | sim — powers-of-ten zoom |
 
 ## Page skeleton
 
@@ -48,9 +56,9 @@ cosmic-codex/
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Launch · Cosmic Codex</title>
+<title>Launch · Cosmic Library</title>
 <meta name="description" content="One sentence about the page.">
-<meta property="og:title" content="Launch · Cosmic Codex">
+<meta property="og:title" content="Launch · Cosmic Library">
 <meta property="og:description" content="Same sentence.">
 <meta name="theme-color" content="#04050a">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -58,7 +66,7 @@ cosmic-codex/
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/codex.css">
-<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/","satellite.js":"./vendor/satellite/index.js"}}</script>
 </head>
 <body class="sim" data-page="launch">   <!-- drop class="sim" for scrolling pages -->
   <div class="stage" id="stage"></div>

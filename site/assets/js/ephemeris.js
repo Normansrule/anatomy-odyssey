@@ -1,4 +1,4 @@
-/* Cosmic Codex ephemeris: where the planets are, from Kepler's laws.
+/* Cosmic Library ephemeris: where the planets are, from Kepler's laws.
  *
  * A small, dependency-free ES module (works in the browser and in Node) that
  * other pages may import:

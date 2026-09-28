@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cosmic Scale · Cosmic Library</title>
+<meta name="description" content="One continuous zoom through 42 powers of ten, from a proton to the observable universe, with every object drawn at its true relative size.">
+<meta property="og:title" content="Cosmic Scale · Cosmic Library">
+<meta property="og:description" content="One continuous zoom through 42 powers of ten, from a proton to the observable universe, with every object drawn at its true relative size.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="assets/css/scale.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body class="sim" data-page="scale">
+  <div class="stage" id="stage">
+    <canvas id="cv" role="img" aria-label="A continuous zoom from a proton to the observable universe. Objects are drawn side by side at their true relative sizes; scroll, pinch, use the slider or the arrow keys to change the scale."></canvas>
+  </div>
+  <div class="loading" id="loading"><div class="sc-load"><i></i><span>Measuring the universe…</span></div></div>
+
+  <div class="hud hud-title sc-title">
+    <div class="eyebrow">Powers of ten · 42 orders of magnitude</div>
+    <h1>Cosmic <span class="grad-text">Scale</span></h1>
+    <p>One continuous zoom from a proton to the edge of the observable universe. Everything is drawn at its true size relative to everything else, lined up side by side for comparison.</p>
+    <p class="hint sc-keys">Scroll or pinch to zoom · <kbd>↑</kbd><kbd>↓</kbd> step · <kbd>Shift</kbd> ×10 · <kbd>T</kbd> tour · click anything to fly to it</p>
+  </div>
+
+  <!-- Vertical power-of-ten ruler (drawn on its own canvas; also a slider for keyboard users) -->
+  <div class="hud sc-ruler" id="ruler" role="slider" tabindex="0" aria-label="Scale: power of ten in metres" aria-valuemin="-15" aria-valuemax="27" aria-valuenow="0" aria-valuetext="10 to the 0 metres">
+    <canvas id="rulerCv" aria-hidden="true"></canvas>
+    <div class="sc-bubble" id="bubble" aria-hidden="true">
+      <div class="sc-bub-pow" id="bubPow">10<sup>0</sup> m</div>
+      <div class="sc-bub-rows" id="bubRows"></div>
+    </div>
+  </div>
+
+  <aside class="hud hud-panel sc-panel" id="panel" aria-label="What is in view">
+    <button class="sc-sheet" id="sheetBtn" aria-expanded="true"><span class="sc-sheet-bar"></span><span id="sheetTxt">In view</span></button>
+    <div class="seg sc-tabs" role="tablist" aria-label="Panel sections">
+      <button role="tab" aria-selected="true" aria-pressed="true" data-tab="view">In view</button>
+      <button role="tab" aria-selected="false" aria-pressed="false" data-tab="ideas">Big ideas</button>
+      <button role="tab" aria-selected="false" aria-pressed="false" data-tab="index">All 56</button>
+    </div>
+
+    <!-- ============ IN VIEW ============ -->
+    <section class="sc-tab" data-panel="view">
+      <h2>Width of the view</h2>
+      <div class="readouts sc-fov" id="fov"></div>
+
+      <h2>In focus</h2>
+      <article class="sc-focus" id="focus" aria-live="polite"></article>
+
+      <div class="sc-light" id="light">
+        <div class="sc-light-head">Light crosses <span id="lightName">it</span> in</div>
+        <div class="sc-light-t"><b id="lightT">—</b> <span id="lightFull"></span></div>
+        <div class="sc-track" aria-hidden="true"><i class="sc-photon" id="photon"></i></div>
+        <div class="sc-light-sub" id="lightSub"></div>
+        <p class="sc-light-ctx" id="lightCtx"></p>
+      </div>
+
+      <h2 id="alsoH">Also in view</h2>
+      <ul class="sc-also" id="also"></ul>
+    </section>
+
+    <!-- ============ IDEAS ============ -->
+    <section class="sc-tab" data-panel="ideas" hidden>
+      <details class="sc-idea" open>
+        <summary>Scientific notation</summary>
+        <p>Writing 12,742,000 m or 0.000 000 000 000 001 68 m is slow and error-prone, so scientists count the zeros instead. A number is written as a value between 1 and 10 times a power of ten:</p>
+        <div class="sc-eqn" data-tex="12\,742\,000\ \text{m} = 1.2742 \times 10^{7}\ \text{m}"></div>
+        <p>A positive power counts places to the left of the decimal point, a negative one places to the right. Each step up the ruler multiplies by ten, so the whole journey from a proton (10<sup>−15</sup> m) to the observable universe (10<sup>27</sup> m) takes 42 steps.</p>
+        <div class="sc-written"><span class="k">The view right now, written out in full</span><output id="written">—</output><span class="k">in scientific notation</span><output id="sciNow">—</output></div>
+        <p class="hint">Prefixes do the same job in words: femto (f) = 10<sup>−15</sup>, pico (p) = 10<sup>−12</sup>, nano (n) = 10<sup>−9</sup>, micro (µ) = 10<sup>−6</sup>, milli (m) = 10<sup>−3</sup>, kilo (k) = 10<sup>3</sup>.</p>
+      </details>
+
+      <details class="sc-idea">
+        <summary>Atoms and solar systems are almost empty</summary>
+        <p>A hydrogen atom's nucleus is a single proton. Compare their radii and cube the ratio to get the fraction of the atom's volume the nucleus fills:</p>
+        <div class="sc-eqn" data-tex="\left(\frac{r_p}{r_\text{atom}}\right)^3 = \left(\frac{0.84\ \text{fm}}{52.9\ \text{pm}}\right)^3"></div>
+        <div class="readouts">
+          <div class="readout"><div class="k">Nucleus fills</div><div class="v" id="emptyAtom">—</div></div>
+          <div class="readout"><div class="k">Empty (by volume)</div><div class="v" id="emptyAtom2">—</div></div>
+        </div>
+        <p id="marbleAtom"></p>
+        <p>The Solar System is emptier still. Add up the volumes of the Sun and all eight planets and divide by a sphere reaching Neptune's orbit:</p>
+        <div class="readouts">
+          <div class="readout"><div class="k">Matter fills</div><div class="v" id="emptySol">—</div></div>
+          <div class="readout"><div class="k">Nearest star</div><div class="v" id="grapeStar">—</div></div>
+        </div>
+        <p id="grapeSol"></p>
+        <p class="hint">What makes solid things feel solid is not packed-in matter but electric forces between electron clouds and the Pauli exclusion principle, which keeps electrons from crowding into the same state.</p>
+      </details>
+
+      <details class="sc-idea">
+        <summary>Why the observable universe is 93 billion light-years across</summary>
+        <p>The universe is 13.8 billion years old, so you might expect to see 13.8 billion light-years in every direction. But space has been expanding the whole time. Light that set out long ago crossed regions that have since stretched, so the places it came from are now much farther away than the time it travelled suggests.</p>
+        <p>Cosmologists measure this with the <b>comoving distance</b>: how far away a place is today, with the expansion taken out. For light arriving now from the very beginning, it is</p>
+        <div class="sc-eqn" data-tex="D = \frac{c}{H_0}\int_0^1 \frac{da}{\sqrt{\Omega_r + \Omega_m\,a + \Omega_\Lambda\,a^4}}"></div>
+        <p>where <i>a</i> is the size of the universe relative to today, <i>H</i><sub>0</sub> is the Hubble constant and the <i>Ω</i> are the shares of radiation, matter and dark energy. Your browser just integrated it with the Planck 2018 values:</p>
+        <div class="readouts">
+          <div class="readout"><div class="k">Radius (comoving)</div><div class="v" id="dHorizon">—</div></div>
+          <div class="readout"><div class="k">Age of universe</div><div class="v" id="ageU">—</div></div>
+          <div class="readout"><div class="k">CMB came from</div><div class="v" id="dCMB">—</div></div>
+          <div class="readout"><div class="k">…when it was</div><div class="v" id="dCMBthen">—</div></div>
+        </div>
+        <p class="hint">The Cosmic Microwave Background (CMB) was released 380,000 years after the Big Bang, when the universe was 1,090 times smaller. The gas that emitted the photons you can detect today was then only about 42 million light-years from the matter that became us; that gas is now roughly 46 billion light-years away. Parameters: Planck Collaboration 2020 (H<sub>0</sub> = 67.66 km/s/Mpc, Ω<sub>m</sub> = 0.3111, Ω<sub>Λ</sub> = 0.6889).</p>
+      </details>
+
+      <details class="sc-idea">
+        <summary>How this page is drawn</summary>
+        <p>Every object is sized from the number in its card, in metres, and drawn procedurally in your browser: no images are downloaded. Objects are placed side by side in order of size so that neighbours can be compared; their positions are arranged for comparison and are not where they really are (except within systems like the planets). The background stars and particles are decoration that moves with the zoom.</p>
+        <p>The light-time is simply the size divided by the speed of light, <i>c</i> = 299,792,458 m/s.</p>
+      </details>
+    </section>
+
+    <!-- ============ INDEX ============ -->
+    <section class="sc-tab" data-panel="index" hidden>
+      <p class="hint">Every object on the page, smallest first. Select one to fly there.</p>
+      <ol class="sc-index" id="index"></ol>
+    </section>
+  </aside>
+
+  <div class="sc-caption" id="caption" hidden>
+    <div class="sc-cap-top"><span class="sc-cap-step" id="capStep">1 / 29</span><span class="sc-cap-bar"><i id="capBar"></i></span></div>
+    <p id="capText" aria-live="polite"></p>
+    <div class="sc-cap-ctl">
+      <button class="btn small" id="capPrev" aria-label="Previous stop">◀</button>
+      <button class="btn small" id="capPause" aria-label="Pause tour">Pause</button>
+      <button class="btn small" id="capNext" aria-label="Next stop">▶</button>
+      <button class="btn small" id="capStop">End tour</button>
+    </div>
+  </div>
+
+  <div class="hud hud-bottom sc-dock" role="group" aria-label="Scale controls">
+    <div class="sc-dock-row">
+      <button class="btn small flame sc-tour" id="tourBtn" title="Narrated tour (T)">▶ Tour</button>
+      <label class="sc-slider"><span class="sr-only">Scale, power of ten in metres</span>
+        <input type="range" id="slider" min="-15.4" max="27.6" step="0.01" value="0.2">
+      </label>
+      <output class="sc-sval" id="sval" for="slider">10⁰ m</output>
+    </div>
+    <div class="sc-fly" id="fly" role="group" aria-label="Fly to a landmark"></div>
+  </div>
+
+  <script src="vendor/gsap/gsap.min.js"></script>
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="assets/js/codex.js"></script>
+  <script type="module" src="assets/js/scale.js"></script>
+</body>
+</html>

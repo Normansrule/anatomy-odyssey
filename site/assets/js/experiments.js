@@ -1,4 +1,4 @@
-// experiments.js — Cosmic Codex experiments page.
+// experiments.js — Cosmic Library experiments page.
 // Loads data/experiments.json (levels 0–2 + level metadata) and, if present,
 // data/experiments-advanced.json (levels 3–4); schema in experiments/SCHEMA.md.
 // Renders the stage stack, the filterable build cards and a Three.js STL viewer.
@@ -7,7 +7,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { STLLoader } from "three/addons/loaders/STLLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
-const REPO_TREE = "https://github.com/Normansrule/cosmic-codex/tree/main/experiments/";
+const REPO_TREE = "https://github.com/Normansrule/cosmic-library/tree/main/experiments/";
 const OUTPUT_ORDER = ["STL", "SCAD", "PCB", "code", "data", "flight", "radio", "photo", "SVG"];
 const BUDGET_STEPS = [10, 50, 150, 300, 1000, Infinity];            // slider index → max USD
 const $ = (s, r = document) => r.querySelector(s);

@@ -1,5 +1,5 @@
 // water_rocket.scad — 3D-printed nose cone and fin can for a standard 2-litre PET soda bottle.
-// Cosmic Codex · experiments/10-water-bottle-rocket · MIT licence
+// Cosmic Library · experiments/10-water-bottle-rocket · MIT licence
 //
 // The rocket flies NECK DOWN: the neck is the nozzle, the bottle's petaloid base is the top.
 //   part = "nose"    ogive nose with a skirt that slips over the bottle's base;

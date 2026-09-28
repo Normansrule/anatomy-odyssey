@@ -1,4 +1,4 @@
-"""Single source of truth for the Cosmic Codex flight logger ("CC-FL1").
+"""Single source of truth for the Cosmic Library flight logger ("CC-FL1").
 
 Every part, every pin-to-net connection, the schematic position and the PCB
 placement live here. `generate.py` turns this into the KiCad schematic,
@@ -22,7 +22,7 @@ GP22      sensor-rail LDO enable       GP28/ADC2 battery voltage / 2
 """
 
 PROJECT = "cc-flight-logger"
-TITLE = "Cosmic Codex Flight Logger CC-FL1"
+TITLE = "Cosmic Library Flight Logger CC-FL1"
 REV = "A"
 DATE = "2026-09-26"
 

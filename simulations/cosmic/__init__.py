@@ -1,4 +1,4 @@
-"""Cosmic Codex simulation toolkit.
+"""Cosmic Library simulation toolkit.
 
 Small, readable, NumPy-first physics simulations that turn equations into
 pictures.  Every module is importable *and* runnable from the command line:

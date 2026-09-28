@@ -1,4 +1,4 @@
-// Cosmic Codex LoRa range-test beacon - Raspberry Pi Pico + RFM95W, arduino-pico core.
+// Cosmic Library LoRa range-test beacon - Raspberry Pi Pico + RFM95W, arduino-pico core.
 // Sends one telemetry frame per second (state PAD, a counter, battery voltage) so you can walk away
 // from the ground station and measure RSSI, SNR and packet loss versus distance.
 // Libraries: "LoRa" by Sandeep Mistry. License: MIT

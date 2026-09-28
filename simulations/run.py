@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run any Cosmic Codex simulation from the repository root.
+"""Run any Cosmic Library simulation from the repository root.
 
     python simulations/run.py <simulation> [options]
     python simulations/run.py blackhole --gif

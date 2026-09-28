@@ -1,4 +1,4 @@
-/* Cosmic Codex — Black Hole
+/* Cosmic Library — Black Hole
  * Real-time ray tracer for a non-rotating (Schwarzschild) black hole with a thin accretion disk.
  *
  * Physics, in geometric units G = c = M = 1 (so lengths are in GM/c² and times in GM/c³):

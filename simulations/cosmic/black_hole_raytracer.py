@@ -541,7 +541,7 @@ def _caption(pil, scene):
     fig.text(0.982, y0 * 0.80,
              f"Novikov–Thorne disk 6–{scene.r_out:g} M  ·  camera {scene.r_obs:g} M, {90 - scene.inclination:g}° above the disk",
              color=style.TEXT_2, fontsize=6.6 * fs, va="center", ha="right")
-    fig.text(0.982, y0 * 0.22, "cosmic-codex · simulations/cosmic/black_hole_raytracer.py", color=style.MUTED,
+    fig.text(0.982, y0 * 0.22, "cosmic-library · simulations/cosmic/black_hole_raytracer.py", color=style.MUTED,
              fontsize=6.0 * fs, va="center", ha="right")
     fig.patch.set_facecolor(style.BG)
     import io

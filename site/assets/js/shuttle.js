@@ -1,4 +1,4 @@
-/* Space Shuttle Endeavour (OV-105) — Cosmic Codex
+/* Space Shuttle Endeavour (OV-105) — Cosmic Library
  *
  * A procedural orbiter built from public reference dimensions (length 37.24 m,
  * span 23.79 m, double-delta wing 81°/45°, 18.3 × 4.6 m payload bay — see

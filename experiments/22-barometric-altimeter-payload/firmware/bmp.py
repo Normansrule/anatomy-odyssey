@@ -1,6 +1,6 @@
 # bmp.py — minimal MicroPython drivers for the Bosch BMP280 and BMP390 (also BMP388)
 # barometric pressure sensors over I2C. No external libraries.
-# Cosmic Codex · experiments/22-barometric-altimeter-payload · MIT licence
+# Cosmic Library · experiments/22-barometric-altimeter-payload · MIT licence
 #
 # Register maps and compensation formulas are from the Bosch datasheets:
 #   BMP280: BST-BMP280-DS001, section 3.11.3 / 8.1 (floating-point compensation)

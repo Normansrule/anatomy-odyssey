@@ -1,4 +1,4 @@
-# Contributing to Cosmic Codex
+# Contributing to Cosmic Library
 
 Thanks for helping. Corrections to a fact matter as much as new features.
 

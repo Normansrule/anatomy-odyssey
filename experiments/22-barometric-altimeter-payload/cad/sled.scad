@@ -1,6 +1,6 @@
 // sled.scad — avionics sled for a Raspberry Pi Pico + BMP280/BMP390 breakout + small battery,
 // sliding into a BT-60 (40.5 mm inner diameter) payload bay.
-// Cosmic Codex · experiments/22-barometric-altimeter-payload · MIT licence
+// Cosmic Library · experiments/22-barometric-altimeter-payload · MIT licence
 //
 //   top of deck : Pico on four M2 standoffs (holes 47.0 × 11.4 mm, from the Pico datasheet)
 //                 + sensor pad with two zip-tie slots

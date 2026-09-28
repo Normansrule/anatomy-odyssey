@@ -175,7 +175,7 @@ beside the motor. `barrowman.py`'s BT-60 example shows the effect: without balla
 297 mm and the margin to 1.5 calibers:
 
 ```
-Cosmic Codex BT-60 (printed von Kármán nose + 3-fin can, 300 mm tube)  (d = 41.6 mm, length = 445.6 mm)
+Cosmic Library BT-60 (printed von Kármán nose + 3-fin can, 300 mm tube)  (d = 41.6 mm, length = 445.6 mm)
    nose (vonkarman)       CN_alpha =  2.000   X =    72.8 mm
    3 fins                 CN_alpha = 15.700   X =   397.3 mm
    TOTAL                  CN_alpha = 17.700   X_cp =   360.6 mm from the tip

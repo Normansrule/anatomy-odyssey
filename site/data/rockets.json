@@ -1,0 +1,803 @@
+{
+  "meta": {
+    "title": "The Rocket Hangar: every major rocket, side by side to scale",
+    "read": "2026-09-27",
+    "units": {
+      "height": "m (ground to tip, flown configuration named in 'variant')",
+      "diameter": "m (core stage)",
+      "width": "m (widest horizontal extent: boosters, fins or side cores)",
+      "mass": "kg (gross liftoff mass)",
+      "thrust": "kN (total thrust at liftoff, sea level)",
+      "payload": "kg"
+    },
+    "g0": 9.80665,
+    "notes": [
+      "Every figure has a source listed with its rocket. Most come from the English Wikipedia infobox for that vehicle, read on 27 September 2026; launch counts carry the 'as of' date the source states.",
+      "A figure marked \"verified\": false could not be confirmed against a source during this edition (for example a value computed from engine thrusts, or one quoted from memory of widely published values). Please check it before citing and open an issue if you have a better source.",
+      "Payload to low Earth orbit (LEO) depends on the orbit's altitude and inclination and on whether stages are recovered, so treat it as a comparison of classes, not a precise ranking.",
+      "Liftoff thrust is the sea-level thrust of everything burning at liftoff; stages that ignite in flight are not included."
+    ]
+  },
+  "rockets": [
+    {
+      "id": "v2",
+      "name": "V-2",
+      "variant": "A4 ballistic missile",
+      "country": "Germany",
+      "region": "europe",
+      "flag": "none",
+      "operator": "German Army (Wehrmacht)",
+      "firstFlight": "1942-10-03",
+      "firstFlightNote": "First successful test flight; the first attempts in March and August 1942 failed.",
+      "lastFlight": "1945-03-27",
+      "status": "retired",
+      "height": { "value": 14.0, "verified": true },
+      "diameter": { "value": 1.65, "verified": true },
+      "width": { "value": 3.56, "verified": true, "note": "Fin span." },
+      "mass": { "value": 12500, "verified": true },
+      "thrust": { "value": 245, "verified": true, "note": "25 tonnes-force at liftoff (Wikipedia), converted to kN; about 29 tonnes-force at altitude." },
+      "payload": {
+        "leo": null,
+        "suborbital": { "value": 1000, "verified": true, "note": "Explosive warhead; the V-2 was a ballistic missile, not an orbital launcher." }
+      },
+      "stages": 1,
+      "engines": "1 × turbopump-fed engine with graphite jet vanes for steering",
+      "propellants": "75 % ethanol and 25 % water / liquid oxygen (LOX)",
+      "launches": { "total": null, "successes": null, "failures": null, "partial": null, "asOf": "final", "verified": true, "note": "More than 3,000 were fired in combat; about 6,000 were built including test rockets." },
+      "reusability": "Expendable",
+      "story": "The first large liquid-fuelled rocket was built by Nazi Germany as a weapon, largely by concentration-camp prisoners, thousands of whom died making it, and its attacks killed thousands more. On 20 June 1944 test flight MW 18014 climbed to 174.6 km and became the first human-made object to cross into space, and after the war its engineers and captured rockets seeded both the American and Soviet space programmes.",
+      "sources": [
+        { "label": "Wikipedia: V-2 rocket", "url": "https://en.wikipedia.org/wiki/V-2_rocket" }
+      ]
+    },
+    {
+      "id": "redstone",
+      "name": "Mercury-Redstone",
+      "variant": "Mercury-Redstone Launch Vehicle with Mercury capsule and escape tower",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "National Aeronautics and Space Administration (NASA); built by the Army Ballistic Missile Agency (ABMA) and Chrysler",
+      "firstFlight": "1960-11-21",
+      "lastFlight": "1961-07-21",
+      "status": "retired",
+      "height": { "value": 25.41, "verified": true, "note": "Includes the Mercury capsule and launch escape tower." },
+      "diameter": { "value": 1.78, "verified": true },
+      "mass": { "value": 30000, "verified": true },
+      "thrust": { "value": 350, "verified": true },
+      "payload": {
+        "leo": null,
+        "suborbital": { "value": 1800, "verified": true, "note": "Mercury capsule on a suborbital arc; the Redstone could not reach orbit." }
+      },
+      "stages": 1,
+      "engines": "1 × Rocketdyne A-7",
+      "propellants": "Ethyl alcohol / liquid oxygen (LOX)",
+      "launches": { "total": 6, "successes": 5, "failures": 1, "partial": 0, "asOf": "final", "verified": true },
+      "reusability": "Expendable",
+      "story": "A lengthened Army Redstone missile, it carried Alan Shepard on Freedom 7 on 5 May 1961, making him the first American in space, and Gus Grissom on Liberty Bell 7 that July. Its first launch, MR-1, famously rose about 10 cm, shut down and settled back on the pad while the escape tower fired off alone.",
+      "sources": [
+        { "label": "Wikipedia: Mercury-Redstone Launch Vehicle", "url": "https://en.wikipedia.org/wiki/Mercury-Redstone_Launch_Vehicle" }
+      ]
+    },
+    {
+      "id": "atlas-lv3b",
+      "name": "Atlas LV-3B",
+      "variant": "Mercury-Atlas with Mercury capsule and escape tower",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "National Aeronautics and Space Administration (NASA); built by Convair",
+      "firstFlight": "1960-07-29",
+      "lastFlight": "1963-05-15",
+      "status": "retired",
+      "height": { "value": 29.06, "verified": true },
+      "diameter": { "value": 3.05, "verified": true, "note": "10 ft; 4.9 m wide over the booster-engine fairings." },
+      "width": { "value": 4.9, "verified": true, "note": "Over the boost fairing." },
+      "mass": { "value": 120000, "verified": true },
+      "thrust": { "value": 1880.6, "verified": true, "note": "Two XLR-89 booster engines (1,517.4 kN) plus the XLR-105 sustainer (363.2 kN), all lit on the ground." },
+      "payload": { "leo": { "value": 1360, "verified": true } },
+      "stages": 1.5,
+      "engines": "2 × Rocketdyne XLR-89 boosters (dropped in flight) + 1 × XLR-105 sustainer",
+      "propellants": "RP-1 kerosene / liquid oxygen (LOX)",
+      "launches": { "total": 9, "successes": 7, "failures": 2, "partial": 0, "asOf": "final", "verified": true },
+      "reusability": "Expendable",
+      "story": "Atlas used stainless-steel 'balloon' tanks so thin that the rocket had to stay pressurised just to hold its own shape, and its 'stage and a half' design lit every engine on the ground and dropped two of them in flight. On 20 February 1962 it put John Glenn's Friendship 7 into orbit, the first American to circle the Earth.",
+      "sources": [
+        { "label": "Wikipedia: Atlas LV-3B", "url": "https://en.wikipedia.org/wiki/Atlas_LV-3B" }
+      ]
+    },
+    {
+      "id": "titan2-glv",
+      "name": "Titan II GLV",
+      "variant": "Gemini Launch Vehicle with Gemini spacecraft",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "National Aeronautics and Space Administration (NASA) and the United States Air Force; built by Martin",
+      "firstFlight": "1964-04-08",
+      "lastFlight": "1966-11-11",
+      "status": "retired",
+      "height": { "value": 33.0, "verified": true, "note": "109 ft." },
+      "diameter": { "value": 3.05, "verified": true, "note": "10 ft." },
+      "mass": { "value": 154000, "verified": true, "note": "340,000 lb (Wikipedia rounds this to 150 t)." },
+      "thrust": { "value": 1900, "verified": true },
+      "payload": { "leo": { "value": 3600, "verified": true } },
+      "stages": 2,
+      "engines": "1 × LR87-AJ-7 (two chambers) + 1 × LR91-AJ-7",
+      "propellants": "Aerozine 50 / nitrogen tetroxide (N₂O₄), hypergolic: they ignite on contact",
+      "launches": { "total": 12, "successes": 12, "failures": 0, "partial": 0, "asOf": "final", "verified": true },
+      "reusability": "Expendable",
+      "story": "A man-rated version of the Titan II intercontinental ballistic missile (ICBM), it launched all twelve Gemini missions, ten of them crewed, without a single failure. Gemini used ejection seats instead of an escape tower because its storable hypergolic propellants burned rather than exploding like kerosene and oxygen.",
+      "sources": [
+        { "label": "Wikipedia: Titan II GLV", "url": "https://en.wikipedia.org/wiki/Titan_II_GLV" }
+      ]
+    },
+    {
+      "id": "saturn-ib",
+      "name": "Saturn IB",
+      "variant": "Apollo 7 configuration with Apollo command and service module and escape tower",
+      "country": "United States",
+      "region": "usa",
+      "flag": "usa",
+      "operator": "National Aeronautics and Space Administration (NASA)",
+      "firstFlight": "1966-02-26",
+      "lastFlight": "1975-07-15",
+      "status": "retired",
+      "height": { "value": 68.3, "verified": false, "note": "With the Apollo spacecraft and escape tower. The rocket alone is 43.2 m (Wikipedia, verified)." },
+      "diameter": { "value": 6.61, "verified": true },
+      "mass": { "value": 589770, "verified": true, "note": "Without the Apollo spacecraft, so thrust-to-weight is slightly overstated." },
+      "thrust": { "value": 7100, "verified": true },
+      "payload": { "leo": { "value": 21000, "verified": true } },
+      "stages": 2,
+      "engines": "S-IB: 8 × H-1 · S-IVB: 1 × J-2",
+      "propellants": "RP-1 kerosene / liquid oxygen (LOX); liquid hydrogen (LH₂) / LOX",
+      "launches": { "total": 9, "successes": 9, "failures": 0, "partial": 0, "asOf": "final", "verified": true },
+      "reusability": "Expendable",
+      "story": "Its first stage clustered eight Redstone-sized tanks around one Jupiter-sized tank, a quick way to build a big rocket from existing tooling. It launched Apollo 7, the first crewed Apollo flight, all three Skylab crews and the 1975 Apollo–Soyuz Test Project, without a failure.",
+      "sources": [
+        { "label": "Wikipedia: Saturn IB", "url": "https://en.wikipedia.org/wiki/Saturn_IB" },
+        { "label": "This Day in Aviation: Saturn IB SA-205", "url": "https://www.thisdayinaviation.com/tag/saturn-ib-sa-205/" }
+      ]
+    },
+    {
+      "id": "saturn-v",
+      "name": "Saturn V",
+      "variant": "Apollo 11 configuration (AS-506)",
+      "country": "United States",
+      "region": "usa",
+      "flag": "usa",
+      "operator": "National Aeronautics and Space Administration (NASA)",
+      "firstFlight": "1967-11-09",
+      "lastFlight": "1973-05-14",
+      "status": "retired",
+      "height": { "value": 110.6, "verified": true, "note": "363 ft; Wikipedia rounds to 111 m." },
+      "diameter": { "value": 10.1, "verified": true },
+      "width": { "value": 19.0, "verified": false, "note": "Approximate fin-tip span, from public drawings." },
+      "mass": { "value": 2941000, "verified": true, "note": "Apollo 11 (AS-506 Flight Evaluation Report); Wikipedia gives a range of 2,822–2,965 t across flights." },
+      "thrust": { "value": 33000, "verified": true, "note": "Five F-1 engines at sea level (Wikipedia); sources range up to about 35,100 kN." },
+      "payload": {
+        "leo": { "value": 140000, "verified": true, "note": "Includes the S-IVB stage and its remaining propellant in parking orbit." },
+        "tli": { "value": 43500, "verified": true }
+      },
+      "stages": 3,
+      "engines": "S-IC: 5 × F-1 · S-II: 5 × J-2 · S-IVB: 1 × J-2",
+      "propellants": "RP-1 kerosene / liquid oxygen (LOX); liquid hydrogen (LH₂) / LOX",
+      "launches": { "total": 13, "successes": 12, "failures": 0, "partial": 1, "asOf": "final", "verified": true, "note": "Partial failure: Apollo 6 (1968)." },
+      "reusability": "Expendable",
+      "story": "The rocket that took 24 people to the Moon between 1968 and 1972 never lost a crew, and its last flight lofted the Skylab space station in 1973. Its five F-1 engines burned about 13 tonnes of propellant every second.",
+      "sources": [
+        { "label": "Wikipedia: Saturn V", "url": "https://en.wikipedia.org/wiki/Saturn_V" },
+        { "label": "NASA MSFC: Saturn V Launch Vehicle Flight Evaluation Report AS-506", "url": "https://ntrs.nasa.gov/citations/19900066485" }
+      ]
+    },
+    {
+      "id": "n1",
+      "name": "N1",
+      "variant": "N1-L3 lunar configuration",
+      "country": "Soviet Union",
+      "region": "ussr",
+      "flag": "none",
+      "operator": "Soviet space programme; designed by OKB-1 (Sergei Korolev, then Vasily Mishin)",
+      "firstFlight": "1969-02-21",
+      "lastFlight": "1972-11-23",
+      "status": "retired",
+      "height": { "value": 105.3, "verified": true },
+      "diameter": { "value": 17.0, "verified": true, "note": "At the base of the conical first stage." },
+      "mass": { "value": 2750000, "verified": true },
+      "thrust": { "value": 45780, "verified": true, "note": "Thirty NK-15 engines at sea level: the most powerful first stage ever flown until Starship." },
+      "payload": {
+        "leo": { "value": 95000, "verified": true },
+        "tli": { "value": 33000, "verified": true, "note": "Approximate (\"cca\" in the source)." }
+      },
+      "stages": 5,
+      "engines": "Block A: 30 × NK-15 · Block B: 8 × NK-15V · Block V: 4 × NK-21 · then the Block G and D stages of the L3 lunar complex",
+      "propellants": "RG-1 kerosene / liquid oxygen (LOX)",
+      "launches": { "total": 4, "successes": 0, "failures": 4, "partial": 0, "asOf": "final", "verified": true },
+      "reusability": "Expendable",
+      "story": "The Soviet Moon rocket needed 30 first-stage engines because the Soviet Union had no engine as large as the American F-1, and the plumbing and control system that kept them in step never worked. All four launches failed; the second, on 3 July 1969, fell back onto its pad and destroyed it, and the programme was cancelled in 1974.",
+      "sources": [
+        { "label": "Wikipedia: N1 (rocket)", "url": "https://en.wikipedia.org/wiki/N1_(rocket)" }
+      ]
+    },
+    {
+      "id": "shuttle",
+      "name": "Space Shuttle",
+      "variant": "Orbiter, external tank and two solid rocket boosters",
+      "country": "United States",
+      "region": "usa",
+      "flag": "usa",
+      "operator": "National Aeronautics and Space Administration (NASA)",
+      "firstFlight": "1981-04-12",
+      "lastFlight": "2011-07-21",
+      "status": "retired",
+      "height": { "value": 56.1, "verified": true, "note": "Stack height, 184 ft; Wikipedia rounds to 56 m." },
+      "diameter": { "value": 8.4, "verified": true, "note": "External tank (Wikipedia: Space Shuttle external tank). The Space Shuttle infobox quotes 8.7 m." },
+      "width": { "value": 23.79, "verified": true, "note": "Orbiter wingspan; orbiter length 37.24 m." },
+      "mass": { "value": 2030000, "verified": true },
+      "thrust": { "value": 32250, "verified": true, "note": "Computed from the infobox: 27 MN for the two solid rocket boosters (SRBs) + 3 × 1,750 kN RS-25 at sea level. Other sources give about 30,000 kN." },
+      "payload": {
+        "leo": { "value": 27500, "verified": true, "note": "To a 204 km orbit, not counting the roughly 80-tonne orbiter itself; 16,050 kg to the International Space Station (ISS)." }
+      },
+      "stages": 1.5,
+      "engines": "Orbiter: 3 × RS-25 · 2 × four-segment solid rocket boosters",
+      "propellants": "Liquid hydrogen (LH₂) / liquid oxygen (LOX); solid ammonium perchlorate composite propellant (APCP)",
+      "launches": { "total": 135, "successes": 133, "failures": 2, "partial": 0, "asOf": "final", "verified": true, "note": "Challenger (1986) and Columbia (2003) were lost with their crews of seven." },
+      "reusability": "Partial: orbiter and booster casings reused, external tank expended",
+      "story": "The first reusable spacecraft flew 135 missions, launched and serviced the Hubble Space Telescope and built most of the International Space Station (ISS). It was also the most dangerous crewed vehicle ever flown, losing Challenger at launch and Columbia on re-entry, and fourteen astronauts with them.",
+      "sources": [
+        { "label": "Wikipedia: Space Shuttle", "url": "https://en.wikipedia.org/wiki/Space_Shuttle" },
+        { "label": "Wikipedia: Space Shuttle external tank", "url": "https://en.wikipedia.org/wiki/Space_Shuttle_external_tank" },
+        { "label": "Wikipedia: Space Shuttle orbiter", "url": "https://en.wikipedia.org/wiki/Space_Shuttle_orbiter" }
+      ]
+    },
+    {
+      "id": "energia",
+      "name": "Energia–Buran",
+      "variant": "Energia with the Buran orbiter (second flight)",
+      "country": "Soviet Union",
+      "region": "ussr",
+      "flag": "ussr",
+      "operator": "Soviet space programme; built by NPO Energia",
+      "firstFlight": "1987-05-15",
+      "firstFlightNote": "First Energia flight carried the Polyus payload; Buran flew on the second, 15 November 1988.",
+      "lastFlight": "1988-11-15",
+      "status": "retired",
+      "height": { "value": 58.765, "verified": true, "note": "Energia's height; Buran rides lower on the side." },
+      "diameter": { "value": 7.75, "verified": false, "note": "Core stage, widely published value." },
+      "width": { "value": 17.65, "verified": true },
+      "mass": { "value": 2400000, "verified": true, "note": "Energia infobox; whether this includes the 105-tonne Buran is not stated." },
+      "thrust": { "value": 34800, "verified": true, "note": "Computed: four RD-170 boosters 29,000 kN + four RD-0120 core engines 5,800 kN at sea level." },
+      "payload": {
+        "leo": { "value": 100000, "verified": true },
+        "tli": { "value": 32000, "verified": true }
+      },
+      "stages": 2,
+      "engines": "4 boosters × RD-170 (four chambers each) · core: 4 × RD-0120",
+      "propellants": "Kerosene / liquid oxygen (LOX) boosters; liquid hydrogen (LH₂) / LOX core",
+      "launches": { "total": 2, "successes": 2, "failures": 0, "partial": 0, "asOf": "final", "verified": true, "note": "On the first flight the rocket worked but the Polyus payload's own engine misfired and it fell into the Pacific." },
+      "reusability": "Orbiter reusable; boosters designed for recovery but never recovered",
+      "story": "Unlike the American Shuttle, the orbiter carried no main engines: Energia was a complete rocket that could launch Buran or 100 tonnes of cargo. Buran flew once, uncrewed, on 15 November 1988, circled the Earth twice and landed itself on a runway in a crosswind; the programme ended with the Soviet Union and the orbiter was crushed when its hangar roof collapsed in 2002.",
+      "sources": [
+        { "label": "Wikipedia: Energia (rocket)", "url": "https://en.wikipedia.org/wiki/Energia_(rocket)" },
+        { "label": "Wikipedia: Buran (spacecraft)", "url": "https://en.wikipedia.org/wiki/Buran_(spacecraft)" }
+      ]
+    },
+    {
+      "id": "soyuz2",
+      "name": "Soyuz-2",
+      "variant": "Soyuz-2.1b",
+      "country": "Russia",
+      "region": "ussr",
+      "flag": "russia",
+      "operator": "Roscosmos; built by the Progress Rocket Space Centre",
+      "firstFlight": "2004-11-08",
+      "status": "active",
+      "height": { "value": 47.0, "verified": true },
+      "diameter": { "value": 2.95, "verified": true, "note": "Core stage." },
+      "width": { "value": 10.3, "verified": false, "note": "Across the four strap-on boosters and their air rudders; widely published value." },
+      "mass": { "value": 310000, "verified": true },
+      "thrust": { "value": 4146, "verified": false, "note": "4 × RD-107A (838.5 kN) + RD-108A (792.5 kN) at sea level, widely published values; the infobox lists 1,020 kN and 990 kN per engine." },
+      "payload": {
+        "leo": { "value": 8670, "verified": true, "note": "From Baikonur." },
+        "gto": { "value": 3250, "verified": true }
+      },
+      "stages": 3,
+      "engines": "4 boosters × RD-107A · core: RD-108A · third stage: RD-0124",
+      "propellants": "RP-1 kerosene / liquid oxygen (LOX)",
+      "launches": { "total": 165, "successes": 160, "failures": null, "partial": null, "asOf": "Wikipedia, read 27 September 2026", "verified": false, "note": "\"Since 2006 … 165 launches, 160 of which were successful\"; the source gives no exact date." },
+      "reusability": "Expendable",
+      "story": "Soyuz descends directly from Sergei Korolev's R-7, the missile that launched Sputnik in 1957, and its four tapering strap-ons peel away in the famous 'Korolev cross'. Between 2011 and 2020 the Soyuz family was the only way for anyone to reach the International Space Station (ISS).",
+      "sources": [
+        { "label": "Wikipedia: Soyuz-2 (rocket)", "url": "https://en.wikipedia.org/wiki/Soyuz-2_(rocket)" }
+      ]
+    },
+    {
+      "id": "proton-m",
+      "name": "Proton-M",
+      "variant": "Proton-M with Briz-M upper stage",
+      "country": "Russia",
+      "region": "ussr",
+      "flag": "russia",
+      "operator": "Roscosmos; built by the Khrunichev State Research and Production Space Centre",
+      "firstFlight": "2001-04-07",
+      "lastFlight": "2026-02-12",
+      "status": "active",
+      "statusNote": "Being phased out in favour of Angara; most recent flight 12 February 2026.",
+      "height": { "value": 58.2, "verified": true },
+      "diameter": { "value": 4.1, "verified": false, "note": "Upper stages and central tank; widely published value." },
+      "width": { "value": 7.4, "verified": true, "note": "Across the six outboard first-stage tanks." },
+      "mass": { "value": 705000, "verified": true },
+      "thrust": { "value": 10532, "verified": true },
+      "payload": {
+        "leo": { "value": 23000, "verified": true },
+        "gto": { "value": 6920, "verified": true, "note": "GTO with 1,800 m/s remaining to geostationary orbit." }
+      },
+      "stages": 3,
+      "engines": "First stage: 6 × RD-275M · plus second, third and Briz-M stages",
+      "propellants": "Unsymmetrical dimethylhydrazine (UDMH) / nitrogen tetroxide (N₂O₄), toxic and hypergolic",
+      "launches": { "total": 116, "successes": 105, "failures": 9, "partial": 2, "asOf": "2026-02-12 (last flight)", "verified": true },
+      "reusability": "Expendable",
+      "story": "The Proton family, flying since 1965, launched the Salyut and Mir space stations and the first two modules of the International Space Station (ISS), Zarya and Zvezda. Its six outer 'tanks' are fuel tanks wrapped around a central oxidiser tank, each feeding one engine directly beneath it.",
+      "sources": [
+        { "label": "Wikipedia: Proton-M", "url": "https://en.wikipedia.org/wiki/Proton-M" }
+      ]
+    },
+    {
+      "id": "ariane5",
+      "name": "Ariane 5",
+      "variant": "Ariane 5 ECA",
+      "country": "Europe",
+      "region": "europe",
+      "flag": "none",
+      "operator": "Arianespace for the European Space Agency (ESA)",
+      "firstFlight": "1996-06-04",
+      "lastFlight": "2023-07-05",
+      "status": "retired",
+      "height": { "value": 52.0, "verified": true, "note": "46–52 m depending on the fairing; the tallest configuration is modelled." },
+      "diameter": { "value": 5.4, "verified": true },
+      "width": { "value": 11.5, "verified": false, "note": "Approximate span across the boosters." },
+      "mass": { "value": 777000, "verified": true },
+      "thrust": { "value": 14160, "verified": true, "note": "The two solid boosters; the Vulcain 2 core engine adds roughly another 1,000 kN at sea level, not included here." },
+      "payload": {
+        "leo": { "value": 20000, "verified": true, "note": "Ariane 5 ES: more than 20,000 kg." },
+        "gto": { "value": 10865, "verified": true, "note": "Ariane 5 ECA." }
+      },
+      "stages": 2.5,
+      "engines": "Core: 1 × Vulcain 2 · 2 × P241 solid boosters · upper stage: HM7B (ECA)",
+      "propellants": "Liquid hydrogen (LH₂) / liquid oxygen (LOX); solid ammonium perchlorate, aluminium and hydroxyl-terminated polybutadiene (HTPB)",
+      "launches": { "total": 117, "successes": 112, "failures": 2, "partial": 3, "asOf": "final", "verified": true },
+      "reusability": "Expendable",
+      "story": "Its maiden flight in 1996 broke up 37 seconds after liftoff because guidance software reused from Ariane 4 overflowed a number, one of the most expensive software bugs ever. It went on to launch the James Webb Space Telescope on 25 December 2021 so precisely that the telescope saved enough fuel for years of extra life.",
+      "sources": [
+        { "label": "Wikipedia: Ariane 5", "url": "https://en.wikipedia.org/wiki/Ariane_5" }
+      ]
+    },
+    {
+      "id": "ariane6",
+      "name": "Ariane 6",
+      "variant": "Ariane 64 (four boosters)",
+      "country": "Europe",
+      "region": "europe",
+      "flag": "none",
+      "operator": "Arianespace for the European Space Agency (ESA); built by ArianeGroup",
+      "firstFlight": "2024-07-09",
+      "firstFlightNote": "Ariane 62 first flew on 9 July 2024; the four-booster Ariane 64 on 12 February 2026 (docs/engineering/launch-vehicles-compared.md).",
+      "status": "active",
+      "height": { "value": 63.0, "verified": true },
+      "diameter": { "value": 5.4, "verified": true },
+      "width": { "value": 13.0, "verified": false, "note": "Approximate span across the four boosters." },
+      "mass": { "value": 860000, "verified": true },
+      "thrust": { "value": 19120, "verified": true, "note": "The four P120C boosters; the Vulcain 2.1 core engine adds roughly another 1,000 kN at sea level, not included here." },
+      "payload": {
+        "leo": { "value": 21650, "verified": true },
+        "gto": { "value": 11500, "verified": true }
+      },
+      "stages": 2,
+      "engines": "Core: 1 × Vulcain 2.1 · upper stage: 1 × Vinci (restartable) · 4 × P120C solid boosters",
+      "propellants": "Liquid hydrogen (LH₂) / liquid oxygen (LOX); solid HTPB, ammonium perchlorate and aluminium boosters",
+      "launches": { "total": 8, "successes": 7, "failures": 0, "partial": 1, "asOf": "Wikipedia, read 27 September 2026", "verified": true, "note": "Partial failure: VA262." },
+      "reusability": "Expendable",
+      "story": "Europe's successor to Ariane 5 can fly with two or four P120C boosters, the same motor that forms the first stage of the smaller Vega C. Its Vinci upper-stage engine can restart in orbit, letting one launch drop satellites into several different orbits.",
+      "sources": [
+        { "label": "Wikipedia: Ariane 6", "url": "https://en.wikipedia.org/wiki/Ariane_6" }
+      ]
+    },
+    {
+      "id": "delta4h",
+      "name": "Delta IV Heavy",
+      "variant": "Delta IV Heavy with RS-68A engines",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "United Launch Alliance (ULA)",
+      "firstFlight": "2004-12-21",
+      "lastFlight": "2024-04-09",
+      "status": "retired",
+      "height": { "value": 70.7, "verified": true },
+      "diameter": { "value": 5.1, "verified": true, "note": "Each common booster core." },
+      "width": { "value": 15.3, "verified": true },
+      "mass": { "value": 733000, "verified": true },
+      "thrust": { "value": 9420, "verified": true, "note": "Computed: 3 × RS-68A at 3,140 kN each at sea level (Wikipedia: RS-68)." },
+      "payload": {
+        "leo": { "value": 28370, "verified": true },
+        "gto": { "value": 14210, "verified": true },
+        "tli": { "value": 11290, "verified": true }
+      },
+      "stages": 2.5,
+      "engines": "3 common booster cores × RS-68A · upper stage: RL10B-2",
+      "propellants": "Liquid hydrogen (LH₂) / liquid oxygen (LOX)",
+      "launches": { "total": 16, "successes": 15, "failures": 0, "partial": 1, "asOf": "final", "verified": true, "note": "Partial failure: the 2004 demonstration flight." },
+      "reusability": "Expendable",
+      "story": "At ignition its hydrogen engines set fire to the orange foam on the boosters, so every launch began by the rocket appearing to burn on the pad. It flew the uncrewed Orion test flight in 2014 and the Parker Solar Probe in 2018, and mostly carried heavy reconnaissance satellites.",
+      "sources": [
+        { "label": "Wikipedia: Delta IV Heavy", "url": "https://en.wikipedia.org/wiki/Delta_IV_Heavy" },
+        { "label": "Wikipedia: RS-68", "url": "https://en.wikipedia.org/wiki/RS-68" }
+      ]
+    },
+    {
+      "id": "atlas5",
+      "name": "Atlas V",
+      "variant": "Atlas V 551 (5-m fairing, five solid boosters, one Centaur engine)",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "United Launch Alliance (ULA)",
+      "firstFlight": "2002-08-21",
+      "status": "active",
+      "statusNote": "Retiring: the remaining vehicles are assigned to specific customers.",
+      "height": { "value": 58.3, "verified": true, "note": "Up to 58.3 m." },
+      "diameter": { "value": 3.81, "verified": true, "note": "Common core booster; the payload fairing is 5.4 m." },
+      "width": { "value": 7.5, "verified": false, "note": "Approximate span across the solid boosters." },
+      "mass": { "value": 590000, "verified": true },
+      "thrust": { "value": 12272, "verified": true, "note": "Computed: RD-180 3,830 kN at sea level (Wikipedia: RD-180) + 5 × AJ-60A 1,688.4 kN." },
+      "payload": {
+        "leo": { "value": 18814, "verified": true },
+        "gto": { "value": 8900, "verified": true }
+      },
+      "stages": 2,
+      "engines": "Core: 1 × RD-180 (two chambers) · 5 × AJ-60A solid boosters · Centaur: 1 × RL10",
+      "propellants": "RP-1 kerosene / liquid oxygen (LOX); liquid hydrogen (LH₂) / LOX; solid boosters",
+      "launches": { "total": 109, "successes": 108, "failures": 0, "partial": 1, "asOf": "Wikipedia, read 27 September 2026", "verified": true, "note": "All configurations." },
+      "reusability": "Expendable",
+      "story": "An American rocket with a Russian RD-180 main engine, it became one of the most reliable launchers ever built. It sent New Horizons to Pluto, the Curiosity and Perseverance rovers to Mars and, in 2024, the first crew on Boeing's Starliner.",
+      "sources": [
+        { "label": "Wikipedia: Atlas V", "url": "https://en.wikipedia.org/wiki/Atlas_V" },
+        { "label": "Wikipedia: RD-180", "url": "https://en.wikipedia.org/wiki/RD-180" }
+      ]
+    },
+    {
+      "id": "vulcan",
+      "name": "Vulcan Centaur",
+      "variant": "VC6 (six solid boosters), standard fairing",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "United Launch Alliance (ULA)",
+      "firstFlight": "2024-01-08",
+      "status": "active",
+      "height": { "value": 61.6, "verified": true, "note": "Standard fairing; 67.3 m with the long fairing." },
+      "diameter": { "value": 5.4, "verified": true },
+      "width": { "value": 9.0, "verified": false, "note": "Approximate span across the solid boosters." },
+      "mass": { "value": 546700, "verified": true },
+      "thrust": { "value": 17257, "verified": true, "note": "Computed: 2 × BE-4 (4,893 kN together) + 6 × GEM 63XL (12,364 kN together)." },
+      "payload": {
+        "leo": { "value": 27200, "verified": true },
+        "gto": { "value": 15300, "verified": true },
+        "tli": { "value": 12100, "verified": true }
+      },
+      "stages": 2,
+      "engines": "Booster: 2 × BE-4 · up to 6 × GEM 63XL · Centaur V: 2 × RL10",
+      "propellants": "Liquid methane (CH₄) / liquid oxygen (LOX); liquid hydrogen (LH₂) / LOX",
+      "launches": { "total": 4, "successes": 4, "failures": 0, "partial": 0, "asOf": "Wikipedia, read 27 September 2026", "verified": true },
+      "reusability": "Expendable (engine-section recovery studied)",
+      "story": "Vulcan replaces both Atlas V and Delta IV, trading the Russian RD-180 for two American methane-burning BE-4 engines. Its first flight carried the Peregrine lunar lander, whose own propulsion failed after a perfect launch.",
+      "sources": [
+        { "label": "Wikipedia: Vulcan Centaur", "url": "https://en.wikipedia.org/wiki/Vulcan_Centaur" }
+      ]
+    },
+    {
+      "id": "falcon9",
+      "name": "Falcon 9",
+      "variant": "Falcon 9 Block 5",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "SpaceX",
+      "firstFlight": "2010-06-04",
+      "firstFlightNote": "Falcon 9 v1.0; the current Block 5 first flew on 11 May 2018.",
+      "status": "active",
+      "height": { "value": 70.0, "verified": true },
+      "diameter": { "value": 3.66, "verified": true, "note": "The payload fairing is 5.2 m wide." },
+      "mass": { "value": 549000, "verified": true },
+      "thrust": { "value": 7600, "verified": true },
+      "payload": {
+        "leo": { "value": 22800, "verified": true, "note": "Expendable; at least 17,400 kg with the booster recovered." },
+        "gto": { "value": 8300, "verified": true, "note": "Expendable; at least 5,800 kg reusable." },
+        "mars": { "value": 4020, "verified": true }
+      },
+      "stages": 2,
+      "engines": "First stage: 9 × Merlin 1D · second stage: 1 × Merlin 1D Vacuum",
+      "propellants": "RP-1 kerosene / liquid oxygen (LOX)",
+      "launches": { "total": 650, "successes": 647, "failures": 2, "partial": 1, "asOf": "2026-06-12", "verified": true, "note": "598 successful booster landings from 618 attempts." },
+      "reusability": "First stage lands and reflies; fairing halves recovered",
+      "story": "In December 2015 a Falcon 9 first stage became the first orbital-class booster to land upright, and single boosters have since flown more than 25 times. It has launched far more often than any other rocket in service, and since 2020 it has carried most crews to the International Space Station (ISS) aboard Crew Dragon.",
+      "sources": [
+        { "label": "Wikipedia: Falcon 9", "url": "https://en.wikipedia.org/wiki/Falcon_9" },
+        { "label": "SpaceX Falcon User's Guide", "url": "https://www.spacex.com/assets/media/falcon-users-guide-2025-05-09.pdf" }
+      ]
+    },
+    {
+      "id": "falcon-heavy",
+      "name": "Falcon Heavy",
+      "variant": "Three Falcon 9-derived cores",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "SpaceX",
+      "firstFlight": "2018-02-06",
+      "status": "active",
+      "height": { "value": 70.0, "verified": true },
+      "diameter": { "value": 3.66, "verified": true, "note": "Each core (Wikipedia rounds to 3.7 m)." },
+      "width": { "value": 12.2, "verified": true },
+      "mass": { "value": 1420000, "verified": true },
+      "thrust": { "value": 22820, "verified": true },
+      "payload": {
+        "leo": { "value": 63800, "verified": true, "note": "Fully expended." },
+        "gto": { "value": 26700, "verified": true },
+        "mars": { "value": 16800, "verified": true }
+      },
+      "stages": 2.5,
+      "engines": "27 × Merlin 1D on three cores · second stage: 1 × Merlin 1D Vacuum",
+      "propellants": "RP-1 kerosene / liquid oxygen (LOX)",
+      "launches": { "total": 12, "successes": 12, "failures": 0, "partial": 0, "asOf": "Wikipedia, read 27 September 2026", "verified": true, "note": "Side boosters landed 16 of 16 attempts; centre cores 1 of 3." },
+      "reusability": "Side boosters land and refly; centre core usually expended",
+      "story": "Its 2018 demonstration flight ended with the two side boosters touching down side by side at Cape Canaveral seconds apart. It has since launched NASA's Psyche and Europa Clipper missions.",
+      "sources": [
+        { "label": "Wikipedia: Falcon Heavy", "url": "https://en.wikipedia.org/wiki/Falcon_Heavy" }
+      ]
+    },
+    {
+      "id": "electron",
+      "name": "Electron",
+      "variant": "Electron (two-stage, with kick stage)",
+      "country": "United States / New Zealand",
+      "region": "oceania",
+      "flag": "none",
+      "operator": "Rocket Lab",
+      "firstFlight": "2017-05-25",
+      "status": "active",
+      "height": { "value": 18.0, "verified": true },
+      "diameter": { "value": 1.2, "verified": true },
+      "mass": { "value": 13000, "verified": true },
+      "thrust": { "value": 224.3, "verified": true },
+      "payload": {
+        "leo": { "value": 300, "verified": true },
+        "sso": { "value": 200, "verified": true }
+      },
+      "stages": 2,
+      "engines": "First stage: 9 × Rutherford · second stage: 1 × Rutherford Vacuum",
+      "propellants": "RP-1 kerosene / liquid oxygen (LOX), pumped by battery-powered electric motors",
+      "launches": { "total": 91, "successes": 87, "failures": 4, "partial": 0, "asOf": "2026-06-26", "verified": true },
+      "reusability": "First stages recovered from the ocean; refurbished engines have reflown",
+      "story": "Electron's carbon-composite body and 3D-printed Rutherford engines, whose pumps are driven by batteries rather than a turbine, made it the first rocket built for small satellites to fly regularly. Most launches leave from the Mahia Peninsula in New Zealand.",
+      "sources": [
+        { "label": "Wikipedia: Rocket Lab Electron", "url": "https://en.wikipedia.org/wiki/Rocket_Lab_Electron" }
+      ]
+    },
+    {
+      "id": "long-march-5",
+      "name": "Long March 5",
+      "variant": "CZ-5 with standard fairing",
+      "country": "China",
+      "region": "china",
+      "flag": "china",
+      "operator": "China Aerospace Science and Technology Corporation (CASC)",
+      "firstFlight": "2016-11-03",
+      "status": "active",
+      "height": { "value": 56.97, "verified": true, "note": "Standard fairing; 63.2 m with the extended fairing." },
+      "diameter": { "value": 5.0, "verified": true, "note": "Core; the four boosters are 3.35 m." },
+      "width": { "value": 11.7, "verified": false, "note": "Approximate span across the boosters." },
+      "mass": { "value": 851800, "verified": true },
+      "thrust": { "value": 10600, "verified": false, "note": "Boosters 9,600 kN (verified) + two YF-77 core engines at sea level (about 1,000 kN, unverified)." },
+      "payload": {
+        "leo": { "value": 25000, "verified": true, "note": "Long March 5B." },
+        "gto": { "value": 14000, "verified": true },
+        "tli": { "value": 8800, "verified": true, "note": "8,800–9,400 kg." }
+      },
+      "stages": 2,
+      "engines": "4 boosters × 2 YF-100 · core: 2 × YF-77 · second stage: 2 × YF-75D",
+      "propellants": "Kerosene / liquid oxygen (LOX) boosters; liquid hydrogen (LH₂) / LOX core and upper stage",
+      "launches": { "total": 18, "successes": 17, "failures": 1, "partial": 0, "asOf": "2026-06-11", "verified": true, "note": "11 × CZ-5 and 7 × CZ-5B." },
+      "reusability": "Expendable",
+      "story": "China's heavy lifter sent the Tianwen-1 orbiter and Zhurong rover to Mars and the Chang'e 5 and 6 missions that returned samples from the near and far side of the Moon. The 5B version launched the large modules of the Tiangong space station.",
+      "sources": [
+        { "label": "Wikipedia: Long March 5", "url": "https://en.wikipedia.org/wiki/Long_March_5" }
+      ]
+    },
+    {
+      "id": "h3",
+      "name": "H3",
+      "variant": "H3-24L (two main engines, four solid boosters, long fairing)",
+      "country": "Japan",
+      "region": "japan",
+      "flag": "japan",
+      "operator": "Japan Aerospace Exploration Agency (JAXA) and Mitsubishi Heavy Industries (MHI)",
+      "firstFlight": "2023-03-07",
+      "status": "active",
+      "height": { "value": 63.0, "verified": true, "note": "With the L or W fairing; 57 m with the short S fairing." },
+      "diameter": { "value": 5.27, "verified": true },
+      "width": { "value": 10.5, "verified": false, "note": "Approximate span across the boosters." },
+      "mass": { "value": 575000, "verified": true, "note": "H3-24." },
+      "thrust": { "value": 12142, "verified": false, "note": "Computed from the infobox: 2 × LE-9 (2,942 kN) + 4 × SRB-3 (9,200 kN); it is not clear whether the LE-9 figure is at sea level." },
+      "payload": {
+        "leo": { "value": 16000, "verified": true, "note": "To the orbit of the International Space Station (ISS)." },
+        "gto": { "value": 7900, "verified": true }
+      },
+      "stages": 2,
+      "engines": "First stage: 2 or 3 × LE-9 · second stage: 1 × LE-5B-3 · 0, 2 or 4 × SRB-3",
+      "propellants": "Liquid hydrogen (LH₂) / liquid oxygen (LOX); solid boosters",
+      "launches": { "total": 8, "successes": 6, "failures": 2, "partial": 0, "asOf": "2026-06-12", "verified": true, "note": "Failures: Test Flight 1 (7 March 2023) and F8 (22 December 2025)." },
+      "reusability": "Expendable",
+      "story": "Japan's new flagship rocket uses the LE-9, an expander-bleed hydrogen engine with no gas generator or preburner, designed to be simpler and cheaper than the H-IIA's engine. Its first flight in March 2023 was lost when the second stage failed to ignite, and it returned to flight successfully in February 2024.",
+      "sources": [
+        { "label": "Wikipedia: H3 (rocket)", "url": "https://en.wikipedia.org/wiki/H3_(rocket)" },
+        { "label": "JAXA: H3 Launch Vehicle", "url": "https://global.jaxa.jp/projects/rockets/h3/" }
+      ]
+    },
+    {
+      "id": "pslv",
+      "name": "PSLV",
+      "variant": "Polar Satellite Launch Vehicle (PSLV-XL)",
+      "country": "India",
+      "region": "india",
+      "flag": "india",
+      "operator": "Indian Space Research Organisation (ISRO)",
+      "firstFlight": "2008-10-22",
+      "firstFlightNote": "First PSLV-XL flight (Chandrayaan-1). The PSLV family first flew on 20 September 1993.",
+      "status": "active",
+      "height": { "value": 44.0, "verified": true },
+      "diameter": { "value": 2.8, "verified": true },
+      "width": { "value": 5.3, "verified": false, "note": "Approximate span across the six strap-on boosters." },
+      "mass": { "value": 320000, "verified": true },
+      "thrust": { "value": 7661, "verified": false, "note": "First stage 4,846.9 kN + four ground-lit strap-ons × 703.5 kN (the other two ignite in flight; the ground-lit count is from widely published descriptions)." },
+      "payload": {
+        "leo": { "value": 3800, "verified": true },
+        "sso": { "value": 1750, "verified": true },
+        "gto": { "value": 1425, "verified": true, "note": "Sub-geosynchronous transfer orbit." }
+      },
+      "stages": 4,
+      "engines": "PS1 solid motor + 6 × PSOM-XL strap-ons · PS2: Vikas · PS3: solid · PS4: 2 × liquid engines",
+      "propellants": "Solid HTPB; UDMH / N₂O₄ (Vikas); MMH / mixed oxides of nitrogen (MON)",
+      "launches": { "total": 27, "successes": 25, "failures": 2, "partial": 0, "asOf": "2026-01-12", "verified": true, "note": "PSLV-XL variant only." },
+      "reusability": "Expendable",
+      "story": "India's workhorse alternates solid and liquid stages, four in all, and in 2017 it set a record by deploying 104 satellites on one flight. The XL version launched Chandrayaan-1, the Mars Orbiter Mission Mangalyaan and the Aditya-L1 solar observatory.",
+      "sources": [
+        { "label": "Wikipedia: Polar Satellite Launch Vehicle", "url": "https://en.wikipedia.org/wiki/Polar_Satellite_Launch_Vehicle" }
+      ]
+    },
+    {
+      "id": "lvm3",
+      "name": "LVM3",
+      "variant": "Launch Vehicle Mark 3 (formerly GSLV Mk III)",
+      "country": "India",
+      "region": "india",
+      "flag": "india",
+      "operator": "Indian Space Research Organisation (ISRO)",
+      "firstFlight": "2017-06-05",
+      "firstFlightNote": "First orbital flight; a suborbital test flew on 18 December 2014.",
+      "status": "active",
+      "height": { "value": 43.43, "verified": true },
+      "diameter": { "value": 4.0, "verified": true },
+      "width": { "value": 10.8, "verified": false, "note": "Approximate span across the two boosters." },
+      "mass": { "value": 640000, "verified": true },
+      "thrust": { "value": 10300, "verified": true, "note": "Two S200 boosters × 5,150 kN; the L110 core stage ignites in flight." },
+      "payload": {
+        "leo": { "value": 10000, "verified": true },
+        "gto": { "value": 4200, "verified": true },
+        "tli": { "value": 3000, "verified": true }
+      },
+      "stages": 3,
+      "engines": "2 × S200 solid boosters · L110 core: 2 × Vikas · C25: 1 × CE-20",
+      "propellants": "Solid HTPB; UH 25 / N₂O₄; liquid hydrogen (LH₂) / liquid oxygen (LOX)",
+      "launches": { "total": 9, "successes": 9, "failures": 0, "partial": 0, "asOf": "2025-12-24 (last flight)", "verified": true },
+      "reusability": "Expendable",
+      "story": "LVM3 launched Chandrayaan-3, which in August 2023 made India the first country to land near the Moon's south pole. A human-rated version is being prepared for Gaganyaan, India's first crewed spaceflight.",
+      "sources": [
+        { "label": "Wikipedia: LVM3", "url": "https://en.wikipedia.org/wiki/LVM3" }
+      ]
+    },
+    {
+      "id": "sls",
+      "name": "SLS Block 1",
+      "variant": "Space Launch System (SLS) Block 1 with Orion",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "National Aeronautics and Space Administration (NASA)",
+      "firstFlight": "2022-11-16",
+      "status": "active",
+      "height": { "value": 98.0, "verified": true },
+      "diameter": { "value": 8.4, "verified": true, "note": "Core stage." },
+      "width": { "value": 17.0, "verified": false, "note": "Approximate span across the boosters." },
+      "mass": { "value": 2610000, "verified": true },
+      "thrust": { "value": 39100, "verified": true, "note": "\"39 MN\" (Wikipedia); 39,100 kN in docs/engineering/launch-vehicles-compared.md." },
+      "payload": {
+        "leo": { "value": 95000, "verified": true },
+        "tli": { "value": 27000, "verified": true }
+      },
+      "stages": 2.5,
+      "engines": "Core: 4 × RS-25 · 2 × five-segment solid rocket boosters · ICPS: 1 × RL10",
+      "propellants": "Liquid hydrogen (LH₂) / liquid oxygen (LOX); solid polybutadiene acrylonitrile (PBAN) composite",
+      "launches": { "total": 2, "successes": 2, "failures": 0, "partial": 0, "asOf": "2026-04-01 (Artemis II)", "verified": true },
+      "reusability": "Expendable (RS-25 engines on the first flights had flown on the Shuttle)",
+      "story": "Built from Space Shuttle hardware, with stretched boosters and Shuttle main engines under an orange core stage, SLS launched the uncrewed Artemis I around the Moon in 2022. On 1 April 2026 it launched Artemis II, carrying four astronauts around the Moon, the first crew beyond low Earth orbit since 1972.",
+      "sources": [
+        { "label": "Wikipedia: Space Launch System", "url": "https://en.wikipedia.org/wiki/Space_Launch_System" },
+        { "label": "NASA: SLS Reference Guide", "url": "https://www.nasa.gov/humans-in-space/space-launch-system/reference-guide/" }
+      ]
+    },
+    {
+      "id": "new-glenn",
+      "name": "New Glenn",
+      "variant": "New Glenn 7×2",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "Blue Origin",
+      "firstFlight": "2025-01-16",
+      "status": "active",
+      "height": { "value": 98.0, "verified": true },
+      "diameter": { "value": 7.0, "verified": true },
+      "mass": null,
+      "massNote": "Liftoff mass not published in the source.",
+      "thrust": { "value": 19928, "verified": true, "note": "Maximum thrust of seven BE-4 engines." },
+      "payload": {
+        "leo": { "value": 45000, "verified": true },
+        "gto": { "value": 13600, "verified": true },
+        "tli": { "value": 7000, "verified": true }
+      },
+      "stages": 2,
+      "engines": "First stage: 7 × BE-4 · second stage: 2 × BE-3U",
+      "propellants": "Liquid methane (CH₄) / liquid oxygen (LOX); liquid hydrogen (LH₂) / LOX",
+      "launches": { "total": 3, "successes": 2, "failures": 1, "partial": 0, "asOf": "2026-05-29", "verified": true, "note": "Booster landings: 2 of 3 attempts." },
+      "reusability": "First stage lands on a ship at sea and is designed for 25 flights",
+      "story": "Named after John Glenn, it shares its BE-4 engines with Vulcan, and its 7-metre-wide fairing is one of the largest ever flown. Its second flight, in November 2025, sent NASA's ESCAPADE probes towards Mars and landed the first stage on a ship at sea.",
+      "sources": [
+        { "label": "Wikipedia: New Glenn", "url": "https://en.wikipedia.org/wiki/New_Glenn" }
+      ]
+    },
+    {
+      "id": "starship",
+      "name": "Starship",
+      "variant": "Block 3: Super Heavy booster + Starship upper stage",
+      "country": "United States",
+      "region": "usa",
+      "flag": "none",
+      "operator": "SpaceX",
+      "firstFlight": "2023-04-20",
+      "firstFlightNote": "First integrated flight test.",
+      "status": "development",
+      "height": { "value": 124.4, "verified": true, "note": "Block 3 (Super Heavy 72.3 m + Ship 52.1 m); Block 1 was 121.3 m." },
+      "diameter": { "value": 9.0, "verified": true },
+      "mass": { "value": 5000000, "verified": true, "note": "About 5,000 t." },
+      "thrust": { "value": 80000, "verified": true, "note": "\"Over 18 million pounds\" from 33 Raptor 3 engines (Space.com); Block 1 made 73,500 kN." },
+      "payload": {
+        "leo": { "value": 100000, "verified": true, "note": "Block 3 design figure, fully reusable." }
+      },
+      "stages": 2,
+      "engines": "Super Heavy: 33 × Raptor · Ship: 3 × Raptor + 3 × Raptor Vacuum",
+      "propellants": "Liquid methane (CH₄) / liquid oxygen (LOX)",
+      "launches": { "total": 13, "successes": 8, "failures": 5, "partial": 0, "asOf": "2026-07-24", "verified": true, "note": "Integrated flight tests; three boosters caught by the launch tower's arms." },
+      "reusability": "Designed for full and rapid reuse of both stages",
+      "story": "The tallest and most powerful rocket ever flown is built from stainless steel, and its booster returns to be caught in mid-air by the arms of its launch tower, first done in October 2024. It is designed to refuel in orbit and to land astronauts on the Moon for NASA's Artemis programme.",
+      "sources": [
+        { "label": "Wikipedia: SpaceX Starship", "url": "https://en.wikipedia.org/wiki/SpaceX_Starship" },
+        { "label": "Space.com: How Starship V3 differs from its predecessors", "url": "https://www.space.com/space-exploration/launches-spacecraft/the-worlds-biggest-rocket-how-spacexs-new-starship-v3-differs-from-its-predecessors" }
+      ]
+    }
+  ],
+  "references": {
+    "statue": { "label": "Statue of Liberty: 93 m from the ground to the tip of the torch (305 ft 1 in); copper statue 46 m; pedestal 27 m, a truncated pyramid 19 m square at the base and 12 m at the top; the remaining 20 m is the foundation inside the star-shaped walls of Fort Wood (Wikipedia: Statue of Liberty)", "url": "https://en.wikipedia.org/wiki/Statue_of_Liberty", "verified": true },
+    "human": { "label": "Human figure: 1.8 m", "verified": true }
+  }
+}

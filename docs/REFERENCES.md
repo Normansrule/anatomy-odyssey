@@ -4,7 +4,7 @@ This file mirrors [`site/data/library.json`](../site/data/library.json), the dat
 
 - **Level**: beginner (no maths needed), intermediate (calculus and physics), expert (primary sources and professional tools).
 - Every link was checked against web search results on 26 September 2026. Where an exact document URL could not be confirmed, the verified parent page is linked instead.
-- Organisation names appear as plain text. Cosmic Codex is not affiliated with any of these organisations.
+- Organisation names appear as plain text. Cosmic Library is not affiliated with any of these organisations.
 
 ## Start here: a guided reading path
 

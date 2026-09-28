@@ -148,7 +148,7 @@ Questions to answer:
   until very low angles — why do almost all real craters look circular?
 - Try **wet sand** (it has strength) and compare the exponent.
 - Measure crater **depth** with a toothpick and ruler; is depth/diameter constant?
-- Count craters on a lunar photo from the [Cosmic Codex gallery](https://normansrule.github.io/cosmic-codex/gallery.html) and compare
+- Count craters on a lunar photo from the [Cosmic Library gallery](https://normansrule.github.io/cosmic-library/gallery.html) and compare
   old highlands with young maria (crater counting dates planetary surfaces).
 
 ## References

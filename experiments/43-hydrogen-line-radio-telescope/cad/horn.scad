@@ -1,4 +1,4 @@
-// Cosmic Codex - 21 cm hydrogen-line pyramidal horn (dimensions from tools/horn_design.py)
+// Cosmic Library - 21 cm hydrogen-line pyramidal horn (dimensions from tools/horn_design.py)
 // ---------------------------------------------------------------------------
 // PART = "horn"         the whole horn as a thin shell - a PREVIEW / fit-check model, far too big to
 //                       print (build it from foam board + aluminium tape using images/horn-cutting-diagram.svg)

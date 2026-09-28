@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Cosmic Codex: one-shot setup for Ubuntu 22.04 / 24.04 / newer (native or WSL2).
+# Cosmic Library: one-shot setup for Ubuntu 22.04 / 24.04 / newer (native or WSL2).
 #
 #   bash scripts/setup_ubuntu.sh            # web + Python toolkit + firmware tests
 #   bash scripts/setup_ubuntu.sh --cad      # also OpenSCAD + KiCad (for experiments/)
@@ -20,7 +20,7 @@ for a in "$@"; do
 done
 
 cd "$(dirname "$0")/.."
-[ -f site/index.html ] || { echo "Run this from inside the cosmic-codex repository."; exit 1; }
+[ -f site/index.html ] || { echo "Run this from inside the cosmic-library repository."; exit 1; }
 
 say() { printf '\n\033[1;36m▸ %s\033[0m\n' "$*"; }
 

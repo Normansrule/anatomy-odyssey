@@ -1,4 +1,4 @@
-// Cosmic Codex - 1U CubeSat-style structure for a high-altitude balloon payload
+// Cosmic Library - 1U CubeSat-style structure for a high-altitude balloon payload
 // ---------------------------------------------------------------------------
 // Outer envelope follows the CubeSat Design Specification 1U size: 100.0 x 100.0 mm footprint,
 // 113.5 mm tall, with 8.5 mm square corner rails. (A balloon flight does not need CDS compliance; using

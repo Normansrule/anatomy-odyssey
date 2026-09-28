@@ -29,7 +29,7 @@ A bare array `[ {…}, {…} ]` is also accepted. `experiments.json` additionall
 | `id` | string | yes | Same as the folder name, e.g. `"10-water-bottle-rocket"`. Unique. |
 | `level` | integer 0–4 | yes | Ladder rung. First digit of the folder number. |
 | `title` | string | yes | Short human title, e.g. `"Water bottle rocket"`. |
-| `folder` | string | yes | Folder under `experiments/`, e.g. `"10-water-bottle-rocket"`. Cards link to `https://github.com/Normansrule/cosmic-codex/tree/main/experiments/<folder>`. |
+| `folder` | string | yes | Folder under `experiments/`, e.g. `"10-water-bottle-rocket"`. Cards link to `https://github.com/Normansrule/cosmic-library/tree/main/experiments/<folder>`. |
 | `cost_usd` | `[min, max]` numbers | yes | Typical parts cost in US dollars, excluding tools you probably own. |
 | `hours` | number **or** `[min, max]` | yes | Build + first-run time in hours. |
 | `difficulty` | integer 1–5 | yes | 1 = kitchen table, 3 = soldering / CAD, 5 = certification-grade. |

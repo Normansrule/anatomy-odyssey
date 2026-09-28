@@ -158,7 +158,7 @@ Helioseismic and Magnetic Imager (HMI) for the same dates: <https://sdo.gsfc.nas
 - Count the spots and groups and compute your own **relative sunspot number** $R = k(10g + s)$; compare it
   with the official series from the Sunspot Index and Long-term Solar Observations (SILSO):
   <https://www.sidc.be/SILSO/>.
-- See the Cosmic Codex [Sun page](https://normansrule.github.io/cosmic-codex/sun.html) for what lies beneath the spots.
+- See the Cosmic Library [Sun page](https://normansrule.github.io/cosmic-library/sun.html) for what lies beneath the spots.
 
 ## References
 

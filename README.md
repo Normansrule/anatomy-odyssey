@@ -1,31 +1,24 @@
 <div align="center">
 
-<a href="https://normansrule.github.io/cosmic-codex/"><img src="media/banner.jpg" alt="Cosmic Codex: a live spiral galaxy behind the title" width="100%"></a>
+<a href="https://normansrule.github.io/cosmic-library/"><img src="media/banner.jpg" alt="Cosmic Library: a live spiral galaxy behind the title" width="100%"></a>
 
-# Cosmic Codex
+# Cosmic Library
 
-**An open atlas of space and spaceflight.** Launch a Saturn V, fall toward a black hole, cut the Sun open and walk around Space Shuttle Endeavour, then learn the equations, read the engineers' own documents, and build the experiments yourself.
+**An open atlas of space and spaceflight.** Launch a Saturn V, land a booster, fly Apollo 11's lunar module down, survive Mars' seven minutes of terror, track every satellite overhead, read tonight's sky and zoom from a proton to the edge of the universe. Then learn the equations, read the engineers' own documents, and build the experiments yourself.
 
-[![Deploy site](https://github.com/Normansrule/cosmic-codex/actions/workflows/pages.yml/badge.svg)](https://github.com/Normansrule/cosmic-codex/actions/workflows/pages.yml)
-[![Tests](https://github.com/Normansrule/cosmic-codex/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/cosmic-codex/actions/workflows/ci.yml)
+[![Deploy site](https://github.com/Normansrule/cosmic-library/actions/workflows/pages.yml/badge.svg)](https://github.com/Normansrule/cosmic-library/actions/workflows/pages.yml)
+[![Tests](https://github.com/Normansrule/cosmic-library/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/cosmic-library/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-7cc8ff.svg)](LICENSE)
 [![three.js](https://img.shields.io/badge/three.js-r186-b18cff.svg)](https://threejs.org)
 [![Python](https://img.shields.io/badge/python-3.10%2B-ffc24b.svg)](simulations/)
 [![KiCad](https://img.shields.io/badge/PCB-KiCad-ff7a3d.svg)](experiments/30-flight-computer-pcb/)
 
-### [🚀 Open the live site →](https://normansrule.github.io/cosmic-codex/)
+### [🚀 Open the live site →](https://normansrule.github.io/cosmic-library/)
 
-[Launch](https://normansrule.github.io/cosmic-codex/launch.html) ·
-[Endeavour](https://normansrule.github.io/cosmic-codex/shuttle.html) ·
-[Black Hole](https://normansrule.github.io/cosmic-codex/black-hole.html) ·
-[The Sun](https://normansrule.github.io/cosmic-codex/sun.html) ·
-[Solar System](https://normansrule.github.io/cosmic-codex/solar-system.html) ·
-[Orbit Lab](https://normansrule.github.io/cosmic-codex/orbits.html) ·
-[Equations](https://normansrule.github.io/cosmic-codex/equations.html) ·
-[Gallery](https://normansrule.github.io/cosmic-codex/gallery.html) ·
-[Timeline](https://normansrule.github.io/cosmic-codex/timeline.html) ·
-[Library](https://normansrule.github.io/cosmic-codex/library.html) ·
-[Experiments](https://normansrule.github.io/cosmic-codex/experiments.html)
+**Fly:** [Saturn V launch](https://normansrule.github.io/cosmic-library/launch.html) · [Booster landing](https://normansrule.github.io/cosmic-library/booster.html) · [Moon landing](https://normansrule.github.io/cosmic-library/moon-landing.html) · [Mars landing](https://normansrule.github.io/cosmic-library/mars-landing.html) · [Endeavour](https://normansrule.github.io/cosmic-library/shuttle.html) · [Rocket hangar](https://normansrule.github.io/cosmic-library/hangar.html)<br>
+**Explore:** [Live Earth orbit](https://normansrule.github.io/cosmic-library/earth.html) · [Night sky](https://normansrule.github.io/cosmic-library/sky.html) · [Solar system](https://normansrule.github.io/cosmic-library/solar-system.html) · [The Sun](https://normansrule.github.io/cosmic-library/sun.html) · [Black hole](https://normansrule.github.io/cosmic-library/black-hole.html) · [Cosmic scale](https://normansrule.github.io/cosmic-library/scale.html)<br>
+**Learn:** [Orbit Lab](https://normansrule.github.io/cosmic-library/orbits.html) · [Equations](https://normansrule.github.io/cosmic-library/equations.html) · [Gallery](https://normansrule.github.io/cosmic-library/gallery.html) · [Timeline](https://normansrule.github.io/cosmic-library/timeline.html) · [Documents](https://normansrule.github.io/cosmic-library/library.html)<br>
+**Build:** [Experiments](https://normansrule.github.io/cosmic-library/experiments.html)
 
 </div>
 
@@ -34,10 +27,11 @@
 ## Contents
 
 - [What's inside](#whats-inside)
-- [Fly it: six 3D simulations](#-fly-it--six-3d-simulations)
-- [Learn it: equations, gallery, timeline, library](#-learn-it)
-- [Build it: 20 experiments from $0 to a custom PCB](#-build-it--20-experiments)
-- [Compute it: the Python toolkit](#-compute-it--the-python-toolkit)
+- [Fly it: launch, land, and land again](#-fly-it-launch-land-and-land-again)
+- [Explore it: from low Earth orbit to the edge of the universe](#-explore-it-from-low-earth-orbit-to-the-edge-of-the-universe)
+- [Learn it: equations, gallery, timeline, documents](#-learn-it)
+- [Build it: 20 experiments from $0 to a custom PCB](#-build-it-20-experiments)
+- [Compute it: the Python toolkit](#-compute-it-the-python-toolkit)
 - [Quick start (Ubuntu)](#-quick-start-ubuntu)
 - [Repository layout](#-repository-layout)
 - [How it's built, and what inspired it](#-how-its-built-and-what-inspired-it)
@@ -47,20 +41,20 @@
 
 | | | |
 |---|---|---|
-| **12** interactive pages | **47** equations, each with a calculator and a plot | **50** iconic photographs, 1946 → 2022 |
+| **19** interactive pages | **47** equations, each with a calculator and a plot | **50** iconic photographs, 1946 → 2022 |
 | **110** milestones, 1903 → 2026 | **79** primary documents from NASA, JPL, SpaceX, ESA… | **20** hands-on builds in 5 levels |
-| **7** Python simulations with **52** physics tests | A KiCad **flight-computer PCB**, firmware and ground station | **32** 3D-printable parts from 11 parametric OpenSCAD sources |
+| **7** Python simulations with **52** physics tests, plus Node test suites for every flight model | A KiCad **flight-computer PCB**, firmware and ground station | **32** 3D-printable parts from 11 parametric OpenSCAD sources |
 
 Everything on the site runs in the browser with no build step and no sign-up. Every number on screen comes from a stated equation or a cited source.
 
 ---
 
-## 🛰 Fly it: six 3D simulations
+## 🚀 Fly it: launch, land, and land again
 
 <table>
 <tr>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/launch.html"><img src="media/screens/launch.jpg" alt="Saturn V first stage separating above Earth"></a></td>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/launch.html"><img src="media/screens/launch-pad.jpg" alt="Saturn V on Launch Complex 39A before launch"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/launch.html"><img src="media/screens/launch.jpg" alt="Saturn V first stage separating above Earth"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/launch.html"><img src="media/screens/launch-pad.jpg" alt="Saturn V on Launch Complex 39A before launch"></a></td>
 </tr>
 <tr><td colspan="2">
 
@@ -79,8 +73,8 @@ Six cameras (director, pad, ground tracking, chase, onboard, free), 1–50× tim
 
 <table>
 <tr>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/shuttle.html"><img src="media/screens/shuttle.jpg" alt="Endeavour stacked with its external tank and boosters"></a></td>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/shuttle.html"><img src="media/screens/shuttle-orbit.jpg" alt="Endeavour in orbit with payload bay doors open"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/shuttle.html"><img src="media/screens/shuttle.jpg" alt="Endeavour stacked with its external tank and boosters"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/shuttle.html"><img src="media/screens/shuttle-orbit.jpg" alt="Endeavour in orbit with payload bay doors open"></a></td>
 </tr>
 <tr><td colspan="2">
 
@@ -91,8 +85,75 @@ Orbiter Vehicle 105 (OV-105), home at the **California Science Center** in Los A
 
 <table>
 <tr>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/black-hole.html"><img src="media/screens/black-hole.jpg" alt="Ray-traced black hole with lensed accretion disk"></a></td>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/sun.html"><img src="media/screens/sun.jpg" alt="Cutaway of the Sun showing its internal layers"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/booster.html"><img src="media/screens/booster.jpg" alt="Booster landing burn onto a drone ship"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/moon-landing.html"><img src="media/screens/moon-landing.jpg" alt="Apollo lunar module just above the surface"></a></td>
+</tr>
+<tr>
+<td valign="top">
+
+### Booster landing · [`booster.html`](site/booster.html)
+Land a Falcon 9-class reusable first stage on a drone ship, back at the launch site after a boostback burn, or from a 3 km final approach. Flip, entry burn, grid-fin steering, then the **hoverslam**: one engine at minimum throttle still out-lifts the empty stage, so it can't hover and the burn must end exactly at zero altitude. The HUD shows the ideal burn-start height $h = v^2 / 2a_{net}$ live. Fly it on keyboard or touch, or hand over to a transparent autopilot, which lands all three scenarios in the Node test suite.
+</td>
+<td valign="top">
+
+### Moon landing · [`moon-landing.html`](site/moon-landing.html)
+Apollo 11's Lunar Module *Eagle*, from Powered Descent Initiation (PDI) at 15 km through the braking (P63) and approach (P64) phases to touchdown. Take over in P66 like Armstrong did to fly past the boulder field; the model's automatic descent reaches High Gate within 3 s of the real flight plan. There's a Display and Keyboard (DSKY)-inspired panel, the Landing Point Designator (LPD) grid in the commander's window, optional 1202 alarms, and 38 real call-outs from the public-domain transcripts.
+</td>
+</tr>
+<tr>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/mars-landing.html"><img src="media/screens/mars-chute.jpg" alt="Perseverance under its supersonic parachute over Jezero crater"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/hangar.html"><img src="media/screens/hangar-compare.jpg" alt="Saturn V, N1 and Starship next to the Statue of Liberty"></a></td>
+</tr>
+<tr>
+<td valign="top">
+
+### Mars landing · [`mars-landing.html`](site/mars-landing.html)
+Perseverance's Entry, Descent and Landing (EDL) at Jezero crater, 18 February 2021: guided entry with bank reversals, a 10 g peak, the supersonic parachute at Mach 1.8, Terrain-Relative Navigation (TRN), powered descent and the **sky crane**. A second clock shows what Earth knew, 11 minutes behind. In Engineer mode you choose the parachute trigger, bank profile, TRN and sky-crane settings and see the consequences. The default flight touches down at E+419.5 s; the real one took 419 s.
+</td>
+<td valign="top">
+
+### Rocket hangar · [`hangar.html`](site/hangar.html)
+26 rockets, from the V-2 to Starship, standing side by side at true scale with the Statue of Liberty and a person for reference. Sort by year, height, thrust or payload, filter by era, country or status, and compare two or three with bars and computed thrust-to-weight. Every figure is sourced in [`rockets.json`](site/data/rockets.json).
+</td>
+</tr>
+</table>
+
+---
+
+## 🔭 Explore it: from low Earth orbit to the edge of the universe
+
+<table>
+<tr>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/earth.html"><img src="media/screens/earth.jpg" alt="3D Earth surrounded by thousands of satellites"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/sky.html"><img src="media/screens/sky.jpg" alt="Planetarium view of the summer Milky Way over Los Angeles"></a></td>
+</tr>
+<tr>
+<td valign="top">
+
+### Live Earth orbit · [`earth.html`](site/earth.html)
+Every tracked satellite overhead right now: CelesTrak's General Perturbations (GP) elements propagated in your browser with Simplified General Perturbations 4 (SGP4) via [satellite.js](https://github.com/shashwatak/satellite-js). Space stations, GPS, Galileo, geostationary, weather, science and all of Starlink. Click any satellite for its orbit and ground track, see when the International Space Station (ISS) next passes over you, and follow upcoming launches ([Launch Library 2](https://thespacedevs.com/)) and the latest news ([Spaceflight News API](https://spaceflightnewsapi.net/)). Works offline with illustrative orbits.
+</td>
+<td valign="top">
+
+### Night sky · [`sky.html`](site/sky.html)
+A planetarium for any place and time: 5,044 stars, 88 constellations, the Milky Way, Messier objects, the planets and the Moon with its real phase. Twilight colours follow the Sun's altitude. There's a "Tonight" panel with rise and set times and the best objects for your location. The astronomy is tested against Meeus and the U.S. Naval Observatory sunrise tables (within 1 minute).
+</td>
+</tr>
+<tr>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/scale.html"><img src="media/screens/scale.jpg" alt="Endeavour, Statue of Liberty and Saturn V on a size ruler"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/scale.html"><img src="media/screens/scale-sun.jpg" alt="The Sun at its true size in the cosmic zoom"></a></td>
+</tr>
+<tr><td colspan="2">
+
+### Cosmic scale · [`scale.html`](site/scale.html)
+One continuous zoom across 42 powers of ten, from a proton to the observable universe (93 billion light-years across), through 56 objects drawn at true relative size, from DNA and a red blood cell to the Los Angeles basin, Voyager 1 (its distance updates live) and the Laniakea Supercluster. For each it shows how many would fit and how long light takes to cross it. A narrated tour flies you out and back.
+</td></tr>
+</table>
+
+<table>
+<tr>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/black-hole.html"><img src="media/screens/black-hole.jpg" alt="Ray-traced black hole with lensed accretion disk"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/sun.html"><img src="media/screens/sun.jpg" alt="Cutaway of the Sun showing its internal layers"></a></td>
 </tr>
 <tr>
 <td valign="top">
@@ -107,8 +168,8 @@ Granulation, sunspots, faculae and prominence loops, with differential rotation 
 </td>
 </tr>
 <tr>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/solar-system.html"><img src="media/screens/solar-system.jpg" alt="3D orrery of the solar system"></a></td>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/orbits.html"><img src="media/screens/orbits.jpg" alt="Lagrange points in the Earth–Moon rotating frame"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/solar-system.html"><img src="media/screens/solar-system.jpg" alt="3D orrery of the solar system"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/orbits.html"><img src="media/screens/orbits.jpg" alt="Lagrange points in the Earth–Moon rotating frame"></a></td>
 </tr>
 <tr>
 <td valign="top">
@@ -130,8 +191,8 @@ Five hands-on labs, each with its equation beside it: **Newton's cannonball** (s
 
 <table>
 <tr>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/equations.html"><img src="media/screens/equations-planck.jpg" alt="Planck's law card with calculator and plot"></a></td>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/timeline.html"><img src="media/screens/timeline.jpg" alt="Timeline of the 1960s"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/equations.html"><img src="media/screens/equations-planck.jpg" alt="Planck's law card with calculator and plot"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/timeline.html"><img src="media/screens/timeline.jpg" alt="Timeline of the 1960s"></a></td>
 </tr>
 <tr>
 <td valign="top">
@@ -146,13 +207,13 @@ Five hands-on labs, each with its equation beside it: **Newton's cannonball** (s
 </td>
 </tr>
 <tr>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/library.html"><img src="media/screens/library.jpg" alt="Mission Library hero"></a></td>
-<td width="50%"><a href="https://normansrule.github.io/cosmic-codex/gallery.html"><img src="media/screens/gallery.jpg" alt="Gallery grid"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/library.html"><img src="media/screens/library.jpg" alt="Mission Library hero"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/gallery.html"><img src="media/screens/gallery.jpg" alt="Gallery grid"></a></td>
 </tr>
 <tr>
 <td valign="top">
 
-### Mission Library · [`library.html`](site/library.html) · [`docs/REFERENCES.md`](docs/REFERENCES.md)
+### Documents (Mission Library) · [`library.html`](site/library.html) · [`docs/REFERENCES.md`](docs/REFERENCES.md)
 79 primary sources: the NASA Systems Engineering Handbook, JPL's *Basics of Space Flight*, Saturn V flight evaluation reports, the Apollo Flight Journal, SpaceX's Falcon user's guide, the Space Launch System reference guide, NAIF SPICE, JPL Horizons, the General Mission Analysis Tool (GMAT), MIT OpenCourseWare and more. They're organised as a **beginner → expert reading path**, plus curated [videos and channels](docs/VIDEOS.md) and [engineering primers](docs/engineering/).
 </td>
 <td valign="top">
@@ -195,7 +256,7 @@ A ladder from the kitchen table to research-grade hardware. **Every build** has 
 | **3 · Avionics** | $100–300 | [**Flight-computer PCB** (KiCad, firmware, sled)](experiments/30-flight-computer-pcb/) · [LoRa telemetry ground station](experiments/31-lora-telemetry-ground-station/) · [Barn-door star tracker](experiments/32-barn-door-star-tracker/) |
 | **4 · Research grade** | $150+ | [High-power rocketry certification](experiments/40-high-power-rocketry-certification/) · [OpenRocket deep dive + our own simulator](experiments/41-openrocket-deep-dive/) · [Near-space balloon & 1U CubeSat](experiments/42-near-space-balloon-cubesat/) · [Hydrogen-line radio telescope](experiments/43-hydrogen-line-radio-telescope/) · [Exoplanet transit photometry](experiments/44-exoplanet-transit-photometry/) |
 
-Printable parts can be spun in 3D on the [experiments page](https://normansrule.github.io/cosmic-codex/experiments.html). Rebuild every STL from source with `python experiments/tools/build_cad.py` and `python experiments/tools/build_advanced_cad.py` (needs OpenSCAD).
+Printable parts can be spun in 3D on the [experiments page](https://normansrule.github.io/cosmic-library/experiments.html). Rebuild every STL from source with `python experiments/tools/build_cad.py` and `python experiments/tools/build_advanced_cad.py` (needs OpenSCAD).
 
 ---
 
@@ -240,8 +301,8 @@ From a fresh Ubuntu terminal (22.04, 24.04 or newer, native or WSL2):
 sudo apt update && sudo apt install -y git python3 python3-venv python3-pip nodejs npm
 
 # 2. Get the code
-git clone https://github.com/Normansrule/cosmic-codex.git
-cd cosmic-codex
+git clone https://github.com/Normansrule/cosmic-library.git
+cd cosmic-library
 
 # 3. Run the website locally → open http://localhost:8000
 python3 -m http.server 8000 --directory site
@@ -259,18 +320,22 @@ The full walkthrough, from a blank machine to a live GitHub Pages site (git iden
 ## 🗂 Repository layout
 
 ```
-cosmic-codex/
+cosmic-library/
 ├── site/                     GitHub Pages website (static, no build step)
 │   ├── index.html            landing page with a live WebGL galaxy
-│   ├── launch.html           Saturn V launch          ├── shuttle.html      Endeavour
-│   ├── black-hole.html       GR ray tracer            ├── sun.html          the Sun
-│   ├── solar-system.html     live orrery              ├── orbits.html       Orbit Lab
-│   ├── equations.html        Equation Atlas           ├── gallery.html      photographs
-│   ├── timeline.html         1903 → 2026              ├── library.html      documents & videos
-│   ├── experiments.html      build ladder + STL viewer
+│   ├── launch.html           Saturn V launch          ├── booster.html      reusable booster landing
+│   ├── moon-landing.html     Apollo 11 descent        ├── mars-landing.html Perseverance EDL
+│   ├── shuttle.html          Endeavour                ├── hangar.html       26 rockets to scale
+│   ├── earth.html            live satellites          ├── sky.html          planetarium
+│   ├── solar-system.html     live orrery              ├── sun.html          the Sun
+│   ├── black-hole.html       GR ray tracer            ├── scale.html        proton → universe
+│   ├── orbits.html           Orbit Lab                ├── equations.html    Equation Atlas
+│   ├── gallery.html          photographs              ├── timeline.html     1903 → 2026
+│   ├── library.html          documents & videos       ├── experiments.html  build ladder + STL viewer
 │   ├── assets/css/codex.css  the design system        ├── assets/js/        page logic
 │   ├── data/*.json           curated, sourced data    ├── models/*.stl      printable parts
-│   └── vendor/               three.js r186, GSAP 3.15, KaTeX 0.18
+│   ├── data/sky/             star catalogue, constellations, Milky Way (d3-celestial)
+│   └── vendor/               three.js r186, GSAP 3.15, KaTeX 0.18, satellite.js 7.1
 ├── simulations/              Python toolkit (cosmic/) + tests
 ├── experiments/              20 builds, levels 0–4: tutorials, OpenSCAD, STL, KiCad, firmware
 ├── docs/                     EQUATIONS, REFERENCES, VIDEOS, engineering primers, setup
@@ -296,7 +361,7 @@ These projects set the quality bar. Here is what each one contributed:
 | [brunosimon/folio-2019](https://github.com/brunosimon/folio-2019) | Procedural three.js scenes you explore instead of read |
 | [PavelDoGreat/WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | Full-screen GPU shaders as the main event (black hole, Sun) |
 | [bbycroft/llm-viz](https://github.com/bbycroft/llm-viz) · [poloclub/transformer-explainer](https://github.com/poloclub/transformer-explainer) | Explorable explanations: every visual paired with the maths driving it |
-| [bilawalsidhu/gods-eye-view](https://github.com/bilawalsidhu/gods-eye-view) · [koala73/worldmonitor](https://github.com/koala73/worldmonitor) | Live, data-driven globes and HUD-style panels |
+| [bilawalsidhu/gods-eye-view](https://github.com/bilawalsidhu/gods-eye-view) · [koala73/worldmonitor](https://github.com/koala73/worldmonitor) | Live, data-driven globes and HUD-style panels, used directly in the Live Earth Orbit page (real satellites, launches and news on one globe) |
 | [remotion-dev/remotion](https://github.com/remotion-dev/remotion) | Programmatic media: the README's renders and GIFs are generated by code (`scripts/shot.py`, `simulations/make_showcase.py`) |
 
 ---
@@ -307,7 +372,7 @@ Ideas, corrections and new experiments are welcome. See [`CONTRIBUTING.md`](CONT
 
 ## 🙏 Credits
 
-Built by **Aleksander Norman** ([@Normansrule](https://github.com/Normansrule)). Every library, dataset, image and reference is listed in [`CREDITS.md`](CREDITS.md). NASA imagery is generally not subject to copyright in the United States; ESA/Webb, ESA/Hubble and ESO images are CC BY 4.0. Cosmic Codex is an independent educational project, **not affiliated with or endorsed by** NASA, JPL, SpaceX, ESA or the California Science Center.
+Built by **Aleksander Norman** ([@Normansrule](https://github.com/Normansrule)). Every library, dataset, image and reference is listed in [`CREDITS.md`](CREDITS.md). NASA imagery is generally not subject to copyright in the United States; ESA/Webb, ESA/Hubble and ESO images are CC BY 4.0. Cosmic Library is an independent educational project, **not affiliated with or endorsed by** NASA, JPL, SpaceX, ESA or the California Science Center.
 
 ## 📄 Licence
 

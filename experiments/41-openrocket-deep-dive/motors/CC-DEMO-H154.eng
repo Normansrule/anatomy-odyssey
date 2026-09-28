@@ -1,6 +1,6 @@
 ; ============================================================================
 ; CC-DEMO-H154 - ILLUSTRATIVE THRUST CURVE, NOT A REAL MOTOR
-; Cosmic Codex experiment 41. Invented for teaching the RASP .eng format and for
+; Cosmic Library experiment 41. Invented for teaching the RASP .eng format and for
 ; testing simulators. No real motor has this curve. NEVER use it to plan a real
 ; flight: download the certified motor's data from thrustcurve.org instead.
 ; Shape: ignition spike, 1.4 s regressive sustain, 0.25 s tail-off.
