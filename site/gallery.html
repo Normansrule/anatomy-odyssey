@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Gallery · Cosmic Library</title>
-<meta name="description" content="Fifty of the most celebrated space photographs ever taken, from the first frame shot from a V-2 rocket in 1946 to the James Webb Space Telescope, each with the story of why it matters.">
+<meta name="description" content="More than sixty of the most celebrated space photographs ever taken, from the first frame shot from a V-2 rocket in 1946 to the James Webb Space Telescope and today's solar telescopes, each with the story of why it matters.">
 <meta property="og:title" content="Gallery · Cosmic Library">
-<meta property="og:description" content="Fifty of the most celebrated space photographs ever taken, from the first frame shot from a V-2 rocket in 1946 to the James Webb Space Telescope, each with the story of why it matters.">
+<meta property="og:description" content="More than sixty of the most celebrated space photographs ever taken, from the first frame shot from a V-2 rocket in 1946 to the James Webb Space Telescope and today's solar telescopes, each with the story of why it matters.">
 <meta name="theme-color" content="#04050a">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,8 +23,8 @@
     <div class="gh-media" id="heroMedia" aria-hidden="true"></div>
     <div class="gh-shade" aria-hidden="true"></div>
     <div class="shell gh-copy">
-      <div class="eyebrow gh-in">Gallery · 1946 → 2022</div>
-      <h1 class="gh-in"><span class="gh-line">Fifty photographs</span> <span class="gh-line grad-text">that changed how we see.</span></h1>
+      <div class="eyebrow gh-in">Gallery · 1946 → 2025</div>
+      <h1 class="gh-in"><span class="gh-line">The photographs</span> <span class="gh-line grad-text">that changed how we see.</span></h1>
       <p class="lede gh-in">
         From a grainy frame shot by a captured V-2 rocket to the infrared deep fields of the
         James Webb Space Telescope (JWST): the pictures that showed us our planet, our Moon, our neighbours
@@ -35,7 +35,7 @@
         <button class="btn" id="heroOpen" type="button">Open this photograph</button>
       </div>
       <div class="gh-stats gh-in">
-        <div class="stat"><div class="num"><span data-count="50">50</span></div><div class="lbl">Photographs</div></div>
+        <div class="stat"><div class="num"><span data-count="63">63</span></div><div class="lbl">Photographs</div></div>
         <div class="stat"><div class="num"><span data-count="1946" data-nosep>1946</span></div><div class="lbl">First frame from space</div></div>
         <div class="stat"><div class="num"><span data-count="6">6</span> <small>billion km</small></div><div class="lbl">Farthest view of Earth</div></div>
       </div>
@@ -66,9 +66,36 @@
         <button type="button" data-sort="asc" aria-pressed="true">Oldest first</button>
         <button type="button" data-sort="desc" aria-pressed="false">Newest first</button>
       </div>
-      <span class="gal-count mono" id="count" aria-live="polite">50 photographs</span>
+      <button class="btn small gal-cine-btn" type="button" id="cinemaOpen" title="Play the photographs as a slideshow">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>Cinema mode</button>
+      <span class="gal-count mono" id="count" aria-live="polite">63 photographs</span>
     </div>
     <div class="gal-filters" id="filters"></div>
+
+    <!-- Time machine: every photograph on one year axis. Drag to pick a window of years. -->
+    <figure class="gal-tm" id="tm" aria-labelledby="tmTitle">
+      <figcaption class="tm-head">
+        <div>
+          <span class="tm-title" id="tmTitle">Time machine</span>
+          <span class="tm-sub" id="tmSub">Each dot is one photograph, placed at the date it was taken. Drag across the axis to pick a window of years.</span>
+        </div>
+        <div class="tm-tools" role="group" aria-label="Time machine controls">
+          <button type="button" class="tm-btn" id="tmZoomIn" aria-label="Zoom in on the year axis">+</button>
+          <button type="button" class="tm-btn" id="tmZoomOut" aria-label="Zoom out on the year axis">−</button>
+          <button type="button" class="tm-btn wide" id="tmFit">Fit all</button>
+          <button type="button" class="tm-btn wide" id="tmZoomSel" hidden>Zoom to window</button>
+          <button type="button" class="tm-btn wide" id="tmClear" hidden>Clear window</button>
+        </div>
+      </figcaption>
+      <div class="tm-plot" id="tmPlot">
+        <svg id="tmSvg" role="group" tabindex="0" aria-label="Photographs by year. Use left and right arrow keys to move between photographs, Enter to open one." aria-describedby="tmRead"></svg>
+        <div class="tm-peek" id="tmPeek" aria-hidden="true"><div class="tm-peek-img"><span class="g-ph"></span><img alt="" referrerpolicy="no-referrer"></div><div class="tm-peek-t"><b></b><span></span></div></div>
+      </div>
+      <div class="tm-foot">
+        <div class="tm-legend" id="tmLegend"></div>
+        <span class="tm-read mono" id="tmRead" aria-live="polite"></span>
+      </div>
+    </figure>
 
     <div class="gal-grid" id="grid" aria-label="Photographs"></div>
     <div class="gal-empty" id="empty" hidden>
@@ -130,6 +157,28 @@
       </div>
       <p class="hint gal-lb-hint"><kbd>←</kbd> <kbd>→</kbd> browse · <kbd>Esc</kbd> close · <span id="lbPos"></span></p>
     </aside>
+  </div>
+</div>
+
+<!-- ================= CINEMA (slideshow) ================= -->
+<div class="gal-cinema" id="cinema" role="dialog" aria-modal="true" aria-label="Cinema mode slideshow" aria-hidden="true">
+  <div class="cin-stage" id="cinStage" aria-hidden="true"></div>
+  <div class="cin-shade" aria-hidden="true"></div>
+  <div class="cin-cap" aria-live="polite">
+    <div class="cin-meta mono" id="cinMeta"></div>
+    <h2 class="cin-title" id="cinTitle"></h2>
+    <p class="cin-story" id="cinStory"></p>
+  </div>
+  <div class="cin-bar">
+    <div class="cin-progress" aria-hidden="true"><i id="cinProg"></i></div>
+    <div class="cin-ctrls">
+      <button type="button" class="cin-btn" id="cinPrev" aria-label="Previous photograph">←</button>
+      <button type="button" class="cin-btn play" id="cinPlay" aria-label="Pause">❚❚</button>
+      <button type="button" class="cin-btn" id="cinNext" aria-label="Next photograph">→</button>
+      <span class="cin-pos mono" id="cinPos"></span>
+      <span class="hint cin-hint"><kbd>←</kbd> <kbd>→</kbd> browse · <kbd>Space</kbd> pause · <kbd>Esc</kbd> close</span>
+      <button type="button" class="btn small" id="cinClose">✕ Close</button>
+    </div>
   </div>
 </div>
 

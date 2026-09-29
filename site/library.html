@@ -96,6 +96,10 @@
             <option value="az">A → Z</option>
           </select>
         </label>
+        <div class="seg view-seg" role="group" aria-label="View as" id="viewSeg">
+          <button type="button" data-view="cards" aria-pressed="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z"/></svg>Cards</button>
+          <button type="button" data-view="shelf" aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2h2.5v11H2zM5.5 4h2.5v9H5.5zM9 1.5h2.2v11.5H9zM11.8 3.5l2.2-.6 2 9.5-2.2.6zM1 14h14.5v1.4H1z"/></svg>Bookshelf</button>
+        </div>
         <button class="btn small" id="reset" type="button">Reset</button>
       </div>
       <div class="f-groups">
@@ -106,6 +110,7 @@
     </div>
 
     <div class="grid grid-3 lib-grid" id="grid" aria-live="polite"></div>
+    <div class="shelves" id="shelves" hidden aria-label="Bookshelf: one shelf per organisation. Select a spine to pull the document out."></div>
     <div class="empty" id="empty" hidden>
       <p>Nothing on the shelves matches that. Try fewer filters.</p>
       <button class="btn small" type="button" id="reset2">Clear filters</button>
@@ -212,7 +217,11 @@
   </section>
 
 </main>
+<div class="lib-peek" id="peek" role="tooltip" aria-hidden="true"></div>
 <script src="assets/js/codex.js"></script>
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js"></script>
+<script src="vendor/gsap/DrawSVGPlugin.min.js"></script>
 <script type="module" src="assets/js/library.js"></script>
 </body>
 </html>

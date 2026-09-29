@@ -281,8 +281,11 @@ def text_block():
            + anim(".spc", "spc", 7, "ease-in-out", delay=-5.2)
            + kf("ebl", [(0, "transform:scaleX(0)"), (12, "transform:scaleX(1)"), (100, "transform:scaleX(1)")])
            )
-    chips = [("22", "interactive pages", ICE), ("47", "equations", NEBULA), ("20", "hands-on builds", AURORA),
-             ("7", "Python simulations", SOL)]
+    from facts import counts
+    _c = counts()
+    _pages = _c["pages"]  # every page in the site, landing page included (matches stats.svg)
+    chips = [(str(_pages), "interactive pages", ICE), (str(_c["equations"]), "equations", NEBULA),
+             (str(_c["builds"]), "hands-on builds", AURORA), (str(_c["simulations"]), "Python simulations", SOL)]
     cx = x
     chip_svg = []
     for i, (num, lab, col) in enumerate(chips):
@@ -339,6 +342,6 @@ def build():
                    "Animated banner. A twinkling starfield drifts behind a glowing nebula; planets circle a small Sun "
                    "on the right; a rocket lifts off from the curve of the Earth at lower left and arcs across the "
                    "sky. The title Cosmic Library shimmers from white to ice blue, violet and flame orange above the "
-                   "tagline Fly it, Explore it, Learn it, Build it and four facts: 22 interactive pages, 47 "
-                   "equations, 20 hands-on builds and 7 Python simulations.",
+                   "tagline Fly it, Explore it, Learn it, Build it and four facts: the number of interactive pages, "
+                   "equations, hands-on builds and Python simulations in the repository.",
                    defs, css, body, uid="h")

@@ -7,6 +7,12 @@
  */
 
 const $ = (s, r = document) => r.querySelector(s);
+const gsap = window.gsap;
+const ScrollTrigger = window.ScrollTrigger;
+if (gsap && ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+if (gsap && window.DrawSVGPlugin) gsap.registerPlugin(window.DrawSVGPlugin);
+const reduce = (window.Codex && window.Codex.reducedMotion) || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+const animate = !!gsap && !reduce;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 const LEVELS = ["beginner", "intermediate", "expert"];
@@ -67,7 +73,7 @@ const TRLS = [
 ];
 
 /* ---------------- state ---------------- */
-const state = { q: "", level: new Set(), type: new Set(), org: new Set(), sort: "curated", all: false };
+const state = { q: "", level: new Set(), type: new Set(), org: new Set(), sort: "curated", all: false, view: "cards" };
 let DATA = null, ENTRIES = [];
 
 init();
@@ -91,8 +97,11 @@ async function init() {
   buildPath();
   buildChips();
   bindFilters();
+  bindView();
+  bindPeek();
   render(false);
   buildWatch();
+  pathLines();
   observeReveal(document.querySelectorAll("#pathCols .reveal, #channels .reveal, #videos .reveal"));
 }
 
@@ -111,7 +120,7 @@ function buildPath() {
     const p = DATA.path[lv];
     const steps = p.steps.map((s, n) => {
       const e = byId[s.id];
-      return `<li><span class="n">${n + 1}</span><div><a href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">${esc(e.title)}</a>
+      return `<li><span class="n">${n + 1}</span><div><a href="${esc(e.url)}" target="_blank" rel="noopener noreferrer" data-i="${e.i}">${esc(e.title)}</a>
         <span class="why">${esc(s.why)}</span><span class="meta">${esc(e.source)} · ${TYPES[e.type][0]}</span></div></li>`;
     }).join("");
     return `<article class="card spot path-col reveal" data-level="${lv}" data-delay="${k * 120}">
@@ -201,8 +210,12 @@ function card(e, k) {
 function render(fromUser) {
   const list = sorted(ENTRIES.filter((e) => matches(e)));
   const filtered = state.q || state.level.size || state.type.size || state.org.size;
-  const limit = state.all || filtered ? list.length : PAGE;
-  $("#grid").innerHTML = list.slice(0, limit).map(card).join("");
+  const shelf = state.view === "shelf";
+  const limit = state.all || filtered || shelf ? list.length : PAGE;
+  $("#grid").hidden = shelf;
+  $("#shelves").hidden = !shelf;
+  if (shelf) { $("#grid").innerHTML = ""; renderShelves(list); }
+  else { $("#shelves").innerHTML = ""; $("#grid").innerHTML = list.slice(0, limit).map(card).join(""); }
   $("#empty").hidden = list.length > 0;
   const more = $("#more");
   more.hidden = list.length <= limit;
@@ -229,14 +242,211 @@ function readURL() {
   state.q = p.get("q") || ""; $("#q").value = state.q;
   ["level", "type", "org"].forEach((g) => (p.get(g) || "").split(",").filter(Boolean).forEach((v) => state[g].add(v)));
   if (p.get("sort")) { state.sort = p.get("sort"); $("#sort").value = state.sort; }
+  let v = p.get("view");
+  if (!v) { try { v = localStorage.getItem("cl-library-view"); } catch (e) { v = null; } }
+  if (v === "shelf" || v === "cards") state.view = v;
 }
 function writeURL() {
   const p = new URLSearchParams();
   if (state.q) p.set("q", state.q);
   ["level", "type", "org"].forEach((g) => state[g].size && p.set(g, [...state[g]].join(",")));
   if (state.sort !== "curated") p.set("sort", state.sort);
+  if (state.view === "shelf") p.set("view", "shelf");
   const s = p.toString();
   history.replaceState(null, "", location.pathname + (s ? "?" + s : "") + location.hash);
+}
+
+/* ---------------- bookshelf view ----------------
+ * The same filtered list, drawn as spines on one shelf per organisation. A spine's height
+ * says what kind of thing it is (tall handbooks and books, short data sets and software
+ * boxes), its colour who published it, and the pips at its foot how much background it
+ * expects. Selecting a spine pulls it off the shelf and opens its card underneath.
+ */
+const SPINE_H = { handbook: 196, book: 204, journal: 184, "user-guide": 178, report: 170, standard: 164, course: 168, "press-kit": 152, data: 138, software: 128 };
+const LVL_N = { beginner: 1, intermediate: 2, expert: 3 };
+let openSpine = null;
+
+function bindView() {
+  const seg = $("#viewSeg");
+  const sync = () => seg.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === state.view)));
+  sync();
+  seg.addEventListener("click", (ev) => {
+    const b = ev.target.closest("button[data-view]");
+    if (!b || b.dataset.view === state.view) return;
+    state.view = b.dataset.view;
+    try { localStorage.setItem("cl-library-view", state.view); } catch (e) { /* private mode */ }
+    sync();
+    closeSpine(true);
+    const out = state.view === "shelf" ? $("#grid") : $("#shelves");
+    const go = () => { render(true); if (animate) gsap.fromTo(state.view === "shelf" ? "#shelves" : "#grid", { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "power2.out", clearProps: "all" }); };
+    if (animate && !out.hidden) gsap.to(out, { autoAlpha: 0, y: -8, duration: 0.2, onComplete: () => { gsap.set(out, { clearProps: "all" }); go(); } });
+    else go();
+  });
+}
+
+function renderShelves(list) {
+  const host = $("#shelves");
+  openSpine = null;
+  const groups = ORGS.map((o) => ({ o, items: list.filter((e) => e.org === o) })).filter((g) => g.items.length);
+  host.innerHTML = groups.map((g, gi) => `
+    <section class="shelf" data-org="${esc(g.o)}" aria-label="${esc(ORG_TITLE[g.o] || g.o)}">
+      <header class="shelf-h"><span class="shelf-name">${esc(g.o === "MIT" ? "MIT OCW" : g.o)}</span>
+        <span class="shelf-full">${esc(ORG_TITLE[g.o] || "")}</span><span class="shelf-n">${g.items.length}</span></header>
+      <div class="shelf-row" role="list">${g.items.map((e) => spineHTML(e)).join("")}</div>
+      <div class="shelf-open" id="open-${gi}" hidden></div>
+    </section>`).join("");
+  host.querySelectorAll(".spine").forEach((b) => b.addEventListener("click", () => toggleSpine(b)));
+  if (animate) {
+    const spines = [...host.querySelectorAll(".spine")];
+    gsap.from(spines.slice(0, 90), { y: 36, autoAlpha: 0, duration: 0.55, ease: "power3.out", stagger: { each: 0.008 }, clearProps: "transform,opacity,visibility" });
+  }
+}
+
+function spineHTML(e) {
+  const h = SPINE_H[e.type] || 170;
+  const w = Math.round(Math.max(30, Math.min(50, 24 + e.title.length * 0.32)));
+  const pips = [1, 2, 3].map((n) => `<i class="${n <= LVL_N[e.level] ? "on" : ""}"></i>`).join("");
+  const short = e.title.replace(/\s*\(.*?\)\s*/g, " ").trim();
+  // A slight lean on a few spines keeps the shelf from looking machine-stacked.
+  const lean = (e.i * 37) % 11 === 0 ? -2.5 : 0;
+  return `<div class="sp-slot" role="listitem"><button type="button" class="spine ${e.type === "data" || e.type === "software" ? "box" : ""}" data-i="${e.i}" data-org="${esc(e.org)}"
+      style="--h:${h}px;--w:${w}px;--lean:${lean}deg" aria-expanded="false"
+      aria-label="${esc(e.title)} (${TYPES[e.type][0]}, ${LEVEL_NAME[e.level]}${e.year ? ", " + e.year : ""}). Pull it out">
+      <span class="sp-ico">${typeIcon(e.type)}</span><span class="sp-title">${esc(short)}</span>
+      <span class="sp-lvl lvl ${e.level}" aria-hidden="true">${pips}</span></button></div>`;
+}
+
+function toggleSpine(b) {
+  if (openSpine === b) { closeSpine(); return; }
+  closeSpine(true);
+  const e = ENTRIES[+b.dataset.i];
+  const shelf = b.closest(".shelf");
+  const panel = shelf.querySelector(".shelf-open");
+  openSpine = b;
+  b.classList.add("out");
+  b.setAttribute("aria-expanded", "true");
+  b.setAttribute("aria-controls", panel.id);
+  hidePeek();
+  panel.innerHTML = `<div class="shelf-card">${card(e, 0).replace("lib-card enter", "lib-card")}<button type="button" class="btn small shelf-close" aria-label="Put it back on the shelf">Put back ↩</button></div>`;
+  panel.hidden = false;
+  panel.querySelector(".shelf-close").addEventListener("click", () => closeSpine());
+  if (!animate) return;
+  // The card opens out of the spine: start at the spine's box, grow into place.
+  const c = panel.querySelector(".lib-card");
+  const sr = b.getBoundingClientRect(), cr = c.getBoundingClientRect();
+  gsap.fromTo(panel, { height: 0 }, { height: "auto", duration: 0.5, ease: "power3.out", clearProps: "height" });
+  gsap.fromTo(c, {
+    x: sr.left - cr.left, y: sr.top - cr.top - 40, scaleX: sr.width / cr.width, scaleY: Math.min(1, sr.height / cr.height),
+    transformOrigin: "0 0", rotationY: -55, autoAlpha: 0.3, transformPerspective: 900
+  }, { x: 0, y: 0, scaleX: 1, scaleY: 1, rotationY: 0, autoAlpha: 1, duration: 0.75, ease: "power3.inOut", delay: 0.12, clearProps: "transform,opacity,visibility" });
+  gsap.fromTo(b, { y: 0 }, { y: -26, duration: 0.35, ease: "power2.out", yoyo: true, repeat: 1, repeatDelay: 0.05, clearProps: "transform" });
+}
+
+function closeSpine(instant = false) {
+  const b = openSpine;
+  if (!b) return;
+  openSpine = null;
+  const panel = b.closest(".shelf").querySelector(".shelf-open");
+  const done = () => { panel.hidden = true; panel.innerHTML = ""; };
+  b.classList.remove("out");
+  b.setAttribute("aria-expanded", "false");
+  if (!instant && document.activeElement && panel.contains(document.activeElement)) b.focus({ preventScroll: true });
+  if (instant || !animate) return done();
+  const c = panel.querySelector(".lib-card");
+  const sr = b.getBoundingClientRect(), cr = c.getBoundingClientRect();
+  gsap.to(c, { x: sr.left - cr.left, y: sr.top - cr.top, scaleX: sr.width / cr.width, scaleY: Math.min(1, sr.height / cr.height), transformOrigin: "0 0", autoAlpha: 0, duration: 0.4, ease: "power2.in" });
+  gsap.to(panel, { height: 0, duration: 0.45, ease: "power2.inOut", delay: 0.1, onComplete: () => { gsap.set(panel, { clearProps: "height" }); done(); } });
+}
+
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && openSpine) closeSpine(); });
+
+/* ---------------- hover preview ----------------
+ * Spines and reading-path links show a small card with what the document is before
+ * you commit to opening it: publisher, type, level, year and the first line of its
+ * description. Mouse and keyboard focus only (a tap on a phone just opens the thing).
+ */
+let peekT = 0;
+function bindPeek() {
+  const fine = matchMedia("(hover: hover)").matches;
+  const target = (ev) => ev.target.closest && ev.target.closest(".spine:not(.out), #pathCols .steps a[data-i]");
+  if (fine) {
+    document.addEventListener("pointerover", (ev) => { const t = target(ev); if (t && ev.pointerType !== "touch") { clearTimeout(peekT); peekT = setTimeout(() => showPeek(t), 120); } });
+    document.addEventListener("pointerout", (ev) => { const t = target(ev); if (t && !t.contains(ev.relatedTarget)) { clearTimeout(peekT); hidePeek(); } });
+  }
+  document.addEventListener("focusin", (ev) => { const t = target(ev); if (t && t.matches(":focus-visible")) showPeek(t); });
+  document.addEventListener("focusout", (ev) => { if (target(ev)) hidePeek(); });
+  addEventListener("scroll", hidePeek, { passive: true });
+}
+function showPeek(el) {
+  const e = ENTRIES[+el.dataset.i];
+  if (!e) return;
+  const pk = $("#peek");
+  const desc = e.description.length > 170 ? e.description.slice(0, e.description.lastIndexOf(" ", 165)) + "…" : e.description;
+  pk.innerHTML = `<div class="pk-top" data-org="${esc(e.org)}"><span class="chip org-chip">${esc(e.org === "MIT" ? "MIT OCW" : e.org)}</span>
+      <span class="lc-type">${typeIcon(e.type)}${TYPES[e.type][0]}</span></div>
+    <b class="pk-title">${esc(e.title)}</b><span class="pk-src">${esc(e.source)}${e.year ? " · " + e.year : ""}</span>
+    <p>${esc(desc)}</p><span class="lvl ${e.level}">${[1, 2, 3].map((n) => `<i class="${n <= LVL_N[e.level] ? "on" : ""}"></i>`).join("")}<b>${LEVEL_NAME[e.level]}</b></span>`;
+  pk.setAttribute("aria-hidden", "false");
+  const r = el.getBoundingClientRect();
+  pk.classList.add("on");
+  const w = pk.offsetWidth, h = pk.offsetHeight;
+  let x = r.left + r.width / 2 - w / 2;
+  x = Math.max(10, Math.min(innerWidth - w - 10, x));
+  let y = r.top - h - 12;
+  const below = y < 70;
+  if (below) y = r.bottom + 12;
+  pk.style.left = x + "px"; pk.style.top = y + "px";
+  pk.classList.toggle("below", below);
+  pk.style.setProperty("--ax", `${Math.max(14, Math.min(w - 14, r.left + r.width / 2 - x))}px`);
+}
+function hidePeek() { const pk = $("#peek"); if (pk) { pk.classList.remove("on"); pk.setAttribute("aria-hidden", "true"); } }
+
+/* ---------------- reading-path line ----------------
+ * In each stage a bright line draws down through the numbered steps as the column
+ * scrolls past, and each step lights as the line reaches it: the path is a sequence.
+ */
+function pathLines() {
+  const cols = [...document.querySelectorAll("#pathCols .path-col")];
+  const NS = "http://www.w3.org/2000/svg";
+  const lines = cols.map((col) => {
+    const steps = col.querySelector(".steps");
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("class", "steps-line"); svg.setAttribute("aria-hidden", "true");
+    const path = document.createElementNS(NS, "path");
+    const dot = document.createElementNS(NS, "circle");
+    dot.setAttribute("r", "4");
+    svg.append(path, dot);
+    steps.prepend(svg);
+    return { col, steps, svg, path, dot, ys: [], len: 0, p: reduce ? 1 : 0 };
+  });
+  const layout = () => lines.forEach((L) => {
+    const nums = [...L.steps.querySelectorAll(".n")];
+    const top = L.steps.getBoundingClientRect().top;
+    L.ys = nums.map((n) => { const r = n.getBoundingClientRect(); return r.top + r.height / 2 - top; });
+    const h = L.steps.offsetHeight;
+    L.svg.setAttribute("viewBox", `0 0 28 ${h}`);
+    L.svg.style.height = h + "px";
+    const y0 = L.ys[0], y1 = L.ys[L.ys.length - 1];
+    L.path.setAttribute("d", `M13.5 ${y0} V ${y1}`);
+    L.len = y1 - y0;
+    paint(L);
+  });
+  const paint = (L) => {
+    const y0 = L.ys[0] || 0;
+    const reach = y0 + L.p * L.len;
+    if (gsap && window.DrawSVGPlugin) gsap.set(L.path, { drawSVG: `0% ${(L.p * 100).toFixed(2)}%` });
+    else L.path.style.strokeDasharray = `${L.p * L.len} 9999`;
+    L.dot.setAttribute("cx", 13.5); L.dot.setAttribute("cy", reach);
+    L.dot.style.opacity = L.p > 0.001 && L.p < 0.999 ? 1 : 0;
+    L.steps.querySelectorAll(":scope > li").forEach((li, k) => li.classList.toggle("reached", L.ys[k] <= reach + 1));
+  };
+  layout();
+  if ("ResizeObserver" in window) new ResizeObserver(layout).observe($("#pathCols"));
+  if (!gsap || !ScrollTrigger || reduce) return;
+  lines.forEach((L) => ScrollTrigger.create({
+    trigger: L.steps, start: "top 72%", end: "bottom 58%", scrub: 0.5,
+    onUpdate: (self) => { L.p = self.progress; paint(L); }
+  }));
 }
 
 /* ---------------- systems engineering corner ---------------- */

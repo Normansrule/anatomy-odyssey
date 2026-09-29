@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Solar Observatory · Cosmic Library</title>
+<meta name="description" content="Today's real Sun: the latest images from NASA's Solar Dynamics Observatory in twelve wavelengths, SOHO coronagraphs and NOAA's GOES-19 ultraviolet imager, the Sun on any day since 1996, and the greatest solar telescope photographs.">
+<meta property="og:title" content="Solar Observatory · Cosmic Library">
+<meta property="og:description" content="Today's real Sun: the latest images from NASA's Solar Dynamics Observatory in twelve wavelengths, SOHO coronagraphs and NOAA's GOES-19 ultraviolet imager, the Sun on any day since 1996, and the greatest solar telescope photographs.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="assets/css/solar-observatory.css">
+</head>
+<body data-page="solar-observatory">
+<main class="so">
+
+  <!-- ================= HERO: the live Sun and its wavelength dial ================= -->
+  <section class="so-hero" id="hero" aria-labelledby="heroTitle">
+    <div class="shell so-hero-grid">
+      <div class="so-copy">
+        <div class="eyebrow">Solar Observatory · live from space</div>
+        <h1 id="heroTitle">Today's <span class="grad-text so-grad">real Sun</span></h1>
+        <p class="lede">Not a simulation. These are the latest pictures from NASA's Solar Dynamics Observatory (SDO), which photographs the whole Sun every 12 seconds. Turn the dial to peel the Sun's atmosphere layer by layer, from the 5,800 K surface to flare plasma hotter than 10 million K.</p>
+
+        <p class="so-status" id="status" data-state="loading" aria-live="polite"><i aria-hidden="true"></i><span id="statusTxt">Contacting SDO…</span></p>
+
+        <div class="so-controls">
+          <div class="seg" role="group" aria-label="Viewer mode" id="modeSeg">
+            <button type="button" data-mode="single" aria-pressed="true">Single</button>
+            <button type="button" data-mode="wipe" aria-pressed="false">Compare</button>
+            <button type="button" data-mode="movie" aria-pressed="false">48-hour movie</button>
+          </div>
+          <label class="switch so-lens-sw" title="Magnify with the full 4096-pixel image"><span>Zoom lens</span><input type="checkbox" id="lensToggle" checked></label>
+        </div>
+        <div class="so-pick" id="pickRow" hidden>
+          <span class="hint">The dial sets:</span>
+          <div class="seg" role="group" aria-label="Which side the dial sets" id="pickSeg">
+            <button type="button" data-side="a" aria-pressed="false">◧ Left</button>
+            <button type="button" data-side="b" aria-pressed="true">Right ◨</button>
+          </div>
+        </div>
+
+        <article class="card so-info" id="info" aria-live="polite">
+          <div class="so-info-top">
+            <span class="chip" id="infoInst">AIA</span>
+            <span class="so-info-temp" id="infoTemp">≈ 630,000 K</span>
+          </div>
+          <h2 class="so-info-name" id="infoName">Extreme ultraviolet 171 Å</h2>
+          <dl class="so-info-meta">
+            <div><dt>Layer</dt><dd id="infoLayer">Quiet corona, upper transition region</dd></div>
+            <div><dt>Light from</dt><dd id="infoIon">Fe IX</dd></div>
+          </dl>
+          <p id="infoWhat"></p>
+          <div class="row so-info-links">
+            <a class="btn small" id="infoFull" href="https://sdo.gsfc.nasa.gov/data/" target="_blank" rel="noopener">Full 4096 px image ↗</a>
+            <a class="btn small" href="https://sdo.gsfc.nasa.gov/data/" target="_blank" rel="noopener">SDO data page ↗</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="so-dial-wrap">
+        <div class="so-dial" id="dial">
+          <svg class="so-dial-ring" viewBox="0 0 200 200" aria-hidden="true">
+            <circle cx="100" cy="100" r="96" />
+            <circle cx="100" cy="100" r="74" class="inner" />
+            <g id="ticks"></g>
+          </svg>
+          <div class="so-needle" id="needle" aria-hidden="true"></div>
+
+          <div class="so-view" id="view">
+            <div class="so-disc" id="disc" role="img" aria-label="Latest image of the Sun from the Solar Dynamics Observatory">
+              <div class="so-ph" id="ph">
+                <span class="so-ph-sun"></span>
+                <span class="so-ph-label"><b id="phTitle">Contacting SDO</b><i id="phText">Fetching the latest image…</i><button type="button" class="btn small so-ph-retry" id="phRetry">Try again</button></span>
+              </div>
+              <img class="so-layer" id="layer0" alt="" decoding="async" referrerpolicy="no-referrer">
+              <img class="so-layer" id="layer1" alt="" decoding="async" referrerpolicy="no-referrer">
+              <div class="so-wipe" id="wipe" hidden>
+                <img id="wipeImg" alt="" decoding="async" referrerpolicy="no-referrer">
+                <div class="so-ph so-ph-b" id="phB" aria-hidden="true"><span class="so-ph-sun"></span></div>
+              </div>
+              <video class="so-movie" id="movie" muted loop playsinline preload="none" aria-label="SDO 48-hour movie"></video>
+            </div>
+            <div class="so-wipe-ui" id="wipeUi" hidden>
+              <div class="so-wipe-line" id="wipeLine"><span></span></div>
+              <span class="so-wipe-tag l" id="wipeTagA">171 Å</span>
+              <span class="so-wipe-tag r" id="wipeTagB">304 Å</span>
+              <input type="range" id="wipeRange" min="0" max="100" value="50" step="0.5" aria-label="Compare slider: drag to wipe between the two channels">
+            </div>
+            <div class="so-lens" id="lens" aria-hidden="true"><span id="lensTag">4096 px</span></div>
+            <p class="so-movie-note" id="movieNote" hidden></p>
+          </div>
+
+          <div class="so-ring" id="ring" role="group" aria-label="Wavelength channels"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CORONAGRAPHS + SUVI ================= -->
+  <section class="shell block so-corona" id="corona" aria-labelledby="coronaTitle">
+    <div class="eyebrow reveal">Beyond the disk</div>
+    <h2 id="coronaTitle" class="reveal" data-delay="60">An eclipse on demand</h2>
+    <p class="lede reveal" data-delay="120">The corona is a million times fainter than the solar surface, so we normally see it only during a total eclipse. The Large Angle and Spectrometric Coronagraph (LASCO) on the Solar and Heliospheric Observatory (SOHO) makes its own eclipse with a metal disk, 1.5 million km sunward of Earth, and has done so every few minutes since 1996.</p>
+
+    <div class="grid grid-2 so-lasco" id="lasco"></div>
+
+    <div class="so-suvi reveal" id="suviBlock">
+      <div class="so-suvi-media">
+        <div class="so-frame so-suvi-frame" id="suviFrame" style="--c:#d49a61">
+          <div class="so-fph"><span class="so-fph-glyph"></span><span class="so-fph-state">Waiting</span></div>
+          <img id="suviImg" alt="" decoding="async" referrerpolicy="no-referrer">
+          <span class="so-frame-tag" id="suviTag">SUVI 195 Å</span>
+        </div>
+      </div>
+      <div class="so-suvi-text">
+        <div class="eyebrow">The forecasters' Sun</div>
+        <h3>GOES-19 Solar Ultraviolet Imager (SUVI)</h3>
+        <p>The National Oceanic and Atmospheric Administration (NOAA) flies its own solar telescope on its Geostationary Operational Environmental Satellite (GOES) weather satellites. SUVI photographs the Sun in six extreme-ultraviolet channels several times a minute, and the Space Weather Prediction Center (SWPC) uses the images to issue flare and storm alerts. These are the latest from NOAA's primary satellite.</p>
+        <div class="seg so-suvi-seg" role="group" aria-label="SUVI channel" id="suviSeg"></div>
+        <p class="so-suvi-desc" id="suviDesc"></p>
+        <p class="hint" id="suviTime"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ANY DAY IN HISTORY ================= -->
+  <section class="shell block so-history" id="history" aria-labelledby="histTitle">
+    <div class="so-hist-grid">
+      <div class="so-hist-copy">
+        <div class="eyebrow reveal">Any day in history</div>
+        <h2 id="histTitle" class="reveal" data-delay="60">The Sun on the day you choose</h2>
+        <p class="reveal" data-delay="120">Pick a date and time in Coordinated Universal Time (UTC). The Helioviewer Project, run by the European Space Agency (ESA) and NASA, renders the real archived image nearest that moment, from SOHO back to 1996 or from SDO since 2010. Rendering takes a few seconds.</p>
+
+        <form class="so-hist-form reveal" id="histForm" data-delay="160">
+          <div class="field"><label for="histDate">Date (UTC)</label><input type="date" id="histDate" required></div>
+          <div class="field"><label for="histTime">Time (UTC)</label><input type="time" id="histTime" value="12:00" step="60"></div>
+          <div class="field so-hist-src"><label for="histSrc">Telescope and channel</label><select id="histSrc"></select></div>
+          <button class="btn primary" type="submit">Show this Sun</button>
+        </form>
+        <p class="so-hist-msg" id="histMsg" role="status"></p>
+
+        <h3 class="so-presets-h">Famous days</h3>
+        <div class="so-presets" id="presets" role="group" aria-label="Famous days"></div>
+      </div>
+
+      <figure class="so-hist-fig">
+        <div class="so-frame so-hist-frame" id="histFrame" style="--c:#22b8c7">
+          <div class="so-fph"><span class="so-fph-glyph"></span><span class="so-fph-state" id="histState">Choose a day</span></div>
+          <img id="histImg" alt="" decoding="async" referrerpolicy="no-referrer">
+          <span class="so-frame-tag" id="histTag"></span>
+        </div>
+        <figcaption>
+          <p id="histCap" class="so-hist-cap"></p>
+          <div class="row">
+            <a class="btn small" id="histOpen" href="https://api.helioviewer.org/docs/v2/" target="_blank" rel="noopener">Open this PNG ↗</a>
+            <a class="btn small" href="https://helioviewer.org/" target="_blank" rel="noopener">Explore in Helioviewer.org ↗</a>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= GREAT SOLAR PHOTOGRAPHS ================= -->
+  <section class="shell block so-gallery" id="gallery" aria-labelledby="galTitle">
+    <div class="eyebrow reveal">Great solar telescope photographs</div>
+    <h2 id="galTitle" class="reveal" data-delay="60">The Sun, closer than ever</h2>
+    <p class="lede reveal" data-delay="120">From a coronagraph comet in 2004 to the first look at the Sun's south pole in 2025: landmark images from the Daniel K. Inouye Solar Telescope, Solar Orbiter, Parker Solar Probe, SDO, SOHO, Hinode and two American eclipses. Select one for its story. They also appear in the main <a href="gallery.html">Gallery</a>.</p>
+    <div class="so-grid" id="grid" aria-label="Solar photographs"></div>
+  </section>
+
+  <!-- ================= SAFETY ================= -->
+  <section class="shell block so-safety" id="safety" aria-labelledby="safeTitle">
+    <div class="grid grid-2">
+      <div class="card so-safe-card reveal">
+        <div class="eyebrow so-warn">Before you look up</div>
+        <h2 id="safeTitle">How to observe the Sun safely</h2>
+        <p class="so-never"><strong>Never look at the Sun directly</strong>, and never through binoculars, a telescope, a camera or a phone zoom without a proper solar filter. Retinal burns are painless and permanent.</p>
+        <ul class="so-list">
+          <li><b>Eclipse glasses</b> must meet the international standard <b>ISO 12312-2</b> and come from a reputable supplier. Check that they have no scratches or holes, and supervise children. Ordinary sunglasses, even very dark ones, are not safe.</li>
+          <li><b>Never</b> use eclipse glasses behind binoculars or a telescope: the focused light burns through them in seconds.</li>
+          <li><b>Telescopes and binoculars</b> need a certified solar filter that covers the <b>front</b> of the instrument (full aperture), fitted securely. Eyepiece "sun filters" can crack; never use one.</li>
+          <li><b>Projection</b> is the safest of all: a pinhole or a small mirror throws an image of the Sun onto a white card, and you look only at the card, with your back to the Sun.</li>
+          <li>Hydrogen-alpha telescopes, which show prominences like the 304 Å channel above, are dedicated instruments; learn to use one at a local astronomy club.</li>
+        </ul>
+      </div>
+      <div class="card so-diy reveal" data-delay="100">
+        <div class="eyebrow">Your own solar observatory</div>
+        <h3>Experiment 03 · Pinhole Sun and sunspots</h3>
+        <p>For about $0 to $5, a long cardboard tube and a pinhole project a Sun you can draw every day. On active days sunspots appear, and a week of drawings measures how fast the Sun spins, about 25 days at the equator (26 as seen from the moving Earth). Compare your drawings with the "Visible" channel on the dial.</p>
+        <div class="so-diy-art" aria-hidden="true">
+          <svg viewBox="0 0 320 120"><defs><radialGradient id="soPin" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff4d6"/><stop offset=".75" stop-color="#ffb347"/><stop offset="1" stop-color="#b8561a"/></radialGradient></defs>
+            <circle cx="24" cy="60" r="16" fill="#ffc24b"/><path d="M40 60 L150 52 M40 60 L150 68" stroke="#ffc24b" stroke-width="1" opacity=".6"/>
+            <rect x="150" y="40" width="120" height="40" rx="4" fill="none" stroke="#8f98bd"/><circle cx="150" cy="60" r="2" fill="#ffc24b"/>
+            <path d="M150 60 L270 44 M150 60 L270 76" stroke="#ffc24b" stroke-width=".8" opacity=".35"/>
+            <circle cx="292" cy="60" r="22" fill="url(#soPin)"/><circle cx="284" cy="54" r="2.4" fill="#3a1a08"/><circle cx="298" cy="66" r="1.6" fill="#3a1a08"/>
+            <text x="150" y="100" fill="#8f98bd" font-family="JetBrains Mono, monospace" font-size="9">pinhole</text><text x="262" y="100" fill="#8f98bd" font-family="JetBrains Mono, monospace" font-size="9">screen</text></svg>
+        </div>
+        <div class="row">
+          <a class="btn primary small" href="https://github.com/Normansrule/cosmic-library/tree/main/experiments/03-pinhole-solar-projector-and-sunspots" rel="noopener">Build instructions ↗</a>
+          <a class="btn small" href="experiments.html">All experiments</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= THE TELESCOPES ================= -->
+  <section class="shell block so-scopes" id="telescopes" aria-labelledby="scopeTitle">
+    <div class="eyebrow reveal">Who is watching</div>
+    <h2 id="scopeTitle" class="reveal" data-delay="60">The telescopes behind the pictures</h2>
+    <p class="lede reveal" data-delay="120">A fleet from four space agencies and a mountaintop in Hawaiʻi watches the Sun around the clock, each from a different place and for a different purpose.</p>
+    <div class="grid grid-4 so-scope-grid">
+      <article class="card spot so-scope reveal" style="--c:#f0b429">
+        <div class="so-scope-top"><span class="chip sol">NASA · 2010</span><span class="so-orbit" title="Inclined geosynchronous orbit"></span></div>
+        <h3>Solar Dynamics Observatory (SDO)</h3>
+        <p class="so-where">Inclined geosynchronous orbit, 36,000 km up, in constant view of its ground station in New Mexico.</p>
+        <p>Atmospheric Imaging Assembly (AIA): four telescopes, ten wavelengths, 4096 × 4096 pixels every 12 s. Helioseismic and Magnetic Imager (HMI): surface light, motion and magnetic field. Extreme ultraviolet Variability Experiment (EVE).</p>
+        <a class="so-go" href="#hero">The dial above ↑</a>
+      </article>
+      <article class="card spot so-scope reveal" data-delay="60" style="--c:#ff7a3d">
+        <div class="so-scope-top"><span class="chip flame">ESA &amp; NASA · 1995</span><span class="so-orbit l1"></span></div>
+        <h3>Solar and Heliospheric Observatory (SOHO)</h3>
+        <p class="so-where">Halo orbit around the Sun–Earth Lagrange point L1, 1.5 million km sunward.</p>
+        <p>Twelve instruments, including LASCO's C2 and C3 coronagraphs and the Extreme ultraviolet Imaging Telescope (EIT). Three decades on, still the backbone of Coronal Mass Ejection (CME) forecasting and the most prolific comet hunter in history.</p>
+        <a class="so-go" href="#corona">Coronagraphs ↑</a>
+      </article>
+      <article class="card spot so-scope reveal" data-delay="120" style="--c:#d49a61">
+        <div class="so-scope-top"><span class="chip">NOAA &amp; NASA · 2024</span><span class="so-orbit geo"></span></div>
+        <h3>GOES-19 and SUVI</h3>
+        <p class="so-where">Geostationary orbit at 75.2° W, operational as GOES-East since April 2025.</p>
+        <p>A weather satellite that also watches the Sun: SUVI images six extreme-ultraviolet channels, and the Extreme ultraviolet and X-ray Irradiance Sensors (EXIS) measure the X-ray flux that sets a flare's class (C, M, X).</p>
+        <a class="so-go" href="#suviBlock">SUVI above ↑</a>
+      </article>
+      <article class="card spot so-scope reveal" data-delay="180" style="--c:#ffab3d">
+        <div class="so-scope-top"><span class="chip sol">NSF · 2020</span><span class="so-orbit ground"></span></div>
+        <h3>Daniel K. Inouye Solar Telescope</h3>
+        <p class="so-where">Summit of Haleakalā, Maui, about 3,000 m up. Run by the National Solar Observatory (NSO).</p>
+        <p>A 4-metre mirror, the largest solar telescope in the world, resolving features on the Sun as small as about 30 km. Instruments include the Visible Broadband Imager (VBI), the Visible Spectro-Polarimeter (ViSP), the Visible Tunable Filter (VTF) and two infrared spectro-polarimeters.</p>
+        <a class="so-go" href="#gallery">Its images ↓</a>
+      </article>
+      <article class="card spot so-scope reveal" style="--c:#9fb6ff">
+        <div class="so-scope-top"><span class="chip ice">ESA &amp; NASA · 2020</span><span class="so-orbit tilt"></span></div>
+        <h3>Solar Orbiter</h3>
+        <p class="so-where">Elliptical orbit reaching 42 million km from the Sun (0.28 AU), tilted further out of the ecliptic by each Venus flyby: 17° in 2025, about 33° by 2029.</p>
+        <p>Ten instruments, among them the Extreme Ultraviolet Imager (EUI), the Polarimetric and Helioseismic Imager (PHI) and the Metis coronagraph, plus sensors that sample the solar wind it flies through.</p>
+        <a class="so-go" href="#gallery">Its images ↓</a>
+      </article>
+      <article class="card spot so-scope reveal" data-delay="60" style="--c:#d9c7a6">
+        <div class="so-scope-top"><span class="chip">NASA · 2018</span><span class="so-orbit ecc"></span></div>
+        <h3>Parker Solar Probe</h3>
+        <p class="so-where">Seven Venus flybys shrank its orbit until, from 24 Dec 2024, each perihelion passes 6.1 million km from the surface at about 690,000 km/h.</p>
+        <p>Behind an 11.4 cm carbon-composite heat shield: the Wide-field Imager (WISPR), FIELDS, the Solar Wind Electrons Alphas and Protons (SWEAP) investigation and the Integrated Science Investigation of the Sun (IS☉IS).</p>
+        <a class="so-go" href="#gallery">Its images ↓</a>
+      </article>
+      <article class="card spot so-scope reveal" data-delay="120" style="--c:#4ef0b8">
+        <div class="so-scope-top"><span class="chip aurora">ISRO · 2023</span><span class="so-orbit l1"></span></div>
+        <h3>Aditya-L1</h3>
+        <p class="so-where">India's first solar mission, in a halo orbit around L1 since 6 January 2024.</p>
+        <p>Seven payloads from the Indian Space Research Organisation (ISRO) and partners, including the Visible Emission Line Coronagraph (VELC) and the Solar Ultraviolet Imaging Telescope (SUIT), which images the Sun from 200 to 400 nm.</p>
+        <a class="so-go" href="https://www.isro.gov.in/Aditya_L1.html" rel="noopener">ISRO mission page ↗</a>
+      </article>
+      <article class="card spot so-scope reveal" data-delay="180" style="--c:#ffcf4a">
+        <div class="so-scope-top"><span class="chip sol">JAXA · 2006</span><span class="so-orbit polar"></span></div>
+        <h3>Hinode</h3>
+        <p class="so-where">Sun-synchronous polar orbit about 680 km up, in sunlight for most of the year.</p>
+        <p>Japan's Aerospace Exploration Agency (JAXA) observatory, built with NASA and the United Kingdom: a 50 cm Solar Optical Telescope (SOT), an X-Ray Telescope (XRT) and an EUV Imaging Spectrometer (EIS).</p>
+        <a class="so-go" href="#gallery">Its images ↓</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= SIMULATED VS REAL ================= -->
+  <section class="shell block so-compare" id="compare" aria-labelledby="cmpTitle">
+    <div class="eyebrow reveal">Three ways to see the Sun</div>
+    <h2 id="cmpTitle" class="reveal" data-delay="60">Simulated, photographed, measured</h2>
+    <div class="table-wrap reveal" data-delay="120">
+      <table class="data so-cmp">
+        <thead><tr><th scope="col"></th><th scope="col"><a href="sun.html">The Sun</a> · simulation</th><th scope="col">Solar Observatory · real images</th><th scope="col"><a href="space-weather.html">Space weather</a> · live data</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">What it is</th><td>A 3D model built from physics: convection, differential rotation, flares, the interior.</td><td>Light collected by spacecraft minutes ago, or archived since 1996.</td><td>Numbers measured at L1 and around Earth: solar wind, magnetic field, Kp index.</td></tr>
+          <tr><th scope="row">Best for</th><td>Why: cut the Sun open, speed up time, see things no camera can.</td><td>What: today's actual sunspots, loops, CMEs and comets.</td><td>So what: whether the Sun's outbursts will reach Earth and cause aurora.</td></tr>
+          <tr><th scope="row">Limits</th><td>Features are representative, not today's.</td><td>Only the side facing Earth; no view inside.</td><td>Point measurements; no pictures.</td></tr>
+          <tr><th scope="row">Time</th><td>Any speed you like.</td><td>Now, updated about every 15 minutes.</td><td>Now, updated every minute.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row so-cmp-links">
+      <a class="btn primary" href="sun.html">Open the simulated Sun</a>
+      <a class="btn" href="space-weather.html">Open live space weather</a>
+    </div>
+  </section>
+
+  <!-- ================= CREDITS ================= -->
+  <section class="shell block so-credits" aria-labelledby="credTitle">
+    <h2 id="credTitle" class="so-credits-h">Image credits and how it works</h2>
+    <div class="grid grid-2">
+      <div class="prose">
+        <p>SDO images courtesy of NASA/SDO and the AIA, EVE and HMI science teams. SOHO is a project of international cooperation between ESA and NASA. SUVI images from NOAA's Space Weather Prediction Center. Historical images rendered by the Helioviewer Project (ESA and NASA). Inouye Solar Telescope images NSF/NSO/AURA. Each gallery photograph links to its source page. Use of NASA material does not imply endorsement.</p>
+      </div>
+      <div class="prose">
+        <p class="muted">Images are loaded straight from the operators' servers: 1024 pixels on large screens, 512 on phones, the 4096-pixel original only when you use the zoom lens. They are refreshed at most every 15 minutes, and only while this tab is visible. If a server cannot be reached, you see a clearly marked drawing, never an old picture presented as new. Channel temperatures: Lemen et al. (2012), <i>Solar Physics</i> 275, 17.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox so-lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbTitle" aria-hidden="true">
+  <button class="btn small close" type="button" id="lbClose" aria-label="Close viewer (Escape)">✕ Close</button>
+  <div class="so-lb-body">
+    <div class="so-frame so-lb-stage" id="lbStage">
+      <div class="so-fph"><span class="so-fph-glyph"></span><span class="so-fph-state" id="lbState">Loading…</span></div>
+      <img id="lbImg" alt="" referrerpolicy="no-referrer">
+      <button class="so-lb-nav prev" type="button" id="lbPrev" aria-label="Previous photograph">←</button>
+      <button class="so-lb-nav next" type="button" id="lbNext" aria-label="Next photograph">→</button>
+    </div>
+    <aside class="so-lb-info">
+      <div class="eyebrow" id="lbDate"></div>
+      <h2 id="lbTitle"></h2>
+      <p id="lbStory"></p>
+      <dl class="so-info-meta">
+        <div><dt>Mission</dt><dd id="lbMission"></dd></div>
+        <div><dt>Instrument</dt><dd id="lbInst"></dd></div>
+        <div><dt>Credit</dt><dd id="lbCredit"></dd></div>
+      </dl>
+      <div class="row"><a class="btn small primary" id="lbSource" href="#" target="_blank" rel="noopener">Source page ↗</a></div>
+    </aside>
+  </div>
+</div>
+
+<script src="assets/js/codex.js"></script>
+<script type="module" src="assets/js/solar-observatory.js"></script>
+</body>
+</html>

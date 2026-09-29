@@ -12,7 +12,24 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
-const ACCENT = { ice: "#7cc8ff", flame: "#ff7a3d", plasma: "#ff4f9a", sol: "#ffc24b", nebula: "#b18cff", aurora: "#4ef0b8" };
+const ACCENT = { ice: "#7cc8ff", flame: "#ff7a3d", plasma: "#ff4f9a", sol: "#ffc24b", nebula: "#b18cff", aurora: "#4ef0b8",
+  cyan: "#3fe0f0", coral: "#ff7466", lime: "#b9ef5a", steel: "#a3b6ff" };
+const CH = n => core.chapLabel(n);
+
+/* Chapter icons for the orbit navigator (24 × 24, stroked in the chapter colour). */
+const ICONS = {
+  gravity: '<circle cx="12" cy="12" r="3.6"/><ellipse cx="12" cy="12" rx="10" ry="4.3" transform="rotate(-24 12 12)"/><circle cx="20.2" cy="8.3" r="1.4" class="f"/>',
+  rockets: '<path d="M12 2.2c3 2.4 4.4 6 4.4 9.8V17H7.6v-5c0-3.8 1.4-7.4 4.4-9.8z"/><circle cx="12" cy="9.6" r="1.6"/><path d="M7.6 13.5 5 16.6v3.2l2.6-1.6M16.4 13.5l2.6 3.1v3.2l-2.6-1.6M10 19.5l2 2.6 2-2.6"/>',
+  atmosphere: '<path d="M8.5 4h7l3.2 10H5.3z"/><path d="M5.3 14c1.8 3.2 11.6 3.2 13.4 0"/><path d="M4 20.5 6 18.5M9 22l.8-2.4M15 22l-.8-2.4M20 20.5l-2-2"/>',
+  spacecraft: '<rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M1.8 8.6h5.4v6.8H1.8zM16.8 8.6h5.4v6.8h-5.4zM7.2 12h2.3M14.5 12h2.3M12 9.5V6.4"/><path d="M9.3 4.6a3.6 3.6 0 0 0 5.4 0"/>',
+  light: '<path d="M12 2.2l2.3 6.9 7.1.6-5.5 4.6 1.7 7-5.6-3.9-5.6 3.9 1.7-7-5.5-4.6 7.1-.6z"/>',
+  optics: '<path d="M3 13.6 16.6 7.8l2.1 4.6L5 18.2z"/><path d="M16.6 7.8l3-1.3 1.7 3.8-3 1.3"/><path d="M10.4 15.5 7.4 22M11.4 15.1l3.8 6.9"/>',
+  sun: '<circle cx="12" cy="12" r="4.4"/><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.8 1.8M17.4 17.4l1.8 1.8M4.8 19.2l1.8-1.8M17.4 6.6l1.8-1.8"/>',
+  exoplanets: '<circle cx="10.5" cy="12" r="7.2"/><circle cx="16.4" cy="9.4" r="2.5" class="f"/><path d="M2 21.5h4l1.2 1.3h3l1.2-1.3H22" />',
+  relativity: '<ellipse cx="12" cy="12" rx="10.2" ry="3.4"/><circle cx="12" cy="12" r="3.8" class="f"/><path d="M5 5.5c2.5 1.6 4.3 2.4 7 2.4s4.5-.8 7-2.4"/>',
+  cosmology: '<path d="M12.2 12c.3-1.6 2.3-2.2 3.3-1 1.3 1.6.1 4.3-2.4 4.9-3.2.8-6.1-1.6-6.1-4.9 0-4 3.8-6.9 8-6.4 4.4.6 7.3 4.8 6.5 9.3"/><circle cx="12.2" cy="12" r="1" class="f"/><circle cx="4" cy="5" r=".6" class="f"/><circle cx="20" cy="20" r=".6" class="f"/>',
+};
+const icon = id => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[id] || '<circle cx="12" cy="12" r="6"/>'}</svg>`;
 
 /* ---------------------------------------------------------------- KaTeX */
 // HTML-only output keeps the DOM small (MathML doubles it); each formula
@@ -71,21 +88,19 @@ function boot(data) {
   buildConstants();
   setupSearch();
   setupSpy();
-  // deep link: hydrate everything above the target first so it lands exactly
-  const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  if (target) {
-    for (const c of CARDS) { if (target.compareDocumentPosition(c.art) & Node.DOCUMENT_POSITION_FOLLOWING && c.art !== target) break; hydrate(c); }
-    requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
-  }
   setupMotion();
+  setupJumps();
+  setupKeys();
+  // deep link: land on the target, then keep it pinned while cards above hydrate
+  const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (target) requestAnimationFrame(() => land(target, false));
   hydrateRest();
   $("#atlas").setAttribute("aria-busy", "false");
 }
 
-/* ================================================================ hero */
-const MONTAGE = ["tsiolkovsky", "mass-energy", "vis-viva", "planck", "schwarzschild", "friedmann", "stefan-boltzmann", "lorentz-factor", "sutton-graves", "orbital-period"];
-const RING1 = [String.raw`E = mc^2`, String.raw`v = H_0 d`, String.raw`r_s = \tfrac{2GM}{c^2}`, String.raw`\lambda_{max} = \tfrac{b}{T}`, String.raw`1+z = \tfrac1a`, String.raw`q = \tfrac12\rho v^2`];
-const RING2 = [String.raw`T^2 \propto a^3`, String.raw`\Delta v`, String.raw`\gamma`, String.raw`F = \tfrac{L}{4\pi d^2}`, String.raw`\sigma T^4`, String.raw`v_c = \sqrt{\mu/r}`, String.raw`T_0(1+z)`, String.raw`I_{sp}g_0`];
+/* ================================================================ hero: orbit navigator */
+const MONTAGE = ["tsiolkovsky", "mass-energy", "vis-viva", "rayleigh", "transit-depth", "planck", "schwarzschild", "friedmann", "parker-wind", "stefan-boltzmann", "friis", "lorentz-factor"];
+const RING2 = [String.raw`T^2 \propto a^3`, String.raw`\Delta v`, String.raw`1.22\tfrac{\lambda}{D}`, String.raw`F = \tfrac{L}{4\pi d^2}`, String.raw`\sigma T^4`, String.raw`(R_p/R_\star)^2`, String.raw`v_c = \sqrt{\mu/r}`, String.raw`E = mc^2`, String.raw`\rho v^2`, String.raw`r_s = \tfrac{2GM}{c^2}`];
 
 function buildHero() {
   const eqs = DATA.equations;
@@ -95,40 +110,61 @@ function buildHero() {
   countTo($("#st-plot"), plots);
   countTo($("#st-k"), DATA.constants.length);
 
-  // orbiting rings of mini-equations
-  const ring = (el, list, cls) => {
-    el.innerHTML = list.map((s, i) => {
-      const a = (360 / list.length) * i;
-      return `<span class="mt-item ${cls}" style="--a:${a}deg"><span class="mt-inner">${tex(s)}</span></span>`;
-    }).join("");
-  };
-  ring($("#ring1"), RING1, "r1");
-  ring($("#ring2"), RING2, "r2");
+  // outer ring: one clickable planet per chapter, orbiting; inner ring: decorative mini-equations
+  const counts = {};
+  eqs.forEach(e => { counts[e.chapter] = (counts[e.chapter] || 0) + 1; });
+  const chs = DATA.chapters;
+  $("#ring1").innerHTML = chs.map((c, i) => {
+    const a = (360 / chs.length) * i;
+    return `<span class="mt-item ch" style="--a:${a}deg;--acc:${ACCENT[c.color]};--d:${i * 70}ms"><span class="mt-inner"><a class="mt-up mt-ch" href="#ch-${c.id}" data-ch="${c.id}" aria-label="Chapter ${c.n}: ${esc(c.title)}, ${counts[c.id]} equations"><span class="mt-ico">${icon(c.id)}</span><span class="mt-lbl">${esc(c.short || c.title)}</span></a></span></span>`;
+  }).join("");
+  $("#ring2").innerHTML = RING2.map((s, i) => `<span class="mt-item r2" style="--a:${(360 / RING2.length) * i + 18}deg"><span class="mt-inner"><span class="mt-up">${tex(s)}</span></span></span>`).join("");
 
-  // cycling central equation
+  // cycling central equation; hovering or focusing a chapter previews it instead
   const list = MONTAGE.map(id => eqs.find(e => e.id === id)).filter(Boolean);
-  const eqEl = $("#mt-eq"), lbl = $("#mt-label"), dots = $("#mt-dots");
+  const mont = $("#montage"), eqEl = $("#mt-eq"), lbl = $("#mt-label"), dots = $("#mt-dots");
   dots.innerHTML = list.map(() => "<i></i>").join("");
-  let k = 0;
-  const show = (i, animate) => {
-    const e = list[i];
-    const set = () => {
-      eqEl.innerHTML = tex(e.latex, true);
-      lbl.textContent = `${NUM[e.id]} · ${e.title}`;
-      $$("i", dots).forEach((d, j) => d.classList.toggle("on", j === i));
-      fitMontage();
-    };
-    if (!animate || !gsap || REDUCED) { set(); return; }
+  let k = 0, hold = null;
+  const paint = (latex, label, dot, acc) => {
+    eqEl.innerHTML = tex(latex, true);
+    lbl.textContent = label;
+    lbl.style.color = acc || "";
+    $$("i", dots).forEach((d, j) => d.classList.toggle("on", j === dot));
+    fitMontage();
+  };
+  const swap = (fn, animate) => {
+    if (!animate || !gsap || REDUCED) { fn(); return; }
+    gsap.killTweensOf([eqEl, lbl]);
     gsap.to([eqEl, lbl], {
-      opacity: 0, y: -10, filter: "blur(10px)", duration: .45, ease: "power2.in", onComplete: () => {
-        set();
-        gsap.fromTo([eqEl, lbl], { opacity: 0, y: 12, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .7, ease: "power3.out", stagger: .05 });
+      opacity: 0, y: -10, filter: "blur(10px)", duration: .3, ease: "power2.in", onComplete: () => {
+        fn();
+        gsap.fromTo([eqEl, lbl], { opacity: 0, y: 12, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .55, ease: "power3.out", stagger: .05 });
       }
     });
   };
+  const show = (i, animate) => { const e = list[i]; swap(() => paint(e.latex, `${NUM[e.id]} · ${e.title}`, i), animate); };
+  const preview = id => {
+    const c = chs.find(x => x.id === id), first = eqs.find(e => e.chapter === id);
+    hold = id; mont.classList.add("hold");
+    $$(".mt-ch", mont).forEach(a => a.classList.toggle("on", a.dataset.ch === id));
+    swap(() => paint(first.latex, `Chapter ${CH(c.n)} · ${c.title} · ${counts[id]} equations`, -1, ACCENT[c.color]), true);
+  };
+  const release = () => {
+    if (!hold) return;
+    hold = null; mont.classList.remove("hold");
+    $$(".mt-ch", mont).forEach(a => a.classList.remove("on"));
+    show(k, true);
+  };
+  $$(".mt-ch", mont).forEach(a => {
+    a.addEventListener("pointerenter", () => preview(a.dataset.ch));
+    a.addEventListener("focus", () => preview(a.dataset.ch));
+    a.addEventListener("pointerleave", release);
+    a.addEventListener("blur", release);
+  });
   show(0, false);
-  if (!REDUCED) setInterval(() => { if (!document.hidden) { k = (k + 1) % list.length; show(k, true); } }, 3600);
+  if (!REDUCED) setInterval(() => { if (!document.hidden && !hold) { k = (k + 1) % list.length; show(k, true); } }, 3600);
   addEventListener("resize", fitMontage);
+  if (document.fonts) document.fonts.ready.then(fitMontage);
 
   // marquee of every compact equation
   const chips = eqs.filter(e => !/aligned|cases|underbrace/.test(e.latex) && e.latex.length < 90)
@@ -161,7 +197,7 @@ function buildToolbar() {
   const counts = {};
   DATA.equations.forEach(e => { counts[e.chapter] = (counts[e.chapter] || 0) + 1; });
   nav.innerHTML = DATA.chapters.map(c =>
-    `<a href="#ch-${c.id}" data-ch="${c.id}" style="--acc:${ACCENT[c.color]}"><span class="n mono">0${c.n}</span><span class="t" title="${esc(c.title)}">${esc(c.short || c.title)}</span><span class="c mono" data-count="${c.id}">${counts[c.id]}</span></a>`
+    `<a href="#ch-${c.id}" data-ch="${c.id}" style="--acc:${ACCENT[c.color]}"><span class="n mono">${CH(c.n)}</span><span class="t" title="${esc(c.title)}">${esc(c.short || c.title)}</span><span class="c mono" data-count="${c.id}">${counts[c.id]}</span></a>`
   ).join("") + `<a href="#constants" data-ch="constants" style="--acc:var(--text-2)"><span class="n mono">K</span><span class="t">Constants</span></a><span class="ind" aria-hidden="true"></span>`;
 }
 
@@ -178,9 +214,9 @@ function buildAtlas() {
     sec.style.setProperty("--acc", ACCENT[ch.color]);
     sec.innerHTML = `
       <header class="ch-head">
-        <div class="ch-num" aria-hidden="true">0${ch.n}</div>
+        <div class="ch-num" aria-hidden="true">${CH(ch.n)}</div>
         <div>
-          <div class="eyebrow">Chapter ${ch.n} · ${eqs.length} equations</div>
+          <div class="eyebrow"><span class="ch-ico">${icon(ch.id)}</span>Chapter ${ch.n} · ${eqs.length} equations</div>
           <h2>${esc(ch.title)}</h2>
           <p class="lede">${esc(ch.blurb)}</p>
           <div class="ch-toc">${eqs.map(e => `<a href="#${e.id}" class="chip"><span class="mono">${NUM[e.id]}</span> ${esc(shortTitle(e.title))}</a>`).join("")}</div>
@@ -195,20 +231,21 @@ function buildAtlas() {
     }
     atlas.appendChild(sec);
   }
-  // hydrate cards shortly before they scroll into view
+  // Lazy rendering: KaTeX, calculator and plot are built only when a card comes within ~1.5 screens.
   const near = new IntersectionObserver(ents => ents.forEach(en => {
     if (!en.isIntersecting) return;
     near.unobserve(en.target);
-    const c = CARDS.find(x => x.art === en.target);
+    const c = en.target.__card;
     if (c) hydrate(c);
-  }), { rootMargin: "900px 0px" });
-  CARDS.forEach(c => near.observe(c.art));
+  }), { rootMargin: "1200px 0px" });
+  CARDS.forEach(c => { c.art.__card = c; near.observe(c.art); });
 }
 
 /** Light placeholder: title only. The heavy parts (KaTeX, calculator, plot) come in hydrate(). */
 function shell(eq, ch) {
   const art = document.createElement("article");
-  art.className = "eq card spot";
+  art.className = "eq card spot" + (REDUCED ? "" : " pre");
+  art.tabIndex = -1;
   art.id = eq.id;
   art.dataset.chapter = ch.id;
   art.style.setProperty("--acc", ACCENT[ch.color]);
@@ -223,16 +260,132 @@ function hydrate(c) {
   c.st = fillCard(c.eq, c.art, c.ch);
   c.art.classList.add("ready");
 }
-/** Hydrate the remaining cards in small slices so the page stays responsive. */
+/** When the browser is idle, hydrate the remaining cards in small slices (keeps anchor jumps stable later). */
 function hydrateRest() {
+  const idle = window.requestIdleCallback || (fn => setTimeout(() => fn({ timeRemaining: () => 10 }), 60));
   let i = 0;
-  const step = () => {
+  const step = dl => {
     const t0 = performance.now();
-    while (i < CARDS.length && performance.now() - t0 < 12) hydrate(CARDS[i++]);
-    if (i < CARDS.length) setTimeout(step, 24);
+    while (i < CARDS.length && (dl.timeRemaining() > 2 || performance.now() - t0 < 4)) { if (!CARDS[i].st) hydrate(CARDS[i]); i++; if (performance.now() - t0 > 14) break; }
+    if (i < CARDS.length) idle(step, { timeout: 400 });
     else if (window.ScrollTrigger) ScrollTrigger.refresh();
   };
-  setTimeout(step, 120);
+  setTimeout(() => idle(step, { timeout: 400 }), 1500);
+}
+
+/* ================================================================ navigation: jumps, random, keys */
+/** Scroll so that `el` sits just under the sticky toolbar; keep it there while cards above it hydrate. */
+function land(el, smooth = true, after) {
+  const idx = CARDS.findIndex(c => c.art === el);
+  if (idx >= 0) for (let j = Math.max(0, idx - 1); j <= Math.min(CARDS.length - 1, idx + 1); j++) hydrate(CARDS[j]);
+  const y = () => el.getBoundingClientRect().top + scrollY - toolbarOffset() + 2;
+  // long jumps are instant (the card's entrance animation carries the eye); short ones glide
+  if (Math.abs(y() - scrollY) > 4 * innerHeight) smooth = false;
+  scrollTo({ top: y(), behavior: smooth && !REDUCED ? "smooth" : "instant" });
+  // settle: layout above may still change (hydration, fonts) — correct drifts until things are calm,
+  // but give up at once if the reader scrolls on their own
+  const t0 = performance.now();
+  let calm = t0, cancelled = false;
+  const stop = () => { cancelled = true; };
+  const evs = ["wheel", "touchstart", "keydown", "pointerdown"];
+  evs.forEach(ev => addEventListener(ev, stop, { once: true, passive: true }));
+  const settle = () => {
+    const now = performance.now();
+    if (cancelled) { evs.forEach(ev => removeEventListener(ev, stop)); return; }
+    const d = el.getBoundingClientRect().top - toolbarOffset() - 2;
+    const moving = smooth && !REDUCED && now - t0 < 900;
+    if (!moving && Math.abs(d) > 3) { scrollTo({ top: scrollY + d, behavior: "instant" }); calm = now; }
+    if (now - calm < 1000 && now - t0 < 4000) requestAnimationFrame(settle);
+    else { evs.forEach(ev => removeEventListener(ev, stop)); if (after) after(); }
+  };
+  requestAnimationFrame(settle);
+}
+function setupJumps() {
+  // in-page links (chapter nav, orbit, table of contents, marquee) go through land()
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.classList.contains("eq-link")) return;
+    const el = document.getElementById(decodeURIComponent(a.hash.slice(1)));
+    if (!el || !$(".eqx").contains(el)) return;
+    e.preventDefault();
+    history.replaceState(null, "", a.hash);
+    land(el);
+  });
+  $("#rand").addEventListener("click", () => randomCard());
+  $("#hero-rand").addEventListener("click", () => randomCard());
+}
+function currentIndex() {
+  const line = toolbarOffset() + 40;
+  let cur = -1;
+  CARDS.forEach((c, i) => { if (!c.art.hidden && c.art.getBoundingClientRect().top <= line) cur = i; });
+  return cur;
+}
+function step(dir) {
+  const vis = CARDS.map((c, i) => [c, i]).filter(([c]) => !c.art.hidden);
+  if (!vis.length) return;
+  const cur = currentIndex(), line = toolbarOffset() + 6;
+  let tgt;
+  if (dir > 0) tgt = vis.find(([c, i]) => i > cur || (i === cur && c.art.getBoundingClientRect().top > line));
+  else tgt = [...vis].reverse().find(([c, i]) => i < cur || (i === cur && c.art.getBoundingClientRect().top < line - 12));
+  if (!tgt) return;
+  const [c] = tgt;
+  history.replaceState(null, "", "#" + c.eq.id);
+  land(c.art, true);
+  c.art.focus({ preventScroll: true });
+}
+function stepChapter(dir) {
+  const secs = $$(".eqx-chapter").filter(s => !s.hidden);
+  const line = toolbarOffset() + 40;
+  let cur = -1;
+  secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= line) cur = i; });
+  const t = secs[clamp(cur + dir, 0, secs.length - 1)];
+  if (t) { history.replaceState(null, "", "#" + t.id); land(t, true); }
+}
+let lastRandom = -1;
+function randomCard() {
+  const vis = CARDS.map((c, i) => i).filter(i => !CARDS[i].art.hidden && i !== lastRandom && i !== currentIndex());
+  if (!vis.length) return;
+  const i = vis[Math.floor(Math.random() * vis.length)];
+  lastRandom = i;
+  const c = CARDS[i];
+  const dice = $("#rand svg");
+  if (dice && !REDUCED) dice.animate([{ transform: "rotate(0)" }, { transform: "rotate(540deg)" }], { duration: 650, easing: "cubic-bezier(.2,.8,.2,1)" });
+  history.replaceState(null, "", "#" + c.eq.id);
+  land(c.art, false);
+  c.art.focus({ preventScroll: true });
+  reveal(c.art);
+  toast(`⚄ ${NUM[c.eq.id]} · ${c.eq.title}`);
+  if (!REDUCED) {
+    c.art.animate([
+      { transform: "perspective(1600px) rotateY(-88deg) scale(.94)", opacity: 0, filter: "blur(4px)" },
+      { transform: "perspective(1600px) rotateY(12deg) scale(.99)", opacity: 1, filter: "blur(0px)", offset: .7 },
+      { transform: "perspective(1600px) rotateY(0deg) scale(1)", opacity: 1, filter: "blur(0px)" }
+    ], { duration: 900, easing: "cubic-bezier(.2,.75,.25,1)" });
+    const st = c.st && c.st.plot;
+    if (st) st.replay();
+  }
+}
+function setupKeys() {
+  const help = $("#keyhelp"), btn = $("#keys");
+  const toggleHelp = on => { help.hidden = !on; btn.setAttribute("aria-expanded", String(on)); };
+  btn.addEventListener("click", () => toggleHelp(help.hidden));
+  document.addEventListener("click", e => { if (!help.hidden && !help.contains(e.target) && e.target !== btn) toggleHelp(false); });
+  addEventListener("keydown", e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) || document.activeElement.isContentEditable;
+    if (e.key === "Escape" && !help.hidden) { toggleHelp(false); return; }
+    if (typing) return;
+    if (e.key === "j") { e.preventDefault(); step(1); }
+    else if (e.key === "k") { e.preventDefault(); step(-1); }
+    else if (e.key === "]") { e.preventDefault(); stepChapter(1); }
+    else if (e.key === "[") { e.preventDefault(); stepChapter(-1); }
+    else if (e.key === "r") { e.preventDefault(); randomCard(); }
+    else if (e.key === "?") { e.preventDefault(); toggleHelp(help.hidden); }
+    else if (e.key === "c") {
+      const i = currentIndex();
+      if (i >= 0) { e.preventDefault(); copy(CARDS[i].eq.latex, `LaTeX of ${NUM[CARDS[i].eq.id]} copied`); }
+    }
+  });
 }
 const shortTitle = t => t.replace(/ — .*$/, "");
 
@@ -492,13 +645,22 @@ class Plot {
     this.pending = true;
     requestAnimationFrame(() => { this.pending = false; this.draw(); });
   }
+  /** Entrance progress 0 → 1 (eased): the plot "draws itself" when its card scrolls into view. */
+  get prog() {
+    if (REDUCED) return 1;
+    if (this.revealAt == null) return this.st.art.classList.contains("pre") ? 0 : 1;
+    const t = Math.min(1, (performance.now() - this.revealAt) / 1150);
+    return 1 - Math.pow(1 - t, 3);
+  }
+  replay() { if (REDUCED) return; this.revealAt = performance.now(); this.animate(); }
+  continuous() { return !REDUCED && ((this.spec.type === "orbit" && this.spec.mode === "areas") || this.spec.type === "hohmann" || this.spec.type === "transit"); }
   animate() {
-    const animated = (this.spec.type === "orbit" && this.spec.mode === "areas") || this.spec.type === "hohmann";
-    if (!animated || REDUCED || this.raf) return;
+    if (!this.visible || this.raf) return;
+    if (!this.continuous() && this.prog >= 1) { this.request(); return; }
     const loop = () => {
       if (!this.visible || document.hidden) { this.raf = 0; return; }
       this.draw();
-      this.raf = requestAnimationFrame(loop);
+      this.raf = (this.continuous() || this.prog < 1) ? requestAnimationFrame(loop) : 0;
     };
     this.raf = requestAnimationFrame(loop);
   }
@@ -508,11 +670,15 @@ class Plot {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, this.W, this.H);
     ctx.font = FONT;
+    const P = this.prog, own = SELF_REVEAL.has(this.spec.type);
+    if (!own && P < 1) { ctx.save(); ctx.beginPath(); ctx.rect(0, 0, this.W * P, this.H); ctx.clip(); }
     try {
-      ({ xy: drawXY, orbit: drawOrbit, hohmann: drawHohmann, stack: drawStack, refbars: drawRefbars })[this.spec.type].call(this);
+      DRAW[this.spec.type].call(this, P);
     } catch (e) { console.error(this.eq.id, e); }
+    if (!own && P < 1) ctx.restore();
   }
 }
+const SELF_REVEAL = new Set(["xy", "airy", "transit", "hz", "ladder", "hr"]);
 
 /* ---- axis helpers */
 function niceStep(span, n = 5) {
@@ -553,7 +719,7 @@ function spectrum(ctx, x0, y0, x1, y1, a) {
 }
 
 /* ---- generic y(x) plot */
-function drawXY() {
+function drawXY(P = 1) {
   const { ctx, W, H, spec, st, eq, col } = this;
   const xin = eq.calc.inputs.find(i => i.id === spec.x);
   const toDisp = e => (typeof e === "number" ? e : core.fromSI(xin, evalExpr(e, st), K));
@@ -654,7 +820,7 @@ function drawXY() {
 
   // curves
   ctx.save();
-  ctx.beginPath(); ctx.rect(L, T - 2, pw, ph + 4); ctx.clip();
+  ctx.beginPath(); ctx.rect(L, T - 2, pw * P, ph + 4); ctx.clip();
   const path = arr => {
     ctx.beginPath(); let pen = false;
     arr.forEach((v, i) => { if (!ok(v)) { pen = false; return; } const px = X(xs[i]), py = Y(v); pen ? ctx.lineTo(px, py) : ctx.moveTo(px, py); pen = true; });
@@ -675,6 +841,12 @@ function drawXY() {
   path(main.ys);
   ctx.strokeStyle = col; ctx.lineWidth = 2.2; ctx.shadowColor = col; ctx.shadowBlur = 12; ctx.stroke(); ctx.shadowBlur = 0;
   ctx.restore();
+  // pen tip while the curve draws itself
+  if (P < 1) {
+    const ix = Math.min(main.ys.length - 1, Math.round(P * (main.ys.length - 1)));
+    if (ok(main.ys[ix])) glowDot(ctx, X(xs[ix]), Y(main.ys[ix]), 3, col, 4);
+  }
+  ctx.globalAlpha = clamp((P - 0.55) / 0.45, 0, 1);
   // dim labels: at the curve's peak if it has an interior maximum, else at its right end
   ctx.font = FONT; ctx.textBaseline = "bottom"; ctx.fillStyle = "rgba(195,202,230,.66)";
   curves.filter(c => c.dim && c.label).forEach(c => {
@@ -721,8 +893,9 @@ function drawXY() {
     }
   }
 
+  ctx.globalAlpha = 1;
   // hover read-out
-  if (this.hover && this.hover.x >= L && this.hover.x <= L + pw) {
+  if (P >= 1 && this.hover && this.hover.x >= L && this.hover.x <= L + pw) {
     const hx = Xinv(this.hover.x);
     const d = Object.assign({}, st.disp, { [spec.x]: hx });
     const hv = yOf(null, core.evaluate(eq, st.run, d, K).shown[ys[0]]);
@@ -955,6 +1128,292 @@ function drawRefbars() {
   });
 }
 
+/* ---- helpers for the new plot types */
+/** Bessel function J₁ (Numerical Recipes rational approximations; |error| < 1e-8). */
+function besselJ1(x) {
+  const ax = Math.abs(x);
+  if (ax < 8) {
+    const y = x * x;
+    const a1 = x * (72362614232.0 + y * (-7895059235.0 + y * (242396853.1 + y * (-2972611.439 + y * (15704.48260 + y * -30.16036606)))));
+    const a2 = 144725228442.0 + y * (2300535178.0 + y * (18583304.74 + y * (99447.43394 + y * (376.9991397 + y))));
+    return a1 / a2;
+  }
+  const z = 8 / ax, y = z * z, xx = ax - 2.356194491;
+  const b1 = 1 + y * (0.183105e-2 + y * (-0.3516396496e-4 + y * (0.2457520174e-5 + y * -0.240337019e-6)));
+  const b2 = 0.04687499995 + y * (-0.2002690873e-3 + y * (0.8449199096e-5 + y * (-0.88228987e-6 + y * 0.105787412e-6)));
+  const ans = Math.sqrt(0.636619772 / ax) * (Math.cos(xx) * b1 - z * Math.sin(xx) * b2);
+  return x < 0 ? -ans : ans;
+}
+/** Airy intensity with u = θ / θ_Rayleigh (first dark ring at u = 1). */
+function airyI(u) {
+  const x = 3.8317059702 * Math.abs(u);
+  if (x < 1e-6) return 1;
+  const j = 2 * besselJ1(x) / x;
+  return j * j;
+}
+/** Colour of a black body (Tanner Helland's fit), as hex. */
+function bbColor(T) {
+  const t = T / 100;
+  let r, g, b;
+  if (t <= 66) { r = 255; g = 99.4708025861 * Math.log(t) - 161.1195681661; b = t <= 19 ? 0 : 138.5177312231 * Math.log(t - 10) - 305.0447927307; }
+  else { r = 329.698727446 * Math.pow(t - 60, -0.1332047592); g = 288.1221695283 * Math.pow(t - 60, -0.0755148492); b = 255; }
+  const h = v => Math.round(clamp(v, 0, 255)).toString(16).padStart(2, "0");
+  return "#" + h(r) + h(g) + h(b);
+}
+/** Area of overlap of a unit circle and a circle of radius k whose centres are d apart. */
+function overlap(d, k) {
+  if (d >= 1 + k) return 0;
+  if (d <= 1 - k) return Math.PI * k * k;
+  if (d <= k - 1) return Math.PI;
+  return k * k * Math.acos(clamp((d * d + k * k - 1) / (2 * d * k), -1, 1)) + Math.acos(clamp((d * d + 1 - k * k) / (2 * d), -1, 1))
+    - 0.5 * Math.sqrt(Math.max(0, (-d + k + 1) * (d + k - 1) * (d - k + 1) * (d + k + 1)));
+}
+function label(ctx, t, x, y, color, align = "left", base = "middle") {
+  ctx.fillStyle = color; ctx.textAlign = align; ctx.textBaseline = base; ctx.fillText(t, x, y);
+}
+const hexRGB = hex => { const n = parseInt(hex.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; };
+
+/* ---- two stars through a circular aperture (Rayleigh criterion) */
+function drawAiry(P) {
+  const { ctx, W, H, st, spec, col } = this;
+  const th = st.result.shown[spec.th];
+  const s0 = st.disp[spec.sep] / th; // separation in units of θ_R
+  const cap = 8, s = Math.min(s0, cap) * (0.12 + 0.88 * P);
+  const hw = Math.max(2.4, s / 2 + 2.1);
+  // ---- image panel (computed at low resolution, scaled up smoothly)
+  const S = Math.round(Math.min(H - 16, W * 0.42)), x0 = 8, y0 = Math.round((H - S) / 2);
+  const N = 104;
+  const key = `${s.toFixed(4)}|${hw.toFixed(3)}|${col}`;
+  if (this._key !== key) {
+    this._key = key;
+    const off = this._off || (this._off = document.createElement("canvas"));
+    off.width = off.height = N;
+    const octx = off.getContext("2d"), img = octx.createImageData(N, N), [cr, cg, cb] = hexRGB(col);
+    for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+      const ux = ((i + 0.5) / N - 0.5) * 2 * hw, uy = ((j + 0.5) / N - 0.5) * 2 * hw;
+      const I = airyI(Math.hypot(ux - s / 2, uy)) + airyI(Math.hypot(ux + s / 2, uy));
+      const v = Math.pow(Math.min(1, I), 0.42), w = Math.pow(Math.min(1, I), 2.2);
+      const k = 4 * (j * N + i);
+      img.data[k] = cr * v + (255 - cr) * w; img.data[k + 1] = cg * v + (255 - cg) * w; img.data[k + 2] = cb * v + (255 - cb) * w; img.data[k + 3] = 255;
+    }
+    octx.putImageData(img, 0, 0);
+  }
+  ctx.save();
+  roundRect(ctx, x0, y0, S, S, 10); ctx.clip();
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(this._off, x0, y0, S, S);
+  ctx.restore();
+  ctx.strokeStyle = "rgba(150,170,255,.18)"; roundRect(ctx, x0 + .5, y0 + .5, S - 1, S - 1, 10); ctx.stroke();
+  // scale bar: one θ_R
+  const bar = S / (2 * hw);
+  ctx.strokeStyle = "rgba(233,237,255,.8)"; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(x0 + 10, y0 + S - 12); ctx.lineTo(x0 + 10 + bar, y0 + S - 12); ctx.stroke();
+  ctx.font = FONT; label(ctx, `θ = ${core.fmt(th, 3)}″`, x0 + 10, y0 + S - 20, "rgba(233,237,255,.85)", "left", "bottom");
+  // ---- profile panel
+  const L = x0 + S + 34, R = 10, T = 22, B = 24, pw = W - L - R, ph = H - T - B;
+  if (pw < 60) return;
+  const M = 200, xs = [], a = [], b = [], sum = [];
+  for (let i = 0; i <= M; i++) { const u = -hw + 2 * hw * i / M; xs.push(u); a.push(airyI(u + s / 2)); b.push(airyI(u - s / 2)); sum.push(a[i] + b[i]); }
+  const ymax = Math.max(1.05, ...sum) * 1.38;
+  const X = u => L + (u + hw) / (2 * hw) * pw, Y = v => T + ph - v / ymax * ph;
+  ctx.strokeStyle = GRID; ctx.lineWidth = 1;
+  [0, 0.5, 1, 1.5, 2].filter(v => v <= ymax).forEach(v => { const y = Math.round(Y(v)) + .5; ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + pw, y); ctx.stroke(); label(ctx, String(v), L - 6, y, AXIS, "right"); });
+  linTicks(-hw, hw, Math.max(3, Math.floor(pw / 70))).forEach(v => { const x = Math.round(X(v)) + .5; ctx.beginPath(); ctx.moveTo(x, T); ctx.lineTo(x, T + ph); ctx.stroke(); label(ctx, core.fmt(v, 2), x, T + ph + 7, AXIS, "center", "top"); });
+  label(ctx, "intensity · angle in θ", L - 24, 4, DIM, "left", "top");
+  const line = (arr, stroke, w, dash) => { ctx.save(); if (dash) ctx.setLineDash(dash); ctx.beginPath(); arr.forEach((v, i) => i ? ctx.lineTo(X(xs[i]), Y(v)) : ctx.moveTo(X(xs[i]), Y(v))); ctx.strokeStyle = stroke; ctx.lineWidth = w; ctx.stroke(); ctx.restore(); };
+  line(a, "rgba(195,202,230,.4)", 1.2, [3, 3]); line(b, "rgba(195,202,230,.4)", 1.2, [3, 3]);
+  ctx.beginPath(); sum.forEach((v, i) => i ? ctx.lineTo(X(xs[i]), Y(v)) : ctx.moveTo(X(xs[i]), Y(v))); ctx.lineTo(X(hw), Y(0)); ctx.lineTo(X(-hw), Y(0)); ctx.closePath();
+  const g = ctx.createLinearGradient(0, T, 0, T + ph); g.addColorStop(0, rgba(col, .28)); g.addColorStop(1, rgba(col, 0)); ctx.fillStyle = g; ctx.fill();
+  ctx.save(); ctx.shadowColor = col; ctx.shadowBlur = 10; line(sum, col, 2.2); ctx.restore();
+  // verdict
+  const peak = Math.max(...sum), mid = sum[M / 2], dip = 1 - mid / peak;
+  const sShown = s0 * (0.12 + 0.88 * P);
+  const verdict = sShown >= 0.995 ? ["Resolved", "#7dffb0"] : sShown >= 0.77 ? ["Dip visible, below Rayleigh", "#ffd27a"] : ["Unresolved — one blob", "#ff8b7a"];
+  ctx.font = "600 11.5px 'JetBrains Mono', monospace";
+  label(ctx, verdict[0], L + 4, T + 2, verdict[1], "left", "top");
+  ctx.font = FONT;
+  label(ctx, `Δ = ${core.fmt(sShown, 3)} θ${dip > 0.005 ? ` · dip ${Math.round(dip * 100)} %` : ""}${s0 > cap ? " · view capped" : ""}`, L + 4, T + 18, "rgba(233,237,255,.7)", "left", "top");
+}
+
+/* ---- a planet crossing its star, and the light curve it makes */
+function drawTransit() {
+  const { ctx, W, H, st, spec, col } = this;
+  const depth = st.result.shown[spec.y] * 1e-6, k = Math.sqrt(depth);
+  const b = 0.3, span = 1 + k + 0.35;
+  const period = 6000, ph0 = REDUCED ? 0.5 : ((performance.now() - (this.t0 || 0)) % period) / period;
+  const xp = -span + 2 * span * ph0;
+  // star panel
+  const S = Math.round(Math.min(H - 12, W * 0.4)), cx = 6 + S / 2, cy = H / 2, Rpx = S * 0.4;
+  const halo = ctx.createRadialGradient(cx, cy, Rpx * .9, cx, cy, Rpx * 1.35); halo.addColorStop(0, "rgba(255,190,110,.25)"); halo.addColorStop(1, "rgba(255,190,110,0)");
+  ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(cx, cy, Rpx * 1.35, 0, 7); ctx.fill();
+  const g = ctx.createRadialGradient(cx - Rpx * .1, cy - Rpx * .1, 0, cx, cy, Rpx);
+  g.addColorStop(0, "#fff8e6"); g.addColorStop(.55, "#ffd79a"); g.addColorStop(.9, "#f39a4a"); g.addColorStop(1, "#c8642a");
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, Rpx, 0, 7); ctx.fill();
+  const rp = Math.max(1.8, k * Rpx), enlarged = rp > k * Rpx * 1.05;
+  const px = cx + xp * Rpx, py = cy + b * Rpx;
+  ctx.fillStyle = "#05060c"; ctx.beginPath(); ctx.arc(px, py, rp, 0, 7); ctx.fill();
+  ctx.strokeStyle = rgba(col, .8); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(px, py, rp + 1.5, 0, 7); ctx.stroke();
+  ctx.font = FONT;
+  label(ctx, enlarged ? `planet enlarged ×${core.fmt(rp / (k * Rpx), 2)}` : "planet to scale", 6, H - 4, DIM, "left", "bottom");
+  // light curve
+  const L = S + 58, R = 10, T = 22, B = 24, pw = W - L - R, phh = H - T - B;
+  if (pw < 60) return;
+  const f = x => 1 - overlap(Math.hypot(x, b), k) / Math.PI;
+  const lo = 1 - depth * 1.35, hi = 1 + depth * 0.3;
+  const X = x => L + (x + span) / (2 * span) * pw, Y = v => T + (hi - v) / (hi - lo) * phh;
+  ctx.strokeStyle = GRID; ctx.lineWidth = 1;
+  [1, 1 - depth / 2, 1 - depth].forEach(v => { const y = Math.round(Y(v)) + .5; ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + pw, y); ctx.stroke(); label(ctx, v === 1 ? "1" : `−${core.fmt((1 - v) * 1e6, 3)}`, L - 6, y, AXIS, "right"); });
+  if (pw > 280) label(ctx, "flux (ppm below 1)", L - 50, 4, DIM, "left", "top");
+  label(ctx, "→ time", L + pw, T + phh + 7, DIM, "right", "top");
+  const Nn = 220;
+  ctx.beginPath(); for (let i = 0; i <= Nn; i++) { const x = -span + 2 * span * i / Nn; i ? ctx.lineTo(X(x), Y(f(x))) : ctx.moveTo(X(x), Y(f(x))); }
+  ctx.strokeStyle = "rgba(195,202,230,.25)"; ctx.lineWidth = 1.2; ctx.stroke();
+  ctx.save(); ctx.beginPath(); for (let i = 0; i <= Nn; i++) { const x = -span + 2 * span * i / Nn; if (x > xp) break; i ? ctx.lineTo(X(x), Y(f(x))) : ctx.moveTo(X(x), Y(f(x))); }
+  ctx.strokeStyle = col; ctx.lineWidth = 2.2; ctx.shadowColor = col; ctx.shadowBlur = 10; ctx.stroke(); ctx.restore();
+  glowDot(ctx, X(xp), Y(f(xp)), 3.5, "#ffffff", 3.5);
+  ctx.font = "600 11.5px 'JetBrains Mono', monospace";
+  label(ctx, `δ = ${core.fmt(depth * 1e6, 4)} ppm`, L + pw, 4, "#fff", "right", "top");
+}
+
+/* ---- habitable-zone strip against real planetary systems */
+function drawHZ(P) {
+  const { ctx, W, H, st, spec, col } = this;
+  const r = st.result.shown, din = r[spec.inner], dout = r[spec.outer], dv = r[spec.optIn], dm = r[spec.optOut];
+  if (!(din > 0)) { emptyPlot(this, "—"); return; }
+  const x0 = Math.min(0.004, dv / 3), x1 = Math.max(8, dm * 3);
+  const L = 14, Rr = 14, T = 20, B = 24, pw = W - L - Rr, phh = H - T - B;
+  const X = x => L + Math.log(x / x0) / Math.log(x1 / x0) * pw;
+  ctx.font = FONT;
+  logTicks(x0, x1).forEach(v => { const x = Math.round(X(v)) + .5; ctx.strokeStyle = GRID; ctx.beginPath(); ctx.moveTo(x, T); ctx.lineTo(x, T + phh); ctx.stroke(); label(ctx, core.fmt(v, 2) + (v === 1 ? " AU" : ""), clamp(x, L + 14, W - 22), T + phh + 7, AXIS, "center", "top"); });
+  // zone grows from its centre
+  const grow = (a, b2) => { const m = Math.sqrt(a * b2), h = Math.sqrt(b2 / a); const e = Math.pow(h, P); return [m / e, m * e]; };
+  const [oa, ob] = grow(dv, dm), [ca, cb] = grow(din, dout);
+  ctx.fillStyle = rgba(col, .09); ctx.fillRect(X(oa), T, X(ob) - X(oa), phh);
+  const gz = ctx.createLinearGradient(0, T, 0, T + phh); gz.addColorStop(0, rgba(col, .34)); gz.addColorStop(1, rgba(col, .12));
+  ctx.fillStyle = gz; ctx.fillRect(X(ca), T, X(cb) - X(ca), phh);
+  ctx.strokeStyle = rgba(col, .8); ctx.lineWidth = 1.2; [ca, cb].forEach(v => { ctx.beginPath(); ctx.moveTo(X(v) + .5, T); ctx.lineTo(X(v) + .5, T + phh); ctx.stroke(); });
+  // star at the left edge, sized loosely with luminosity
+  const Lsol = st.disp.L || 1;
+  const sr = clamp(5 + 2.2 * Math.log10(Lsol + 1e-9), 3, 16);
+  const sg = ctx.createRadialGradient(L - 2, T + phh / 2, 0, L - 2, T + phh / 2, sr * 3.5); sg.addColorStop(0, "#fff4d8"); sg.addColorStop(.3, "rgba(255,200,120,.55)"); sg.addColorStop(1, "rgba(255,200,120,0)");
+  ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(L - 2, T + phh / 2, sr * 3.5, 0, 7); ctx.fill();
+  // planetary systems
+  const rows = spec.rows, rh = phh / rows.length;
+  rows.forEach((row, i) => {
+    const y = T + rh * (i + 0.62);
+    label(ctx, row.name, W - Rr, T + rh * i + 4, "rgba(233,237,255,.55)", "right", "top");
+    ctx.strokeStyle = "rgba(195,202,230,.14)"; ctx.beginPath(); ctx.moveTo(L, y + .5); ctx.lineTo(L + pw, y + .5); ctx.stroke();
+    row.bodies.forEach(([name, a], j) => {
+      if (a < x0 || a > x1) return;
+      const x = X(a), inside = a >= din && a <= dout, opt = a >= dv && a <= dm;
+      ctx.globalAlpha = clamp(P * 1.4 - j * 0.06, 0, 1);
+      if (inside) { ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(x, y, 7, 0, 7); ctx.stroke(); }
+      ctx.fillStyle = inside ? "#fff" : opt ? "rgba(233,237,255,.8)" : "rgba(195,202,230,.5)";
+      ctx.beginPath(); ctx.arc(x, y, inside ? 3.6 : 3, 0, 7); ctx.fill();
+      label(ctx, name, x, y + (j % 2 ? 11 : -11), inside ? "#fff" : "rgba(195,202,230,.7)", "center", j % 2 ? "top" : "bottom");
+      ctx.globalAlpha = 1;
+    });
+  });
+  ctx.font = "600 11.5px 'JetBrains Mono', monospace";
+  label(ctx, `habitable zone ${core.fmt(din, 3)}–${core.fmt(dout, 3)} AU`, L + 4, 4, col, "left", "top");
+}
+
+/* ---- logarithmic class ladder (solar flares) */
+function drawLadder(P) {
+  const { ctx, W, H, st, spec, col } = this;
+  const v = st.result.shown[spec.y];
+  const lo = spec.min, hi = spec.max, L = 12, R = 12, pw = W - L - R;
+  const X = f => L + Math.log(f / lo) / Math.log(hi / lo) * pw;
+  const top = Math.round(H * 0.42), bh = Math.round(H * 0.26);
+  ctx.font = FONT;
+  spec.bands.forEach(([name, f0], i) => {
+    const f1 = i + 1 < spec.bands.length ? spec.bands[i + 1][1] : hi;
+    const a = X(f0), b = X(f1), alpha = 0.07 + i * 0.1;
+    const g = ctx.createLinearGradient(0, top, 0, top + bh); g.addColorStop(0, rgba(col, alpha + .08)); g.addColorStop(1, rgba(col, alpha * .5));
+    ctx.fillStyle = g; roundRect(ctx, a + 1, top, b - a - 2, bh, 6); ctx.fill();
+    ctx.font = "700 " + Math.round(bh * .55) + "px 'Space Grotesk', sans-serif";
+    label(ctx, name, (a + b) / 2, top + bh / 2 + 1, i >= 3 ? "#fff" : "rgba(233,237,255,.75)", "center");
+  });
+  ctx.font = FONT;
+  for (let e = Math.ceil(Math.log10(lo)); e <= Math.floor(Math.log10(hi)); e++) label(ctx, "10" + core.sup(e), X(Math.pow(10, e)), top + bh + 8, AXIS, "center", "top");
+  label(ctx, "peak flux, W/m² (log scale)", L, 4, DIM, "left", "top");
+  // historic events
+  spec.refs.forEach((r, i) => {
+    const x = X(r.v), y = top - 8 - (i % 3) * 13;
+    ctx.strokeStyle = "rgba(233,237,255,.45)"; ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.moveTo(x + .5, y + 3); ctx.lineTo(x + .5, top + bh); ctx.stroke(); ctx.setLineDash([]);
+    label(ctx, r.label, x > W - 90 ? x - 4 : x + 4, y, "rgba(233,237,255,.72)", x > W - 90 ? "right" : "left", "bottom");
+  });
+  // your flare, sliding in from the left
+  if (!(v > 0)) return;
+  const xv = L + (X(clamp(v, lo, hi)) - L) * P;
+  const gl = ctx.createLinearGradient(0, top - 6, 0, top + bh + 6); gl.addColorStop(0, rgba(col, 0)); gl.addColorStop(.5, rgba(col, .9)); gl.addColorStop(1, rgba(col, 0));
+  ctx.fillStyle = gl; ctx.fillRect(xv - 1.5, top - 6, 3, bh + 12);
+  ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.moveTo(xv, top + bh + 3); ctx.lineTo(xv - 6, top + bh + 13); ctx.lineTo(xv + 6, top + bh + 13); ctx.closePath(); ctx.fill();
+  ctx.font = "700 15px 'Space Grotesk', sans-serif";
+  label(ctx, core.flareClass(v), clamp(xv, L + 20, W - R - 20), H - 4, "#fff", "center", "bottom");
+}
+
+/* ---- Hertzsprung–Russell diagram */
+function drawHR(P) {
+  const { ctx, W, H, st, spec, col } = this;
+  const T0 = 42000, T1 = 2300, L0 = 1e-5, L1 = 3e6;
+  const Lm = 40, R = 12, T = 14, B = 24, pw = W - Lm - R, phh = H - T - B;
+  const X = t => Lm + Math.log(T0 / t) / Math.log(T0 / T1) * pw, Y = l => T + phh - Math.log(l / L0) / Math.log(L1 / L0) * phh;
+  // temperature tint
+  const g = ctx.createLinearGradient(Lm, 0, Lm + pw, 0);
+  [42000, 20000, 10000, 7000, 5500, 4500, 3500, 2300].forEach(t => g.addColorStop((X(t) - Lm) / pw, rgba(bbColor(t), .075)));
+  ctx.fillStyle = g; ctx.fillRect(Lm, T, pw, phh);
+  ctx.font = FONT; ctx.lineWidth = 1;
+  [1e-4, 1e-2, 1, 1e2, 1e4, 1e6].forEach(l => { const y = Math.round(Y(l)) + .5; ctx.strokeStyle = GRID; ctx.beginPath(); ctx.moveTo(Lm, y); ctx.lineTo(Lm + pw, y); ctx.stroke(); label(ctx, l === 1 ? "1" : "10" + core.sup(Math.round(Math.log10(l))), Lm - 6, y, AXIS, "right"); });
+  [30000, 10000, 5000, 3000].forEach(t => { const x = Math.round(X(t)) + .5; ctx.strokeStyle = GRID; ctx.beginPath(); ctx.moveTo(x, T); ctx.lineTo(x, T + phh); ctx.stroke(); label(ctx, core.fmt(t, 2) + " K", x, T + phh + 7, AXIS, "center", "top"); });
+  label(ctx, "L/L☉", 4, 2, DIM, "left", "top");
+
+  ctx.save(); ctx.beginPath(); ctx.rect(Lm, T, pw, phh); ctx.clip();
+  // lines of equal radius
+  [0.01, 0.1, 1, 10, 100, 1000].forEach(r => {
+    const Lof = t => r * r * Math.pow(t / 5772, 4);
+    ctx.setLineDash([3, 5]); ctx.strokeStyle = "rgba(195,202,230,.22)"; ctx.beginPath();
+    ctx.moveTo(X(T0), Y(Lof(T0))); ctx.lineTo(X(T1), Y(Lof(T1))); ctx.stroke(); ctx.setLineDash([]);
+    // label at the hot (left) edge, or where the line enters through the top
+    let tl = T0 * 0.97; if (Lof(tl) > L1 * 0.6) tl = 5772 * Math.pow(L1 * 0.45 / (r * r), 0.25);
+    if (Lof(tl) >= L0 && tl <= T0 && tl >= T1) label(ctx, `${core.fmt(r, 2)} R☉`, X(tl) + 3, Y(Lof(tl)) + 3, "rgba(195,202,230,.55)", "left", "top");
+  });
+  // main sequence (approximate track)
+  const MS = [[40000, 3e5], [30000, 6e4], [20000, 4e3], [10000, 50], [7500, 5], [6000, 1.4], [5772, 1], [5000, 0.4], [4000, 0.1], [3500, 0.03], [3000, 0.004], [2500, 0.0006]];
+  ctx.lineCap = "round"; ctx.lineJoin = "round";
+  const msPath = () => { ctx.beginPath(); MS.forEach(([t, l], i) => i ? ctx.lineTo(X(t), Y(l)) : ctx.moveTo(X(t), Y(l))); };
+  msPath(); ctx.strokeStyle = rgba(col, .1); ctx.lineWidth = 16; ctx.stroke();
+  msPath(); ctx.strokeStyle = rgba(col, .35); ctx.lineWidth = 1.2; ctx.stroke();
+  ctx.lineWidth = 1;
+  label(ctx, "main sequence", X(16000), Y(1500) + 16, rgba(col, .8), "left", "top");
+  // catalogue stars
+  spec.stars.forEach(([name, l, t, pos], i) => {
+    const a = clamp(P * spec.stars.length - i, 0, 1);
+    if (!a) return;
+    ctx.globalAlpha = a;
+    const x = X(t), y = Y(l), c = bbColor(t);
+    ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y, 3.2, 0, 7); ctx.fill();
+    const left = pos === "l" || (!pos && x > Lm + pw - 70);
+    const dy = pos === "u" ? -8 : pos === "d" ? 8 : 0;
+    label(ctx, name, left ? x - 6 : x + 6, y + dy, "rgba(233,237,255,.66)", left ? "right" : "left");
+    ctx.globalAlpha = 1;
+  });
+  ctx.restore();
+  // your star
+  const lu = st.disp[spec.L], tu = st.disp[spec.T];
+  const x = clamp(X(tu), Lm, Lm + pw), y = clamp(Y(lu), T, T + phh), c = bbColor(tu);
+  ctx.globalAlpha = clamp((P - .4) / .6, 0, 1);
+  ctx.save(); ctx.setLineDash([3, 4]); ctx.strokeStyle = rgba(col, .5); ctx.beginPath(); ctx.moveTo(x, T + phh); ctx.lineTo(x, y); ctx.lineTo(Lm, y); ctx.stroke(); ctx.restore();
+  const gg = ctx.createRadialGradient(x, y, 0, x, y, 18); gg.addColorStop(0, c); gg.addColorStop(.35, rgba(c, .5)); gg.addColorStop(1, rgba(c, 0));
+  ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(x, y, 18, 0, 7); ctx.fill();
+  ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(x, y, 4, 0, 7); ctx.fill();
+  ctx.font = "600 11px 'JetBrains Mono', monospace";
+  label(ctx, `R = ${core.fmt(st.result.shown.R, 3)} R☉`, x > Lm + pw - 110 ? x - 12 : x + 12, y - 12, "#fff", x > Lm + pw - 110 ? "right" : "left");
+  ctx.globalAlpha = 1;
+}
+
+const DRAW = { xy: drawXY, orbit: drawOrbit, hohmann: drawHohmann, stack: drawStack, refbars: drawRefbars, airy: drawAiry, transit: drawTransit, hz: drawHZ, ladder: drawLadder, hr: drawHR };
+
 /* ================================================================ constants */
 function buildConstants() {
   const tb = $("#ktable tbody");
@@ -1018,7 +1477,7 @@ function filter(raw, jump) {
   if (window.ScrollTrigger) ScrollTrigger.refresh();
   if (jump && terms.length) {
     const top = $("#atlas").getBoundingClientRect().top + scrollY - toolbarOffset();
-    if (scrollY > top) scrollTo({ top, behavior: "auto" });
+    if (scrollY > top) scrollTo({ top, behavior: "instant" });
   }
   spy();
 }
@@ -1056,7 +1515,23 @@ function spy() {
 }
 
 /* ================================================================ motion (GSAP) */
+/** Card entrance: CSS transitions keyed on .in (opacity only on the card, so anchor targets never move);
+ *  the formula wipes in and the plot draws itself (Plot.replay). */
+const revealIO = new IntersectionObserver(ents => ents.forEach(en => {
+  if (!en.isIntersecting) return;
+  revealIO.unobserve(en.target);
+  reveal(en.target);
+}), { rootMargin: "0px 0px -8% 0px", threshold: 0.04 });
+function reveal(art) {
+  if (!art.classList.contains("pre")) return;
+  const c = art.__card;
+  if (c) hydrate(c);
+  art.classList.remove("pre");
+  art.classList.add("in");
+  if (c && c.st && c.st.plot) c.st.plot.replay();
+}
 function setupMotion() {
+  if (!REDUCED) CARDS.forEach(c => revealIO.observe(c.art));
   if (!gsap || REDUCED) return;
   // Keep animations on wall-clock time: a slow first build must not stretch the intro.
   gsap.ticker.lagSmoothing(0);
@@ -1068,22 +1543,6 @@ function setupMotion() {
   $$(".ch-head").forEach(h => {
     gsap.from(h.querySelector(".ch-num"), { scrollTrigger: { trigger: h, start: "top 88%", once: true }, x: -30, opacity: 0, duration: 1, ease: "power3.out" });
     gsap.from(h.querySelectorAll(".eyebrow, h2, .lede, .ch-toc"), { scrollTrigger: { trigger: h, start: "top 88%", once: true }, y: 28, opacity: 0, filter: "blur(6px)", duration: .9, stagger: .08, ease: "power3.out", clearProps: "filter" });
-  });
-  const cards = $$(".eq");
-  // Only opacity on the card itself: a transform would shift anchor-link targets.
-  gsap.set(cards, { opacity: 0 });
-  ST.batch(cards, {
-    start: "top 92%", once: true,
-    onEnter: batch => {
-      batch.forEach(el => { const c = CARDS.find(x => x.art === el); if (c) hydrate(c); });
-      gsap.to(batch, { opacity: 1, duration: .9, stagger: .12, ease: "power2.out", overwrite: true });
-      batch.forEach((c, i) => {
-        gsap.from(c.querySelectorAll(".eq-head, .eq-main, .eq-lab"), { y: 34, duration: 1, stagger: .08, delay: i * .12, ease: "power3.out", clearProps: "transform" });
-        const disp = c.querySelector(".eq-formula .katex-display");
-        if (disp) gsap.fromTo(disp, { clipPath: "inset(0 100% 0 0)", opacity: .2 }, { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 1.3, delay: .15 + i * .12, ease: "power2.out", clearProps: "clipPath" });
-        gsap.from(c.querySelectorAll(".lab-out"), { y: 12, opacity: 0, duration: .6, stagger: .06, delay: .35 + i * .12, ease: "power2.out" });
-      });
-    }
   });
   gsap.from(".eqx-constants tbody tr", { scrollTrigger: { trigger: "#ktable", start: "top 85%", once: true }, opacity: 0, x: -12, duration: .5, stagger: .025, ease: "power2.out" });
   // montage parallax

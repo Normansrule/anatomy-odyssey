@@ -208,7 +208,7 @@ function ticker(el, to, fmt, dur = 1.4) {
 }
 const int = v => Math.round(v).toLocaleString("en-US");
 
-/* ------------------------------------------------ page metadata (22 pages) */
+/* ------------------------------------------------ page metadata (from Codex.pages) */
 const NEW_PAGES = new Set(["builder", "space-weather", "galaxies"]);
 function page(id) {
   const p = (window.Codex ? Codex.pages : []).find(x => x[0] === id) || [id, id, id + ".html", "", ""];
@@ -294,7 +294,7 @@ const PATHS = {
     ["moon-landing", "Take over Eagle for the last few hundred metres, like Armstrong.", "8 min"]] },
   orbits: { c: "var(--ice)", title: "From Newton's cannon to a <em>Mars transfer</em>", total: "about 40 minutes", steps: [
     ["orbits", "Newton's cannonball, Kepler's laws, Hohmann transfers and Lagrange points, hands-on.", "15 min"],
-    ["equations", "Vis-viva, the rocket equation and 45 more, each with a live calculator.", "20 min"],
+    ["equations", "Vis-viva, the rocket equation and 90 more, each with a live calculator.", "20 min"],
     ["solar-system", "Check your answers against where the planets really are today.", "5 min"]] },
   build: { c: "var(--sol)", title: "Design it, compare it, <em>build it</em>", total: "an evening, then a weekend", steps: [
     ["builder", "Stack tanks and engines, watch Δv update, then launch your design.", "10 min"],

@@ -11,10 +11,43 @@
  *   any earlier output ids. output.div converts the SI result to display units.
  */
 
+/** Composite Simpson rule ∫ f(x) dx from a to b with n (even) intervals. */
+function simpson(f, a, b, n = 400) {
+  if (!(b !== a)) return 0;
+  n += n % 2;
+  const h = (b - a) / n;
+  let s = f(a) + f(b);
+  for (let i = 1; i < n; i++) s += (i % 2 ? 4 : 2) * f(a + i * h);
+  return s * h / 3;
+}
+/** Bisection root of f on [lo, hi] (f(lo) and f(hi) must differ in sign); geometric steps when both ends > 0. */
+function bisect(f, lo, hi, iters = 200) {
+  let flo = f(lo);
+  if (flo === 0) return lo;
+  if (Math.sign(flo) === Math.sign(f(hi))) return NaN;
+  const geo = lo > 0 && hi / lo > 1e3;
+  for (let i = 0; i < iters; i++) {
+    const mid = geo ? Math.sqrt(lo * hi) : (lo + hi) / 2;
+    const fm = f(mid);
+    if (fm === 0) return mid;
+    if (Math.sign(fm) === Math.sign(flo)) { lo = mid; flo = fm; } else hi = mid;
+    if (Math.abs(hi - lo) <= 1e-13 * Math.abs(mid)) break;
+  }
+  return geo ? Math.sqrt(lo * hi) : (lo + hi) / 2;
+}
+
+/** Curvature function S_k (Hogg 1999): sinh for open (k > 0), sin for closed (k < 0), identity for flat. */
+function sinn(x, k) {
+  if (Math.abs(k) < 1e-9) return x;
+  const q = Math.sqrt(Math.abs(k));
+  return k > 0 ? Math.sinh(q * x) / q : Math.sin(q * x) / q;
+}
+
 export const MATH = {
   sqrt: Math.sqrt, cbrt: Math.cbrt, pow: Math.pow, exp: Math.exp, log: Math.log, log10: Math.log10,
   log1p: Math.log1p, expm1: Math.expm1, sin: Math.sin, cos: Math.cos, tan: Math.tan, atan: Math.atan,
-  atan2: Math.atan2, abs: Math.abs, min: Math.min, max: Math.max, PI: Math.PI
+  atan2: Math.atan2, asin: Math.asin, acos: Math.acos, sinh: Math.sinh, tanh: Math.tanh, floor: Math.floor,
+  abs: Math.abs, min: Math.min, max: Math.max, PI: Math.PI, simpson, bisect, sinn
 };
 
 /** constants array → { key: value } */
@@ -158,12 +191,27 @@ export function timeParts(s) {
 
 /** Format an output's display value (already divided) → { num, unit } */
 export function formatOutput(o, value, mode = "text") {
+  if (o.fmt === "flare") return { num: flareClass(value), unit: o.unit || "" };
   if (o.fmt === "time") {
     const t = timeParts(value);
     return { num: fmt(t.value, o.sig || 4, mode), unit: t.unit };
   }
   return { num: fmt(value, o.sig || 4, mode), unit: o.unit || "" };
 }
+
+/** Soft X-ray (0.1–0.8 nm) peak flux in W/m² → NOAA flare class, e.g. 9.3e-4 → "X9.3". */
+export function flareClass(F) {
+  if (!(F > 0) || !isFinite(F)) return "—";
+  const L = [["A", 1e-8], ["B", 1e-7], ["C", 1e-6], ["M", 1e-5], ["X", 1e-4]];
+  let k = 0;
+  while (k < L.length - 1 && F >= L[k + 1][1] * (1 - 1e-9)) k++;
+  let n = F / L[k][1];
+  if (n < 10 && +n.toFixed(1) >= 10 && k < L.length - 1) { k++; n = 1; } // 9.99 × 10⁻⁶ reads as M1.0, not C10.0
+  return L[k][0] + (n >= 10 ? n.toFixed(0) : n.toFixed(1));
+}
+
+/** Two-digit chapter label: 1 → "01", 10 → "10" */
+export const chapLabel = n => String(n).padStart(2, "0");
 
 /** Section numbering "2.3" for an equation */
 export function numbering(data) {

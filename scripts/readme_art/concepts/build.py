@@ -12,7 +12,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 FIGS = ["fig_rocket", "fig_hohmann", "fig_kepler", "fig_light", "fig_orbits", "fig_hoverslam",
-        "fig_blackhole", "fig_staging", "fig_mars", "fig_metro", "fig_scale"]
+        "fig_blackhole", "fig_staging", "fig_mars", "fig_metro", "fig_scale",
+        "fig_resolution", "fig_transit", "fig_redshift", "fig_wavelengths", "fig_sunspots", "fig_linkbudget"]
 
 if __name__ == "__main__":
     for name in FIGS:

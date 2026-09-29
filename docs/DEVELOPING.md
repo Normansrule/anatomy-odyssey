@@ -50,6 +50,9 @@ cosmic-library/
 | builder | builder.html | sim — design a rocket and fly it |
 | space-weather | space-weather.html | sim — live solar wind, geomagnetic storms, aurora |
 | galaxies | galaxies.html | sim — Milky Way–Andromeda collision (GPU N-body) |
+| solar-observatory | solar-observatory.html | atlas — live SDO/SOHO/GOES imagery + great solar images |
+| surveys | surveys.html | sim — Aladin Lite multi-wavelength sky atlas |
+| telescopes | telescopes.html | atlas — remote telescopes, live feeds, simulators directory |
 
 ## Page skeleton
 

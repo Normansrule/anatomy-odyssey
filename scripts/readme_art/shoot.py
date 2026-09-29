@@ -2,7 +2,10 @@
 """Screenshot preview.html (hero + tiles on GitHub light/dark) at several animation times.
 
     python scripts/readme_art/shoot.py OUT_DIR [--times 800,2600,5200] [--scale 1] [--reduced]
-        [--only hero|tile-id] [--size 400]
+        [--only hero|tile-id] [--size 400] [--page preview_more.html]
+
+--page preview_more.html shows the section banners, dividers, stats, sub-README banners,
+new tiles and new concept animations on GitHub light and dark.
 
 --only renders a single SVG at native size (x --scale) for close inspection.
 """
@@ -30,6 +33,7 @@ def main():
     ap.add_argument("--only", default="")
     ap.add_argument("--dark", action="store_true")
     ap.add_argument("--grid", default="")
+    ap.add_argument("--page", default="preview.html", help="preview page in scripts/readme_art/ (e.g. preview_more.html)")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     srv = serve()
@@ -57,16 +61,18 @@ def main():
             pg.set_content(f'<body style="margin:0;padding:20px;background:{bg}"><img src="{base}/{src}" width="{w}"></body>')
             target = None
         else:
-            pg.goto(f"{base}/scripts/readme_art/preview.html", wait_until="load")
+            pg.goto(f"{base}/scripts/readme_art/{a.page}", wait_until="load")
             # offscreen <img> SVGs do not animate: make the viewport as tall as the page, then reload
+            wid = 960 if a.page == "preview.html" else 1840
+            pg.set_viewport_size({"width": wid, "height": 900})
             hgt = pg.evaluate("document.documentElement.scrollHeight")
-            pg.set_viewport_size({"width": 960, "height": hgt})
+            pg.set_viewport_size({"width": wid, "height": hgt})
             pg.reload(wait_until="load")
         last = 0
         for t in [int(x) for x in a.times.split(",")]:
             pg.wait_for_timeout(max(0, t - last))
             last = t
-            name = f"{('grid' if a.grid else '') or a.only or 'preview'}{'-reduced' if a.reduced else ''}{'-dark' if a.dark else ''}-{t}.png"
+            name = f"{('grid' if a.grid else '') or a.only or a.page[:-5]}{'-reduced' if a.reduced else ''}{'-dark' if a.dark else ''}-{t}.png"
             pg.screenshot(path=os.path.join(a.out, name), full_page=True)
             print("saved", name)
         b.close()

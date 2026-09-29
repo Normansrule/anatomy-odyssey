@@ -7,6 +7,7 @@ affordance, travelling border beam).
 import math
 import random
 
+from tiles_extra import s_solar_obs, s_surveys, s_telescopes
 from common import (AURORA, BG, FLAME, FAINT, ICE, MUTED, NEBULA, PLASMA, SOL, TEXT, TEXT2, anim, arclen_sampler,
                     ellipse_arc, ellipse_pts, f, kf, neg, orbit_kf, pts_path, rrpath, stars, svg_doc, tr, twinkle_css,
                     window_kf)
@@ -31,15 +32,18 @@ PAGES = [
     ("scale", "Cosmic scale", "Explore", "Zoom from a person to the whole universe", "scale.html"),
     ("space-weather", "Space weather", "Explore", "Solar wind, storms and aurora, live", "space-weather.html"),
     ("galaxies", "Galaxy collision", "Explore", "Milky Way meets Andromeda", "galaxies.html"),
+    ("solar-observatory", "Solar observatory", "Explore", "Today's real Sun from SDO, SOHO and GOES", "solar-observatory.html"),
+    ("surveys", "Sky surveys", "Explore", "Pan the real sky in a dozen wavelengths", "surveys.html"),
     ("orbits", "Orbit Lab", "Learn", "Newton, Kepler, Hohmann and Lagrange", "orbits.html"),
-    ("equations", "Equations", "Learn", "47 equations with live calculators", "equations.html"),
-    ("gallery", "Gallery", "Learn", "Fifty photographs that changed us", "gallery.html"),
+    ("equations", "Equations", "Learn", "94 equations with live calculators", "equations.html"),
+    ("gallery", "Gallery", "Learn", "60+ photographs that changed us", "gallery.html"),
     ("timeline", "Timeline", "Learn", "1903 to today, every milestone", "timeline.html"),
     ("library", "Documents", "Learn", "Flight manuals, reports and user guides", "library.html"),
+    ("telescopes", "Use a telescope", "Learn", "Free robotic telescopes, live feeds, simulators", "telescopes.html"),
     ("experiments", "Experiments", "Build", "20 builds from $0 to a custom circuit board", "experiments.html"),
     ("python", "Python toolkit", "Compute", "7 simulations and 52 physics tests", "simulations/"),
 ]
-LIVE = {"earth", "space-weather"}
+LIVE = {"earth", "space-weather", "solar-observatory"}
 
 FLICKER = (kf("fk", [(0, "transform:scale(1,1)"), (25, "transform:scale(.82,1.22)"), (50, "transform:scale(1.08,.86)"),
                      (75, "transform:scale(.9,1.14)"), (100, "transform:scale(1,1)")]) + anim(".fk", "fk", 0.16))
@@ -1323,6 +1327,7 @@ SCENES = {
     "black-hole": s_blackhole, "scale": s_scale, "space-weather": s_spaceweather, "galaxies": s_galaxies,
     "orbits": s_orbits, "equations": s_equations, "gallery": s_gallery, "timeline": s_timeline, "library": s_library,
     "experiments": s_experiments, "python": s_python,
+    "solar-observatory": s_solar_obs, "surveys": s_surveys, "telescopes": s_telescopes,
 }
 
 ALT = {
@@ -1347,6 +1352,9 @@ ALT = {
     "timeline": "A glowing marker travels along a timeline from 1903 to 2021, stopping at milestones from the first powered flight to Perseverance on Mars.",
     "library": "An open book whose pages flip, full of text lines and small diagrams.",
     "experiments": "Five stacked levels of builds light up from the bottom: kitchen table, garage and backyard, first real rockets, avionics and research grade.",
+    "solar-observatory": "The real Sun as the Solar Dynamics Observatory sees it, cycling through its channels: gold AIA 171 Å (about 600,000 K), bronze 193 Å (1.6 million K), red 304 Å (50,000 K), teal 131 Å (10 million K, flares) and the grey visible-light HMI disc with sunspots, with the same active regions in every view.",
+    "surveys": "The same patch of sky around Orion fades through six wavelengths, radio, infrared, visible, ultraviolet, X-ray and gamma ray, while a marker slides along the electromagnetic spectrum and a caption says what each band shows.",
+    "telescopes": "An observatory dome opens its shutter, the telescope inside slews to the Orion Nebula and locks on at RA 05h 35m 17s, Dec −05° 23′ 28″, while a small radio dish nods beside it.",
     "python": "A terminal types python simulations/run.py rocket, then plots the ascent curves of Saturn V and Falcon 9.",
 }
 

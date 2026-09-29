@@ -1,3 +1,5 @@
+<p align="center"><img src="../media/readme/sub/experiments.svg" alt="Experiments: a five-level build ladder lighting up while a rocket climbs past each rung" width="100%"></p>
+
 # Experiments — the Cosmic Library build ladder
 
 Twenty hands-on builds that climb from a paper rocket on the kitchen table to a certified high-power

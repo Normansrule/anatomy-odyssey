@@ -54,10 +54,40 @@
     <div class="tl-status"><span id="tlCount" aria-live="polite">110 milestones</span><button class="btn small" type="button" id="tlReset" hidden>Clear filters</button></div>
   </section>
 
+  <!-- ================= SPACE RACE CHART ================= -->
+  <section class="shell tl-race" id="race" aria-labelledby="raceTitle">
+    <div class="tl-race-head">
+      <div class="eyebrow reveal">The space race, decade by decade</div>
+      <h2 id="raceTitle" class="reveal" data-delay="60">Who reached the milestones, and when?</h2>
+      <p class="lede reveal" data-delay="120">Each band is one agency. Its thickness is how many milestones on this timeline it took part in that decade, so the total height is the pace of the space age. Watch the Soviet lead of the 1950s, the American surge to the Moon, and the crowded 2020s. Select a band, or a name below, to filter the line; the gold stars mark famous firsts.</p>
+    </div>
+    <figure class="tl-race-fig reveal" data-delay="120">
+      <div class="tl-race-plot" id="racePlot">
+        <svg id="raceSvg" role="img" aria-labelledby="raceDesc"><desc id="raceDesc">Stacked area chart of milestones per decade for each agency, 1900s to 2020s. The same numbers are in the table below.</desc></svg>
+        <div class="tl-race-tip" id="raceTip" aria-hidden="true"></div>
+      </div>
+      <figcaption class="tl-race-foot">
+        <div class="tl-race-legend" id="raceLegend" role="group" aria-label="Filter the timeline by agency"></div>
+        <p class="tl-race-note">Counts are milestones listed on this page (a curated selection, not every launch). An event shared by two agencies counts once for each. The 2020s are counted to date.</p>
+        <details class="tl-race-table">
+          <summary>Show the numbers as a table</summary>
+          <div class="table-wrap"><table class="data" id="raceTable"></table></div>
+        </details>
+      </figcaption>
+    </figure>
+  </section>
+
   <!-- ================= THE LINE ================= -->
   <section class="shell tl-wrap" id="tl-start" aria-label="Timeline of spaceflight">
     <div class="tl" id="tl">
-      <div class="tl-spine" aria-hidden="true"><div class="tl-fill" id="tlFill"></div><div class="tl-head" id="tlHead"></div></div>
+      <div class="tl-spine" aria-hidden="true"><div class="tl-fill" id="tlFill"></div><div class="tl-head" id="tlHead">
+        <span class="tl-yearpill" id="tlYearPill">1903</span>
+        <svg class="tl-rocket" viewBox="0 0 24 56"><defs><linearGradient id="rkBody" x1="0" x2="1"><stop offset="0" stop-color="#6d7596"/><stop offset=".45" stop-color="#eef2ff"/><stop offset="1" stop-color="#5a6284"/></linearGradient></defs>
+          <g class="tl-rk-flame"><path d="M12 0 C 16 8, 17 14, 12 22 C 7 14, 8 8, 12 0 Z" fill="#ff7a3d" opacity=".75"/><path d="M12 6 C 14 11, 14.5 15, 12 20 C 9.5 15, 10 11, 12 6 Z" fill="#ffe7b0"/></g>
+          <path d="M7 20 L17 20 L17 42 C 17 48, 14 52, 12 55 C 10 52, 7 48, 7 42 Z" fill="url(#rkBody)"/>
+          <path d="M7 22 L2 16 L2 26 L7 30 Z M17 22 L22 16 L22 26 L17 30 Z" fill="#ff7a3d"/>
+          <circle cx="12" cy="36" r="2.4" fill="#0b1020" stroke="#7cc8ff" stroke-width=".8"/></svg>
+      </div></div>
       <ol class="tl-list" id="tlList"></ol>
       <p class="tl-empty" id="tlEmpty" hidden>No milestones match those filters.</p>
     </div>

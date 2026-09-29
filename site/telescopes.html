@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Use a Telescope · Cosmic Library</title>
+<meta name="description" content="A checked directory of real robotic telescopes, radio dishes, live observatory feeds, sky atlases, simulators, data archives and citizen-science projects you can use from a browser, with a live day/night map and step-by-step first observations.">
+<meta property="og:title" content="Use a Telescope · Cosmic Library">
+<meta property="og:description" content="A checked directory of real robotic telescopes, radio dishes, live observatory feeds, sky atlases, simulators, data archives and citizen-science projects you can use from a browser, with a live day/night map and step-by-step first observations.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="assets/css/telescopes.css">
+</head>
+<body data-page="telescopes">
+<main class="page">
+
+  <!-- ================= HERO ================= -->
+  <section class="shell ts-hero">
+    <div class="ts-hero-copy">
+      <div class="eyebrow hero-in" style="animation-delay:0ms">Use a telescope</div>
+      <h1 class="hero-in" style="animation-delay:80ms">Use a real telescope, <span class="grad-text">from your browser.</span></h1>
+      <p class="lede hero-in" style="animation-delay:160ms">
+        Robotic telescopes that take your picture tonight, a radio dish that hears hydrogen in the Milky Way,
+        live cameras on mountain-top observatories, and the same archives professionals download from.
+        Every entry below was checked against its official site, with its cost and who can use it.
+      </p>
+      <div class="row hero-in" style="animation-delay:240ms">
+        <a class="btn primary" href="#choose">What do you want to do?</a>
+        <a class="btn" href="#directory">Browse all</a>
+        <a class="btn" href="#guides">First observation, step by step</a>
+      </div>
+      <div class="ts-stats hero-in" style="animation-delay:320ms">
+        <div class="stat"><div class="num" id="statAll">—</div><div class="lbl">Things to use</div></div>
+        <div class="stat"><div class="num" id="statFree">—</div><div class="lbl">Free</div></div>
+        <div class="stat"><div class="num" id="statSites">—</div><div class="lbl">Observatory sites</div></div>
+        <div class="stat"><div class="num dark-num" id="statDark">—</div><div class="lbl">In darkness now</div></div>
+      </div>
+    </div>
+
+    <figure class="ts-hero-art hero-in" style="animation-delay:200ms">
+      <svg id="dome" viewBox="0 0 560 470" role="img" aria-labelledby="domeTitle">
+        <title id="domeTitle">Animated observatory: the dome opens, the telescope slews to a real target, exposes, and delivers an image.</title>
+        <defs>
+          <radialGradient id="dSky" cx="50%" cy="30%" r="80%"><stop offset="0" stop-color="#16204a"/><stop offset=".6" stop-color="#0a0f26"/><stop offset="1" stop-color="#05070f"/></radialGradient>
+          <linearGradient id="dMetal" x1="0" x2="1"><stop offset="0" stop-color="#3a4668"/><stop offset=".35" stop-color="#c9d6f2"/><stop offset=".55" stop-color="#8fa0c8"/><stop offset="1" stop-color="#27304d"/></linearGradient>
+          <linearGradient id="dWall" x1="0" x2="1"><stop offset="0" stop-color="#1a2240"/><stop offset=".45" stop-color="#2d3a62"/><stop offset="1" stop-color="#121830"/></linearGradient>
+          <linearGradient id="dTube" x1="0" x2="1"><stop offset="0" stop-color="#e9edff"/><stop offset=".5" stop-color="#9fb3e6"/><stop offset="1" stop-color="#5a6a99"/></linearGradient>
+          <linearGradient id="dBeam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9c7" stop-opacity=".9"/><stop offset="1" stop-color="#7cc8ff" stop-opacity="0"/></linearGradient>
+          <radialGradient id="dGlow"><stop offset="0" stop-color="#fff"/><stop offset=".25" stop-color="#cfe6ff" stop-opacity=".8"/><stop offset="1" stop-color="#7cc8ff" stop-opacity="0"/></radialGradient>
+          <clipPath id="domeClip"><path d="M180 300 A100 100 0 0 1 380 300 Z"/></clipPath>
+          <clipPath id="slitClip"><rect id="slitClipRect" x="261" y="186" width="38" height="120"/></clipPath>
+          <clipPath id="skyClip"><rect x="0" y="0" width="560" height="470" rx="24"/></clipPath>
+        </defs>
+        <g clip-path="url(#skyClip)">
+          <rect width="560" height="470" fill="url(#dSky)"/>
+          <path d="M-20 170 C 120 120, 260 40, 600 -10 L 600 60 C 300 110, 140 170, -20 240 Z" fill="#b18cff" opacity=".07"/>
+          <g id="domeStars"></g>
+          <g id="dTarget" opacity="0">
+            <circle id="tGlow" r="26" fill="url(#dGlow)" opacity=".5"/>
+            <circle r="3.2" fill="#fff"/>
+            <g id="reticle" fill="none" stroke="#7cc8ff" stroke-width="1.3">
+              <circle r="18" stroke-dasharray="4 5"/>
+              <path d="M-28 0h-8M28 0h8M0 -28v-8M0 28v8"/>
+              <circle id="expRing" r="23" stroke="#4ef0b8" stroke-width="2.2" stroke-dasharray="144.5" stroke-dashoffset="144.5" transform="rotate(-90)"/>
+            </g>
+          </g>
+          <line id="photons" x1="0" y1="0" x2="0" y2="0" stroke="#ffe9c7" stroke-width="1.6" stroke-dasharray="3 9" opacity="0"/>
+          <!-- ground -->
+          <path d="M0 395 C 90 380, 160 372, 280 376 S 470 386, 560 372 L560 470 L0 470 Z" fill="#070a16"/>
+          <path d="M0 410 C 120 398, 220 405, 330 402 S 500 396, 560 404 L560 470 L0 470 Z" fill="#04050a"/>
+          <!-- building -->
+          <rect x="190" y="298" width="180" height="92" rx="3" fill="url(#dWall)" stroke="rgba(150,190,255,.25)"/>
+          <rect x="266" y="340" width="28" height="50" rx="2" fill="#0a0e1f" stroke="rgba(150,190,255,.25)"/>
+          <circle cx="288" cy="366" r="1.6" fill="#ffc24b"/>
+          <rect x="206" y="318" width="22" height="12" rx="2" fill="#ffc24b" opacity=".55" id="window1"/>
+          <!-- dome -->
+          <g clip-path="url(#domeClip)">
+            <rect x="178" y="198" width="204" height="104" fill="url(#dMetal)"/>
+            <g id="ribs" stroke="rgba(10,14,31,.35)" stroke-width="1"></g>
+            <g clip-path="url(#slitClip)">
+              <rect x="178" y="190" width="204" height="115" fill="#060913"/>
+              <g id="scope">
+                <rect x="270" y="286" width="20" height="16" rx="2" fill="#39456d"/>
+                <g id="tube">
+                  <rect x="268" y="206" width="24" height="82" rx="3" fill="url(#dTube)"/>
+                  <rect x="265" y="198" width="30" height="15" rx="2" fill="#eef2ff"/>
+                  <rect x="266" y="199" width="28" height="3" fill="#7cc8ff" opacity=".8"/>
+                  <rect x="292" y="238" width="6" height="16" rx="1" fill="#7cc8ff"/>
+                  <circle cx="280" cy="284" r="5" fill="#1b2340" stroke="#9fb3e6"/>
+                </g>
+              </g>
+            </g>
+            <rect id="shutter" x="261" y="186" width="38" height="120" fill="url(#dMetal)" stroke="rgba(10,14,31,.55)"/>
+          </g>
+          <path d="M180 300 A100 100 0 0 1 380 300" fill="none" stroke="rgba(233,237,255,.35)" stroke-width="1.2"/>
+          <rect x="184" y="296" width="192" height="6" rx="2" fill="#4a5680"/>
+          <!-- result card -->
+          <g id="resultPos"><g id="result" opacity="0">
+            <rect x="0" y="0" width="150" height="176" rx="12" fill="rgba(8,11,22,.92)" stroke="rgba(124,200,255,.45)"/>
+            <image id="resultImg" x="10" y="10" width="130" height="130" preserveAspectRatio="xMidYMid slice"/>
+            <rect x="10" y="10" width="130" height="130" fill="none" stroke="rgba(150,190,255,.25)"/>
+            <text id="resultTxt" x="12" y="158" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#e9edff">M31 · 60 s · FITS</text>
+            <text x="12" y="170" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#8f98bd">delivered to your inbox</text>
+          </g></g>
+          <!-- status HUD -->
+          <g font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1">
+            <circle id="statusDot" cx="24" cy="26" r="4" fill="#4ef0b8"/>
+            <text id="statusTxt" x="36" y="30" fill="#e9edff">STANDBY</text>
+            <text id="coordTxt" x="24" y="48" fill="#8f98bd" font-size="10">RA — · Dec —</text>
+          </g>
+        </g>
+        <rect x=".5" y=".5" width="559" height="469" rx="24" fill="none" stroke="rgba(150,170,255,.18)"/>
+      </svg>
+      <figcaption class="mono">A remote observation in four steps: open, slew, expose, deliver. Target coordinates are real (J2000).</figcaption>
+    </figure>
+  </section>
+
+  <!-- ================= CHOOSER ================= -->
+  <section class="block shell" id="choose">
+    <div class="sec-head">
+      <div class="eyebrow reveal">Start here</div>
+      <h2 class="reveal">What do you want to do?</h2>
+      <p class="lede reveal">Pick one and the directory below rearranges itself to show only what does that job, easiest and free first.</p>
+    </div>
+    <div class="goals" id="goals" role="group" aria-label="Choose a goal"></div>
+  </section>
+
+  <!-- ================= DIRECTORY ================= -->
+  <section class="block shell" id="directory">
+    <div class="sec-head">
+      <div class="eyebrow reveal">The directory</div>
+      <h2 class="reveal">Everything you can actually use</h2>
+      <p class="lede reveal">Filter by kind, cost and who can sign up. The map shows where each observatory is and whether it is dark there right now. Hover a pin to find its card; click it to filter. Press <kbd>/</kbd> to search.</p>
+    </div>
+
+    <div class="dir-layout">
+      <div class="dir-main">
+        <div class="filters" id="filters">
+          <div class="f-row">
+            <label class="search">
+              <span class="sr-only">Search the directory</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <input type="search" id="q" placeholder="Search: radio, Chile, galaxy, FITS…" autocomplete="off">
+              <kbd class="slash">/</kbd>
+            </label>
+            <div class="count-badge" aria-live="polite"><span id="countShown">0</span><span class="of"> of <span id="countTotal">0</span></span></div>
+            <label class="switch dark-switch"><span>Can observe now</span><input type="checkbox" id="darkOnly"></label>
+            <button class="btn small" id="reset" type="button">Reset</button>
+          </div>
+          <div class="active-row" id="activeRow" hidden></div>
+          <div class="f-groups">
+            <div class="f-group"><span class="f-lbl">Kind</span><div class="chips" id="fType" role="group" aria-label="Filter by kind"></div></div>
+            <div class="f-group"><span class="f-lbl">Cost</span><div class="chips" id="fCost" role="group" aria-label="Filter by cost"></div></div>
+            <div class="f-group"><span class="f-lbl">Who</span><div class="chips" id="fAud" role="group" aria-label="Filter by who can use it"></div></div>
+          </div>
+        </div>
+        <div class="t-grid" id="grid" aria-live="polite"></div>
+        <div class="empty" id="empty" hidden>
+          <p>Nothing matches all of those. Try removing a filter.</p>
+          <button class="btn small" type="button" id="reset2">Clear filters</button>
+        </div>
+        <div class="more-row"><button class="btn" id="more" type="button" hidden>Show all</button></div>
+      </div>
+
+      <aside class="map-panel" aria-labelledby="mapTitle">
+        <div class="mp-head">
+          <h3 id="mapTitle">Where it is dark right now</h3>
+          <span class="mp-clock mono" id="mpClock">—</span>
+        </div>
+        <div class="map-wrap" id="mapWrap">
+          <canvas id="map" aria-label="World map with the day and night regions and pins at each observatory site"></canvas>
+          <div class="pins" id="pins"></div>
+          <div class="pin-tip" id="pinTip" hidden></div>
+        </div>
+        <div class="mp-time">
+          <div class="field">
+            <label for="tOff">Time <output id="tOffOut">now</output></label>
+            <input type="range" id="tOff" min="-12" max="24" step="0.25" value="0">
+          </div>
+          <button class="btn small" id="tNow" type="button">Now</button>
+        </div>
+        <div class="mp-legend mono">
+          <span><i class="lg day"></i>Day</span><span><i class="lg twi"></i>Twilight</span><span><i class="lg night"></i>Night</span>
+          <span><i class="lg pin-dark"></i>Dark: can observe</span><span><i class="lg pin-day"></i>Daylight</span>
+        </div>
+        <div class="mp-now" id="mpNow"></div>
+        <p class="hint">Dark means the Sun is more than 12° below the horizon (nautical twilight). Radio telescopes work in daylight too. Sun position from the Astronomical Almanac's low-precision formulae; coastlines from Natural Earth.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= GUIDES ================= -->
+  <section class="block shell" id="guides">
+    <div class="sec-head">
+      <div class="eyebrow reveal">Your first remote observation</div>
+      <h2 class="reveal">Three first observations, step by step</h2>
+      <p class="lede reveal">An optical picture, a radio spectrum and a plan for your own sky. Each takes under an hour of your time.</p>
+    </div>
+    <div class="g-tabs" id="gTabs" role="tablist" aria-label="Guides"></div>
+    <div class="g-body" id="gBody"></div>
+  </section>
+
+  <!-- ================= TIME ALLOCATION ================= -->
+  <section class="block shell" id="allocation">
+    <div class="sec-head">
+      <div class="eyebrow reveal">How professionals get telescope time</div>
+      <h2 class="reveal">Nobody just walks up to the Very Large Telescope</h2>
+      <p class="lede reveal">Big observatories give out time by competition. Understanding the pipeline explains why the archives above are full of free data.</p>
+    </div>
+    <div class="alloc card reveal">
+      <svg class="alloc-line" id="allocLine" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true"><path d="M20 20 H980" fill="none" stroke="url(#alG)" stroke-width="2" stroke-dasharray="4 7"/><defs><linearGradient id="alG" x1="0" x2="1"><stop offset="0" stop-color="#7cc8ff"/><stop offset=".5" stop-color="#b18cff"/><stop offset="1" stop-color="#4ef0b8"/></linearGradient></defs></svg>
+      <ol class="alloc-steps" id="allocSteps">
+        <li><span class="an">1</span><h4>Call for proposals</h4><p>Once or twice a year each observatory announces how many hours it has and what its instruments can do.</p></li>
+        <li><span class="an">2</span><h4>Write a proposal</h4><p>A short science case plus a technical case: exposure times from the observatory's exposure time calculator, and why this telescope.</p></li>
+        <li><span class="an">3</span><h4>Peer review</h4><p>A Time Allocation Committee (TAC) of astronomers ranks the proposals. Many, including the Space Telescope Science Institute (STScI), use dual-anonymous review, so reviewers don't know who wrote each one.</p></li>
+        <li><span class="an">4</span><h4>Scheduling</h4><p>Top-ranked programmes are scheduled, often in a queue that runs each one when the sky, Moon and weather suit it. A small reserve, Director's Discretionary Time, covers surprises like a new supernova.</p></li>
+        <li><span class="an">5</span><h4>Observe</h4><p>Usually nobody from the team is at the telescope: staff or robots take the data, just like the robotic networks above.</p></li>
+        <li><span class="an">6</span><h4>Archive</h4><p>After an exclusive-access period, commonly up to a year and sometimes zero, the data become public in archives like MAST and the ESO Science Archive. That is what you download.</p></li>
+      </ol>
+      <div class="alloc-foot">
+        <div class="over" aria-hidden="true"><span class="ov-l">Hours requested</span><div class="over-bar req"></div><span class="ov-l">Hours available</span><div class="over-bar avail"></div></div>
+        <p class="muted">Large observatories are routinely <strong>oversubscribed</strong>: several times more hours are requested than exist, so most good proposals are turned down. (Bars illustrative.) Student routes in: summer research programmes, co-writing a proposal with a supervisor, and the education networks above, which run the same queue scheduling at a smaller scale.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell">
+    <p class="fine muted" id="fine">Cosmic Library is not affiliated with any organisation listed here; names are shown as text, never logos. Every entry was checked against its official site on <span id="checked">28 September 2026</span>. Prices change: "about" prices are typical list prices, so check the site before you pay. Map pins are approximate. If a link breaks, please open an issue on GitHub.</p>
+  </section>
+
+</main>
+<script src="assets/js/codex.js"></script>
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/Flip.min.js"></script>
+<script type="module" src="assets/js/telescopes.js"></script>
+</body>
+</html>

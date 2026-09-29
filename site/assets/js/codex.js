@@ -24,15 +24,18 @@
     ["sky", "Night sky", "sky.html", "Explore", "A planetarium for your location, tonight"],
     ["solar-system", "Solar system", "solar-system.html", "Explore", "Every planet where it is today"],
     ["sun", "The Sun", "sun.html", "Explore", "Five wavelengths, flares, and the inside"],
+    ["solar-observatory", "Solar observatory", "solar-observatory.html", "Explore", "Today's real Sun from SDO, SOHO and GOES"],
     ["black-hole", "Black hole", "black-hole.html", "Explore", "Light bent through curved spacetime"],
     ["scale", "Cosmic scale", "scale.html", "Explore", "Zoom from a person to the whole universe"],
     ["space-weather", "Space weather", "space-weather.html", "Explore", "Solar wind, storms and aurora, live"],
     ["galaxies", "Galaxy collision", "galaxies.html", "Explore", "Milky Way meets Andromeda"],
+    ["surveys", "Sky surveys", "surveys.html", "Explore", "Pan the real sky in a dozen wavelengths"],
     ["orbits", "Orbit Lab", "orbits.html", "Learn", "Newton, Kepler, Hohmann and Lagrange"],
-    ["equations", "Equations", "equations.html", "Learn", "47 equations with live calculators"],
-    ["gallery", "Gallery", "gallery.html", "Learn", "Fifty photographs that changed us"],
+    ["equations", "Equations", "equations.html", "Learn", "94 equations with live calculators"],
+    ["gallery", "Gallery", "gallery.html", "Learn", "Photographs that changed how we see"],
     ["timeline", "Timeline", "timeline.html", "Learn", "1903 to today, every milestone"],
     ["library", "Documents", "library.html", "Learn", "Flight manuals, reports and user guides"],
+    ["telescopes", "Use a telescope", "telescopes.html", "Learn", "Free robotic telescopes, live feeds, simulators"],
     ["experiments", "Experiments", "experiments.html", "Build", "20 builds from $0 to a custom circuit board"]
   ];
   var GROUPS = ["Fly", "Explore", "Learn"];

@@ -11,27 +11,31 @@
 
 **An open atlas of space and spaceflight that runs in your browser.**<br>
 Launch a Saturn V, land a booster, fly Apollo 11's lunar module down, survive Mars' seven minutes of terror,<br>
-track every satellite overhead, read tonight's sky, and zoom from a proton to the edge of the universe.<br>
+watch today's real Sun, pan the sky in X-rays, and use a real telescope from your laptop.<br>
 Then learn the equations, read the engineers' own documents, and build the experiments yourself.
 
 ### [🚀 Open the live site →](https://normansrule.github.io/cosmic-library/)
 
 <sub>No install · no sign-up · works on phones · every number sourced</sub>
 
+<img src="media/readme/stats.svg" alt="Animated counters: pages, equations, photographs, milestones, documents, builds and Python simulations" width="100%">
+
 </div>
 
----
+<p align="center"><img src="media/readme/dividers/orbit.svg" alt="" width="100%"></p>
 
-## 🧭 Start here
+<p align="center"><img src="media/readme/sections/start-here.svg" alt="Start here" width="100%"></p>
 
 Pick what you're in the mood for. Every link opens a live, interactive page.
 
 | If you want to… | Go here | Time |
 |---|---|---|
 | 🤯 **See something amazing, right now** | [Black hole](https://normansrule.github.io/cosmic-library/black-hole.html) → [Cosmic scale](https://normansrule.github.io/cosmic-library/scale.html) | 2 min |
+| ☀️ **See the real Sun as it looks today** | [Solar observatory](https://normansrule.github.io/cosmic-library/solar-observatory.html) → [Space weather](https://normansrule.github.io/cosmic-library/space-weather.html) | 3 min |
 | 🎮 **Fly a mission yourself** | [Booster landing](https://normansrule.github.io/cosmic-library/booster.html) → [Moon landing](https://normansrule.github.io/cosmic-library/moon-landing.html) → [Mars landing](https://normansrule.github.io/cosmic-library/mars-landing.html) | 10 min |
 | 🛠️ **Design your own rocket** | [Rocket builder](https://normansrule.github.io/cosmic-library/builder.html) → [Rocket hangar](https://normansrule.github.io/cosmic-library/hangar.html) | 10 min |
-| 🌌 **Know what's in the sky tonight** | [Night sky](https://normansrule.github.io/cosmic-library/sky.html) → [Live Earth orbit](https://normansrule.github.io/cosmic-library/earth.html) → [Space weather](https://normansrule.github.io/cosmic-library/space-weather.html) | 5 min |
+| 🔭 **Use a real telescope, for free** | [Use a telescope](https://normansrule.github.io/cosmic-library/telescopes.html) → [Sky surveys](https://normansrule.github.io/cosmic-library/surveys.html) | tonight |
+| 🌌 **Know what's in the sky tonight** | [Night sky](https://normansrule.github.io/cosmic-library/sky.html) → [Live Earth orbit](https://normansrule.github.io/cosmic-library/earth.html) | 5 min |
 | 📐 **Actually understand orbital mechanics** | [Orbit Lab](https://normansrule.github.io/cosmic-library/orbits.html) → [Equations](https://normansrule.github.io/cosmic-library/equations.html) → [Documents](https://normansrule.github.io/cosmic-library/library.html) | an evening |
 | 🔧 **Build something real** | [Experiments](https://normansrule.github.io/cosmic-library/experiments.html): paper rocket (under $10) → flight-computer circuit board | a weekend |
 | 🐍 **Run the physics in Python** | [`simulations/`](simulations/): black hole ray tracer, Mars launch windows, N-body | 5 min |
@@ -41,12 +45,12 @@ Pick what you're in the mood for. Every link opens a live, interactive page.
 <br>
 <p align="center"><img src="media/readme/concepts/learning-path.svg" alt="A transit-style map of the site: Fly, Explore, Learn and Build lines with each page as a station" width="100%"></p>
 
-Each coloured line is a group of pages and each station is a page. Interchanges are where topics connect: the Rocket builder is on both the Fly and Build lines, the Solar system on Explore and Learn, and the Equations on Learn and Build. Beginners can start at either **START HERE** marker.
+Each coloured line is a group of pages and each station is a page. Interchanges mark where lines meet: the Rocket builder, the Solar system and the Equations. Beginners can start at either **START HERE** marker.
 </details>
 
----
+<p align="center"><img src="media/readme/dividers/comet.svg" alt="" width="100%"></p>
 
-## 🚀 Fly it
+<p align="center"><img src="media/readme/sections/fly.svg" alt="Fly it" width="100%"></p>
 
 <sub>Click any card to open it. Each is a real flight model, checked against mission data in the test suite.</sub>
 
@@ -105,7 +109,7 @@ A Falcon 9-class reusable first stage: drone ship, Return To Launch Site (RTLS) 
 Perseverance's Entry, Descent and Landing (EDL) at Jezero crater, 18 February 2021: bank reversals, a 10 g peak, the parachute at Mach 1.8, Terrain-Relative Navigation (TRN) and the sky crane. A second clock shows what Earth knew 11 min 22 s later. Engineer mode lets you make the calls. Touchdown in the model comes at E+418.4 s; the real one was E+419 s.
 
 #### Rocket builder · [`builder.html`](site/builder.html)
-Stack real engines (F-1, RS-25, Merlin, Raptor, RD-180…), tanks, boosters and payloads. The analysis updates as you build: Thrust-to-Weight Ratio (TWR), per-stage Δv, a Δv map to Low Earth Orbit (LEO), the Moon and Mars, and plain-language reasons a design fails. Then launch it on a 2-D gravity-turn ascent. Designs are shareable as links. A Saturn V-like preset reaches a 208 × 175 km orbit in the tests.
+Stack real engines (F-1, RS-25, Merlin, Raptor, RD-180…), tanks, boosters and payloads. The analysis updates as you build: Thrust-to-Weight Ratio (TWR), per-stage Δv, a Δv map to Low Earth Orbit (LEO), the Moon and Mars, and plain-language reasons a design fails. Then launch it on a 2-D gravity-turn ascent. Designs are shareable as links.
 
 #### Rocket hangar · [`hangar.html`](site/hangar.html)
 26 rockets at true scale beside the Statue of Liberty. Sort, filter, and compare height, thrust and payload. Every figure is sourced in [`rockets.json`](site/data/rockets.json).
@@ -114,9 +118,73 @@ Stack real engines (F-1, RS-25, Merlin, Raptor, RD-180…), tanks, boosters and 
 Orbiter Vehicle 105 (OV-105) at the California Science Center: the 2012–2023 pavilion display, the **vertical launch stack** of the Samuel Oschin Air and Space Center (opening 13 November 2026), and orbit. Bay doors, Canadarm, gear, clickable parts, and all 25 missions.
 </details>
 
----
+<p align="center"><img src="media/readme/dividers/starfield.svg" alt="" width="100%"></p>
 
-## 🔭 Explore it
+<p align="center"><img src="media/readme/sections/observe.svg" alt="Observe the real sky" width="100%"></p>
+
+Not simulations: real light, captured by real instruments.
+
+<table>
+<tr>
+<td align="center" width="33%"><a href="https://normansrule.github.io/cosmic-library/solar-observatory.html"><img src="media/readme/tiles/solar-observatory.svg" alt="Solar observatory" width="100%"></a></td>
+<td align="center" width="33%"><a href="https://normansrule.github.io/cosmic-library/surveys.html"><img src="media/readme/tiles/surveys.svg" alt="Sky surveys" width="100%"></a></td>
+<td align="center" width="33%"><a href="https://normansrule.github.io/cosmic-library/telescopes.html"><img src="media/readme/tiles/telescopes.svg" alt="Use a telescope" width="100%"></a></td>
+</tr>
+</table>
+
+#### ☀️ The Sun, as NASA's Solar Dynamics Observatory sees it
+
+<sub>These are live images from NASA's Solar Dynamics Observatory (SDO) and the ESA/NASA SOHO spacecraft. They show the Sun as it looked when GitHub last refreshed them. Click through for today's full-resolution view in 12 wavelengths.</sub>
+
+| 171 Å · 600,000 K corona | 304 Å · 50,000 K chromosphere | 193 Å · 1.25 million K corona | Visible light · sunspots |
+|:---:|:---:|:---:|:---:|
+| <a href="https://normansrule.github.io/cosmic-library/solar-observatory.html"><img src="https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_0171.jpg" alt="Latest SDO AIA 171 image of the Sun" width="100%"></a> | <a href="https://normansrule.github.io/cosmic-library/solar-observatory.html"><img src="https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_0304.jpg" alt="Latest SDO AIA 304 image of the Sun" width="100%"></a> | <a href="https://normansrule.github.io/cosmic-library/solar-observatory.html"><img src="https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_0193.jpg" alt="Latest SDO AIA 193 image of the Sun" width="100%"></a> | <a href="https://normansrule.github.io/cosmic-library/solar-observatory.html"><img src="https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_HMII.jpg" alt="Latest SDO HMI visible-light image of the Sun" width="100%"></a> |
+| <sub>NASA/SDO/AIA</sub> | <sub>NASA/SDO/AIA</sub> | <sub>NASA/SDO/AIA</sub> | <sub>NASA/SDO/HMI</sub> |
+
+<details>
+<summary><b>🌞 The corona, the Sun's outer atmosphere, from SOHO's coronagraph</b></summary>
+<br>
+
+| LASCO C2 (to about 6 solar radii) | LASCO C3 (to about 30 solar radii) |
+|:---:|:---:|
+| <img src="https://soho.nascom.nasa.gov/data/realtime/c2/512/latest.jpg" alt="Latest SOHO LASCO C2 coronagraph image" width="100%"> | <img src="https://soho.nascom.nasa.gov/data/realtime/c3/512/latest.jpg" alt="Latest SOHO LASCO C3 coronagraph image" width="100%"> |
+| <sub>ESA/NASA SOHO</sub> | <sub>ESA/NASA SOHO</sub> |
+
+A disc blocks the blinding Sun so the faint corona shows. This is where coronal mass ejections (CMEs) appear. The white circle marks the Sun's size, and in C3 you can often spot planets, bright stars and sungrazing comets.
+</details>
+
+<p align="center"><a href="https://normansrule.github.io/cosmic-library/surveys.html"><img src="media/readme/concepts/wavelengths.svg" alt="The same patch of sky cross-fading from radio to X-ray, with the spectrum bar" width="100%"></a></p>
+
+**One sky, many colours.** Radio shows cold gas, infrared shows warm dust, visible light shows stars, and X-rays show gas at millions of degrees. [Sky surveys](https://normansrule.github.io/cosmic-library/surveys.html) lets you slide through twelve real all-sky surveys, from Planck's microwaves to Fermi's gamma rays, using the Strasbourg astronomical Data Centre's (CDS) Aladin Lite atlas.
+
+#### 🔭 Real telescopes you can use from your browser
+
+| What | Who runs it | Cost | Try this first |
+|---|---|---|---|
+| [PICTOR](https://pictortelescope.com/observe): 1.5 m radio telescope | Athens, Greece (open source) | Free | Point it along the Milky Way and see the hydrogen line at 1420 MHz |
+| [Serol's Cosmic Explorers](https://serol.lco.global): Las Cumbres Observatory (LCO) | Global robotic network | Free, ages 8+ | Take your own picture of a nebula |
+| [MicroObservatory](https://mo-www.cfa.harvard.edu/OWN/): Observing With NASA | Center for Astrophysics, Harvard & Smithsonian | Free | Request an image of the Moon or a galaxy |
+| [Virtual Telescope Project](https://www.virtualtelescope.eu/webtv/) | Gianluca Masi, Italy | Free live streams | Watch a near-Earth asteroid fly by live |
+| [Stellarium Web](https://stellarium-web.org/) | Stellarium | Free | Find tonight's planets from your location |
+| [NASA's Eyes](https://eyes.nasa.gov/apps/solar-system) | NASA/JPL | Free | Fly along with New Horizons past Pluto |
+| [Zooniverse astronomy](https://www.zooniverse.org/projects?discipline=astronomy) | Citizen science | Free | Classify galaxies or hunt for brown dwarfs |
+
+<sub>56 verified entries (45 free) on the [Use a telescope](https://normansrule.github.io/cosmic-library/telescopes.html) page, with a live map of which observatories are in darkness right now.</sub>
+
+<table>
+<tr>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/equations.html"><img src="media/readme/concepts/telescope-resolution.svg" alt="Two stars' diffraction patterns separating as the telescope aperture grows" width="100%"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/solar-observatory.html"><img src="media/readme/concepts/sunspot-rotation.svg" alt="Sunspots drifting across the Sun, faster at the equator" width="100%"></a></td>
+</tr>
+<tr>
+<td valign="top"><b>Why bigger telescopes see finer detail:</b> θ = 1.22 λ/D. At 550 nm, Hubble's 2.4 m mirror resolves about 0.06″, while a 10 cm backyard telescope manages about 1.4″.</td>
+<td valign="top"><b>The Sun doesn't spin as one piece:</b> about 25 days at the equator but about 35 near the poles, which you can watch in the sunspots.</td>
+</tr>
+</table>
+
+<p align="center"><img src="media/readme/dividers/orbit.svg" alt="" width="100%"></p>
+
+<p align="center"><img src="media/readme/sections/explore.svg" alt="Explore it" width="100%"></p>
 
 <table>
 <tr>
@@ -157,27 +225,27 @@ Orbiter Vehicle 105 (OV-105) at the California Science Center: the 2012–2023 p
 <summary><b>📖 How each one works</b></summary>
 
 #### Live Earth orbit · [`earth.html`](site/earth.html)
-Every tracked satellite overhead right now. CelesTrak's General Perturbations (GP) elements are propagated in your browser with Simplified General Perturbations 4 (SGP4) via [satellite.js](https://github.com/shashwatak/satellite-js). The page also shows passes of the International Space Station (ISS) over your location, upcoming launches ([Launch Library 2](https://thespacedevs.com/)) and news ([Spaceflight News API](https://spaceflightnewsapi.net/)). Offline it falls back to illustrative orbits.
+Every tracked satellite overhead right now. CelesTrak's General Perturbations (GP) elements are propagated in your browser with Simplified General Perturbations 4 (SGP4) via [satellite.js](https://github.com/shashwatak/satellite-js). The page also shows International Space Station (ISS) passes over your location, upcoming launches ([Launch Library 2](https://thespacedevs.com/)) and news ([Spaceflight News API](https://spaceflightnewsapi.net/)). Offline it falls back to illustrative orbits.
 
 #### Space weather · [`space-weather.html`](site/space-weather.html)
-Live solar-wind, magnetic-field, planetary K-index (Kp), X-ray and aurora data from NOAA's Space Weather Prediction Center (SWPC). The magnetosphere's size is computed from the solar wind's pressure (Shue et al. 1998). NOAA's R/S/G storm scales are shown as gauges, and a "could I see the aurora tonight?" answer is given for your location. Offline, it shows a labelled reconstruction of the May 2024 G5 storm.
+Live solar wind, magnetic field, planetary K-index (Kp), X-ray and aurora data from NOAA's Space Weather Prediction Center (SWPC). The magnetosphere is sized from the solar wind's pressure (Shue et al. 1998), with NOAA's R/S/G storm scales and a "could I see the aurora tonight?" answer. Offline, it shows a labelled reconstruction of the May 2024 G5 storm.
 
 #### Night sky · [`sky.html`](site/sky.html)
-A planetarium for any place and time: 5,044 stars, 88 constellations, the Milky Way, Messier objects, the planets and the Moon's phase. Sidereal time, precession and refraction are tested against Meeus and the U.S. Naval Observatory sunrise tables (within 1 minute).
+A planetarium for any place and time: 5,044 stars, 88 constellations, the Milky Way, Messier objects, the planets and the Moon's phase. Tested against Meeus and the U.S. Naval Observatory sunrise tables (within 1 minute).
 
 #### Galaxy collision · [`galaxies.html`](site/galaxies.html)
-A GPU restricted N-body simulation in the style of Toomre & Toomre (1972). With the 2012 orbit the galaxies first meet at 4.0 billion years and merge at 6.2. With the 2019 Gaia orbit they may not merge at all, consistent with Sawala et al. (2025) finding only about a 50% chance within 10 billion years. It includes presets for the Antennae, the Mice and a Cartwheel-like collision, and a view of the night sky from the Sun.
+A GPU restricted N-body simulation in the style of Toomre & Toomre (1972). With the 2012 orbit the galaxies meet at 4.0 billion years and merge at 6.2. With the 2019 Gaia orbit they may not merge at all, consistent with Sawala et al. (2025), who found only about a 50% chance within 10 billion years.
 
-#### Cosmic scale · [`scale.html`](site/scale.html)
-42 powers of ten and 56 objects at true relative size, with how long light takes to cross each one and a narrated tour.
+#### Solar observatory · Sky surveys · Use a telescope
+The **solar observatory** shows the latest SDO, SOHO and GOES-19 Solar Ultraviolet Imager (SUVI) images, a two-wavelength wipe comparison, any date in history via Helioviewer, and the greatest solar telescope photos. **Sky surveys** is Aladin Lite with twelve Hierarchical Progressive Survey (HiPS) layers and an auto-tour. **Use a telescope** is a verified directory of remote telescopes, radio dishes, live streams, simulators and citizen science.
 
-#### Solar system · Sun · Black hole
-The **orrery** uses JPL's Keplerian elements (Standish), tested against real oppositions. The **Sun** shows five wavelengths, a flare and coronal mass ejection (CME), and a cutaway. The **black hole** is a real-time Schwarzschild ray tracer with Doppler beaming and gravitational redshift.
+#### Cosmic scale · Solar system · Sun · Black hole
+**Cosmic scale** covers 42 powers of ten and 56 objects. The **orrery** uses JPL's Keplerian elements (Standish), tested against real oppositions. The **Sun** shows five wavelengths, a flare and a cutaway. The **black hole** is a real-time Schwarzschild ray tracer.
 </details>
 
----
+<p align="center"><img src="media/readme/dividers/comet.svg" alt="" width="100%"></p>
 
-## 🧠 Ideas in motion
+<p align="center"><img src="media/readme/sections/ideas.svg" alt="Ideas in motion" width="100%"></p>
 
 <sub>Each animation is drawn from real numbers. Click one to play with the idea on the site.</sub>
 
@@ -193,6 +261,17 @@ The **orrery** uses JPL's Keplerian elements (Standish), tested against real opp
 
 **Light is fast, space is bigger.** Sunlight is 8 min 19 s old when it reaches you. A radio command to a spacecraft at Neptune takes about 4 hours.
 
+<table>
+<tr>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/equations.html"><img src="media/readme/concepts/transit.svg" alt="A planet crossing its star while the light curve dips" width="100%"></a></td>
+<td width="50%"><a href="https://normansrule.github.io/cosmic-library/equations.html"><img src="media/readme/concepts/redshift.svg" alt="Spectral lines sliding toward red as a galaxy recedes" width="100%"></a></td>
+</tr>
+<tr>
+<td valign="top"><b>How we find exoplanets:</b> a planet crossing its star blocks a fraction (Rₚ/R⋆)² of the light. Earth dims the Sun by 0.008%, Jupiter by 1%.</td>
+<td valign="top"><b>How we know the universe is expanding:</b> galaxies' spectral lines slide toward red in proportion to their distance, v ≈ cz for small z.</td>
+</tr>
+</table>
+
 <details open>
 <summary><b>More animated explanations</b></summary>
 <br>
@@ -204,6 +283,10 @@ The **orrery** uses JPL's Keplerian elements (Standish), tested against real opp
 <p align="center"><a href="https://normansrule.github.io/cosmic-library/solar-system.html"><img src="media/readme/concepts/orbit-race.svg" alt="The eight planets orbiting with their true relative periods" width="70%"></a></p>
 
 **The orbit race.** True relative periods: Mercury laps the Sun 684 times for every one Neptune completes (T² ∝ a³).
+
+<p align="center"><a href="https://normansrule.github.io/cosmic-library/equations.html"><img src="media/readme/concepts/link-budget.svg" alt="Voyager's radio signal spreading out and weakening with distance" width="100%"></a></p>
+
+**Talking to Voyager.** A signal spreads out as 1/r², so from more than 25 billion km away, Voyager 1's roughly 20-watt transmitter reaches Earth as a whisper that takes a 70 m dish to catch.
 
 <p align="center"><a href="https://normansrule.github.io/cosmic-library/launch.html"><img src="media/readme/concepts/staging.svg" alt="Saturn V staging sequence with times" width="100%"></a></p>
 
@@ -226,9 +309,9 @@ The **orrery** uses JPL's Keplerian elements (Standish), tested against real opp
 **42 powers of ten.** From a proton (10⁻¹⁵ m) to the observable universe (about 10²⁷ m).
 </details>
 
----
+<p align="center"><img src="media/readme/dividers/starfield.svg" alt="" width="100%"></p>
 
-## 📚 Learn it
+<p align="center"><img src="media/readme/sections/learn.svg" alt="Learn it" width="100%"></p>
 
 <table>
 <tr>
@@ -243,11 +326,11 @@ The **orrery** uses JPL's Keplerian elements (Standish), tested against real opp
 </tr>
 </table>
 
+- **[Equation Atlas](site/equations.html) · [`docs/EQUATIONS.md`](docs/EQUATIONS.md):** **94 equations in 10 chapters**, now including telescopes and optics, the Sun and space weather, exoplanets and spacecraft engineering. Each has a live calculator, a plot and a worked example using real mission numbers. `scripts/check_equations.mjs` re-derives all of them in 2,985 checks, including published values such as Hubble's 0.05″ resolution and Mercury's 43″-per-century precession.
 - **[Orbit Lab](site/orbits.html):** Newton's cannonball, Kepler's laws, Hohmann vs bi-elliptic transfers, a Jupiter gravity assist and Lagrange points, each with its equation beside it.
-- **[Equation Atlas](site/equations.html) · [`docs/EQUATIONS.md`](docs/EQUATIONS.md):** 47 equations, each with a live calculator, a plot and a worked example using real mission numbers. `scripts/check_equations.mjs` re-derives all of them (1,228 checks).
-- **[Documents](site/library.html) · [`docs/REFERENCES.md`](docs/REFERENCES.md):** 79 primary sources from NASA, the Jet Propulsion Laboratory (JPL), SpaceX, ESA and MIT OpenCourseWare, arranged as a beginner → expert reading path. Also [videos](docs/VIDEOS.md) and [engineering primers](docs/engineering/).
-- **[Timeline](site/timeline.html):** 110 milestones, from Tsiolkovsky's rocket equation (1903) to Artemis II's crewed lunar flyby (April 2026).
-- **[Gallery](site/gallery.html):** fifty photographs that changed how we see ourselves, from the first picture from space (1946) to Webb's deep fields.
+- **[Documents](site/library.html) · [`docs/REFERENCES.md`](docs/REFERENCES.md):** 79 primary sources from NASA, the Jet Propulsion Laboratory (JPL), SpaceX, ESA and MIT OpenCourseWare, as a card grid or a bookshelf, with a beginner → expert reading path. Also [videos](docs/VIDEOS.md) and [engineering primers](docs/engineering/).
+- **[Timeline](site/timeline.html):** 110 milestones from 1903 to April 2026, with an animated chart of who did what, decade by decade.
+- **[Gallery](site/gallery.html):** 63 photographs that changed how we see ourselves, now including 13 landmark solar telescope images. There's a zoomable "time machine" axis and a cinema mode.
 
 <details>
 <summary><b>📸 A few of the photographs</b></summary>
@@ -270,7 +353,7 @@ A single engine at its *lowest* throttle still pushes harder than the nearly emp
 
 <details><summary><b>2.</b> How much fuel did Eagle have left when it touched down on the Moon?</summary>
 
-About 45 seconds of flying, including the roughly 20-second abort reserve, or about 63.5 s of hover time by NASA's post-flight analysis. The "low level" light came on early because fuel sloshing uncovered the sensor. → [Fly it](https://normansrule.github.io/cosmic-library/moon-landing.html)
+About 45 seconds of flying including the roughly 20-second abort reserve, or about 63.5 s of hover time by NASA's post-flight analysis. The "low level" light came on early because fuel sloshing uncovered the sensor. → [Fly it](https://normansrule.github.io/cosmic-library/moon-landing.html)
 </details>
 
 <details><summary><b>3.</b> When Perseverance touched down, how long before anyone on Earth knew?</summary>
@@ -293,9 +376,19 @@ Maybe. Older models said yes, in about 4–5 billion years. A 2025 study using G
 Δv = vₑ ln(m₀/m_f). The logarithm means doubling the mass ratio adds a fixed amount of Δv, while every extra tonne of fuel has to lift itself. Staging throws away empty tanks to escape that trap. → [Build a rocket](https://normansrule.github.io/cosmic-library/builder.html)
 </details>
 
----
+<details><summary><b>7.</b> Why do solar images come in so many colours?</summary>
 
-## 🔧 Build it
+Each extreme-ultraviolet wavelength is emitted by iron atoms stripped of a particular number of electrons, which only happens at one temperature. 171 Å shows gas at about 600,000 K, 193 Å about 1.2 million K, and 94 Å flares at about 6 million K. Each colour is a thermometer set to a different layer. → [Today's Sun](https://normansrule.github.io/cosmic-library/solar-observatory.html)
+</details>
+
+<details><summary><b>8.</b> Could you really control a radio telescope from your laptop tonight?</summary>
+
+Yes. PICTOR in Athens is a free 1.5 m radio telescope. Submit a drift scan through the Milky Way and you'll get back a spectrum showing the 1420 MHz hydrogen line, Doppler-shifted by the galaxy's rotation. → [Use a telescope](https://normansrule.github.io/cosmic-library/telescopes.html)
+</details>
+
+<p align="center"><img src="media/readme/dividers/orbit.svg" alt="" width="100%"></p>
+
+<p align="center"><img src="media/readme/sections/build.svg" alt="Build it" width="100%"></p>
 
 <table>
 <tr>
@@ -315,9 +408,7 @@ Twenty step-by-step builds, from the kitchen table to research-grade hardware. E
 | **3 · Avionics** | $100–300 | [**Flight-computer PCB** (KiCad, firmware, sled)](experiments/30-flight-computer-pcb/) · [LoRa telemetry ground station](experiments/31-lora-telemetry-ground-station/) · [Barn-door star tracker](experiments/32-barn-door-star-tracker/) |
 | **4 · Research grade** | $150+ | [High-power rocketry certification](experiments/40-high-power-rocketry-certification/) · [OpenRocket deep dive + our own simulator](experiments/41-openrocket-deep-dive/) · [Near-space balloon & 1U CubeSat](experiments/42-near-space-balloon-cubesat/) · [Hydrogen-line radio telescope](experiments/43-hydrogen-line-radio-telescope/) · [Exoplanet transit photometry](experiments/44-exoplanet-transit-photometry/) |
 
----
-
-## 🧮 Compute it
+<p align="center"><img src="media/readme/sections/compute.svg" alt="Compute it" width="100%"></p>
 
 <table>
 <tr>
@@ -336,7 +427,7 @@ python -m pytest simulations/tests -q          # 52 physics tests
 ```
 Full guide with every image: [`simulations/README.md`](simulations/README.md).
 
----
+<p align="center"><img src="media/readme/dividers/starfield.svg" alt="" width="100%"></p>
 
 ## ⚡ Quick start (Ubuntu)
 
@@ -360,14 +451,16 @@ The full walkthrough from a blank machine to a live GitHub Pages site is in **[`
 
 ```
 cosmic-library/
-├── site/                     GitHub Pages website (static, no build step), 22 pages
+├── site/                     GitHub Pages website (static, no build step), 25 pages
 │   ├── index.html            landing page: live galaxy, start-here chooser, tonight's sky
-│   ├── launch · booster · moon-landing · mars-landing · builder · hangar · shuttle   (Fly)
-│   ├── earth · space-weather · sky · solar-system · sun · black-hole · galaxies · scale   (Explore)
-│   ├── orbits · equations · gallery · timeline · library   (Learn)   ·   experiments   (Build)
+│   ├── launch · booster · moon-landing · mars-landing · builder · hangar · shuttle          (Fly)
+│   ├── earth · space-weather · sky · solar-system · sun · solar-observatory · black-hole
+│   │   · galaxies · scale · surveys                                                      (Explore)
+│   ├── orbits · equations · gallery · timeline · library · telescopes                     (Learn)
+│   ├── experiments                                                                      (Build)
 │   ├── assets/css/codex.css  the design system        ├── assets/js/        page logic + physics modules
 │   ├── data/*.json           curated, sourced data    ├── data/sky/         star catalogue (d3-celestial)
-│   └── vendor/               three.js r186, GSAP 3.15, KaTeX 0.18, satellite.js 7.1
+│   └── vendor/               three.js r186, GSAP 3.15, KaTeX 0.18, satellite.js 7.1, Aladin Lite 3.8
 ├── simulations/              Python toolkit (cosmic/) + tests
 ├── experiments/              20 builds, levels 0–4: tutorials, OpenSCAD, STL, KiCad, firmware
 ├── docs/                     EQUATIONS, REFERENCES, VIDEOS, engineering primers, setup
@@ -380,29 +473,27 @@ cosmic-library/
 <details>
 <summary><b>🎨 How it's built, and what inspired it</b></summary>
 
-The site is plain HTML, CSS and ES modules, with **no framework and no build step**. Three.js, GSAP, KaTeX and satellite.js are vendored under `site/vendor/`. The README art is generated by code: the SVGs by [`scripts/readme_art/`](scripts/readme_art/), and the GIFs recorded frame by frame from the live pages by [`capture_gifs.py`](scripts/readme_art/capture_gifs.py).
+The site is plain HTML, CSS and ES modules, with **no framework and no build step**. Libraries are vendored under `site/vendor/`. All the README art is generated by code: the animated SVGs by [`scripts/readme_art/build.py`](scripts/readme_art/build.py), which reads its counts from the data files, and the GIFs recorded frame by frame from the live pages by [`capture_gifs.py`](scripts/readme_art/capture_gifs.py).
 
 | Project | What we took from it |
 |---|---|
 | [magicuidesign/magicui](https://github.com/magicuidesign/magicui) | Spotlight card, border beam, meteors, number ticker, marquee (re-implemented in vanilla CSS/JS) |
 | [DavidHDev/react-bits](https://github.com/DavidHDev/react-bits) | Aurora background, shiny text, blur-in reveals |
-| [Animate UI](https://animate-ui.com/) · [ibelick/motion-primitives](https://github.com/ibelick/motion-primitives) | Motion vocabulary: staggered reveals, segmented controls, magnetic buttons, 3D tilt |
+| [Animate UI](https://animate-ui.com/) · [ibelick/motion-primitives](https://github.com/ibelick/motion-primitives) | Motion vocabulary: staggered reveals, segmented controls, magnetic buttons, 3D tilt, shared-element transitions |
 | [greensock/GSAP](https://github.com/greensock/GSAP) | Camera moves, ScrollTrigger, Flip (used directly) |
 | [brunosimon/folio-2019](https://github.com/brunosimon/folio-2019) | Procedural three.js scenes you explore instead of read |
 | [PavelDoGreat/WebGL-Fluid-Simulation](https://github.com/PavelDoGreat/WebGL-Fluid-Simulation) | GPU computation as the main event (black hole, galaxy collision) |
 | [bbycroft/llm-viz](https://github.com/bbycroft/llm-viz) · [poloclub/transformer-explainer](https://github.com/poloclub/transformer-explainer) | Explorable explanations: every visual paired with its maths |
-| [bilawalsidhu/gods-eye-view](https://github.com/bilawalsidhu/gods-eye-view) · [koala73/worldmonitor](https://github.com/koala73/worldmonitor) | Live, data-driven globes and dashboards (Live Earth orbit, Space weather) |
+| [bilawalsidhu/gods-eye-view](https://github.com/bilawalsidhu/gods-eye-view) · [koala73/worldmonitor](https://github.com/koala73/worldmonitor) | Live, data-driven globes and dashboards (Live Earth orbit, Space weather, Solar observatory) |
 | [remotion-dev/remotion](https://github.com/remotion-dev/remotion) | Programmatic media: this README's animations and recordings are generated by code |
 </details>
 
----
-
-## 🤝 Contributing · 🙏 Credits · 📄 Licence
+<p align="center"><img src="media/readme/sections/credits.svg" alt="Credits" width="100%"></p>
 
 Corrections and new experiments are welcome. See [`CONTRIBUTING.md`](CONTRIBUTING.md): keep numbers sourced, screenshot pages with `python scripts/shot.py <page>.html out.png`, and run the checks.
 
-Built by **Aleksander Norman** ([@Normansrule](https://github.com/Normansrule)). Every library, dataset, image and reference is in [`CREDITS.md`](CREDITS.md). NASA imagery is generally not subject to copyright in the United States; ESA/Webb, ESA/Hubble and ESO images are CC BY 4.0. Cosmic Library is an independent educational project, **not affiliated with or endorsed by** NASA, JPL, SpaceX, ESA, NOAA or the California Science Center.
+Built by **Aleksander Norman** ([@Normansrule](https://github.com/Normansrule)). Every library, dataset, image and reference is in [`CREDITS.md`](CREDITS.md). Live solar images: NASA/SDO and the AIA and HMI science teams; ESA/NASA SOHO; NOAA. NASA imagery is generally not subject to copyright in the United States; ESA/Webb, ESA/Hubble and ESO images are CC BY 4.0. Cosmic Library is an independent educational project, **not affiliated with or endorsed by** NASA, JPL, SpaceX, ESA, NOAA, CDS or the California Science Center.
 
-Code: [MIT](LICENSE). Written content and original diagrams: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Third-party images keep their own terms.
+Code: [MIT](LICENSE). Written content and original diagrams: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Third-party images and Aladin Lite (LGPL-3.0) keep their own terms.
 
 <div align="center"><sub>Ad astra per aspera ✦</sub></div>

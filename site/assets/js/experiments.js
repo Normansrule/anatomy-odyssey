@@ -61,6 +61,8 @@ async function init() {
   buildStack();
   buildFilters();
   render();
+  buildMap();
+  ignition();
   setupViewer();
 }
 
@@ -302,6 +304,7 @@ function render() {
   grid.innerHTML = list.map(card).join("") + planned.map((p, i) => plannedCard(p.f, p.level, list.length + i)).join("");
   $("#emptyMsg").hidden = list.length + planned.length > 0;
   $("#resultCount").textContent = `${list.length} build${list.length === 1 ? "" : "s"}` + (planned.length ? ` + ${planned.length} in preparation` : "");
+  mapUpdate();
   grid.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => {
     viewer.select(b.dataset.view);
     document.getElementById("viewer").scrollIntoView({ behavior: Codex.reducedMotion ? "auto" : "smooth" });
@@ -313,6 +316,232 @@ function flash(id) {
   if (!el) return;
   el.scrollIntoView({ behavior: Codex.reducedMotion ? "auto" : "smooth", block: "center" });
   el.animate([{ boxShadow: "0 0 0 0 transparent" }, { boxShadow: "0 0 0 2px " + cssVar("--ice") + ", 0 0 40px -6px " + cssVar("--ice") }, { boxShadow: "0 0 0 0 transparent" }], { duration: 1600 });
+}
+
+/* ---------------------------------------------------------------- cost × difficulty map
+ * x: typical cost (middle of the build's price range) in US dollars on a log scale that
+ *    starts at $0 (plotted as log10(1 + cost)), with a whisker from cheapest to dearest.
+ * y: difficulty 1–5 (the builds' own rating). Builds sharing a difficulty spread
+ *    vertically inside their row so none hide each other.
+ * size: area ∝ build time (middle of the hours range).
+ * colour: level, using the level tokens (checked for colour-blind separation); each
+ *    bubble also carries its two-digit number and a legend names the levels.
+ */
+const MAP = { W: 0, H: 0, m: { l: 58, r: 22, t: 18, b: 46 }, pts: [], built: false, hot: null, shown: false };
+const XMAX = 1000;
+const costX = (c) => MAP.m.l + Math.log10(1 + Math.max(0, c)) / Math.log10(1 + XMAX) * (MAP.W - MAP.m.l - MAP.m.r);
+const diffY = (d) => MAP.m.t + (5 - d + 0.5) / 5 * (MAP.H - MAP.m.t - MAP.m.b);
+const midOf = (a) => (a[0] + a[1]) / 2;
+const bubbleR = (h) => (MAP.W < 560 ? 3.2 : 4) + (MAP.W < 560 ? 1.4 : 1.9) * Math.sqrt(Math.max(0.5, h));
+const SVG_NS = "http://www.w3.org/2000/svg";
+const mkSvg = (tag, attrs, parent) => { const e = document.createElementNS(SVG_NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+
+function buildMap() {
+  const svg = $("#xpMapSvg");
+  if (!svg) return;
+  $("#xpMapLegend").innerHTML = [0, 1, 2, 3, 4].filter((n) => EXPS.some((e) => e.level === n)).map((n) =>
+    `<span><i style="background:${cssVar(levelMeta(n).color)}"></i>Level ${n} · ${esc(levelMeta(n).name)}</span>`).join("") +
+    `<span class="size"><i class="s1"></i><i class="s2"></i><i class="s3"></i>Build time 1 h · 10 h · 40 h</span>`;
+  MAP.built = true;
+  mapResize();
+  if ("ResizeObserver" in window) new ResizeObserver(mapResize).observe($("#xpMapPlot"));
+
+  const plot = $("#xpMapPlot");
+  plot.addEventListener("pointermove", (ev) => {
+    const g = ev.target.closest && ev.target.closest(".xm-pt");
+    mapHot(g ? g.dataset.id : null, "map");
+  });
+  plot.addEventListener("pointerleave", () => mapHot(null));
+  svg.addEventListener("click", (ev) => { const g = ev.target.closest(".xm-pt"); if (g) goToCard(g.dataset.id); });
+  svg.addEventListener("keydown", (ev) => {
+    const g = ev.target.closest(".xm-pt");
+    if (g && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); goToCard(g.dataset.id); }
+  });
+  svg.addEventListener("focusin", (ev) => { const g = ev.target.closest(".xm-pt"); if (g) mapHot(g.dataset.id, "map"); });
+  svg.addEventListener("focusout", () => mapHot(null));
+  // Card → bubble: hovering a card rings its bubble.
+  $("#grid").addEventListener("pointerover", (ev) => { const c = ev.target.closest(".xp-card[id]"); if (c) mapHot(c.id.slice(2), "card"); });
+  $("#grid").addEventListener("pointerleave", () => mapHot(null));
+  mapTable();
+}
+
+function goToCard(id) {
+  const card = document.getElementById("x-" + id);
+  if (card) flash(id);
+  else { // hidden by a filter: clear the filters that hide it, then go
+    state.level = "all"; state.outputs.clear(); state.q = ""; state.budget = BUDGET_STEPS.length - 1;
+    $("#fSearch").value = ""; $("#fBudget").value = state.budget; $("#fBudget").dispatchEvent(new Event("input"));
+    document.querySelectorAll("#fLevel button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.level === "all")));
+    document.querySelectorAll("#fOutputs button").forEach((b) => b.setAttribute("aria-pressed", "false"));
+    render();
+    setTimeout(() => flash(id), 60);
+  }
+}
+
+function mapResize() {
+  const plot = $("#xpMapPlot");
+  const W = Math.round(plot.clientWidth);
+  if (!W || W === MAP.W) return;
+  MAP.W = W;
+  MAP.H = W < 560 ? 330 : 400;
+  MAP.m.l = W < 560 ? 40 : 58;
+  const svg = $("#xpMapSvg");
+  svg.setAttribute("viewBox", `0 0 ${W} ${MAP.H}`);
+  svg.style.height = MAP.H + "px";
+  mapDraw();
+}
+
+function mapDraw() {
+  const svg = $("#xpMapSvg");
+  const { W, H, m } = MAP;
+  svg.querySelectorAll(":scope > :not(desc)").forEach((n) => n.remove());
+  const gGrid = mkSvg("g", { class: "xm-grid" }, svg);
+  // y rows: difficulty 1..5
+  const rowH = (H - m.t - m.b) / 5;
+  for (let d = 1; d <= 5; d++) {
+    const y = diffY(d);
+    mkSvg("rect", { x: m.l, y: y - rowH / 2, width: W - m.l - m.r, height: rowH, class: d % 2 ? "band" : "band alt" }, gGrid);
+    mkSvg("text", { x: m.l - 10, y: y + 4, "text-anchor": "end", class: "tick" }, gGrid).textContent = d;
+  }
+  // x ticks
+  const ticks = W < 560 ? [0, 10, 100, 1000] : [0, 10, 30, 100, 300, 1000];
+  ticks.forEach((c) => {
+    const x = costX(c);
+    mkSvg("line", { x1: x, x2: x, y1: m.t, y2: H - m.b, class: "vline" }, gGrid);
+    mkSvg("text", { x, y: H - m.b + 17, "text-anchor": "middle", class: "tick" }, gGrid).textContent = "$" + c.toLocaleString("en-US");
+  });
+  mkSvg("text", { x: m.l + (W - m.l - m.r) / 2, y: H - 6, "text-anchor": "middle", class: "ttl" }, gGrid).textContent = "Typical cost, US dollars (log scale)";
+  const yt = mkSvg("text", { x: 0, y: 0, "text-anchor": "middle", class: "ttl", transform: `translate(12,${m.t + (H - m.t - m.b) / 2}) rotate(-90)` }, gGrid);
+  yt.textContent = "Difficulty (1 easy → 5 hardest)";
+
+  // Points: builds sharing a difficulty get their own lane inside the row whenever their
+  // whiskers (or bubbles) would overlap, so every price range stays readable.
+  const pts = EXPS.map((e) => {
+    const r = bubbleR(midOf(e.hours));
+    const x = costX(midOf(e.cost_usd));
+    return { e, x, r, y0: diffY(e.difficulty), lo: Math.min(costX(e.cost_usd[0]), x - r) - 6, hi: Math.max(costX(e.cost_usd[1]), x + r) + 6 };
+  });
+  for (let d = 1; d <= 5; d++) {
+    const row = pts.filter((p) => p.e.difficulty === d).sort((a, b) => a.lo - b.lo);
+    const lanes = [];
+    row.forEach((p) => {
+      let k = lanes.findIndex((end) => end <= p.lo);
+      if (k < 0) { k = lanes.length; lanes.push(0); }
+      lanes[k] = p.hi; p.lane = k;
+    });
+    const n = lanes.length, step = Math.min(18, (rowH - 8) / Math.max(1, n));
+    row.forEach((p) => { p.y = p.y0 + (p.lane - (n - 1) / 2) * step; });
+  }
+  pts.sort((a, b) => b.r - a.r);
+  MAP.pts = pts;
+  const gPts = mkSvg("g", { class: "xm-pts" }, svg);
+  // Draw small bubbles last so they sit on top of big ones.
+  pts.forEach((p) => {
+    const e = p.e, col = cssVar(levelMeta(e.level).color);
+    const g = mkSvg("g", { class: "xm-pt", "data-id": e.id, "data-level": e.level, tabindex: "0", role: "button",
+      "aria-label": `${e.id.slice(0, 2)} ${e.title}: level ${e.level}, ${money(e.cost_usd)}, ${hrs(e.hours)}, difficulty ${e.difficulty} of 5` }, gPts);
+    const x0 = costX(e.cost_usd[0]), x1 = costX(e.cost_usd[1]);
+    mkSvg("line", { class: "whisk", x1: x0, x2: x1, y1: p.y, y2: p.y, stroke: col }, g);
+    if (x1 - x0 > 2) { mkSvg("line", { class: "whisk cap", x1: x0, x2: x0, y1: p.y - 4, y2: p.y + 4, stroke: col }, g); mkSvg("line", { class: "whisk cap", x1, x2: x1, y1: p.y - 4, y2: p.y + 4, stroke: col }, g); }
+    const c = mkSvg("circle", { class: "dot", cx: p.x, cy: p.y, r: p.r, fill: col }, g);
+    c.style.setProperty("--c", col);
+    if (p.r >= 8.5) mkSvg("text", { x: p.x, y: p.y + 3.5, "text-anchor": "middle", class: "num" }, g).textContent = e.id.slice(0, 2);
+    p.g = g;
+  });
+  mapUpdate();
+  // Entrance: whiskers stretch out from each bubble, bubbles grow in by level.
+  if (!MAP.shown && window.gsap && !Codex.reducedMotion && window.ScrollTrigger) {
+    const byLevel = pts.slice().sort((a, b) => a.e.level - b.e.level || a.x - b.x);
+    gsap.set(byLevel.map((p) => p.g.querySelector(".dot")), { attr: { r: 0 } });
+    gsap.set(svg.querySelectorAll(".whisk"), { opacity: 0 });
+    ScrollTrigger.create({ trigger: svg, start: "top 80%", once: true, onEnter: () => {
+      MAP.shown = true;
+      byLevel.forEach((p, k) => {
+        gsap.to(p.g.querySelector(".dot"), { attr: { r: p.r }, duration: 0.6, ease: "back.out(2)", delay: 0.1 + k * 0.045 });
+        gsap.fromTo(p.g.querySelectorAll(".whisk"), { opacity: 0, scaleX: 0, svgOrigin: `${p.x} ${p.y}` }, { opacity: 1, scaleX: 1, duration: 0.7, ease: "power2.out", delay: 0.4 + k * 0.045 });
+      });
+    } });
+  } else MAP.shown = true;
+}
+
+/** Filters changed: dim the bubbles the grid no longer shows. */
+function mapUpdate() {
+  if (!MAP.built) return;
+  MAP.pts.forEach((p) => p.g && p.g.classList.toggle("off", !matches(p.e)));
+}
+
+function mapHot(id, from) {
+  if (MAP.hot === id) return;
+  MAP.hot = id;
+  MAP.pts.forEach((p) => p.g && p.g.classList.toggle("hot", p.e.id === id));
+  $("#xpMapSvg").classList.toggle("has-hot", !!id);
+  document.querySelectorAll(".xp-card.map-hot").forEach((c) => c.classList.remove("map-hot"));
+  const tip = $("#xpMapTip");
+  if (!id) { tip.classList.remove("on"); return; }
+  if (from === "map") { const c = document.getElementById("x-" + id); if (c) c.classList.add("map-hot"); }
+  const p = MAP.pts.find((q) => q.e.id === id);
+  if (!p) return;
+  const e = p.e;
+  tip.textContent = "";
+  const h = document.createElement("div"); h.className = "tt-h"; h.textContent = `${e.id.slice(0, 2)} · Level ${e.level}`;
+  const t = document.createElement("b"); t.textContent = e.title;
+  const rows = document.createElement("div"); rows.className = "tt-rows";
+  [["Cost", money(e.cost_usd)], ["Time", hrs(e.hours)], ["Difficulty", `${e.difficulty} / 5`]].forEach(([k, v]) => {
+    const r = document.createElement("span"); const vb = document.createElement("b"); vb.textContent = v;
+    r.append(vb, document.createTextNode(" " + k.toLowerCase())); rows.appendChild(r);
+  });
+  tip.append(h, t, rows);
+  if (from === "map") { const hint = document.createElement("div"); hint.className = "tt-hint"; hint.textContent = document.getElementById("x-" + id) ? "Select to jump to its card" : "Hidden by a filter · select to show it"; tip.appendChild(hint); }
+  tip.classList.add("on");
+  const sc = $("#xpMapPlot").clientWidth / MAP.W;
+  const w = tip.offsetWidth;
+  let left = p.x * sc + p.r * sc + 10;
+  if (left + w > $("#xpMapPlot").clientWidth - 4) left = p.x * sc - p.r * sc - w - 10;
+  tip.style.left = Math.max(4, left) + "px";
+  tip.style.top = Math.max(0, p.y * sc - 30) + "px";
+}
+
+function mapTable() {
+  const t = $("#xpMapTable");
+  t.innerHTML = `<thead><tr><th scope="col">Build</th><th scope="col">Level</th><th scope="col" class="num">Cost (US$)</th><th scope="col" class="num">Time</th><th scope="col" class="num">Difficulty</th></tr></thead><tbody>` +
+    EXPS.map((e) => `<tr><th scope="row">${esc(e.id.slice(0, 2))} · ${esc(e.title)}</th><td>${e.level}</td><td class="num">${money(e.cost_usd).replace(/\$/g, "")}</td><td class="num">${hrs(e.hours)}</td><td class="num">${e.difficulty}</td></tr>`).join("") + "</tbody>";
+}
+
+/* ---------------------------------------------------------------- stack ignition
+ * Scrolling down the ladder fills each stage with "propellant"; when a stage is full it
+ * ignites (glow + a flame under it). Level 0, the pad, lights the main engine last:
+ * each rung you climb is fuel for the next. Reduced motion shows every stage lit.
+ */
+function ignition() {
+  const host = $("#stackViz");
+  const segs = [...host.querySelectorAll(".xp-stage-seg")];
+  segs.forEach((seg) => {
+    const body = seg.querySelector(".body");
+    body.insertAdjacentHTML("beforeend", '<i class="fuel" aria-hidden="true"></i>');
+    seg.insertAdjacentHTML("beforeend", '<i class="stage-flame" aria-hidden="true"><b></b></i>');
+  });
+  const engine = host.querySelector(".xp-engine");
+  const gsap = window.gsap, ST = window.ScrollTrigger;
+  if (!gsap || !ST || Codex.reducedMotion) { segs.forEach((s) => { s.style.setProperty("--fuel", 1); s.classList.add("lit"); }); return; }
+  gsap.registerPlugin(ST);
+  engine.classList.add("cold");
+  segs.forEach((seg) => {
+    const n = seg.dataset.level;
+    const info = host.querySelector(`.xp-stage-info[data-level="${n}"]`);
+    ST.create({
+      trigger: info, start: "top 78%", end: "center 48%", scrub: 0.4,
+      onUpdate: (self) => {
+        seg.style.setProperty("--fuel", self.progress.toFixed(3));
+        const lit = self.progress > 0.985;
+        if (lit !== seg.classList.contains("lit")) {
+          seg.classList.toggle("lit", lit);
+          info.classList.toggle("lit", lit);
+          if (n === "0") engine.classList.toggle("cold", !lit);
+          if (lit) gsap.fromTo(seg.querySelector(".stage-flame"), { scaleY: 0.2, opacity: 0 }, { scaleY: 1, opacity: 1, duration: 0.5, ease: "back.out(2.5)" });
+        }
+      }
+    });
+  });
 }
 
 /* ---------------------------------------------------------------- STL viewer */
@@ -386,7 +615,11 @@ function startViewer(host, models) {
   shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.001; floor.add(shadow);
 
   const material = new THREE.MeshStandardMaterial({ color: 0x7cc8ff, roughness: 0.5, metalness: 0.0 });
-  let mesh = null, home = null, current = null;
+  let mesh = null, home = null, current = null, pivot = null, slabs = [], dims = null, explodeTL = null, lastInfo = null;
+  renderer.localClippingEnabled = true;
+  const dimsEl = $("#stlDims");
+  const dimLabels = { w: dimsEl.querySelector('[data-d="w"]'), d: dimsEl.querySelector('[data-d="d"]'), h: dimsEl.querySelector('[data-d="h"]') };
+  const SLABS = 5;
   const loader = new STLLoader();
   const cache = new Map();
 
@@ -408,19 +641,129 @@ function startViewer(host, models) {
     return { size: s, volume: Math.abs(v) / 1000, tris: p.length / 9 };           // cm³
   }
 
+  /* Exploded view: the part arrives cut into horizontal print layers (clipping planes on
+     copies of the mesh), spread apart and turning; the layers close up into the solid
+     part, then calipers draw its width, depth and height with the measured values. */
+  function clearPart() {
+    if (explodeTL) { explodeTL.kill(); explodeTL = null; }
+    if (pivot) scene.remove(pivot);
+    if (dims) { scene.remove(dims.group); dims.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); if (o.material) o.material.dispose(); }); dims = null; }
+    slabs.forEach((sl) => sl.material.dispose());
+    slabs = [];
+    dimsEl.classList.remove("on");
+  }
+  function makeDims(box, info) {
+    const size = box.getSize(new THREE.Vector3());
+    const pad = Math.max(size.x, size.y, size.z) * 0.14 + 2;
+    const tk = pad * 0.38;
+    const V = (x, y, z) => new THREE.Vector3(x, y, z);
+    const lines = [
+      { k: "w", a: V(box.min.x, 0.2, box.max.z + pad), b: V(box.max.x, 0.2, box.max.z + pad), t: V(0, 0, tk), v: info.size.x },
+      { k: "d", a: V(box.max.x + pad, 0.2, box.max.z), b: V(box.max.x + pad, 0.2, box.min.z), t: V(tk, 0, 0), v: info.size.y },
+      { k: "h", a: V(box.min.x - pad, 0, box.max.z), b: V(box.min.x - pad, box.max.y, box.max.z), t: V(tk, 0, 0), v: info.size.z }
+    ];
+    const group = new THREE.Group();
+    lines.forEach((L) => {
+      const g = new THREE.BufferGeometry();
+      g.setAttribute("position", new THREE.BufferAttribute(new Float32Array(18), 3));
+      L.obj = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0xffc24b, transparent: true, opacity: 0.95, depthTest: false }));
+      L.obj.renderOrder = 10;
+      L.p = 0;
+      group.add(L.obj);
+      dimLabels[L.k].textContent = `${L.k === "w" ? "W" : L.k === "d" ? "D" : "H"} ${L.v.toFixed(1)} mm`;
+    });
+    const set = (L, t) => {
+      L.p = t;
+      const e = L.a.clone().lerp(L.b, t);
+      const arr = L.obj.geometry.attributes.position.array;
+      const put = (i, v) => { arr[i * 3] = v.x; arr[i * 3 + 1] = v.y; arr[i * 3 + 2] = v.z; };
+      put(0, L.a); put(1, e);
+      put(2, L.a.clone().sub(L.t)); put(3, L.a.clone().add(L.t));
+      put(4, e.clone().sub(L.t)); put(5, e.clone().add(L.t));
+      L.obj.geometry.attributes.position.needsUpdate = true;
+      L.obj.visible = t > 0.001;
+    };
+    lines.forEach((L) => set(L, 0));
+    scene.add(group);
+    return { group, lines, set };
+  }
+  const tmpV = new THREE.Vector3();
+  function placeLabels() {
+    if (!dims || !$("#tDims").checked) return;
+    const w = host.clientWidth, h = host.clientHeight;
+    dims.lines.forEach((L) => {
+      const el = dimLabels[L.k];
+      tmpV.copy(L.a).lerp(L.b, 0.5).add(L.t.clone().multiplyScalar(L.k === "h" ? -1.6 : 1.6)).project(camera);
+      const vis = L.p > 0.85 && tmpV.z < 1;
+      el.style.opacity = vis ? Math.min(1, (L.p - 0.85) / 0.15) : 0;
+      el.style.transform = `translate(${((tmpV.x + 1) / 2 * w).toFixed(1)}px, ${((1 - tmpV.y) / 2 * h).toFixed(1)}px) translate(-50%, -50%)`;
+    });
+  }
+  function explode() {
+    if (!pivot || !mesh) return;
+    const gsap = window.gsap;
+    const size = pivot.userData.size;
+    const layer = size.y / SLABS, gap = Math.max(size.y * 0.16, 4);
+    const st = { spread: 1, spin: 1 };
+    const apply = () => {
+      slabs.forEach((sl, k) => {
+        const o = k * gap * st.spread;
+        sl.position.y = mesh.position.y + o;
+        sl.material.clippingPlanes[0].constant = -(k * layer + o) + 0.001;
+        sl.material.clippingPlanes[1].constant = (k + 1) * layer + o + 0.001;
+      });
+      pivot.rotation.y = -st.spin * Math.PI * 1.2;
+    };
+    if (explodeTL) explodeTL.kill();
+    dims && dims.lines.forEach((L) => dims.set(L, 0));
+    const dimsOn = $("#tDims").checked;
+    if (!gsap || Codex.reducedMotion) {
+      mesh.visible = true; slabs.forEach((sl) => (sl.visible = false)); pivot.rotation.y = 0;
+      if (dims) { dims.lines.forEach((L) => dims.set(L, 1)); dims.group.visible = dimsOn; }
+      dimsEl.classList.toggle("on", dimsOn);
+      return;
+    }
+    mesh.visible = false; slabs.forEach((sl) => (sl.visible = true));
+    dims.group.visible = dimsOn; dimsEl.classList.toggle("on", dimsOn);
+    apply();
+    explodeTL = gsap.timeline()
+      .to(st, { spread: 0, spin: 0, duration: 1.7, ease: "power3.inOut", onUpdate: apply })
+      .add(() => { mesh.visible = true; slabs.forEach((sl) => (sl.visible = false)); })
+      .add(dims.lines.map((L, i) => gsap.to({ t: 0 }, { t: 1, duration: 0.7, ease: "power2.out", delay: i * 0.22, onUpdate() { dims.set(L, this.targets()[0].t); } })), "-=0.35");
+  }
+
   function show(url, geom, meta) {
-    if (mesh) scene.remove(mesh);
+    clearPart();
     const info = measure(geom);
+    lastInfo = info;
     const m = meta.exp;
     material.color.set(cssVar(levelMeta(m.level).color));
+    pivot = new THREE.Group();
+    scene.add(pivot);
     mesh = new THREE.Mesh(geom, material);
     mesh.rotation.x = -Math.PI / 2;                                    // STL Z-up → three.js Y-up
-    scene.add(mesh);
+    pivot.add(mesh);
     mesh.updateMatrixWorld(true);
     const box = new THREE.Box3().setFromObject(mesh);
     const c = box.getCenter(new THREE.Vector3());
     mesh.position.set(-c.x, -box.min.y, -c.z);                         // stand it on the floor, centred
     const size = box.getSize(new THREE.Vector3());
+    pivot.userData.size = size;
+    // Print-layer slabs for the exploded view (same geometry, clipped, drawn double-sided
+    // so the cut shows the part's walls).
+    for (let k = 0; k < SLABS; k++) {
+      const mat = material.clone();
+      mat.side = THREE.DoubleSide;
+      mat.clippingPlanes = [new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), new THREE.Plane(new THREE.Vector3(0, -1, 0), 0)];
+      const sl = new THREE.Mesh(geom, mat);
+      sl.rotation.x = -Math.PI / 2;
+      sl.position.copy(mesh.position);
+      sl.visible = false;
+      pivot.add(sl);
+      slabs.push(sl);
+    }
+    pivot.updateMatrixWorld(true);
+    dims = makeDims(new THREE.Box3().setFromObject(mesh), info);
     const r = Math.max(size.x, size.y, size.z) * 0.62;
     const fr = Math.max(size.x, size.z) * 0.9 + 10;
     floor.scale.setScalar(fr); shadow.scale.setScalar(1.3);
@@ -441,6 +784,7 @@ function startViewer(host, models) {
     const dl = $("#bDownload"); dl.href = url; dl.setAttribute("download", meta.name);
     document.querySelectorAll("#modelList button").forEach((b) => b.setAttribute("aria-selected", b.dataset.url === url));
     $("#stlLoading").classList.add("done");
+    explode();
   }
 
   function resetView() {
@@ -463,7 +807,12 @@ function startViewer(host, models) {
   viewer._select(viewer.pending || models[0].url);
 
   $("#tRotate").addEventListener("change", (e) => { controls.autoRotate = e.target.checked; });
-  $("#tWire").addEventListener("change", (e) => { material.wireframe = e.target.checked; });
+  $("#tWire").addEventListener("change", (e) => { material.wireframe = e.target.checked; slabs.forEach((sl) => (sl.material.wireframe = e.target.checked)); });
+  $("#tDims").addEventListener("change", (e) => {
+    if (dims) dims.group.visible = e.target.checked;
+    dimsEl.classList.toggle("on", e.target.checked);
+  });
+  $("#bExplode").addEventListener("click", () => { slabs.forEach((sl) => (sl.material.wireframe = material.wireframe)); explode(); });
   $("#bReset").addEventListener("click", resetView);
 
   // render loop: pause when the tab is hidden or the viewer is off-screen
@@ -477,6 +826,7 @@ function startViewer(host, models) {
       if (!visible || document.hidden) return;
       controls.update();
       renderer.render(scene, camera);
+      placeLabels();
       raf = requestAnimationFrame(frame);
     });
   }

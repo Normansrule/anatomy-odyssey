@@ -1,3 +1,5 @@
+<p align="center"><img src="../media/readme/sub/simulations.svg" alt="Simulations: a terminal running the black hole ray tracer beside a spinning black hole and the figure-eight three-body orbit" width="100%"></p>
+
 # Cosmic Library · Simulations
 
 Seven small, readable physics engines written in NumPy. Each one turns a handful of equations into a picture. Every module:

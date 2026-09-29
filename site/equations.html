@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Equation Atlas · Cosmic Library</title>
-<meta name="description" content="47 equations of space science and spaceflight, each with a plain-language meaning, a worked example with real numbers, a live calculator and plot.">
+<meta name="description" content="94 equations of space science and spaceflight in 10 chapters — from rockets and telescopes to exoplanets and space weather — each with a plain-language meaning, a worked example with real numbers, a live calculator and plot.">
 <meta property="og:title" content="Equation Atlas · Cosmic Library">
-<meta property="og:description" content="47 equations of space science and spaceflight, each with a plain-language meaning, a worked example with real numbers, a live calculator and plot.">
+<meta property="og:description" content="94 equations of space science and spaceflight in 10 chapters — from rockets and telescopes to exoplanets and space weather — each with a plain-language meaning, a worked example with real numbers, a live calculator and plot.">
 <meta name="theme-color" content="#04050a">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,20 +33,22 @@
         </div>
         <div class="row eqx-cta">
           <a class="btn primary" href="#ch-gravity">Start with gravity <span aria-hidden="true">→</span></a>
+          <button class="btn" type="button" id="hero-rand">Surprise me <span aria-hidden="true">⚄</span></button>
           <a class="btn" href="#constants">Constants table</a>
           <a class="btn" href="https://github.com/Normansrule/cosmic-library/blob/main/docs/EQUATIONS.md" rel="noopener">Markdown edition ↗</a>
         </div>
       </div>
-      <div class="eqx-montage" id="montage" aria-hidden="true">
-        <div class="mt-glow"></div>
+      <nav class="eqx-montage" id="montage" aria-label="Chapters in orbit">
+        <div class="mt-glow" aria-hidden="true"></div>
         <div class="mt-ring mt-ring-1"><div class="mt-rot" id="ring1"></div></div>
-        <div class="mt-ring mt-ring-2"><div class="mt-rot" id="ring2"></div></div>
-        <div class="mt-core">
+        <div class="mt-ring mt-ring-2" aria-hidden="true"><div class="mt-rot" id="ring2"></div></div>
+        <div class="mt-core" aria-hidden="true">
           <div class="mt-label mono" id="mt-label">&nbsp;</div>
           <div class="mt-eq" id="mt-eq"></div>
           <div class="mt-dots" id="mt-dots"></div>
         </div>
-      </div>
+        <p class="mt-hint mono" aria-hidden="true">Chapters in orbit — pick one to jump</p>
+      </nav>
     </section>
 
     <div class="eqx-marquee marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
@@ -55,12 +57,18 @@
     <div class="eqx-toolbar" id="toolbar">
       <div class="shell eqx-tb">
         <nav class="eqx-chapnav" id="chapnav" aria-label="Chapters"></nav>
+        <div class="eqx-find">
         <div class="eqx-search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4.2-4.2"/></svg>
           <label class="sr-only" for="q">Search equations</label>
           <input id="q" type="search" placeholder="Search equations…" autocomplete="off" spellcheck="false">
           <kbd aria-hidden="true">/</kbd>
           <span class="eqx-count mono" id="qcount" aria-live="polite"></span>
+        </div>
+        <div class="eqx-tools">
+          <button class="btn small eqx-rand" type="button" id="rand" title="Random equation (r)" aria-label="Random equation"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.3"/><circle cx="15.5" cy="15.5" r="1.3"/><circle cx="15.5" cy="8.5" r="1.3"/><circle cx="8.5" cy="15.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/></svg><span class="t">Random</span></button>
+          <button class="btn small eqx-keys" type="button" id="keys" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts" aria-expanded="false" aria-controls="keyhelp">?</button>
+        </div>
         </div>
       </div>
       <div class="eqx-progress"><span id="progress"></span></div>
@@ -92,12 +100,23 @@
 
       <section class="eqx-about card beam">
         <div class="eyebrow">How the numbers are checked</div>
-        <p>Each calculator evaluates the same expression that produces the worked example, and <code>scripts/check_equations.mjs</code> recomputes every example, renders every formula with KaTeX and compares key results with published values (for example the GPS clock offsets in Ashby 2003 and the IAU nominal solar luminosity). Run it with <code>node scripts/check_equations.mjs --table</code>. Found a mistake? Please <a href="https://github.com/Normansrule/cosmic-library/issues" rel="noopener">open an issue</a>.</p>
+        <p>Each calculator evaluates the same expression that produces the worked example, and <code>scripts/check_equations.mjs</code> recomputes every example, renders every formula with KaTeX and compares key results with published values — at least one per chapter, for example the GPS clock offsets in Ashby 2003, Hubble's 0.05″ resolution, Mercury's 43″ per century, the 4.3-day solar-wind trip to Earth and the Planck 2018 age of the Universe. Run it with <code>node scripts/check_equations.mjs --table</code>. Found a mistake? Please <a href="https://github.com/Normansrule/cosmic-library/issues" rel="noopener">open an issue</a>.</p>
       </section>
     </div>
   </main>
 
   <div class="eqx-toast mono" id="toast" role="status" aria-live="polite"></div>
+  <div class="eqx-keyhelp card" id="keyhelp" role="dialog" aria-label="Keyboard shortcuts" hidden>
+    <div class="eyebrow">Keyboard shortcuts</div>
+    <dl>
+      <div><dt><kbd>/</kbd></dt><dd>Search</dd></div>
+      <div><dt><kbd>j</kbd> <kbd>k</kbd></dt><dd>Next / previous equation</dd></div>
+      <div><dt><kbd>[</kbd> <kbd>]</kbd></dt><dd>Previous / next chapter</dd></div>
+      <div><dt><kbd>r</kbd></dt><dd>Random equation</dd></div>
+      <div><dt><kbd>c</kbd></dt><dd>Copy LaTeX of the current equation</dd></div>
+      <div><dt><kbd>Esc</kbd></dt><dd>Clear search · close this</dd></div>
+    </dl>
+  </div>
 
   <script src="vendor/katex/katex.min.js"></script>
   <script src="vendor/gsap/gsap.min.js"></script>

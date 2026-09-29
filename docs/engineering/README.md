@@ -1,3 +1,5 @@
+<p align="center"><img src="../../media/readme/sub/engineering.svg" alt="Engineering primers: a spacecraft pulling apart into its labelled subsystems" width="100%"></p>
+
 # Engineering primers
 
 Six short, self-contained guides to the engineering behind spaceflight. Each one explains the core ideas, gives the key equations (rendered with GitHub's `$$` math), draws the concepts with Mermaid diagrams, works at least one real example and ends with the [Mission Library](../REFERENCES.md) entries to read next.

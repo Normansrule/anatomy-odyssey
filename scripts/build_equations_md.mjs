@@ -47,6 +47,8 @@ const L = [];
 const out = s => L.push(s);
 const eqs = data.equations;
 
+out('<p align="center"><a href="' + SITE + '"><img src="../media/readme/sub/equations.svg" alt="The Equation Atlas: equations orbiting a glowing nucleus" width="100%"></a></p>');
+out("");
 out("# The Equation Atlas");
 out("");
 out(`> ${eqs.length} equations of space science and spaceflight, each with a symbol legend, a plain-language meaning and a worked example with real numbers. The [interactive edition](${SITE}) adds a live calculator and plot for every one.`);
@@ -101,7 +103,7 @@ for (const ch of data.chapters) {
     out(safeTex(ex.steps));
     out("$$");
     out("");
-    out(`**Result: ${f.num} ${f.unit}** — ${rich(ex.answer.text)}`);
+    out(`**Result: ${`${f.num} ${f.unit}`.trim()}** ${/^[—–-]/.test(ex.answer.text) ? "" : "— "}${rich(ex.answer.text)}`);
     out("");
     out(`[Open the live calculator ↗](${SITE}#${e.id}) · Sources: ${e.refs.map(r => `[${r.label}](${r.url})`).join(" · ")}`);
     out("");

@@ -135,6 +135,68 @@
   .xp-stage-info .budget b { display: inline; font-size: 1rem; margin-right: 6px; }
 }
 
+/* ---------- stack ignition ------------------------------------------------------------ */
+.xp-stage-seg .body { overflow: visible; }
+.xp-stage-seg .fuel { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; transform-origin: 50% 100%; transform: scaleY(var(--fuel, 0));
+  background: linear-gradient(0deg, color-mix(in srgb, var(--c) 70%, transparent), color-mix(in srgb, var(--c) 25%, transparent)); mix-blend-mode: screen; opacity: .75; }
+.xp-stage-seg.lit .body { box-shadow: 0 0 0 1px var(--c) inset, 0 0 30px -6px var(--c); }
+.xp-stage-seg .stage-flame { position: absolute; left: 50%; bottom: -44px; width: 40px; height: 50px; margin-left: -20px; z-index: 3; pointer-events: none; opacity: 0;
+  transform-origin: 50% 0; mix-blend-mode: screen; }
+.xp-stage-seg .stage-flame b { position: absolute; inset: 0; border-radius: 50% 50% 45% 45% / 25% 25% 75% 75%;
+  background: radial-gradient(55% 45% at 50% 15%, #fff, #ffe7b0 30%, color-mix(in srgb, var(--c) 70%, #ff7a3d) 60%, transparent 78%);
+  filter: blur(1px); animation: plume .11s ease-in-out infinite alternate; }
+.xp-stage-seg.lit .stage-flame { opacity: 1; }
+.xp-stage-seg.pad .stage-flame { display: none; } /* level 0 lights the main engine instead */
+.xp-engine .plume, .xp-engine .glow { transition: transform .6s cubic-bezier(.2,.7,.2,1), opacity .5s; }
+.xp-engine.cold .plume { transform: scaleY(.05); opacity: 0; animation: none; }
+.xp-engine.cold .glow { opacity: 0; }
+.xp-stage-info.lit { border-color: color-mix(in srgb, var(--c) 55%, transparent); }
+.xp-stage-info .tag::after { content: ""; display: inline-block; width: 7px; height: 7px; margin-left: 8px; border-radius: 50%; background: rgba(255,255,255,.15); vertical-align: 1px; transition: background .3s, box-shadow .3s; }
+.xp-stage-info.lit .tag::after { background: var(--c); box-shadow: 0 0 10px var(--c); }
+@media (max-width: 720px) { .xp-stage-seg .stage-flame { width: 18px; height: 24px; margin-left: -9px; bottom: -20px; } }
+
+/* ---------- cost × difficulty map ------------------------------------------------------ */
+.xp-map { margin: 0 0 26px; padding: 16px 18px 12px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, rgba(13,18,34,.85), rgba(6,8,16,.85)); }
+.xp-map-head { display: grid; gap: 10px; margin-bottom: 8px; }
+.xp-map-title { display: block; font: 600 .72rem var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ice); }
+.xp-map-sub { display: block; font-size: .84rem; color: var(--muted); max-width: 92ch; margin-top: 3px; }
+.xp-map-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font: 500 .72rem var(--f-mono); color: var(--text-2); }
+.xp-map-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.xp-map-legend i { width: 10px; height: 10px; border-radius: 50%; }
+.xp-map-legend .size i { background: none; border: 1.2px solid var(--muted); }
+.xp-map-legend .size .s1 { width: 12px; height: 12px; } .xp-map-legend .size .s2 { width: 20px; height: 20px; } .xp-map-legend .size .s3 { width: 32px; height: 32px; }
+.xp-map-plot { position: relative; }
+#xpMapSvg { width: 100%; display: block; overflow: visible; }
+.xm-grid .band { fill: rgba(255,255,255,.012); }
+.xm-grid .band.alt { fill: rgba(124,200,255,.03); }
+.xm-grid .vline { stroke: rgba(150,170,255,.1); }
+.xm-grid .tick { font: 500 10.5px var(--f-mono); fill: var(--muted); }
+.xm-grid .ttl { font: 600 10px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; fill: var(--faint); }
+.xm-pt { cursor: pointer; outline: none; transition: opacity .3s; }
+.xm-pt .dot { stroke: #070913; stroke-width: 2; fill-opacity: .88; transition: stroke .2s, stroke-width .2s, fill-opacity .2s; }
+.xm-pt .whisk { stroke-width: 1.6; stroke-linecap: round; opacity: .7; }
+.xm-pt .whisk.cap { stroke-width: 1.2; }
+.xm-pt .num { font: 700 9.5px var(--f-mono); fill: #04050a; pointer-events: none; }
+.xm-pt.off { opacity: .14; }
+#xpMapSvg.has-hot .xm-pt:not(.hot) { opacity: .35; }
+#xpMapSvg.has-hot .xm-pt.off:not(.hot) { opacity: .1; }
+.xm-pt.hot .dot, .xm-pt:focus-visible .dot { stroke: #fff; stroke-width: 2.5; fill-opacity: 1; filter: drop-shadow(0 0 8px var(--c)); }
+.xm-pt.hot .whisk { opacity: 1; stroke-width: 2.4; }
+.xp-map-tip { position: absolute; z-index: 4; width: 230px; padding: 9px 11px; border-radius: 10px; pointer-events: none; background: rgba(8,11,22,.96);
+  border: 1px solid var(--line-hi); box-shadow: 0 16px 40px -14px rgba(0,0,0,.9); opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; }
+.xp-map-tip.on { opacity: 1; transform: none; }
+.xp-map-tip .tt-h { font: 500 .66rem var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.xp-map-tip > b { display: block; font: 600 .92rem/1.25 var(--f-display); color: var(--text); margin: 2px 0 6px; }
+.xp-map-tip .tt-rows { display: grid; gap: 1px; font: 500 .72rem var(--f-mono); color: var(--muted); }
+.xp-map-tip .tt-rows b { color: var(--text); }
+.xp-map-tip .tt-hint { margin-top: 6px; font: 500 .66rem var(--f-mono); color: var(--faint); }
+.xp-map-table summary { cursor: pointer; font: 600 .76rem var(--f-mono); color: var(--ice); margin-top: 6px; }
+.xp-map-table .table-wrap { margin-top: 10px; max-height: 360px; overflow: auto; }
+.xp-map-table table.data { font-size: .8rem; }
+.xp-map-table table.data th, .xp-map-table table.data td { padding: 6px 10px; }
+.xp-card.map-hot { border-color: var(--c); box-shadow: 0 0 0 1px var(--c), 0 0 36px -10px var(--c); }
+@media (max-width: 560px) { .xp-map { padding: 12px 10px 10px; } .xp-map-sub { font-size: .78rem; } }
+
 /* ---------- filters ---------------------------------------------------------------- */
 .xp-filters {
   display: flex; flex-wrap: wrap; gap: 16px 22px; align-items: flex-end;
@@ -246,7 +308,14 @@
 .xp-format .card h3 { font-size: 1.05rem; }
 .xp-cta { margin-top: 26px; }
 
+/* STL dimension labels (positioned from the 3D calipers every frame) */
+.xp-dims { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s; z-index: 2; }
+.xp-dims.on { opacity: 1; }
+.xp-dims span { position: absolute; left: 0; top: 0; font: 600 .72rem var(--f-mono); color: #1a1000; background: #ffc24b; padding: 2px 7px; border-radius: 6px;
+  box-shadow: 0 4px 14px -4px rgba(0,0,0,.8); white-space: nowrap; opacity: 0; will-change: transform; }
+
 @media (prefers-reduced-motion: reduce) {
+  .xp-stage-seg .stage-flame b { animation: none; }
   .bp-draw { stroke-dashoffset: 0; animation: none; }
   .bp-fade { opacity: 1; animation: none; }
   .hero-in { opacity: 1; transform: none; filter: none; animation: none; }

@@ -87,6 +87,21 @@
       <h2 class="reveal" data-delay="60">Choose your next experiment</h2>
     </div>
 
+    <figure class="xp-map reveal" id="xpMap" aria-labelledby="xpMapTitle">
+      <figcaption class="xp-map-head">
+        <div>
+          <span class="xp-map-title" id="xpMapTitle">Map of the builds: cost against difficulty</span>
+          <span class="xp-map-sub">Each bubble is one build. Further right costs more (the whisker spans its price range); higher is harder; a bigger bubble takes longer. Hover or tap a bubble to find its card; the filters below dim what they hide.</span>
+        </div>
+        <div class="xp-map-legend" id="xpMapLegend"></div>
+      </figcaption>
+      <div class="xp-map-plot" id="xpMapPlot">
+        <svg id="xpMapSvg" role="img" aria-labelledby="xpMapDesc"><desc id="xpMapDesc">Bubble chart of the builds: typical cost in US dollars on a logarithmic horizontal axis, difficulty from 1 to 5 on the vertical axis, bubble area proportional to build time, colour by level. The same numbers are in the table below the chart.</desc></svg>
+        <div class="xp-map-tip" id="xpMapTip" aria-hidden="true"></div>
+      </div>
+      <details class="xp-map-table"><summary>Show the builds as a table</summary><div class="table-wrap"><table class="data" id="xpMapTable"></table></div></details>
+    </figure>
+
     <div class="xp-filters reveal" data-delay="100" role="search">
       <div class="xp-filter">
         <span class="xp-flabel" id="lvlLabel">Level</span>
@@ -140,6 +155,7 @@
       <div class="xp-canvas-wrap">
         <div class="xp-canvas" id="stlStage"></div>
         <div class="xp-viewer-loading mono" id="stlLoading">Loading viewer…</div>
+        <div class="xp-dims" id="stlDims" aria-hidden="true"><span data-d="w"></span><span data-d="d"></span><span data-d="h"></span></div>
         <div class="xp-viewer-hud">
           <div class="xp-model-title" id="stlTitle">—</div>
           <div class="xp-model-sub mono" id="stlSub"></div>
@@ -147,6 +163,8 @@
         <div class="xp-viewer-bar">
           <label class="switch"><span>Auto-rotate</span><input type="checkbox" id="tRotate" checked></label>
           <label class="switch"><span>Wireframe</span><input type="checkbox" id="tWire"></label>
+          <label class="switch"><span>Dimensions</span><input type="checkbox" id="tDims" checked></label>
+          <button class="btn small" type="button" id="bExplode" title="Replay: the part flies apart into print layers, closes up and gets measured">Exploded view</button>
           <button class="btn small" type="button" id="bReset">Reset view</button>
           <a class="btn small" id="bDownload" href="#" download>Download STL</a>
         </div>
@@ -193,6 +211,8 @@
 </main>
 
 <script src="assets/js/codex.js"></script>
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrollTrigger.min.js"></script>
 <script type="module" src="assets/js/experiments.js"></script>
 </body>
 </html>
