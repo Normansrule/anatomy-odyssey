@@ -1,0 +1,693 @@
+{
+ "meta": {
+  "about": "Curated metadata for dsn.html: the three Deep Space Network complexes and their dishes, spacecraft codes used by NASA's DSN Now feed, history, and an ILLUSTRATIVE sample snapshot used only when the live feed cannot be reached.",
+  "sources": [
+   {
+    "label": "NASA/JPL DSN Now (live feed and config)",
+    "url": "https://eyes.nasa.gov/apps/dsn-now/dsn.html"
+   },
+   {
+    "label": "russss/pydsn: parser for the DSN Now XML",
+    "url": "https://github.com/russss/pydsn"
+   },
+   {
+    "label": "spacehackers/api.spaceprob.es: DSN data aggregated by spacecraft",
+    "url": "https://github.com/spacehackers/api.spaceprob.es"
+   },
+   {
+    "label": "Wikipedia: List of antennas in NASA's Deep Space Network",
+    "url": "https://en.wikipedia.org/wiki/List_of_antennas_in_NASA%27s_Deep_Space_Network"
+   },
+   {
+    "label": "NASA/JPL: NASA Adds Giant New Dish to Communicate With Deep Space Missions (DSS-23, 2026)",
+    "url": "https://www.jpl.nasa.gov/news/nasa-adds-giant-new-dish-to-communicate-with-deep-space-missions/"
+   },
+   {
+    "label": "NASA SCaN: NASA Concludes Antenna Mishap Investigation, Releases Report (DSS-14)",
+    "url": "https://www.nasa.gov/directorates/somd/space-communications-navigation-program/nasa-concludes-antenna-mishap-investigation-releases-report/"
+   },
+   {
+    "label": "NASA/JPL: NASA's Deep Space Network Turns 50 (2013)",
+    "url": "https://www.jpl.nasa.gov/news/nasas-deep-space-network-turns-50/"
+   },
+   {
+    "label": "NASA Science: Voyager mission blog",
+    "url": "https://science.nasa.gov/category/missions/voyager-program/"
+   }
+  ],
+  "elevationMask": 10,
+  "elevationMaskNote": "DSN antennas normally track above roughly 6 to 10 degrees elevation; 10 degrees is used here for the coverage drawings."
+ },
+ "complexes": [
+  {
+   "id": "gdscc",
+   "name": "Goldstone",
+   "abbr": "GDSCC",
+   "full": "Goldstone Deep Space Communications Complex (GDSCC)",
+   "place": "Mojave Desert, California, USA",
+   "lat": 35.4267,
+   "lon": -116.89,
+   "tz": "America/Los_Angeles",
+   "color": "#ffc24b",
+   "opened": 1958,
+   "blurb": "On the US Army's Fort Irwin range, 72 km north of Barstow. Operated for NASA by JPL.",
+   "dishes": [
+    {
+     "id": "DSS14",
+     "size": 70,
+     "kind": "70 m",
+     "built": 1966,
+     "status": "repair",
+     "note": "The \"Mars antenna\": built at 64 m in 1966, enlarged to 70 m in 1988. Damaged in an over-rotation mishap in September 2025; NASA's investigation report (2026) puts its return to service years away."
+    },
+    {
+     "id": "DSS23",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 2026,
+     "note": "The newest dish in the network, online in 2026."
+    },
+    {
+     "id": "DSS24",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 1994
+    },
+    {
+     "id": "DSS25",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 1996,
+     "note": "Can transmit and receive Ka-band."
+    },
+    {
+     "id": "DSS26",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 1996
+    }
+   ]
+  },
+  {
+   "id": "mdscc",
+   "name": "Madrid",
+   "abbr": "MDSCC",
+   "full": "Madrid Deep Space Communications Complex (MDSCC)",
+   "place": "Robledo de Chavela, Spain",
+   "lat": 40.4314,
+   "lon": -4.2481,
+   "tz": "Europe/Madrid",
+   "color": "#ff6fa8",
+   "opened": 1965,
+   "blurb": "60 km west of Madrid, run for NASA by Spain's National Institute for Aerospace Technology (INTA).",
+   "dishes": [
+    {
+     "id": "DSS63",
+     "size": 70,
+     "kind": "70 m",
+     "built": 1974,
+     "note": "Enlarged from 64 m to 70 m in 1987."
+    },
+    {
+     "id": "DSS65",
+     "size": 34,
+     "kind": "34 m high efficiency",
+     "built": 1987
+    },
+    {
+     "id": "DSS53",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 2022,
+     "note": "Online in 2022."
+    },
+    {
+     "id": "DSS54",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 1997
+    },
+    {
+     "id": "DSS55",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 2003
+    },
+    {
+     "id": "DSS56",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 2021,
+     "note": "Online in 2021; the first dish able to use every DSN band."
+    }
+   ]
+  },
+  {
+   "id": "cdscc",
+   "name": "Canberra",
+   "abbr": "CDSCC",
+   "full": "Canberra Deep Space Communication Complex (CDSCC)",
+   "place": "Tidbinbilla, Australian Capital Territory, Australia",
+   "lat": -35.4014,
+   "lon": 148.9817,
+   "tz": "Australia/Sydney",
+   "color": "#4ef0b8",
+   "opened": 1965,
+   "blurb": "In the Paddys River valley near Canberra, run for NASA by Australia's national science agency (CSIRO).",
+   "dishes": [
+    {
+     "id": "DSS43",
+     "size": 70,
+     "kind": "70 m",
+     "built": 1973,
+     "note": "The only dish on Earth that can send commands to Voyager 2, far south of the celestial equator. Rebuilt electronics in 2020."
+    },
+    {
+     "id": "DSS34",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 1997
+    },
+    {
+     "id": "DSS35",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 2014
+    },
+    {
+     "id": "DSS36",
+     "size": 34,
+     "kind": "34 m beam waveguide",
+     "built": 2016
+    }
+   ]
+  }
+ ],
+ "bands": {
+  "S": {
+   "name": "S-band",
+   "up": "2.025–2.120 GHz",
+   "down": "2.2–2.3 GHz",
+   "note": "Oldest deep-space band; robust, lower data rates."
+  },
+  "X": {
+   "name": "X-band",
+   "up": "7.145–7.190 GHz",
+   "down": "8.40–8.45 GHz",
+   "note": "The workhorse of deep-space links since the 1970s."
+  },
+  "Ka": {
+   "name": "Ka-band",
+   "up": "34.2–34.7 GHz",
+   "down": "31.8–32.3 GHz (deep space), 25.5–27 GHz (near Earth)",
+   "note": "Four times the frequency of X-band: narrower beams and faster data, but rain fades it."
+  },
+  "K": {
+   "name": "K-band",
+   "up": "",
+   "down": "25.5–27 GHz",
+   "note": "Near-Earth high-rate band, used for example by the James Webb Space Telescope."
+  }
+ },
+ "spacecraft": {
+  "VGR1": {
+   "name": "Voyager 1",
+   "mission": "Grand tour of Jupiter and Saturn, now in interstellar space",
+   "launch": 1977,
+   "dest": "Interstellar space",
+   "operator": "NASA / JPL",
+   "kind": "deep",
+   "sky": {
+    "ra": 258.3,
+    "dec": 12
+   },
+   "url": "https://science.nasa.gov/mission/voyager/",
+   "fact": "The most distant human-made object. Its 23-watt transmitter is about as powerful as a refrigerator light bulb."
+  },
+  "VGR2": {
+   "name": "Voyager 2",
+   "mission": "The only visits to Uranus and Neptune, now in interstellar space",
+   "launch": 1977,
+   "dest": "Interstellar space",
+   "operator": "NASA / JPL",
+   "kind": "deep",
+   "sky": {
+    "ra": 302.5,
+    "dec": -59.7
+   },
+   "url": "https://science.nasa.gov/mission/voyager/",
+   "fact": "It flew south past Neptune's moon Triton, so it now sits far below the celestial equator: only Canberra can see it."
+  },
+  "NHPC": {
+   "name": "New Horizons",
+   "mission": "Pluto flyby (2015), then the Kuiper Belt object Arrokoth (2019)",
+   "launch": 2006,
+   "dest": "Kuiper Belt",
+   "operator": "NASA / Johns Hopkins APL",
+   "kind": "deep",
+   "sky": {
+    "ra": 291.5,
+    "dec": -20.3
+   },
+   "url": "https://science.nasa.gov/mission/new-horizons/",
+   "fact": "Its whole Pluto data set took about 15 months to trickle home."
+  },
+  "JNO": {
+   "name": "Juno",
+   "mission": "Jupiter polar orbiter",
+   "launch": 2011,
+   "dest": "Jupiter",
+   "operator": "NASA / JPL",
+   "kind": "planet",
+   "sky": {
+    "body": "jupiter"
+   },
+   "url": "https://science.nasa.gov/mission/juno/",
+   "fact": "Solar-powered at Jupiter, five times farther from the Sun than Earth."
+  },
+  "MRO": {
+   "name": "Mars Reconnaissance Orbiter",
+   "mission": "High-resolution imaging and relay for Mars rovers",
+   "launch": 2005,
+   "dest": "Mars orbit",
+   "operator": "NASA / JPL",
+   "kind": "mars",
+   "sky": {
+    "body": "mars"
+   },
+   "url": "https://science.nasa.gov/mission/mars-reconnaissance-orbiter/",
+   "fact": "Has returned more data than all other Mars missions combined.",
+   "short": "MRO"
+  },
+  "M20": {
+   "name": "Perseverance",
+   "mission": "Mars 2020 rover in Jezero Crater, caching samples",
+   "launch": 2020,
+   "dest": "Mars surface",
+   "operator": "NASA / JPL",
+   "kind": "mars",
+   "sky": {
+    "body": "mars"
+   },
+   "url": "https://science.nasa.gov/mission/mars-2020-perseverance/",
+   "fact": "Talks to Earth directly at X-band, but sends most of its data up to orbiters first."
+  },
+  "MSL": {
+   "name": "Curiosity",
+   "mission": "Mars Science Laboratory rover in Gale Crater",
+   "launch": 2011,
+   "dest": "Mars surface",
+   "operator": "NASA / JPL",
+   "kind": "mars",
+   "sky": {
+    "body": "mars"
+   },
+   "url": "https://science.nasa.gov/mission/msl-curiosity/",
+   "fact": "Climbing Mount Sharp since 2014."
+  },
+  "MVN": {
+   "name": "MAVEN",
+   "mission": "Mars Atmosphere and Volatile Evolution orbiter",
+   "launch": 2013,
+   "dest": "Mars orbit",
+   "operator": "NASA / Goddard",
+   "kind": "mars",
+   "sky": {
+    "body": "mars"
+   },
+   "url": "https://science.nasa.gov/mission/maven/",
+   "fact": "Measured how the solar wind strips Mars's atmosphere away."
+  },
+  "M01O": {
+   "name": "2001 Mars Odyssey",
+   "mission": "Mars orbiter and relay",
+   "launch": 2001,
+   "dest": "Mars orbit",
+   "operator": "NASA / JPL",
+   "kind": "mars",
+   "sky": {
+    "body": "mars"
+   },
+   "fact": "The longest-serving spacecraft ever at Mars.",
+   "short": "Odyssey"
+  },
+  "MEX": {
+   "name": "Mars Express",
+   "mission": "European Space Agency (ESA) Mars orbiter",
+   "launch": 2003,
+   "dest": "Mars orbit",
+   "operator": "ESA",
+   "kind": "mars",
+   "sky": {
+    "body": "mars"
+   },
+   "fact": "Europe's first planetary mission; ESA's own ground stations share the load with the DSN."
+  },
+  "TGO": {
+   "name": "ExoMars Trace Gas Orbiter",
+   "mission": "Sniffing Mars's atmosphere for trace gases, and relay",
+   "launch": 2016,
+   "dest": "Mars orbit",
+   "operator": "ESA",
+   "kind": "mars",
+   "sky": {
+    "body": "mars"
+   },
+   "fact": "Also relays data from NASA's rovers.",
+   "short": "TGO"
+  },
+  "EMM": {
+   "name": "Hope (Emirates Mars Mission)",
+   "mission": "Mars weather orbiter",
+   "launch": 2020,
+   "dest": "Mars orbit",
+   "operator": "UAE Mohammed bin Rashid Space Centre (MBRSC)",
+   "kind": "mars",
+   "sky": {
+    "body": "mars"
+   },
+   "fact": "The Arab world's first interplanetary mission.",
+   "short": "Hope"
+  },
+  "CLPR": {
+   "name": "Europa Clipper",
+   "aliases": [
+    "EURC",
+    "EUC"
+   ],
+   "mission": "Dozens of flybys of Jupiter's ocean moon Europa",
+   "launch": 2024,
+   "dest": "Jupiter (arrives 2030)",
+   "operator": "NASA / JPL",
+   "kind": "cruise",
+   "url": "https://science.nasa.gov/mission/europa-clipper/",
+   "fact": "The largest planetary spacecraft NASA has built: its solar arrays span 30.5 m."
+  },
+  "PSYC": {
+   "name": "Psyche",
+   "mission": "Orbit the metal-rich asteroid 16 Psyche",
+   "launch": 2023,
+   "dest": "Asteroid 16 Psyche (arrives 2029)",
+   "operator": "NASA / JPL",
+   "kind": "cruise",
+   "sky": {
+    "body": "mars"
+   },
+   "url": "https://science.nasa.gov/mission/psyche/",
+   "fact": "Carried a laser communications experiment that sent video from deep space."
+  },
+  "LUCY": {
+   "name": "Lucy",
+   "mission": "Tour of Jupiter's Trojan asteroids",
+   "launch": 2021,
+   "dest": "Jupiter Trojans (from 2027)",
+   "operator": "NASA / Goddard / SwRI",
+   "kind": "cruise",
+   "sky": {
+    "body": "jupiter"
+   },
+   "url": "https://science.nasa.gov/mission/lucy/",
+   "fact": "Will visit more separate asteroids than any mission before it."
+  },
+  "JWST": {
+   "name": "James Webb Space Telescope",
+   "mission": "Infrared space observatory at Sun–Earth L2",
+   "launch": 2021,
+   "dest": "Sun–Earth L2, 1.5 million km",
+   "operator": "NASA / ESA / CSA",
+   "kind": "l2",
+   "sky": {
+    "sun": 180,
+    "km": 1500000
+   },
+   "url": "https://science.nasa.gov/mission/webb/",
+   "fact": "Sends about 57 gigabytes of science a day over 25.9 GHz Ka-band.",
+   "short": "Webb"
+  },
+  "SOHO": {
+   "name": "SOHO",
+   "mission": "Solar and Heliospheric Observatory at Sun–Earth L1",
+   "launch": 1995,
+   "dest": "Sun–Earth L1, 1.5 million km",
+   "operator": "ESA / NASA",
+   "kind": "l1",
+   "sky": {
+    "sun": 0,
+    "km": 1500000
+   },
+   "fact": "Has found more than 5,000 comets, almost all by volunteers."
+  },
+  "SPP": {
+   "name": "Parker Solar Probe",
+   "aliases": [
+    "PSP"
+   ],
+   "mission": "Dives through the Sun's outer atmosphere",
+   "launch": 2018,
+   "dest": "The Sun's corona",
+   "operator": "NASA / Johns Hopkins APL",
+   "kind": "sun",
+   "sky": {
+    "body": "venus"
+   },
+   "url": "https://science.nasa.gov/mission/parker-solar-probe/",
+   "fact": "The fastest object ever built: 192 km/s at closest approach.",
+   "short": "Parker"
+  },
+  "STA": {
+   "name": "STEREO-A",
+   "mission": "Solar Terrestrial Relations Observatory, watching the Sun from the side",
+   "launch": 2006,
+   "dest": "Orbit around the Sun",
+   "operator": "NASA",
+   "kind": "sun",
+   "fact": "Drifted all the way around the Sun and passed Earth again in 2023."
+  },
+  "ACE": {
+   "name": "ACE",
+   "mission": "Advanced Composition Explorer, solar-wind monitor at L1",
+   "launch": 1997,
+   "dest": "Sun–Earth L1",
+   "operator": "NASA",
+   "kind": "l1",
+   "sky": {
+    "sun": 0,
+    "km": 1500000
+   },
+   "fact": "Its solar-wind readings give about an hour's warning of geomagnetic storms."
+  },
+  "WIND": {
+   "name": "Wind",
+   "mission": "Solar-wind laboratory near L1",
+   "launch": 1994,
+   "dest": "Sun–Earth L1",
+   "operator": "NASA",
+   "kind": "l1",
+   "sky": {
+    "sun": 0,
+    "km": 1500000
+   },
+   "fact": "Still working after more than 30 years."
+  },
+  "DSCO": {
+   "name": "DSCOVR",
+   "mission": "Deep Space Climate Observatory at L1",
+   "launch": 2015,
+   "dest": "Sun–Earth L1",
+   "operator": "NOAA / NASA",
+   "kind": "l1",
+   "sky": {
+    "sun": 0,
+    "km": 1500000
+   },
+   "fact": "Photographs the whole sunlit Earth several times a day."
+  },
+  "IMAP": {
+   "name": "IMAP",
+   "mission": "Interstellar Mapping and Acceleration Probe at L1",
+   "launch": 2025,
+   "dest": "Sun–Earth L1",
+   "operator": "NASA / Princeton",
+   "kind": "l1",
+   "sky": {
+    "sun": 0,
+    "km": 1500000
+   },
+   "fact": "Maps the edge of the heliosphere from near Earth."
+  },
+  "TESS": {
+   "name": "TESS",
+   "mission": "Transiting Exoplanet Survey Satellite",
+   "launch": 2018,
+   "dest": "High Earth orbit",
+   "operator": "NASA / MIT",
+   "kind": "earth",
+   "fact": "Its orbit is in a 2:1 resonance with the Moon."
+  },
+  "CHDR": {
+   "name": "Chandra X-ray Observatory",
+   "mission": "X-ray telescope in a high Earth orbit",
+   "launch": 1999,
+   "dest": "High Earth orbit",
+   "operator": "NASA / Smithsonian",
+   "kind": "earth",
+   "fact": "Its mirrors are the smoothest ever made.",
+   "short": "Chandra"
+  },
+  "LRO": {
+   "name": "Lunar Reconnaissance Orbiter",
+   "mission": "Mapping the Moon",
+   "launch": 2009,
+   "dest": "Lunar orbit",
+   "operator": "NASA / Goddard",
+   "kind": "moon",
+   "sky": {
+    "body": "moon"
+   },
+   "fact": "Has photographed every Apollo landing site.",
+   "short": "LRO"
+  },
+  "KPLO": {
+   "name": "Danuri",
+   "mission": "Korea Pathfinder Lunar Orbiter (KPLO)",
+   "launch": 2022,
+   "dest": "Lunar orbit",
+   "operator": "Korea Aerospace Research Institute (KARI)",
+   "kind": "moon",
+   "sky": {
+    "body": "moon"
+   },
+   "fact": "Carries NASA's ShadowCam, which sees into permanently shadowed craters."
+  },
+  "CH2": {
+   "name": "Chandrayaan-2",
+   "mission": "Indian lunar orbiter",
+   "launch": 2019,
+   "dest": "Lunar orbit",
+   "operator": "Indian Space Research Organisation (ISRO)",
+   "kind": "moon",
+   "sky": {
+    "body": "moon"
+   },
+   "fact": "Its orbiter relayed for Chandrayaan-3's lander in 2023."
+  },
+  "BEPI": {
+   "name": "BepiColombo",
+   "mission": "Two orbiters for Mercury",
+   "launch": 2018,
+   "dest": "Mercury (orbit from late 2026)",
+   "operator": "ESA / JAXA",
+   "kind": "cruise",
+   "sky": {
+    "body": "mercury"
+   },
+   "fact": "Needed nine planetary flybys to reach Mercury."
+  },
+  "JUICE": {
+   "name": "JUICE",
+   "aliases": [
+    "JUIC"
+   ],
+   "mission": "JUpiter ICy moons Explorer",
+   "launch": 2023,
+   "dest": "Jupiter and Ganymede (arrives 2031)",
+   "operator": "ESA",
+   "kind": "cruise",
+   "fact": "Will be the first spacecraft to orbit a moon other than ours."
+  },
+  "HERA": {
+   "name": "Hera",
+   "mission": "Survey of the asteroid pair Didymos and Dimorphos after the DART impact",
+   "launch": 2024,
+   "dest": "Asteroid Didymos",
+   "operator": "ESA",
+   "kind": "cruise",
+   "fact": "Will measure the crater DART punched in 2022."
+  },
+  "ORX": {
+   "name": "OSIRIS-APEX",
+   "mission": "Extended mission of OSIRIS-REx to the asteroid Apophis",
+   "launch": 2016,
+   "dest": "Asteroid Apophis (2029)",
+   "operator": "NASA / Goddard",
+   "kind": "cruise",
+   "fact": "Delivered asteroid Bennu samples to Earth in 2023."
+  },
+  "HYB2": {
+   "name": "Hayabusa2",
+   "mission": "Extended mission to the asteroid 1998 KY26",
+   "launch": 2014,
+   "dest": "Asteroid 1998 KY26 (2031)",
+   "operator": "Japan Aerospace Exploration Agency (JAXA)",
+   "kind": "cruise",
+   "fact": "Brought samples of Ryugu home in 2020."
+  },
+  "SOLO": {
+   "name": "Solar Orbiter",
+   "mission": "Close-up views of the Sun and its poles",
+   "launch": 2020,
+   "dest": "Orbit around the Sun",
+   "operator": "ESA / NASA",
+   "kind": "sun",
+   "fact": "Took the first pictures of the Sun's poles, in 2025."
+  }
+ },
+ "history": [
+  {
+   "year": "1958",
+   "title": "Explorer 1 is tracked",
+   "text": "In January 1958 the Jet Propulsion Laboratory (JPL) set up portable radio stations in Nigeria, Singapore and California to receive Explorer 1, the first US satellite. Goldstone's first dish followed that year."
+  },
+  {
+   "year": "1963",
+   "title": "The DSN is born",
+   "text": "On 24 December 1963 NASA's deep-space tracking stations became the Deep Space Network (DSN), one network run by JPL for every mission."
+  },
+  {
+   "year": "1966",
+   "title": "The Mars antenna",
+   "text": "Goldstone's 64 m dish, DSS-14, was finished in 1966; its first job was following Mariner 4 far beyond Mars. Canberra and Madrid got their own big dishes in the early 1970s."
+  },
+  {
+   "year": "1969",
+   "title": "Apollo 11",
+   "text": "The first television from the Moon was received by NASA dishes at Goldstone and Honeysuckle Creek, Australia, and by the Parkes radio telescope. DSN dishes backed up the Apollo network, and in 1970 helped bring Apollo 13 home."
+  },
+  {
+   "year": "1989",
+   "title": "Voyager 2 at Neptune",
+   "text": "All three 64 m dishes were enlarged to 70 m and arrayed with other radio telescopes to catch Voyager 2's faint pictures from 4.5 billion km away."
+  },
+  {
+   "year": "2020",
+   "title": "Voyager 2's lifeline rebuilt",
+   "text": "Canberra's DSS-43, the only dish that can command Voyager 2, was off the air for most of 2020 for new transmitters and electronics."
+  },
+  {
+   "year": "2023",
+   "title": "An interstellar shout",
+   "text": "In August 2023 a wrong command tipped Voyager 2's antenna 2° off Earth. DSS-43 sent a high-power 'shout' that reached it about 18.5 hours later and it turned back."
+  },
+  {
+   "year": "2024",
+   "title": "Voyager 1 recovers",
+   "text": "From November 2023 Voyager 1 sent gibberish: a failed memory chip in its flight data computer. Engineers moved the code around the bad chip by radio; engineering data came back in April 2024 and all four science instruments by June."
+  },
+  {
+   "year": "2025",
+   "title": "The Mars antenna damaged",
+   "text": "In September 2025 DSS-14, Goldstone's 70 m dish, was damaged when it rotated past its limits. NASA's 2026 investigation expects repairs to take years."
+  },
+  {
+   "year": "2026",
+   "title": "A new dish, and one light-day",
+   "text": "Goldstone's DSS-23 joined the network in 2026. Voyager 1 shut down another instrument in April 2026 to save power, and on 18 November 2026 becomes the first spacecraft one light-day from Earth."
+  }
+ ],
+ "sample": {
+  "label": "Sample snapshot",
+  "note": "An illustrative snapshot built by hand from typical DSN values for the kinds of links shown (bands, data rates, frequencies, powers). Pointing and ranges are computed from approximate positions at the time shown. It is not a record of real DSN activity.",
+  "xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<dsn>\n  <station name=\"gdscc\" friendlyName=\"Goldstone\" timeUTC=\"1790697600000\" timeZoneOffset=\"-25200000\"/>\n  <dish name=\"DSS14\" azimuthAngle=\"0\" elevationAngle=\"89.9\" windSpeed=\"5\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <target name=\"DSN\" id=\"99\" uplegRange=\"-1\" downlegRange=\"-1\" rtlt=\"-1\"/>\n  </dish>\n  <dish name=\"DSS23\" azimuthAngle=\"209.79\" elevationAngle=\"73.74\" windSpeed=\"11\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"500\" frequency=\"7167500000\" power=\"4.2\" spacecraft=\"M20\" spacecraftID=\"-168\" band=\"X\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"2000\" frequency=\"8415300000\" power=\"-140.9\" spacecraft=\"M20\" spacecraftID=\"-168\" band=\"X\"/>\n    <target name=\"M20\" id=\"168\" uplegRange=\"2.504977e+8\" downlegRange=\"2.504977e+8\" rtlt=\"1671.1405\"/>\n  </dish>\n  <dish name=\"DSS24\" azimuthAngle=\"209.79\" elevationAngle=\"73.74\" windSpeed=\"5\" isMSPA=\"true\" isArray=\"false\" isDDOR=\"false\" activity=\"Multiple Spacecraft Per Aperture (MSPA)\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"2000\" frequency=\"7183300000\" power=\"4.6\" spacecraft=\"MRO\" spacecraftID=\"-74\" band=\"X\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"781250\" frequency=\"8439400000\" power=\"-123.5\" spacecraft=\"MRO\" spacecraftID=\"-74\" band=\"X\"/>\n    <upSignal active=\"false\" signalType=\"none\" dataRate=\"\" frequency=\"\" power=\"\" spacecraft=\"MVN\" spacecraftID=\"-202\" band=\"\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"32000\" frequency=\"8446300000\" power=\"-128.9\" spacecraft=\"MVN\" spacecraftID=\"-202\" band=\"X\"/>\n    <target name=\"MRO\" id=\"74\" uplegRange=\"2.504977e+8\" downlegRange=\"2.504977e+8\" rtlt=\"1671.1405\"/>\n    <target name=\"MVN\" id=\"202\" uplegRange=\"2.504977e+8\" downlegRange=\"2.504977e+8\" rtlt=\"1671.1405\"/>\n  </dish>\n  <dish name=\"DSS25\" azimuthAngle=\"152.88\" elevationAngle=\"68.3\" windSpeed=\"12\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"1000\" frequency=\"7153200000\" power=\"9.9\" spacecraft=\"JNO\" spacecraftID=\"-61\" band=\"X\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"18000\" frequency=\"8403800000\" power=\"-136.8\" spacecraft=\"JNO\" spacecraftID=\"-61\" band=\"X\"/>\n    <target name=\"JNO\" id=\"61\" uplegRange=\"8.877524e+8\" downlegRange=\"8.877524e+8\" rtlt=\"5922.4464\"/>\n  </dish>\n  <dish name=\"DSS26\" azimuthAngle=\"114.68\" elevationAngle=\"26.56\" windSpeed=\"6\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"2000\" frequency=\"2067200000\" power=\"0.2\" spacecraft=\"SOHO\" spacecraftID=\"-21\" band=\"S\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"245760\" frequency=\"2245500000\" power=\"-116.4\" spacecraft=\"SOHO\" spacecraftID=\"-21\" band=\"S\"/>\n    <target name=\"SOHO\" id=\"21\" uplegRange=\"1.520000e+6\" downlegRange=\"1.520000e+6\" rtlt=\"10.1403\"/>\n  </dish>\n  <station name=\"mdscc\" friendlyName=\"Madrid\" timeUTC=\"1790697600000\" timeZoneOffset=\"7200000\"/>\n  <dish name=\"DSS63\" azimuthAngle=\"152.43\" elevationAngle=\"58.97\" windSpeed=\"11\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"16\" frequency=\"2114700000\" power=\"18\" spacecraft=\"VGR1\" spacecraftID=\"-31\" band=\"S\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"160\" frequency=\"8420400000\" power=\"-155.9\" spacecraft=\"VGR1\" spacecraftID=\"-31\" band=\"X\"/>\n    <target name=\"VGR1\" id=\"31\" uplegRange=\"2.575734e+10\" downlegRange=\"2.575734e+10\" rtlt=\"171834.4602\"/>\n  </dish>\n  <dish name=\"DSS65\" azimuthAngle=\"246.12\" elevationAngle=\"21.81\" windSpeed=\"12\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"false\" signalType=\"none\" dataRate=\"\" frequency=\"\" power=\"\" spacecraft=\"ACE\" spacecraftID=\"-92\" band=\"\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"6944\" frequency=\"2278500000\" power=\"-119.9\" spacecraft=\"ACE\" spacecraftID=\"-92\" band=\"S\"/>\n    <target name=\"ACE\" id=\"92\" uplegRange=\"1.490000e+6\" downlegRange=\"1.490000e+6\" rtlt=\"9.9402\"/>\n  </dish>\n  <dish name=\"DSS53\" azimuthAngle=\"222.44\" elevationAngle=\"26.37\" windSpeed=\"11\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"1000\" frequency=\"7166500000\" power=\"7.5\" spacecraft=\"BEPI\" spacecraftID=\"-121\" band=\"X\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"8000\" frequency=\"8420300000\" power=\"-133\" spacecraft=\"BEPI\" spacecraftID=\"-121\" band=\"X\"/>\n    <target name=\"BEPI\" id=\"121\" uplegRange=\"1.784186e+8\" downlegRange=\"1.784186e+8\" rtlt=\"1190.2807\"/>\n  </dish>\n  <dish name=\"DSS54\" azimuthAngle=\"134.45\" elevationAngle=\"15.01\" windSpeed=\"5\" isMSPA=\"false\" isArray=\"true\" isDDOR=\"false\" activity=\"Array: DSS-54 and DSS-55 combined\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"500\" frequency=\"7182600000\" power=\"16.1\" spacecraft=\"NHPC\" spacecraftID=\"-98\" band=\"X\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"1000\" frequency=\"8438000000\" power=\"-151.4\" spacecraft=\"NHPC\" spacecraftID=\"-98\" band=\"X\"/>\n    <target name=\"NHPC\" id=\"98\" uplegRange=\"9.574264e+9\" downlegRange=\"9.574264e+9\" rtlt=\"63872.6123\"/>\n  </dish>\n  <dish name=\"DSS55\" azimuthAngle=\"134.45\" elevationAngle=\"15.01\" windSpeed=\"12\" isMSPA=\"false\" isArray=\"true\" isDDOR=\"false\" activity=\"Array: DSS-54 and DSS-55 combined\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"false\" signalType=\"none\" dataRate=\"\" frequency=\"\" power=\"\" spacecraft=\"NHPC\" spacecraftID=\"-98\" band=\"\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"1000\" frequency=\"8438000000\" power=\"-151.6\" spacecraft=\"NHPC\" spacecraftID=\"-98\" band=\"X\"/>\n    <target name=\"NHPC\" id=\"98\" uplegRange=\"9.574264e+9\" downlegRange=\"9.574264e+9\" rtlt=\"63872.6123\"/>\n  </dish>\n  <dish name=\"DSS56\" azimuthAngle=\"90\" elevationAngle=\"89.6\" windSpeed=\"6\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Antenna calibration\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <target name=\"DSN\" id=\"99\" uplegRange=\"-1\" downlegRange=\"-1\" rtlt=\"-1\"/>\n  </dish>\n  <station name=\"cdscc\" friendlyName=\"Canberra\" timeUTC=\"1790697600000\" timeZoneOffset=\"36000000\"/>\n  <dish name=\"DSS43\" azimuthAngle=\"214.6\" elevationAngle=\"27.71\" windSpeed=\"11\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"16\" frequency=\"2113300000\" power=\"18.3\" spacecraft=\"VGR2\" spacecraftID=\"-32\" band=\"S\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"160\" frequency=\"8415000000\" power=\"-158.2\" spacecraft=\"VGR2\" spacecraftID=\"-32\" band=\"X\"/>\n    <target name=\"VGR2\" id=\"32\" uplegRange=\"2.232019e+10\" downlegRange=\"2.232019e+10\" rtlt=\"148904.2685\"/>\n  </dish>\n  <dish name=\"DSS34\" azimuthAngle=\"315.54\" elevationAngle=\"41.97\" windSpeed=\"5\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"16000\" frequency=\"2090800000\" power=\"0.2\" spacecraft=\"JWST\" spacecraftID=\"-170\" band=\"S\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"28000000\" frequency=\"25900000000\" power=\"-98.4\" spacecraft=\"JWST\" spacecraftID=\"-170\" band=\"Ka\"/>\n    <target name=\"JWST\" id=\"170\" uplegRange=\"1.510000e+6\" downlegRange=\"1.510000e+6\" rtlt=\"10.0736\"/>\n  </dish>\n  <dish name=\"DSS35\" azimuthAngle=\"3.4\" elevationAngle=\"33.6\" windSpeed=\"12\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"2000\" frequency=\"2090600000\" power=\"0.4\" spacecraft=\"KPLO\" spacecraftID=\"-155\" band=\"S\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"4000000\" frequency=\"8475000000\" power=\"-106.1\" spacecraft=\"KPLO\" spacecraftID=\"-155\" band=\"X\"/>\n    <target name=\"KPLO\" id=\"155\" uplegRange=\"3.712361e+5\" downlegRange=\"3.712361e+5\" rtlt=\"2.4766\"/>\n  </dish>\n  <dish name=\"DSS36\" azimuthAngle=\"3.4\" elevationAngle=\"33.6\" windSpeed=\"6\" isMSPA=\"false\" isArray=\"false\" isDDOR=\"false\" activity=\"Spacecraft Telemetry, Tracking, and Command\" created=\"2026-09-29T15:12:07.000Z\" updated=\"2026-09-29T16:00:00.000Z\">\n    <upSignal active=\"true\" signalType=\"data\" dataRate=\"2000\" frequency=\"2071000000\" power=\"0.4\" spacecraft=\"CH2\" spacecraftID=\"-152\" band=\"S\"/>\n    <downSignal active=\"true\" signalType=\"data\" dataRate=\"32000\" frequency=\"2250000000\" power=\"-111.5\" spacecraft=\"CH2\" spacecraftID=\"-152\" band=\"S\"/>\n    <target name=\"CH2\" id=\"152\" uplegRange=\"3.712361e+5\" downlegRange=\"3.712361e+5\" rtlt=\"2.4766\"/>\n  </dish>\n  <timestamp>1790697600000</timestamp>\n</dsn>\n",
+  "time": "2026-09-29T16:00:00.000Z"
+ }
+}

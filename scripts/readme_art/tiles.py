@@ -8,6 +8,7 @@ import math
 import random
 
 from tiles_extra import s_solar_obs, s_surveys, s_telescopes
+from tiles_extra2 import s_academy, s_dsn, s_mission, s_moon as s_moon_explorer
 from common import (AURORA, BG, FLAME, FAINT, ICE, MUTED, NEBULA, PLASMA, SOL, TEXT, TEXT2, anim, arclen_sampler,
                     ellipse_arc, ellipse_pts, f, kf, neg, orbit_kf, pts_path, rrpath, stars, svg_doc, tr, twinkle_css,
                     window_kf)
@@ -24,9 +25,11 @@ PAGES = [
     ("shuttle", "Endeavour", "Fly", "The Space Shuttle in Los Angeles", "shuttle.html"),
     ("hangar", "Rocket hangar", "Fly", "Every major rocket, side by side to scale", "hangar.html"),
     ("builder", "Rocket builder", "Fly", "Design a rocket, then fly it to orbit", "builder.html"),
+    ("mission-designer", "Mission designer", "Fly", "Plan a real interplanetary mission, end to end", "mission-designer.html"),
     ("earth", "Live Earth orbit", "Explore", "Real satellites, launches and news, live", "earth.html"),
     ("sky", "Night sky", "Explore", "A planetarium for your location, tonight", "sky.html"),
     ("solar-system", "Solar system", "Explore", "Every planet where it is today", "solar-system.html"),
+    ("moon", "Moon explorer", "Explore", "Every landing site, phases and eclipses", "moon.html"),
     ("sun", "The Sun", "Explore", "Five wavelengths, flares, and the inside", "sun.html"),
     ("black-hole", "Black hole", "Explore", "Light bent through curved spacetime", "black-hole.html"),
     ("scale", "Cosmic scale", "Explore", "Zoom from a person to the whole universe", "scale.html"),
@@ -34,16 +37,18 @@ PAGES = [
     ("galaxies", "Galaxy collision", "Explore", "Milky Way meets Andromeda", "galaxies.html"),
     ("solar-observatory", "Solar observatory", "Explore", "Today's real Sun from SDO, SOHO and GOES", "solar-observatory.html"),
     ("surveys", "Sky surveys", "Explore", "Pan the real sky in a dozen wavelengths", "surveys.html"),
+    ("dsn", "Deep Space Network", "Explore", "Which spacecraft are talking to Earth right now", "dsn.html"),
     ("orbits", "Orbit Lab", "Learn", "Newton, Kepler, Hohmann and Lagrange", "orbits.html"),
     ("equations", "Equations", "Learn", "94 equations with live calculators", "equations.html"),
     ("gallery", "Gallery", "Learn", "60+ photographs that changed us", "gallery.html"),
     ("timeline", "Timeline", "Learn", "1903 to today, every milestone", "timeline.html"),
     ("library", "Documents", "Learn", "Flight manuals, reports and user guides", "library.html"),
     ("telescopes", "Use a telescope", "Learn", "Free robotic telescopes, live feeds, simulators", "telescopes.html"),
+    ("academy", "Space Academy", "Learn", "A guided course with quizzes and badges", "academy.html"),
     ("experiments", "Experiments", "Build", "20 builds from $0 to a custom circuit board", "experiments.html"),
     ("python", "Python toolkit", "Compute", "7 simulations and 52 physics tests", "simulations/"),
 ]
-LIVE = {"earth", "space-weather", "solar-observatory"}
+LIVE = {"earth", "space-weather", "solar-observatory", "dsn"}
 
 FLICKER = (kf("fk", [(0, "transform:scale(1,1)"), (25, "transform:scale(.82,1.22)"), (50, "transform:scale(1.08,.86)"),
                      (75, "transform:scale(.9,1.14)"), (100, "transform:scale(1,1)")]) + anim(".fk", "fk", 0.16))
@@ -1328,6 +1333,7 @@ SCENES = {
     "orbits": s_orbits, "equations": s_equations, "gallery": s_gallery, "timeline": s_timeline, "library": s_library,
     "experiments": s_experiments, "python": s_python,
     "solar-observatory": s_solar_obs, "surveys": s_surveys, "telescopes": s_telescopes,
+    "mission-designer": s_mission, "moon": s_moon_explorer, "dsn": s_dsn, "academy": s_academy,
 }
 
 ALT = {
@@ -1355,6 +1361,10 @@ ALT = {
     "solar-observatory": "The real Sun as the Solar Dynamics Observatory sees it, cycling through its channels: gold AIA 171 Å (about 600,000 K), bronze 193 Å (1.6 million K), red 304 Å (50,000 K), teal 131 Å (10 million K, flares) and the grey visible-light HMI disc with sunspots, with the same active regions in every view.",
     "surveys": "The same patch of sky around Orion fades through six wavelengths, radio, infrared, visible, ultraviolet, X-ray and gamma ray, while a marker slides along the electromagnetic spectrum and a caption says what each band shows.",
     "telescopes": "An observatory dome opens its shutter, the telescope inside slews to the Orion Nebula and locks on at RA 05h 35m 17s, Dec −05° 23′ 28″, while a small radio dish nods beside it.",
+    "mission-designer": "A porkchop plot of launch and arrival dates shimmers while an Earth-to-Mars transfer arc draws itself between the planets' orbits, to scale, with Earth and Mars moving along their orbits during the 259-day Hohmann transfer and a readout of C3 (8.7 km²/s²), delta-v from a 300 km orbit (3.59 km/s) and flight time.",
+    "moon": "The near side of the Moon, maria in their real places, slowly librating while its phase cycles from new to full and back; landing sites from Luna 9 and Apollo 11 to Chandrayaan-3 blink in turn with their coordinates.",
+    "dsn": "The Earth seen from above the North Pole turns with the Deep Space Network's three complexes, Goldstone, Madrid and Canberra, on its rim; the one facing Voyager 1 is named while a signal travels out and back and a round-trip light-time counter climbs to 46.3 hours.",
+    "academy": "A star-map skill tree: lesson stars light up one by one and constellation lines join them, then a badge pops out with a shine.",
     "python": "A terminal types python simulations/run.py rocket, then plots the ascent curves of Saturn V and Falcon 9.",
 }
 

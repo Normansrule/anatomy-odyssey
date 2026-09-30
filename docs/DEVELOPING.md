@@ -53,6 +53,10 @@ cosmic-library/
 | solar-observatory | solar-observatory.html | atlas — live SDO/SOHO/GOES imagery + great solar images |
 | surveys | surveys.html | sim — Aladin Lite multi-wavelength sky atlas |
 | telescopes | telescopes.html | atlas — remote telescopes, live feeds, simulators directory |
+| mission-designer | mission-designer.html | sim — porkchop plot, launch vehicle, spacecraft budgets |
+| moon | moon.html | sim — 3D Moon, landing sites, phases, libration, eclipses |
+| dsn | dsn.html | sim — live Deep Space Network antennas and spacecraft |
+| academy | academy.html | atlas — guided course: lessons, widgets, quizzes, badges |
 
 ## Page skeleton
 

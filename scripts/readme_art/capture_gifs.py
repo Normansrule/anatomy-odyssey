@@ -3,7 +3,7 @@
 
     python scripts/readme_art/capture_gifs.py              # every page below
     python scripts/readme_art/capture_gifs.py launch sky   # just these
-    python scripts/readme_art/capture_gifs.py --screens    # the 3 still screenshots instead
+    python scripts/readme_art/capture_gifs.py --screens [id ...]   # the still screenshots instead
     python scripts/readme_art/capture_gifs.py --keep ...   # keep the PNG frames (for checking)
     python scripts/readme_art/capture_gifs.py --list       # show the page ids
 
@@ -348,6 +348,60 @@ def _space_weather(p):
     hide_loading(p)
 
 
+# Pages with smooth 3-D gradients (a lit Moon, glowing beams) band badly with few colours:
+# keep 256 colours with error diffusion, and use fewer frames instead.
+SMOOTH_LADDER = [(720, 256, "sierra2_4a"), (720, 192, "sierra2_4a"), (720, 128, "sierra2_4a"),
+                 (720, 128, "bayer:bayer_scale=5"), (720, 96, "none"), (640, 128, "sierra2_4a")]
+
+# Moon explorer: one lunation (new Moon to new Moon, 29.53 days) seen from Earth, with the
+# landing-site pins; phase, libration wobble and apparent size all change. Loops naturally.
+MOON_T0, MOON_N = "2026-10-11T06:00:00Z", 44
+@recipe("moon", url="moon.html", frames=MOON_N, step=83.33, fps=12, loop="none", wait=6000, ladder=SMOOTH_LADDER,
+        per=lambda p, i: p.evaluate("([t, k]) => { __sim.setTime(Date.parse(t) + k * 29.530589 * 86400e3); return 0; }",
+                                    [MOON_T0, i / MOON_N]))
+def _moon_explorer(p):
+    wait_ready(p, "!!(window.__sim && __sim.state())", 300)
+    p.evaluate("__vc.freeze()")
+    p.evaluate("t => { __sim.setTime(Date.parse(t)); return 0; }", MOON_T0)
+    hide_loading(p)
+
+
+# Mission Designer, step 2 (launch window) for the Mars 2026 preset: the finished porkchop
+# plot, the chosen point sliding in to the cheapest transfer (the 3-D trajectory follows),
+# then the transfer flown in the 3-D view by scrubbing the page's own time slider.
+MD_PICK, MD_N = 12, 44
+MD_JS = """([i, np, n, d0, t0]) => {
+  const e = (x) => x * x * (3 - 2 * x), r = document.getElementById('timeRange'), pc = __sim.pc;
+  // start inside the same porkchop window (a pick outside it would re-solve the plot)
+  const ds = pc.dep[Math.floor(pc.nDep * 0.22)], ts = pc.tof[Math.floor(pc.nTof * 0.78)];
+  if (i < np) { const k = e(i / (np - 1)); __sim.pick(ds + (d0 - ds) * k, ts + (t0 - ts) * k); r.value = 0; }
+  else r.value = Math.round(1000 * e((i - np) / (n - np - 1)));
+  r.dispatchEvent(new Event('input')); return 0; }"""
+@recipe("mission-designer", url="mission-designer.html", frames=MD_N, step=83.33, fps=12, loop="none", wait=4000, hold=6,
+        ladder=SMOOTH_LADDER,
+        per=lambda p, i: p.evaluate(MD_JS, [i, MD_PICK, MD_N, RECIPES["mission-designer"]["_d0"], RECIPES["mission-designer"]["_t0"]]))
+def _mission(p):
+    wait_ready(p, "!!(window.__sim && __sim.state)", 300)
+    p.evaluate("__sim.go(2); 0")
+    wait_ready(p, "!!__sim.ready", 900)                 # the porkchop is solved in a worker (~2-3 min here)
+    p.wait_for_timeout(1500)
+    p.evaluate("__vc.freeze()")
+    d0, t0 = p.evaluate("[__sim.state.dep, __sim.state.tof]")
+    RECIPES["mission-designer"].update(_d0=d0, _t0=t0)
+    hide_loading(p)
+
+
+# Deep Space Network, labelled sample snapshot (?offline): the Earth turning slowly under
+# the camera with the dish beams and their light-time pulses. On software WebGL the scene
+# draws at most every 250 ms, so each frame steps 250 ms (the pulses' dt is capped at 0.1 s).
+@recipe("dsn", url="dsn.html?offline", frames=44, step=250, fps=12, loop="none", wait=6000, ladder=SMOOTH_LADDER)
+def _dsn(p):
+    wait_ready(p, "!!(window.__sim && __sim.ready && __sim.scene)", 300)
+    p.wait_for_timeout(3000)
+    p.evaluate("__vc.freeze(); __sim.scene.controls.autoRotateSpeed = 12; __sim.scene.setAutoRotate(true); 0")
+    hide_loading(p)
+
+
 def capture(p, name, r, frames_dir):
     os.makedirs(frames_dir, exist_ok=True)
     for i in range(r.get("settle", 3)):
@@ -469,7 +523,7 @@ def run(names, keep, frames_root):
 
 
 # ----------------------------------------------------------------- still screenshots
-# For the three newest pages: media/screens/<id>.jpg (1440x900 with the nav bar, quality 84)
+# For the newest pages: media/screens/<id>.jpg (1440x900 with the nav bar, quality 84)
 # and the landing-page thumbnail site/assets/img/screens/<id>.jpg (crop y 60-870, 800x450, q80).
 def _still_builder(p):
     wait_ready(p, "document.getElementById('loading').classList.contains('done')", 300)
@@ -488,8 +542,33 @@ def _still_galaxies(p):
         p.evaluate("__vc.step(83)")
 
 
+def _still_mission(p):
+    wait_ready(p, "!!(window.__sim && __sim.state)", 300)
+    p.evaluate("__sim.go(2); 0")
+    wait_ready(p, "!!__sim.ready", 900)
+    p.wait_for_timeout(2000)
+
+
+def _still_moon(p):
+    wait_ready(p, "!!(window.__sim && __sim.state())", 300)
+    p.wait_for_timeout(2000)
+
+
+def _still_dsn(p):
+    wait_ready(p, "!!(window.__sim && __sim.ready && __sim.scene)", 300)
+    p.wait_for_timeout(4000)
+
+
+def _still_academy(p):
+    p.wait_for_timeout(2000)
+
+
 STILLS = {"builder": ("builder.html", _still_builder), "space-weather": ("space-weather.html?offline", _still_space_weather),
-          "galaxies": ("galaxies.html?q=low", _still_galaxies)}
+          "galaxies": ("galaxies.html?q=low", _still_galaxies),
+          "mission-designer": ("mission-designer.html", _still_mission),
+          "moon": ("moon.html?t=2026-10-20T04:00:00Z", _still_moon),      # waxing gibbous, fixed date
+          "dsn": ("dsn.html?offline", _still_dsn),                         # the labelled sample snapshot
+          "academy": ("academy.html", _still_academy)}
 
 
 def stills(names):

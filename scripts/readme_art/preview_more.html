@@ -14,7 +14,7 @@
   h2 { font-size: 13px; font-weight: 600; margin: 22px 0 6px; opacity: .7; }
   img { display: block; height: auto; }
   .w { width: 830px; max-width: 100%; }
-  .tiles { display: flex; gap: 10px; }
+  .tiles { display: flex; flex-wrap: wrap; gap: 10px; }
   .tiles img { width: 260px; }
 </style>
 </head>
@@ -33,7 +33,7 @@
     ["concepts/wavelengths.svg", "w"],
   ];
   const html = parts.map(([src, cls]) => cls === "tiles"
-    ? `<h2>tiles</h2><div class="tiles">${["solar-observatory", "surveys", "telescopes"].map(t => `<img src="${M}tiles/${t}.svg">`).join("")}</div>`
+    ? `<h2>tiles</h2><div class="tiles">${["solar-observatory", "surveys", "telescopes", "mission-designer", "moon", "dsn", "academy"].map(t => `<img src="${M}tiles/${t}.svg">`).join("")}</div>`
     : `<h2>${src}</h2><img class="${cls}" src="${M}${src}">`).join("");
   document.getElementById("L").innerHTML = "<h2>GitHub light (#ffffff)</h2>" + html;
   document.getElementById("D").innerHTML = "<h2>GitHub dark (#0d1117)</h2>" + html;

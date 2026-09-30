@@ -742,7 +742,10 @@ function main() {
   if (!Codex.webgl()) { Codex.noGL(); $("#loading").classList.add("done"); return; }
 
   const params = new URLSearchParams(location.search);
-  let quality = params.has("q") ? +params.get("q") : (PHONE ? 1 : 2);
+  // ?q=0|1|2, or low/medium/high as on the other sim pages (anything else falls back to the default,
+  // so a stray value can never reach the shader as "#define QUALITY NaN")
+  const qp = params.get("q"), qn = { low: 0, medium: 1, high: 2 }[qp] ?? (qp === null || qp === "" ? NaN : +qp);
+  let quality = [0, 1, 2].includes(qn) ? qn : (PHONE ? 1 : 2);
   $("#quality").value = String(quality);
 
   const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deep Space Network, live · Cosmic Library</title>
+<meta name="description" content="Which spacecraft are talking to Earth right now: NASA's Deep Space Network dishes at Goldstone, Madrid and Canberra, their live links to Voyager, Webb, Mars and beyond, and the physics of talking across the Solar System.">
+<meta property="og:title" content="Deep Space Network, live · Cosmic Library">
+<meta property="og:description" content="Which spacecraft are talking to Earth right now: NASA's Deep Space Network dishes at Goldstone, Madrid and Canberra, their live links to Voyager, Webb, Mars and beyond, and the physics of talking across the Solar System.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="assets/css/dsn.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body data-page="dsn">
+
+<!-- =============================================================== HERO: Earth and its beams -->
+<section class="dsn-hero" id="hero" aria-label="Live view of the Deep Space Network">
+  <div class="dsn-stage" id="stage"></div>
+  <div class="dsn-vignette" aria-hidden="true"></div>
+  <div class="dsn-labels" id="labels" aria-hidden="true"></div>
+
+  <div class="hud dsn-title">
+    <div class="eyebrow dsn-status" id="status" data-state="loading"><i></i><span id="statusTxt">Connecting to DSN Now…</span></div>
+    <h1>Deep Space Network, <span class="dsn-grad">live</span></h1>
+    <p class="dsn-lede">Three sites a third of the way around the world from each other keep NASA, and many other space agencies, in touch with spacecraft far beyond the Moon. Each glowing beam is a dish at Goldstone, Madrid or Canberra talking to a spacecraft right now.</p>
+    <ul class="dsn-key" aria-label="How to read the 3D view">
+      <li><svg viewBox="0 0 40 10" aria-hidden="true"><line x1="2" y1="5" x2="38" y2="5" class="k-beam"/><line x1="22" y1="5" x2="34" y2="5" class="k-up"/></svg>Uplink: commands out</li>
+      <li><svg viewBox="0 0 40 10" aria-hidden="true"><line x1="2" y1="5" x2="38" y2="5" class="k-beam"/><circle cx="12" cy="5" r="2.4" class="k-down"/></svg>Downlink: data in</li>
+      <li><svg viewBox="0 0 40 10" aria-hidden="true"><path d="M2 8 Q20 -2 38 8" class="k-ring"/></svg>Sky each site can see</li>
+    </ul>
+    <p class="hint dsn-keys">Drag to rotate · scroll to zoom · pulse speed grows with light time (log scale) · beams and Earth not to scale</p>
+  </div>
+
+  <aside class="hud dsn-now" id="nowPanel" aria-labelledby="nowH">
+    <div class="dsn-now-head"><h2 id="nowH">Talking now</h2><span class="chip ice" id="countChip">—</span></div>
+    <p class="hint dsn-now-sub">Each bar is a radio signal crossing the gap at the real speed of light.</p>
+    <ol class="dsn-list" id="talkList" aria-live="polite"></ol>
+    <button class="btn small dsn-more" id="moreBtn" type="button" hidden aria-expanded="false">Show all</button>
+    <p class="hint dsn-age" id="ageTxt"></p>
+  </aside>
+
+  <div class="hud dsn-dock" role="group" aria-label="Complexes">
+    <div class="dsn-cxbtns" id="cxBtns"></div>
+    <button class="btn small dsn-spin" id="spinBtn" type="button" aria-pressed="true" title="Slowly orbit the camera"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4h-4"/></svg><span>Orbit</span></button>
+  </div>
+  <a class="dsn-scroll" href="#complexes"><span>The dishes</span><svg viewBox="0 0 12 8" width="12" height="8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+  <div class="loading" id="loading"><div class="dsn-loader"><span></span>Pointing the dishes…</div></div>
+</section>
+
+<main class="dsn-main">
+  <div class="dsn-sample" id="sampleBar" hidden role="note">
+    <div class="shell"><b id="sampleTitle">Sample snapshot</b><span id="sampleNote"></span><button class="btn small" id="retryBtn" type="button">Try live data again</button></div>
+  </div>
+
+  <!-- =============================================================== COMPLEXES -->
+  <section class="block dsn-cx-sec" id="complexes" aria-labelledby="cxH">
+    <div class="shell">
+      <div class="dsn-sec-head">
+        <div>
+          <div class="eyebrow">Goldstone · Madrid · Canberra</div>
+          <h2 id="cxH">Every dish, right now</h2>
+          <p class="lede">The Deep Space Network (DSN) is run for NASA by the Jet Propulsion Laboratory (JPL). Each little antenna below points where its real counterpart points: the tilt is its elevation above the horizon, the needle its compass bearing (azimuth). Tap a spacecraft for its story.</p>
+        </div>
+        <div class="dsn-legend-bands" aria-label="Radio bands">
+          <span class="chip dsn-band" data-b="S">S</span><span class="k">2 GHz</span>
+          <span class="chip dsn-band" data-b="X">X</span><span class="k">8 GHz</span>
+          <span class="chip dsn-band" data-b="Ka">Ka</span><span class="k">26–32 GHz</span>
+        </div>
+      </div>
+      <div class="dsn-cx-grid" id="cxGrid"></div>
+      <p class="hint dsn-units">Uplink power is the transmitter's output in kilowatts (kW). Downlink power is what reaches the dish, in decibels relative to one milliwatt (dBm): −150 dBm is 10<sup>−18</sup> W. Range is the distance to the spacecraft; round-trip light time (RTLT) is how long a signal takes to get there and back. Data rates are in bits per second.</p>
+    </div>
+  </section>
+
+  <!-- =============================================================== SKY COVERAGE -->
+  <section class="block dsn-sky-sec" id="sky" aria-labelledby="skyH">
+    <div class="shell">
+      <div class="dsn-sec-head">
+        <div>
+          <div class="eyebrow">Why three sites, 120° apart</div>
+          <h2 id="skyH">Who can see which part of the sky</h2>
+          <p class="lede">As Earth turns, a distant spacecraft rises and sets like a star. Put three big dishes roughly a third of the way around the world from each other and at least one always has it above the horizon.</p>
+        </div>
+      </div>
+      <figure class="card dsn-map-card">
+        <div class="dsn-map-wrap"><svg id="skyMap" viewBox="0 0 1000 500" role="img" aria-label="World map. Three coloured regions show where a spacecraft would have to be overhead for Goldstone, Madrid or Canberra to see it above 10 degrees elevation. Dots mark the point on Earth directly beneath each spacecraft right now."></svg></div>
+        <figcaption class="dsn-map-cap">
+          <div class="dsn-map-key" id="mapKey"></div>
+          <p class="hint" id="mapNote">Each dot is the spot on Earth with that spacecraft straight overhead right now; the whole pattern drifts west by 15° every hour as Earth turns. A complex can track anything whose dot lies inside its colour: everywhere within 80° of it on the globe, the 90° to the horizon minus a 10° elevation limit. Night side shaded.</p>
+        </figcaption>
+      </figure>
+      <div class="dsn-cover-facts" id="coverFacts"></div>
+    </div>
+  </section>
+
+  <!-- =============================================================== VOYAGER -->
+  <section class="block dsn-voy-sec" id="voyager" aria-labelledby="voyH">
+    <div class="shell">
+      <div class="eyebrow">Talk to Voyager</div>
+      <h2 id="voyH">A conversation that takes two days</h2>
+      <p class="lede">Voyager 1 left Earth in 1977 and is now the farthest human-made object. Here is what it takes to reach it, computed live.</p>
+
+      <div class="dsn-voy-grid">
+        <div class="card dsn-voy-live beam reveal">
+          <div class="dsn-voy-k">Distance from Earth, now</div>
+          <div class="dsn-voy-km"><b id="voyKm">—</b><span>km</span></div>
+          <div class="dsn-voy-sub" id="voySub">—</div>
+          <div class="readouts dsn-voy-read">
+            <div class="readout"><div class="k">One-way light time</div><div class="v" id="voyOw">—</div></div>
+            <div class="readout"><div class="k">Round-trip light time (RTLT)</div><div class="v" id="voyRt">—</div></div>
+            <div class="readout"><div class="k">From the Sun</div><div class="v" id="voyAU">—</div></div>
+            <div class="readout"><div class="k">One light-day from Earth</div><div class="v" id="voyLD">—</div></div>
+          </div>
+          <div class="dsn-hello">
+            <div class="dsn-hello-head"><b>Say hello now</b><span class="hint" id="helloSent"></span></div>
+            <div class="dsn-hello-track" aria-hidden="true"><span class="e"></span><i id="helloDot"></i><span class="v"></span></div>
+            <ol class="dsn-hello-steps">
+              <li><span class="k">Voyager hears it</span><b id="helloArr">—</b></li>
+              <li><span class="k">Its reply reaches us</span><b id="helloBack">—</b></li>
+            </ol>
+            <p class="hint" id="helloPct">—</p>
+          </div>
+          <p class="hint dsn-voy-feed" id="voyFeed"></p>
+        </div>
+
+        <div class="dsn-voy-text reveal" data-delay="80">
+          <h3>Why only 160 bits per second?</h3>
+          <p>Voyager 1's radio puts out about 23 watts, roughly a fridge light bulb, through a 3.66 m dish. By the time the beam reaches Earth it has spread over a patch far wider than the planet, and a 70 m dish catches less than a billionth of a billionth of a watt. The Friis equation, from this site's <a href="equations.html#friis">equation atlas</a>, adds up every gain and loss:</p>
+          <div class="dsn-tex" data-tex="P_r = P_t\,G_t\,G_r\left(\frac{\lambda}{4\pi d}\right)^2 \;\Longleftrightarrow\; P_r[\text{dBW}] = P_t + G_t + G_r - L_{fs}"></div>
+          <p>A dish of diameter <i>D</i> concentrates power by its gain, and the achievable <a href="equations.html#dsn-data-rate">data rate</a> is the received power divided by the energy each bit needs above the receiver's thermal noise:</p>
+          <div class="dsn-tex" data-tex="G = \eta\left(\frac{\pi D}{\lambda}\right)^2, \qquad R_b = \frac{P_r}{k_B\,T_{sys}\,(E_b/N_0)}"></div>
+          <div class="dsn-budget card">
+            <div class="dsn-budget-head">
+              <h4>Voyager 1's link budget, live</h4>
+              <div class="seg" id="dishSeg" role="group" aria-label="Receiving antenna">
+                <button type="button" data-d="34" aria-pressed="false">34 m</button>
+                <button type="button" data-d="70" aria-pressed="true">70 m</button>
+                <button type="button" data-d="arr" aria-pressed="false">70 m + two 34 m</button>
+              </div>
+            </div>
+            <div class="table-wrap"><table class="data dsn-budget-t" id="budgetT"></table></div>
+            <div class="dsn-rate"><div><span class="k">This budget supports about</span><b id="rateOut">—</b></div><div class="dsn-rate-bar" id="rateBar"><i></i><span class="m" title="Voyager 1's actual downlink rate">160</span></div></div>
+            <p class="hint">Model values from the equation atlas (after Ludwig and Taylor, 2002): 23 W at 8.42 GHz (X-band), aperture efficiency η = 0.6, system noise temperature T<sub>sys</sub> = 25 K, and E<sub>b</sub>/N<sub>0</sub> = 7 dB for the error-correcting code plus safety margin. Arraying adds the dishes' collecting areas. Real budgets also count pointing, weather and elevation losses: treat this as order of magnitude.</p>
+          </div>
+          <p>So 160 bit/s is not a choice of convenience: it is close to the most a 70 m dish can pull reliably out of the noise from 25 billion km, with a margin for rain and low elevations. Every doubling of distance cuts the possible rate by four. Commands go the other way at just 16 bit/s, but from a transmitter of up to 20 kW, about a million times Voyager's power.</p>
+          <div class="dsn-tex" data-tex="\text{RTLT} = \frac{2d}{c}"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================== HISTORY -->
+  <section class="block dsn-hist-sec" id="history" aria-labelledby="histH">
+    <div class="shell">
+      <div class="dsn-sec-head">
+        <div>
+          <div class="eyebrow">Since 1958</div>
+          <h2 id="histH">Moments on the network</h2>
+        </div>
+        <div class="row dsn-hist-nav"><button class="btn small" id="histPrev" type="button" aria-label="Earlier">←</button><button class="btn small" id="histNext" type="button" aria-label="Later">→</button></div>
+      </div>
+    </div>
+    <div class="dsn-hist-track" id="histTrack" tabindex="0" aria-label="Deep Space Network history, scroll sideways"></div>
+    <div class="shell">
+      <div class="callout ice dsn-sources reveal">
+        <b>Data and sources.</b> Live data: NASA/JPL <a href="https://eyes.nasa.gov/apps/dsn-now/dsn.html" rel="noopener">DSN Now</a> (the <code>dsn.xml</code> and <code>config.xml</code> files behind it, refreshed every 5 seconds), read the same way as the open-source <a href="https://github.com/russss/pydsn" rel="noopener">pydsn</a> parser. If the feed cannot be reached, the page shows its last live copy saved in your browser, or a clearly labelled illustrative sample. Dish list and changes: <a href="https://en.wikipedia.org/wiki/List_of_antennas_in_NASA%27s_Deep_Space_Network" rel="noopener">list of DSN antennas</a>, JPL news on <a href="https://www.jpl.nasa.gov/news/nasa-adds-giant-new-dish-to-communicate-with-deep-space-missions/" rel="noopener">DSS-23</a> and NASA's <a href="https://www.nasa.gov/directorates/somd/space-communications-navigation-program/nasa-concludes-antenna-mishap-investigation-releases-report/" rel="noopener">DSS-14 mishap report</a>. Voyager: NASA's <a href="https://science.nasa.gov/mission/voyager/where-are-voyager-1-and-voyager-2-now/" rel="noopener">Where are Voyager 1 and 2 now?</a> and <a href="https://science.nasa.gov/category/missions/voyager-program/" rel="noopener">mission blog</a>; telecom values after Ludwig &amp; Taylor (2002), <a href="https://descanso.jpl.nasa.gov/DPSummary/Descanso4--Voyager_new.pdf" rel="noopener">Voyager Telecommunications</a>, JPL DESCANSO. Positions of the planets, Sun and Moon: this site's ephemeris (Standish, JPL). Not affiliated with NASA or JPL.
+      </div>
+    </div>
+  </section>
+</main>
+
+<dialog class="dsn-dlg" id="scDlg" aria-labelledby="dlgName">
+  <form method="dialog"><button class="dsn-dlg-x" aria-label="Close" value="close">×</button></form>
+  <div id="dlgBody"></div>
+</dialog>
+
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/katex/katex.min.js"></script>
+<script src="assets/js/codex.js"></script>
+<script type="module" src="assets/js/dsn.js"></script>
+</body>
+</html>

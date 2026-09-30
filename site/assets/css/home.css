@@ -416,3 +416,4 @@ a.ntile:hover { transform: none; }
 .t-moon .moon-rs { margin-bottom: auto; }
 .acard .new { background: rgba(4,5,10,.72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 @media (max-width: 720px) { .ntile .mono-num { font-size: 1.2rem; } .t-moon .k { text-align: center; } .moon-rs { gap: 2px 12px; flex-wrap: wrap; } .moon-rs b { font-size: .92rem; } }
+@media (max-width: 720px) { .academy-banner { grid-template-columns: 1fr !important; } }

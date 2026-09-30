@@ -1,0 +1,1595 @@
+{
+  "title": "Space Academy",
+  "version": 1,
+  "note": "Course data for site/academy.html. Lesson text is 60-120 words; $...$ is KaTeX. Every quiz question: type 'mc' (exactly one option with ok:true) or 'num' (answer, tol absolute, check = how scripts/test_academy.mjs recomputes it: an Equation Atlas calculator {eq, set, out} in display units, or a JavaScript formula over the Equation Atlas constants). Run: node --no-warnings scripts/test_academy.mjs",
+  "passMark": 0.8,
+  "xp": { "perCorrect": 20, "complete": 100 },
+  "ranks": [
+    { "xp": 0, "name": "Cadet" },
+    { "xp": 800, "name": "Pilot" },
+    { "xp": 1600, "name": "Navigator" },
+    { "xp": 2400, "name": "Flight engineer" },
+    { "xp": 3200, "name": "Commander" }
+  ],
+  "badges": [
+    { "id": "liftoff", "name": "Liftoff", "icon": "rocket", "desc": "Complete your first lesson.", "rule": { "lessons": 1 } },
+    { "id": "escape-velocity", "name": "Escape velocity", "icon": "orbit", "desc": "Complete Track 1, Getting to space.", "rule": { "track": "t1" } },
+    { "id": "slingshot", "name": "Slingshot", "icon": "slingshot", "desc": "Complete Track 2, Moving around the Solar System.", "rule": { "track": "t2" } },
+    { "id": "first-light", "name": "First light", "icon": "telescope", "desc": "Complete Track 3, Reading the sky.", "rule": { "track": "t3" } },
+    { "id": "flight-ready", "name": "Flight ready", "icon": "satellite", "desc": "Complete Track 4, Engineering a spacecraft.", "rule": { "track": "t4" } },
+    { "id": "sharpshooter", "name": "Sharpshooter", "icon": "target", "desc": "Score 100 % on five lesson checks.", "rule": { "perfect": 5 } },
+    { "id": "mission-specialist", "name": "Mission Specialist", "icon": "star", "desc": "Complete all 20 lessons and earn the certificate.", "rule": { "lessons": 20 } }
+  ],
+  "tracks": [
+    {
+      "id": "t1",
+      "n": 1,
+      "title": "Getting to space",
+      "color": "flame",
+      "blurb": "Why orbiting is falling, what a rocket really buys you, and how boosters come home.",
+      "label": [40, 612],
+      "lessons": [
+        {
+          "id": "orbits-are-falling",
+          "title": "Why orbiting is falling",
+          "minutes": 6,
+          "star": [70, 560],
+          "body": [
+            "Throw a ball and it curves down to the ground. Throw it faster and it lands farther away. Isaac Newton imagined a cannon on a mountain so tall it pokes above the air: fire fast enough and the ground curves away beneath the ball as quickly as the ball falls. It never lands. That is an orbit: endless falling while missing the planet.",
+            "Just above the air the magic speed is about 7.8 km/s. The International Space Station (ISS) circles at about 7.7 km/s, 400 km up. Go $\\sqrt{2}$ times faster and you reach escape velocity: you fall away forever."
+          ],
+          "widget": { "type": "cannon", "alt": 400, "v": 6.5, "caption": "Drag the ball sideways (or use the slider) to set its launch speed from a 400 km mountain." },
+          "links": [
+            { "href": "orbits.html#cannon", "label": "Orbit Lab: Newton's cannonball" },
+            { "href": "equations.html#circular-velocity", "label": "Equation: circular orbital velocity" },
+            { "href": "equations.html#escape-velocity", "label": "Equation: escape velocity" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Astronauts float inside the ISS because…",
+              "options": [
+                { "t": "there is no gravity 400 km above Earth" },
+                { "t": "they and the station are falling around Earth together", "ok": true },
+                { "t": "the station is outside Earth's atmosphere" },
+                { "t": "the Moon's gravity cancels Earth's" }
+              ],
+              "explain": "Gravity at 400 km is still about 89 % of its surface value ((6371/6771)² ≈ 0.89). Everything on board falls at the same rate, so nothing presses on anything else."
+            },
+            {
+              "type": "mc",
+              "q": "Fire the cannonball horizontally a little slower than circular speed. What happens?",
+              "options": [
+                { "t": "It drops straight down" },
+                { "t": "It circles Earth in a bigger orbit" },
+                { "t": "It follows an ellipse that dips toward Earth, and hits the ground if it dips too far", "ok": true },
+                { "t": "It escapes Earth" }
+              ],
+              "explain": "The launch point becomes the highest point of an ellipse. Slow enough, and the low side of that ellipse runs into the planet."
+            },
+            {
+              "type": "mc",
+              "q": "At the same height, escape velocity is how many times circular velocity?",
+              "options": [
+                { "t": "2" },
+                { "t": "√2 ≈ 1.41", "ok": true },
+                { "t": "π ≈ 3.14" },
+                { "t": "1.1" }
+              ],
+              "explain": "Circular speed is √(GM/r) and escape speed is √(2GM/r), so the ratio is exactly √2."
+            },
+            {
+              "type": "mc",
+              "q": "Why do most rockets launch toward the east?",
+              "options": [
+                { "t": "Earth's spin gives them a free head start of up to about 0.46 km/s", "ok": true },
+                { "t": "The wind usually blows east" },
+                { "t": "Space is closer in that direction" },
+                { "t": "The Sun's gravity pulls them along" }
+              ],
+              "explain": "The equator moves east at 2π × 6378 km ÷ 23.93 h ≈ 0.465 km/s. Launching east adds that for free; launching west would cost it twice."
+            },
+            {
+              "type": "num",
+              "q": "What is the circular orbital speed 400 km above Earth (orbit radius 6771 km)? Answer in km/s.",
+              "answer": 7.67,
+              "tol": 0.05,
+              "unit": "km/s",
+              "explain": "v = √(GM/r) = √(3.986 × 10¹⁴ ÷ 6.771 × 10⁶) ≈ 7 673 m/s, about 7.67 km/s: once around Earth every 92 minutes.",
+              "check": { "eq": "circular-velocity", "set": { "mu": 398600400000000, "r": 6771 }, "out": "vc" }
+            }
+          ]
+        },
+        {
+          "id": "rocket-equation",
+          "title": "The rocket equation",
+          "minutes": 7,
+          "star": [140, 500],
+          "body": [
+            "A rocket speeds itself up by throwing mass backwards. In 1903 Konstantin Tsiolkovsky worked out how much speed that buys: $\\Delta v = v_e \\ln(m_0/m_f)$. Here $v_e$ is the exhaust speed, $m_0$ the fuelled mass and $m_f$ what is left when the tanks run dry. Engines are rated by specific impulse (Isp), the exhaust speed divided by standard gravity, in seconds.",
+            "The catch is the logarithm. Every kilogram of fuel must also push the fuel still waiting to burn. Reaching low Earth orbit (LEO) takes about 9.4 km/s including losses, which is why rockets are mostly propellant."
+          ],
+          "widget": { "type": "rocket", "isp": 311, "frac": 80, "caption": "Change the engine and how much of the rocket is propellant. Can one stage reach orbit?" },
+          "links": [
+            { "href": "equations.html#tsiolkovsky", "label": "Equation: Tsiolkovsky rocket equation" },
+            { "href": "equations.html#specific-impulse", "label": "Equation: specific impulse" },
+            { "href": "builder.html", "label": "Rocket builder: design one and fly it" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Doubling a rocket's mass ratio (m₀/m_f)…",
+              "options": [
+                { "t": "doubles its Δv" },
+                { "t": "adds the same fixed amount of Δv, vₑ·ln 2, wherever you start", "ok": true },
+                { "t": "halves its Δv" },
+                { "t": "makes no difference" }
+              ],
+              "explain": "ln(2R) = ln R + ln 2. Each doubling of the mass ratio adds vₑ·ln 2 ≈ 0.69 vₑ, no more."
+            },
+            {
+              "type": "mc",
+              "q": "Specific impulse (Isp) measures…",
+              "options": [
+                { "t": "how hard an engine pushes" },
+                { "t": "how long a stage can burn" },
+                { "t": "how efficiently an engine uses propellant", "ok": true },
+                { "t": "how heavy the engine is" }
+              ],
+              "explain": "Isp is exhaust velocity divided by g₀. Higher Isp means more Δv from the same mass of propellant."
+            },
+            {
+              "type": "mc",
+              "q": "Which of these has the highest specific impulse?",
+              "options": [
+                { "t": "Liquid hydrogen and liquid oxygen (about 450 s in vacuum)", "ok": true },
+                { "t": "Kerosene and liquid oxygen (about 310–350 s)" },
+                { "t": "Solid propellant (about 270 s)" },
+                { "t": "Cold nitrogen gas (about 70 s)" }
+              ],
+              "explain": "Light hydrogen molecules leave the nozzle fastest. The Space Shuttle's RS-25 engines reached about 452 s in vacuum."
+            },
+            {
+              "type": "mc",
+              "q": "Roughly how much Δv does it take to reach low Earth orbit from the ground, counting gravity and drag losses?",
+              "options": [
+                { "t": "About 0.5 km/s" },
+                { "t": "About 3 km/s" },
+                { "t": "About 9.4 km/s", "ok": true },
+                { "t": "About 30 km/s" }
+              ],
+              "explain": "About 7.8 km/s of orbital speed plus roughly 1.5–2 km/s lost to gravity and drag on the way up."
+            },
+            {
+              "type": "num",
+              "q": "An engine with Isp = 311 s pushes a stage with mass ratio m₀/m_f = 3. What is its ideal Δv, in km/s?",
+              "answer": 3.35,
+              "tol": 0.05,
+              "unit": "km/s",
+              "explain": "Δv = 311 × 9.80665 × ln 3 ≈ 3 351 m/s ≈ 3.35 km/s.",
+              "check": { "eq": "tsiolkovsky", "set": { "isp": 311, "R": 3 }, "out": "dv" }
+            }
+          ]
+        },
+        {
+          "id": "staging",
+          "title": "Staging: dropping dead weight",
+          "minutes": 6,
+          "star": [180, 420],
+          "body": [
+            "Because of the rocket equation, carrying empty tanks all the way to orbit is a terrible deal. Staging fixes that. The first stage lifts everything off the pad; when its tanks run dry it falls away, and a smaller second stage lights up with a far better mass ratio, because it no longer drags the first stage's heavy structure along.",
+            "Each stage gets its own rocket equation, and their Δv adds up. The Saturn V used three stages. Falcon 9 uses two, and flies its first stage back to land."
+          ],
+          "widget": { "type": "staging", "stages": 2, "share": 80, "caption": "Same propellant, same engines: only the number of stages changes. Watch the total." },
+          "links": [
+            { "href": "equations.html#multistage", "label": "Equation: multi-stage Δv" },
+            { "href": "hangar.html", "label": "Rocket hangar: stages side by side to scale" },
+            { "href": "launch.html", "label": "Saturn V launch: watch the stages separate" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Why do rockets use stages?",
+              "options": [
+                { "t": "To stop accelerating empty tanks and engines that are no longer needed", "ok": true },
+                { "t": "Because nobody can build one big engine" },
+                { "t": "To make the rocket more streamlined" },
+                { "t": "So that each stage can use the same fuel" }
+              ],
+              "explain": "Dropping dead mass raises the mass ratio of what is left, so the next stage gets far more Δv from its propellant."
+            },
+            {
+              "type": "mc",
+              "q": "How many stages did the Saturn V have?",
+              "options": [
+                { "t": "One" },
+                { "t": "Two" },
+                { "t": "Three", "ok": true },
+                { "t": "Four" }
+              ],
+              "explain": "S-IC, S-II and S-IVB. The third stage also fired a second time to send Apollo toward the Moon."
+            },
+            {
+              "type": "mc",
+              "q": "How do you find a multi-stage rocket's total ideal Δv?",
+              "options": [
+                { "t": "Multiply the stages' Δv together" },
+                { "t": "Work out each stage's Δv with its own rocket equation, then add them", "ok": true },
+                { "t": "Average the stages' Δv" },
+                { "t": "Only the last stage counts" }
+              ],
+              "explain": "Each stage starts where the previous one left off, so the velocity changes simply add."
+            },
+            {
+              "type": "mc",
+              "q": "Why do upper-stage engines usually have much bigger nozzles?",
+              "options": [
+                { "t": "To make them heavier and more stable" },
+                { "t": "To steer the rocket" },
+                { "t": "In near-vacuum a bigger nozzle expands the exhaust further, raising the specific impulse", "ok": true },
+                { "t": "Because the air is thicker higher up" }
+              ],
+              "explain": "At sea level a huge nozzle would over-expand the exhaust. High up there is almost no outside pressure, so a big nozzle squeezes more speed out of the gas."
+            },
+            {
+              "type": "num",
+              "q": "Payload 10 t. Stage 1: 320 t propellant + 32 t structure. Stage 2: 80 t propellant + 8 t structure. Both engines have a specific impulse (Isp) of 340 s. What is the total ideal Δv, in km/s?",
+              "answer": 9.79,
+              "tol": 0.1,
+              "unit": "km/s",
+              "explain": "vₑ = 340 × 9.80665 ≈ 3334 m/s. Stage 1: 3334 × ln(450/130) ≈ 4.14 km/s. Stage 2 (after dropping 32 t): 3334 × ln(98/18) ≈ 5.65 km/s. Total ≈ 9.79 km/s. One stage with the same totals gives only 7.33 km/s.",
+              "check": { "eq": "multistage", "set": { "pay": 10, "p1": 320, "d1": 32, "i1": 340, "p2": 80, "d2": 8, "i2": 340, "p3": 0, "d3": 0, "i3": 340 }, "out": "dvt" }
+            }
+          ]
+        },
+        {
+          "id": "max-q",
+          "title": "Launch and max-Q",
+          "minutes": 6,
+          "star": [255, 380],
+          "body": [
+            "Leaving the pad, a rocket climbs almost straight up, then gently tips over to build sideways speed. Orbit is about going fast sideways, not just up. On the way it fights gravity (every second spent pointing up costs speed) and the air.",
+            "The air's push is the dynamic pressure, $q = \\tfrac12 \\rho v^2$. Low down the air is thick but the rocket is slow; high up it is fast but the air is thin. In between, about a minute after liftoff, $q$ peaks: max-Q. Many rockets throttle down briefly to get through it."
+          ],
+          "widget": { "type": "maxq", "tw": 1.4, "bucket": false, "caption": "A toy rocket flying straight up through the exponential atmosphere used in the Equation Atlas." },
+          "links": [
+            { "href": "launch.html", "label": "Saturn V launch: watch q peak live" },
+            { "href": "equations.html#dynamic-pressure", "label": "Equation: dynamic pressure and max-Q" },
+            { "href": "equations.html#gravity-loss", "label": "Equation: gravity loss" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Max-Q is the moment of…",
+              "options": [
+                { "t": "highest speed" },
+                { "t": "highest aerodynamic pressure on the vehicle", "ok": true },
+                { "t": "highest altitude" },
+                { "t": "highest fuel flow" }
+              ],
+              "explain": "q = ½ρv² is the pressure of the oncoming air. Max-Q is when that load on the structure peaks."
+            },
+            {
+              "type": "mc",
+              "q": "Why does q rise and then fall during the climb?",
+              "options": [
+                { "t": "The engines shut down halfway" },
+                { "t": "Gravity gets much weaker a few kilometres up" },
+                { "t": "Speed keeps rising, but air density falls off exponentially with height", "ok": true },
+                { "t": "The rocket gets lighter" }
+              ],
+              "explain": "v² grows, but ρ halves roughly every 6 km. Eventually thinning air wins."
+            },
+            {
+              "type": "mc",
+              "q": "Why does a rocket pitch over toward the horizon soon after launch?",
+              "options": [
+                { "t": "Orbit needs about 7.8 km/s of sideways speed, not just height", "ok": true },
+                { "t": "To avoid clouds" },
+                { "t": "To reduce thrust" },
+                { "t": "So the crew can see the ground" }
+              ],
+              "explain": "Reaching 400 km of height is easy; staying there requires horizontal speed. The gravity turn trades climbing for sideways speed."
+            },
+            {
+              "type": "mc",
+              "q": "Gravity loss is…",
+              "options": [
+                { "t": "propellant that boils away" },
+                { "t": "mass thrown away when stages separate" },
+                { "t": "Δv spent holding the rocket up against gravity while it climbs", "ok": true },
+                { "t": "the same thing as drag" }
+              ],
+              "explain": "Roughly g × burn time × sin(flight-path angle). Climbing steeply for a long time wastes the most."
+            },
+            {
+              "type": "num",
+              "q": "Using $q = \\tfrac12 \\rho v^2$ with $\\rho = 1.225\\,e^{-h/8.5\\,\\mathrm{km}}$ kg/m³, what is the dynamic pressure at 11 km altitude and 400 m/s? Answer in kPa.",
+              "answer": 26.9,
+              "tol": 0.5,
+              "unit": "kPa",
+              "explain": "ρ = 1.225 × e^(−11/8.5) ≈ 0.336 kg/m³, so q = ½ × 0.336 × 400² ≈ 26 900 Pa ≈ 26.9 kPa.",
+              "check": { "eq": "dynamic-pressure", "set": { "alt": 11, "v": 400 }, "out": "q" }
+            }
+          ]
+        },
+        {
+          "id": "booster-landing",
+          "title": "Landing a booster",
+          "minutes": 7,
+          "star": [300, 300],
+          "body": [
+            "A reusable first stage falls back from the edge of space. Even with one engine at its lowest throttle, the nearly empty booster is pushed up harder than it weighs (thrust-to-weight roughly 1.8 to 1.9), so it cannot hover. Instead it performs a hoverslam: the engine must light at exactly the height where braking brings the speed to zero just as the legs touch.",
+            "With a steady braking deceleration $a$, a booster falling at speed $v$ needs $v^2/2a$ to stop. Light too early and it stops in mid-air and climbs; too late and it hits the pad."
+          ],
+          "widget": { "type": "landing", "v0": 250, "h": 2500, "caption": "One engine at minimum throttle (482 kN), a 26 t booster, no air drag. Pick the ignition height, then drop it." },
+          "links": [
+            { "href": "booster.html", "label": "Booster landing: fly it yourself" },
+            { "href": "equations.html#thrust-equation", "label": "Equation: rocket thrust" },
+            { "href": "moon-landing.html", "label": "Moon landing: Apollo's powered descent" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Why can't a Falcon 9-class booster simply hover and then set down gently?",
+              "options": [
+                { "t": "It has no fuel left" },
+                { "t": "Even at minimum throttle its one engine out-pushes the booster's weight, so it would climb", "ok": true },
+                { "t": "The legs cannot take the weight" },
+                { "t": "The grid fins would stall" }
+              ],
+              "explain": "Minimum throttle is still about 482 kN against a weight of about 255 kN, so the booster can only brake, never balance."
+            },
+            {
+              "type": "mc",
+              "q": "Double the falling speed at ignition. The stopping distance becomes…",
+              "options": [
+                { "t": "2 times longer" },
+                { "t": "4 times longer", "ok": true },
+                { "t": "8 times longer" },
+                { "t": "√2 times longer" }
+              ],
+              "explain": "Stopping distance is v²/2a, so it grows with the square of speed."
+            },
+            {
+              "type": "mc",
+              "q": "What do the grid fins on a landing booster do?",
+              "options": [
+                { "t": "Steer it as it falls through the atmosphere", "ok": true },
+                { "t": "Add thrust" },
+                { "t": "Store propellant" },
+                { "t": "Absorb the landing shock" }
+              ],
+              "explain": "The lattice fins deflect the airflow to point the booster at the landing site on the way down."
+            },
+            {
+              "type": "mc",
+              "q": "Why bother landing boosters at all?",
+              "options": [
+                { "t": "It makes the rocket faster" },
+                { "t": "The first stage is a large share of a rocket's cost, so flying it again saves money", "ok": true },
+                { "t": "Falling stages are too heavy to drop in the sea" },
+                { "t": "It is required for crewed flights" }
+              ],
+              "explain": "Engines and tanks are expensive. Refuelling and re-flying them costs far less than building new ones."
+            },
+            {
+              "type": "num",
+              "q": "A booster falls at 200 m/s. Its engine gives a steady net braking deceleration of 8 m/s². At what height must it light the engine to stop exactly at the ground? Answer in metres.",
+              "answer": 2500,
+              "tol": 25,
+              "unit": "m",
+              "explain": "h = v² / 2a = 200² ÷ (2 × 8) = 40 000 ÷ 16 = 2 500 m.",
+              "check": { "formula": "200**2/(2*8)" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "t2",
+      "n": 2,
+      "title": "Moving around the Solar System",
+      "color": "ice",
+      "blurb": "Ellipses, transfers, launch windows, slingshots and the hardest seven minutes in spaceflight.",
+      "label": [360, 300],
+      "lessons": [
+        {
+          "id": "kepler",
+          "title": "Kepler's three laws",
+          "minutes": 6,
+          "star": [360, 240],
+          "body": [
+            "In 1609 and 1619 Johannes Kepler turned Tycho Brahe's careful measurements of Mars into three laws. One: planets move on ellipses with the Sun at one focus. Two: a line from the Sun to a planet sweeps out equal areas in equal times, so a planet speeds up near the Sun (perihelion) and slows down far away (aphelion). Three: the square of the orbital period grows with the cube of the orbit's size, $T^2 \\propto a^3$.",
+            "Later, Isaac Newton showed that all three follow from one inverse-square law of gravity."
+          ],
+          "widget": { "type": "kepler", "e": 0.5, "caption": "Each shaded wedge takes the same time to sweep. Stretch the orbit and watch them change shape, not area." },
+          "links": [
+            { "href": "orbits.html#kepler", "label": "Orbit Lab: Kepler's laws" },
+            { "href": "equations.html#kepler-second", "label": "Equation: Kepler's second law" },
+            { "href": "equations.html#kepler-third", "label": "Equation: Kepler's third law" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Where in its orbit does a planet move fastest?",
+              "options": [
+                { "t": "At aphelion, farthest from the Sun" },
+                { "t": "At perihelion, closest to the Sun", "ok": true },
+                { "t": "Halfway between the two" },
+                { "t": "It moves at the same speed everywhere" }
+              ],
+              "explain": "To sweep equal areas in equal times, the short radius near the Sun must swing through a bigger angle, so the planet moves faster."
+            },
+            {
+              "type": "mc",
+              "q": "Where is the Sun in a planet's elliptical orbit?",
+              "options": [
+                { "t": "At the centre of the ellipse" },
+                { "t": "At one focus", "ok": true },
+                { "t": "On the ellipse itself" },
+                { "t": "Outside the ellipse" }
+              ],
+              "explain": "An ellipse has two foci. The Sun sits at one; the other is empty."
+            },
+            {
+              "type": "mc",
+              "q": "An orbit with a semi-major axis 4 times larger has a period that is…",
+              "options": [
+                { "t": "2 times longer" },
+                { "t": "4 times longer" },
+                { "t": "8 times longer", "ok": true },
+                { "t": "16 times longer" }
+              ],
+              "explain": "T ∝ a^1.5, and 4^1.5 = 8."
+            },
+            {
+              "type": "mc",
+              "q": "Kepler found his laws by studying the observed motion of which planet?",
+              "options": [
+                { "t": "Venus" },
+                { "t": "Mars", "ok": true },
+                { "t": "Jupiter" },
+                { "t": "Saturn" }
+              ],
+              "explain": "Mars has a fairly eccentric orbit (e ≈ 0.093), which is why circles could not fit Tycho Brahe's measurements."
+            },
+            {
+              "type": "num",
+              "q": "Jupiter orbits the Sun with a semi-major axis of 5.2 astronomical units (AU). What is its orbital period, in years?",
+              "answer": 11.86,
+              "tol": 0.1,
+              "unit": "years",
+              "explain": "With a in AU and T in years around the Sun, T = a^1.5 = 5.2^1.5 ≈ 11.86 years.",
+              "check": { "eq": "kepler-third", "set": { "a": 5.2, "M": 1 }, "out": "T" }
+            }
+          ]
+        },
+        {
+          "id": "hohmann",
+          "title": "Hohmann transfers",
+          "minutes": 7,
+          "star": [430, 170],
+          "body": [
+            "How do you get from one circular orbit to a bigger one using the least fuel? In 1925 Walter Hohmann found the answer: burn forward once to stretch your orbit into an ellipse that just touches the target orbit, coast halfway round, then burn forward again to round it off. Two burns, half an ellipse.",
+            "For most pairs of orbits it is the cheapest two-burn route, though not the fastest. Earth to Mars this way takes about 8½ months, and climbing from a 300 km orbit to geostationary orbit costs about 3.9 km/s."
+          ],
+          "widget": {
+            "type": "calc",
+            "eq": "hohmann",
+            "diagram": "hohmann",
+            "sliders": ["r1", "r2"],
+            "show": ["dv1", "dv2", "dvt", "tH"],
+            "fixed": { "mu": 398600400000000, "r1": 6678, "r2": 42164 },
+            "presets": [
+              { "label": "300 km → geostationary", "set": { "mu": 398600400000000, "r1": 6678, "r2": 42164 } },
+              { "label": "Earth → Mars", "set": { "mu": 132712440000000000000, "r1": 149597871, "r2": 227939200 } },
+              { "label": "Earth → Jupiter", "set": { "mu": 132712440000000000000, "r1": 149597871, "r2": 778570000 } }
+            ],
+            "caption": "Drag the two orbit sizes. Everything shown is computed live from the Equation Atlas."
+          },
+          "links": [
+            { "href": "orbits.html#hohmann", "label": "Orbit Lab: fly a Hohmann transfer" },
+            { "href": "equations.html#hohmann", "label": "Equation: Hohmann transfer Δv" },
+            { "href": "equations.html#vis-viva", "label": "Equation: vis-viva" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "A Hohmann transfer between two circular orbits uses…",
+              "options": [
+                { "t": "one long continuous burn" },
+                { "t": "two burns, at opposite ends of a half-ellipse", "ok": true },
+                { "t": "three burns" },
+                { "t": "no burns at all" }
+              ],
+              "explain": "The first burn starts the transfer ellipse; the second, half an orbit later, matches the target orbit."
+            },
+            {
+              "type": "mc",
+              "q": "To move up to a higher circular orbit, the first burn points…",
+              "options": [
+                { "t": "straight up, away from the planet" },
+                { "t": "forward, along the direction of motion", "ok": true },
+                { "t": "backward, against the motion" },
+                { "t": "sideways, out of the orbital plane" }
+              ],
+              "explain": "A prograde burn adds energy, which raises the opposite side of the orbit."
+            },
+            {
+              "type": "mc",
+              "q": "After a Hohmann transfer to a higher circular orbit, the spacecraft moves…",
+              "options": [
+                { "t": "faster than it did in the lower orbit" },
+                { "t": "slower than it did in the lower orbit, even though it burned forward twice", "ok": true },
+                { "t": "at exactly the same speed" },
+                { "t": "not at all" }
+              ],
+              "explain": "Circular speed √(GM/r) falls with height. The burns bought altitude; climbing the gravity well spent the speed."
+            },
+            {
+              "type": "mc",
+              "q": "Roughly how long does a Hohmann transfer from Earth to Mars take?",
+              "options": [
+                { "t": "3 days" },
+                { "t": "6 weeks" },
+                { "t": "8½ months", "ok": true },
+                { "t": "3 years" }
+              ],
+              "explain": "Half the period of an ellipse from 1 to 1.52 astronomical units: about 259 days."
+            },
+            {
+              "type": "num",
+              "q": "Earth orbits at 1 astronomical unit (AU) and Mars at 1.524 AU. How many days does a Hohmann transfer between their orbits take?",
+              "answer": 259,
+              "tol": 3,
+              "unit": "days",
+              "explain": "The transfer ellipse has a = (1 + 1.524)/2 = 1.262 AU. Half its period is ½ × 1.262^1.5 years ≈ 0.709 years ≈ 259 days.",
+              "check": { "formula": "PI*sqrt(((1+1.524)*AU/2)**3/GMsun)/day" }
+            }
+          ]
+        },
+        {
+          "id": "launch-windows",
+          "title": "Launch windows and porkchop plots",
+          "minutes": 7,
+          "star": [520, 140],
+          "body": [
+            "You cannot fly to Mars whenever you like. Both planets are moving, so you must launch when Mars will reach the far end of your transfer orbit at the same moment you do. For Earth and Mars those lined-up windows come round once per synodic period, about every 26 months.",
+            "Mission designers map every combination of launch date and flight time on a porkchop plot, coloured by the velocity change (Δv) each trip needs. The cheap trips cluster in islands shaped, people thought, like pork chops."
+          ],
+          "widget": { "type": "porkchop", "caption": "Real planet positions (approximate orbital elements from the Jet Propulsion Laboratory (JPL)) flattened into one plane. Hover or tap a cell; arrow keys move the cursor." },
+          "links": [
+            { "href": "mission-designer.html", "label": "Mission designer: a full porkchop plot" },
+            { "href": "equations.html#synodic-period", "label": "Equation: synodic period" },
+            { "href": "solar-system.html", "label": "Solar system: where the planets are today" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "How often do Earth–Mars launch windows open?",
+              "options": [
+                { "t": "Every year" },
+                { "t": "About every 26 months", "ok": true },
+                { "t": "Every 5 years" },
+                { "t": "Every week" }
+              ],
+              "explain": "That is the Earth–Mars synodic period: about 780 days."
+            },
+            {
+              "type": "mc",
+              "q": "On a porkchop plot the two axes are usually…",
+              "options": [
+                { "t": "launch date and arrival date (or flight time)", "ok": true },
+                { "t": "speed and altitude" },
+                { "t": "mass and thrust" },
+                { "t": "latitude and longitude" }
+              ],
+              "explain": "Each point is one possible trip; the colour says how much energy or Δv it costs."
+            },
+            {
+              "type": "mc",
+              "q": "What sets the synodic period of two planets?",
+              "options": [
+                { "t": "The size of the rocket" },
+                { "t": "Earth's daily rotation" },
+                { "t": "The difference between how fast the two planets go round the Sun", "ok": true },
+                { "t": "The phases of the Moon" }
+              ],
+              "explain": "1/S = |1/P₁ − 1/P₂|: it is how long the faster planet takes to lap the slower one."
+            },
+            {
+              "type": "mc",
+              "q": "Why do real porkchop plots usually show two islands per window?",
+              "options": [
+                { "t": "One is for crewed missions, one for robots" },
+                { "t": "Short trips of less than half an orbit and long trips of more than half an orbit form separate families", "ok": true },
+                { "t": "Mars has two moons" },
+                { "t": "One island is summer, the other winter" }
+              ],
+              "explain": "They are called Type I and Type II transfers. In real three-dimensional orbits a ridge near 180° of travel separates them, because the plane change there is enormous."
+            },
+            {
+              "type": "num",
+              "q": "Earth's year is 365.256 days and Mars's is 686.98 days. What is their synodic period, in days?",
+              "answer": 780,
+              "tol": 3,
+              "unit": "days",
+              "explain": "S = 1 / (1/365.256 − 1/686.98) ≈ 779.9 days, a little over two years and one month.",
+              "check": { "eq": "synodic-period", "set": { "P1": 365.256, "P2": 686.98 }, "out": "S" }
+            }
+          ]
+        },
+        {
+          "id": "gravity-assist",
+          "title": "Gravity assists",
+          "minutes": 7,
+          "star": [600, 165],
+          "body": [
+            "A planet can throw a spacecraft. Seen from the planet, a flyby is fair: the craft leaves with exactly the speed it arrived with, only its direction is bent. But the planet itself is racing around the Sun. Bend the path the right way and, seen from the Sun, the craft leaves faster or slower, borrowing a sliver of the planet's orbital momentum.",
+            "Voyager 2 used Jupiter, Saturn, Uranus and Neptune in turn. Mariner 10 and Parker Solar Probe used Venus flybys to fall closer to the Sun."
+          ],
+          "widget": { "type": "flyby", "vinf": 7, "rp": 6, "caption": "A flyby of Jupiter. Left: seen from Jupiter. Right: the same velocities seen from the Sun." },
+          "links": [
+            { "href": "orbits.html#assist", "label": "Orbit Lab: gravity assist" },
+            { "href": "equations.html#sphere-of-influence", "label": "Equation: sphere of influence" },
+            { "href": "timeline.html", "label": "Timeline: Voyager's grand tour" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Seen from the planet, a spacecraft leaves a flyby…",
+              "options": [
+                { "t": "with the same speed it arrived with, in a new direction", "ok": true },
+                { "t": "much faster than it arrived" },
+                { "t": "much slower than it arrived" },
+                { "t": "at rest" }
+              ],
+              "explain": "In the planet's frame gravity is conservative: energy in equals energy out. Only the direction changes."
+            },
+            {
+              "type": "mc",
+              "q": "Where does the extra speed (seen from the Sun) come from?",
+              "options": [
+                { "t": "The planet's atmosphere" },
+                { "t": "The spacecraft's engine firing at closest approach" },
+                { "t": "The planet's orbital motion; the planet slows by an immeasurably tiny amount", "ok": true },
+                { "t": "The solar wind" }
+              ],
+              "explain": "Momentum is shared. Jupiter is about 10²⁴ times heavier than a probe, so its change is unmeasurable."
+            },
+            {
+              "type": "mc",
+              "q": "To gain speed from a flyby, a spacecraft should pass…",
+              "options": [
+                { "t": "behind the planet, on its trailing side", "ok": true },
+                { "t": "in front of the planet, on its leading side" },
+                { "t": "over the planet's north pole" },
+                { "t": "anywhere: it makes no difference" }
+              ],
+              "explain": "Passing behind bends the craft's path toward the planet's direction of motion, so the planet drags it along."
+            },
+            {
+              "type": "mc",
+              "q": "Which spacecraft flew past Jupiter, Saturn, Uranus and Neptune using gravity assists?",
+              "options": [
+                { "t": "Voyager 1" },
+                { "t": "Voyager 2", "ok": true },
+                { "t": "Pioneer 10" },
+                { "t": "Cassini" }
+              ],
+              "explain": "Voyager 2 is still the only spacecraft to have visited Uranus (1986) and Neptune (1989)."
+            },
+            {
+              "type": "num",
+              "q": "Approaching a planet at v∞ = 6 km/s, a spacecraft's path is bent through 60°. How big is its velocity change, in km/s? (Use Δv = 2 v∞ sin(δ/2).)",
+              "answer": 6,
+              "tol": 0.1,
+              "unit": "km/s",
+              "explain": "Δv = 2 × 6 × sin 30° = 6 km/s: a large free velocity change without burning any propellant.",
+              "check": { "formula": "2*6*sin(60/2*PI/180)" }
+            }
+          ]
+        },
+        {
+          "id": "edl",
+          "title": "Entry, descent and landing",
+          "minutes": 7,
+          "star": [650, 235],
+          "body": [
+            "Arriving is the hardest part. A capsule hits the atmosphere at several kilometres per second and must shed almost all of that speed. Friction is not the main heater: the craft squeezes the air ahead into a shock layer thousands of degrees hot, and a heat shield carries that energy away. Heating rises roughly with the cube of speed.",
+            "Mars is extra tricky: its air is thick enough to cook you but too thin to slow you fully. Perseverance used a heat shield, a supersonic parachute and a rocket-powered sky crane: entry, descent and landing (EDL) in about seven minutes."
+          ],
+          "widget": {
+            "type": "calc",
+            "eq": "sutton-graves",
+            "sliders": ["v", "Rn"],
+            "show": ["q", "qM"],
+            "fixed": { "k": 0.00017415, "rho": 0.00031, "Rn": 4.69, "v": 11 },
+            "presets": [
+              { "label": "Apollo return, 11 km/s", "set": { "k": 0.00017415, "v": 11 } },
+              { "label": "Return from orbit, 7.8 km/s", "set": { "k": 0.00017415, "v": 7.8 } },
+              { "label": "Mars, 5.4 km/s", "set": { "k": 0.00019027, "v": 5.4 } }
+            ],
+            "caption": "Stagnation-point heating at a fixed air density. Double the speed and watch the heat."
+          },
+          "links": [
+            { "href": "mars-landing.html", "label": "Mars landing: seven minutes of terror" },
+            { "href": "equations.html#sutton-graves", "label": "Equation: Sutton–Graves heating" },
+            { "href": "equations.html#ballistic-coefficient", "label": "Equation: ballistic coefficient" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "What mostly heats a capsule during atmospheric entry?",
+              "options": [
+                { "t": "Friction of air rubbing along its surface" },
+                { "t": "Air compressed into a hot shock layer in front of it", "ok": true },
+                { "t": "Sunlight" },
+                { "t": "Its own engines" }
+              ],
+              "explain": "The shock compresses the gas so violently that it reaches thousands of degrees; the heat shield ablates or reradiates that energy."
+            },
+            {
+              "type": "mc",
+              "q": "Double the entry speed. By the Sutton–Graves relation the heating rate rises about…",
+              "options": [
+                { "t": "2 times" },
+                { "t": "4 times" },
+                { "t": "8 times", "ok": true },
+                { "t": "16 times" }
+              ],
+              "explain": "Heat flux ∝ v³ and 2³ = 8."
+            },
+            {
+              "type": "mc",
+              "q": "Why do Mars landers need rockets for the final part of the descent?",
+              "options": [
+                { "t": "Mars has no gravity" },
+                { "t": "It is too cold for parachutes" },
+                { "t": "The thin air cannot slow a heavy lander enough by parachute alone", "ok": true },
+                { "t": "Dust storms blow parachutes away" }
+              ],
+              "explain": "Mars's surface air pressure is less than 1 % of Earth's. Parachutes still leave a lander falling at tens of metres per second."
+            },
+            {
+              "type": "mc",
+              "q": "Why are heat shields wide and blunt rather than pointed?",
+              "options": [
+                { "t": "A blunt shape pushes the shock wave away from the surface, so less heat reaches it", "ok": true },
+                { "t": "Blunt shapes are lighter" },
+                { "t": "Pointed shapes are illegal" },
+                { "t": "It makes the capsule spin" }
+              ],
+              "explain": "H. Julian Allen's blunt-body idea (1950s): most of the heat stays in the air flowing around the capsule instead of soaking into it."
+            },
+            {
+              "type": "num",
+              "q": "A 3 000 kg capsule has a drag coefficient of 1.5 and a diameter of 4 m. What is its ballistic coefficient β = m / (C_D A), in kg/m²?",
+              "answer": 159,
+              "tol": 2,
+              "unit": "kg/m²",
+              "explain": "A = π × 4²/4 ≈ 12.57 m², so β = 3000 ÷ (1.5 × 12.57) ≈ 159 kg/m². Lower β means slowing down higher in the atmosphere.",
+              "check": { "eq": "ballistic-coefficient", "set": { "m": 3000, "cd": 1.5, "d": 4 }, "out": "beta" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "t3",
+      "n": 3,
+      "title": "Reading the sky",
+      "color": "sol",
+      "blurb": "What starlight tells us, how telescopes see, the Sun's moods, the lives of stars and other worlds.",
+      "label": [690, 30],
+      "lessons": [
+        {
+          "id": "light-spectra",
+          "title": "Light and spectra",
+          "minutes": 6,
+          "star": [700, 110],
+          "body": [
+            "Nearly everything we know about stars arrives as light. Hot things glow, and their colour is a thermometer: a cool star peaks in the red, a hot one in the blue. Wien's law says the peak wavelength is $\\lambda_{max} = b/T$, so the Sun, at 5772 K, peaks near 500 nm, in the green, though it looks white to us.",
+            "Spread starlight into a rainbow, a spectrum, and dark lines appear where atoms absorb particular colours. Those lines are fingerprints: they reveal what a star is made of and, through the Doppler shift, how fast it moves."
+          ],
+          "widget": { "type": "blackbody", "T": 5772, "caption": "Slide the temperature. The curve is Planck's law; the swatch is the colour your eye would see." },
+          "links": [
+            { "href": "equations.html#wien", "label": "Equation: Wien's displacement law" },
+            { "href": "equations.html#planck", "label": "Equation: Planck's law" },
+            { "href": "surveys.html", "label": "Sky surveys: the same sky in a dozen wavelengths" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "A star looks blue-white. Compared with the Sun it is…",
+              "options": [
+                { "t": "hotter", "ok": true },
+                { "t": "cooler" },
+                { "t": "closer" },
+                { "t": "younger" }
+              ],
+              "explain": "Hotter bodies peak at shorter, bluer wavelengths (Wien's law)."
+            },
+            {
+              "type": "mc",
+              "q": "Dark lines in a star's spectrum are caused by…",
+              "options": [
+                { "t": "dust on the telescope" },
+                { "t": "atoms in the star's outer layers absorbing particular wavelengths", "ok": true },
+                { "t": "gaps between colours in any rainbow" },
+                { "t": "Earth's rotation" }
+              ],
+              "explain": "Each element absorbs its own set of wavelengths, so the pattern of lines identifies it."
+            },
+            {
+              "type": "mc",
+              "q": "A star's spectral lines are all shifted toward the red. The star is…",
+              "options": [
+                { "t": "moving toward us" },
+                { "t": "moving away from us", "ok": true },
+                { "t": "getting hotter" },
+                { "t": "shrinking" }
+              ],
+              "explain": "Motion away stretches the light waves to longer wavelengths: a redshift."
+            },
+            {
+              "type": "mc",
+              "q": "Double a star's surface temperature. Each square metre of its surface now shines…",
+              "options": [
+                { "t": "2 times brighter" },
+                { "t": "4 times brighter" },
+                { "t": "8 times brighter" },
+                { "t": "16 times brighter", "ok": true }
+              ],
+              "explain": "The Stefan–Boltzmann law: flux = σT⁴, and 2⁴ = 16."
+            },
+            {
+              "type": "num",
+              "q": "Using Wien's law, at what wavelength does the Sun's light peak? Its surface temperature is 5772 K. Answer in nanometres.",
+              "answer": 502,
+              "tol": 3,
+              "unit": "nm",
+              "explain": "λ = b/T = 2.898 × 10⁻³ m·K ÷ 5772 K ≈ 5.02 × 10⁻⁷ m = 502 nm.",
+              "check": { "eq": "wien", "set": { "T": 5772 }, "out": "lam" }
+            }
+          ]
+        },
+        {
+          "id": "telescopes",
+          "title": "Telescopes and resolution",
+          "minutes": 6,
+          "star": [770, 60],
+          "body": [
+            "A telescope has two jobs: gather light and resolve detail. Light-gathering grows with the mirror's area, so doubling the diameter collects four times the light. Detail is limited by diffraction: even a perfect lens turns a point of starlight into a tiny disk with rings, the Airy disk. Two stars can just be told apart when they are about $1.22\\,\\lambda/D$ radians apart, the Rayleigh criterion. Bigger mirrors and shorter wavelengths see finer detail. From the ground, the shimmering atmosphere usually blurs things more than diffraction does."
+          ],
+          "widget": { "type": "airy", "D": 0.2, "sep": 0.8, "lam": 550, "caption": "Two equally bright stars seen through a perfect telescope. Can you split them?" },
+          "links": [
+            { "href": "equations.html#rayleigh", "label": "Equation: the Rayleigh criterion" },
+            { "href": "equations.html#light-gathering", "label": "Equation: light-gathering power" },
+            { "href": "telescopes.html", "label": "Use a real telescope online" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Doubling a telescope's mirror diameter collects…",
+              "options": [
+                { "t": "the same light" },
+                { "t": "2 times the light" },
+                { "t": "4 times the light", "ok": true },
+                { "t": "8 times the light" }
+              ],
+              "explain": "Collecting area is πD²/4, so it grows with the square of the diameter."
+            },
+            {
+              "type": "mc",
+              "q": "The Airy disk is…",
+              "options": [
+                { "t": "a flaw that only cheap lenses have" },
+                { "t": "the blurred spot with rings that diffraction makes of a point of light", "ok": true },
+                { "t": "a type of eyepiece" },
+                { "t": "a star cluster" }
+              ],
+              "explain": "Light passing through any circular opening spreads into this pattern, named after George Airy."
+            },
+            {
+              "type": "mc",
+              "q": "At the same wavelength, which telescope can resolve finer detail?",
+              "options": [
+                { "t": "The one with the longer tube" },
+                { "t": "The one with the larger aperture", "ok": true },
+                { "t": "The one with the stronger eyepiece" },
+                { "t": "The one at the darker site" }
+              ],
+              "explain": "Resolution θ ≈ 1.22 λ/D depends only on wavelength and aperture. More magnification just enlarges the blur."
+            },
+            {
+              "type": "mc",
+              "q": "Why do big ground-based telescopes use adaptive optics?",
+              "options": [
+                { "t": "To change the colour of the light" },
+                { "t": "To undo the blurring caused by turbulence in Earth's atmosphere", "ok": true },
+                { "t": "To zoom in faster" },
+                { "t": "To keep the mirror cold" }
+              ],
+              "explain": "A deformable mirror reshapes itself hundreds of times per second to cancel the atmosphere's wobble."
+            },
+            {
+              "type": "num",
+              "q": "The Hubble Space Telescope has a 2.4 m mirror. What is its Rayleigh resolution limit at 550 nm, in arcseconds?",
+              "answer": 0.0577,
+              "tol": 0.002,
+              "unit": "″",
+              "explain": "θ = 1.22 × 550 × 10⁻⁹ ÷ 2.4 ≈ 2.80 × 10⁻⁷ rad × 206 265 ″/rad ≈ 0.058″.",
+              "check": { "eq": "rayleigh", "set": { "lam": 550, "D": 2.4 }, "out": "th" }
+            }
+          ]
+        },
+        {
+          "id": "sun-space-weather",
+          "title": "The Sun and space weather",
+          "minutes": 6,
+          "star": [840, 120],
+          "body": [
+            "The Sun is a churning ball of plasma threaded with magnetic fields. When those fields snap and reconnect they unleash flares, flashes of X-rays that reach Earth in about 8 minutes, and coronal mass ejections (CMEs): billion-tonne clouds of magnetised plasma. Most CMEs take one to four days to cross the 150 million km to Earth; the fastest do it in under a day. If a CME's magnetic field points south, it couples into Earth's magnetic field and drives geomagnetic storms: auroras far from the poles, extra drag on satellites and currents in power grids."
+          ],
+          "widget": {
+            "type": "calc",
+            "eq": "solar-wind-transit",
+            "sliders": ["v"],
+            "show": ["th", "tl"],
+            "fixed": { "v": 800, "d": 1 },
+            "presets": [
+              { "label": "Solar wind, 400 km/s", "set": { "v": 400 } },
+              { "label": "Typical CME, 800 km/s", "set": { "v": 800 } },
+              { "label": "Carrington 1859, ≈ 2 400 km/s", "set": { "v": 2400 } }
+            ],
+            "caption": "How long a cloud from the Sun takes to cross one astronomical unit at a steady speed."
+          },
+          "links": [
+            { "href": "space-weather.html", "label": "Space weather: live solar wind and aurora" },
+            { "href": "solar-observatory.html", "label": "Solar observatory: today's Sun" },
+            { "href": "equations.html#solar-wind-transit", "label": "Equation: Sun-to-Earth travel time" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "How long does the light from a solar flare take to reach Earth?",
+              "options": [
+                { "t": "About 8 seconds" },
+                { "t": "About 8 minutes", "ok": true },
+                { "t": "About a day" },
+                { "t": "About 3 days" }
+              ],
+              "explain": "1 astronomical unit ÷ the speed of light ≈ 499 s ≈ 8.3 minutes."
+            },
+            {
+              "type": "mc",
+              "q": "A coronal mass ejection is…",
+              "options": [
+                { "t": "a dark spot on the Sun's surface" },
+                { "t": "a huge cloud of magnetised plasma thrown out from the Sun's corona", "ok": true },
+                { "t": "a comet falling into the Sun" },
+                { "t": "the Moon's shadow during an eclipse" }
+              ],
+              "explain": "CMEs carry billions of tonnes of plasma and a tangled magnetic field out into the Solar System."
+            },
+            {
+              "type": "mc",
+              "q": "A CME is most likely to cause a big geomagnetic storm when its magnetic field points…",
+              "options": [
+                { "t": "north, the same way as Earth's field" },
+                { "t": "south, opposite to Earth's field", "ok": true },
+                { "t": "toward the Sun" },
+                { "t": "It makes no difference" }
+              ],
+              "explain": "A southward field (negative Bz) reconnects with Earth's northward field at the dayside, opening the door for energy to pour in."
+            },
+            {
+              "type": "mc",
+              "q": "Which of these is NOT an effect of a strong geomagnetic storm?",
+              "options": [
+                { "t": "Auroras seen far from the poles" },
+                { "t": "Extra drag that pulls satellites lower" },
+                { "t": "Electric currents induced in power grids" },
+                { "t": "A change in the length of the day", "ok": true }
+              ],
+              "explain": "Storms heat and puff up the upper atmosphere and induce currents on the ground, but they do not change Earth's spin."
+            },
+            {
+              "type": "num",
+              "q": "A CME travels at a steady 1 000 km/s. How many hours does it take to cover 1 astronomical unit (AU), 149.6 million km?",
+              "answer": 41.6,
+              "tol": 0.5,
+              "unit": "h",
+              "explain": "t = 1.496 × 10⁸ km ÷ 1000 km/s ≈ 149 600 s ≈ 41.6 hours.",
+              "check": { "eq": "solar-wind-transit", "set": { "v": 1000, "d": 1 }, "out": "th" }
+            }
+          ]
+        },
+        {
+          "id": "star-lives",
+          "title": "The life cycles of stars",
+          "minutes": 6,
+          "star": [905, 75],
+          "body": [
+            "Stars are born in cold clouds of gas that collapse under gravity until their cores are hot enough to fuse hydrogen into helium. The star then settles onto the main sequence, where it spends most of its life. Mass decides everything: a heavier star burns its fuel much faster, so it lives far less long, roughly $t \\approx 10^{10}\\,\\text{yr}\\,(M/M_\\odot)^{-2.5}$.",
+            "When its core hydrogen runs out, a star like the Sun swells into a red giant and ends as a white dwarf. Stars above about eight solar masses explode as supernovae, leaving neutron stars or black holes."
+          ],
+          "widget": {
+            "type": "calc",
+            "eq": "ms-lifetime",
+            "sliders": ["M"],
+            "show": ["t", "L", "ratio"],
+            "fixed": { "M": 1 },
+            "slider": { "M": { "min": 0.1, "max": 60 } },
+            "fates": [
+              { "max": 0.5, "text": "Red dwarf: burns slowly for longer than the Universe has existed, then fades as a white dwarf." },
+              { "max": 8, "text": "Sun-like: red giant, then sheds its outer layers and ends as a white dwarf." },
+              { "max": 1000, "text": "Massive: ends in a supernova, leaving a neutron star or a black hole." }
+            ],
+            "presets": [
+              { "label": "Red dwarf, 0.2 M☉", "set": { "M": 0.2 } },
+              { "label": "The Sun", "set": { "M": 1 } },
+              { "label": "Sirius A, 2.06 M☉", "set": { "M": 2.06 } },
+              { "label": "Massive, 20 M☉", "set": { "M": 20 } }
+            ],
+            "caption": "Main-sequence lifetime from the simple scaling law. Slide the mass."
+          },
+          "links": [
+            { "href": "equations.html#ms-lifetime", "label": "Equation: main-sequence lifetime" },
+            { "href": "equations.html#chandrasekhar", "label": "Equation: the Chandrasekhar limit" },
+            { "href": "black-hole.html", "label": "Black hole: where the biggest stars end" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "What powers a star on the main sequence?",
+              "options": [
+                { "t": "Chemical burning, like a fire" },
+                { "t": "Fusing hydrogen into helium in its core", "ok": true },
+                { "t": "Radioactive decay" },
+                { "t": "Friction between gas layers" }
+              ],
+              "explain": "Fusion turns about 0.7 % of the hydrogen's mass into energy (E = mc²)."
+            },
+            {
+              "type": "mc",
+              "q": "A star with 10 times the Sun's mass lives…",
+              "options": [
+                { "t": "about 10 times longer than the Sun" },
+                { "t": "about as long as the Sun" },
+                { "t": "only tens of millions of years", "ok": true },
+                { "t": "forever" }
+              ],
+              "explain": "10¹⁰ yr × 10^−2.5 ≈ 3 × 10⁷ yr: about 30 million years."
+            },
+            {
+              "type": "mc",
+              "q": "How will the Sun end?",
+              "options": [
+                { "t": "As a black hole" },
+                { "t": "As a neutron star after a supernova" },
+                { "t": "As a white dwarf, after a red-giant phase", "ok": true },
+                { "t": "It will never change" }
+              ],
+              "explain": "The Sun is far too light to explode. In about 5 billion years it will swell, shed its outer layers and leave its hot core behind."
+            },
+            {
+              "type": "mc",
+              "q": "Where are stars born?",
+              "options": [
+                { "t": "In cold, dense clouds of gas and dust", "ok": true },
+                { "t": "Inside black holes" },
+                { "t": "In the Sun's corona" },
+                { "t": "In comet tails" }
+              ],
+              "explain": "Molecular clouds such as the Orion Nebula collapse in clumps, each clump becoming one or more stars."
+            },
+            {
+              "type": "num",
+              "q": "Using $t \\approx 10^{10}\\,\\text{yr}\\,(M/M_\\odot)^{-2.5}$, how long will a star of 2 solar masses stay on the main sequence? Answer in billions of years.",
+              "answer": 1.77,
+              "tol": 0.05,
+              "unit": "billion years",
+              "explain": "10¹⁰ × 2^−2.5 = 10¹⁰ ÷ 5.66 ≈ 1.77 × 10⁹ years.",
+              "check": { "eq": "ms-lifetime", "set": { "M": 2 }, "out": "t" }
+            }
+          ]
+        },
+        {
+          "id": "exoplanets",
+          "title": "Finding exoplanets",
+          "minutes": 6,
+          "star": [950, 160],
+          "body": [
+            "More than 6,000 planets have been confirmed around other stars. Most were found indirectly. In the transit method, a planet crosses the face of its star and blocks a tiny fraction of its light; the dip's depth, $(R_p/R_\\star)^2$, gives the planet's size. Jupiter crossing the Sun would dim it by about 1 %; Earth by less than 0.01 %.",
+            "In the radial-velocity method, the planet's pull makes its star wobble, shifting the star's spectral lines back and forth. Size and mass together give a planet's density: rock, water or gas."
+          ],
+          "widget": { "type": "transit", "Rp": 11.2, "Rs": 1, "caption": "A planet crossing its star, and the brightness a telescope would record. Sizes are to scale." },
+          "links": [
+            { "href": "equations.html#transit-depth", "label": "Equation: transit depth" },
+            { "href": "equations.html#rv-semi-amplitude", "label": "Equation: radial-velocity wobble" },
+            { "href": "equations.html#habitable-zone", "label": "Equation: habitable-zone distance" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "In the transit method, the depth of the dip tells you mostly about…",
+              "options": [
+                { "t": "the planet's size compared with its star", "ok": true },
+                { "t": "the planet's mass" },
+                { "t": "the planet's temperature" },
+                { "t": "the star's age" }
+              ],
+              "explain": "The blocked fraction of light is the ratio of the two disks' areas, (Rp/R★)²."
+            },
+            {
+              "type": "mc",
+              "q": "The radial-velocity method detects…",
+              "options": [
+                { "t": "a dip in the star's brightness" },
+                { "t": "light reflected by the planet" },
+                { "t": "the star's wobble, through Doppler shifts in its spectrum", "ok": true },
+                { "t": "radio signals from the planet" }
+              ],
+              "explain": "Star and planet orbit their common centre of mass; the star's to-and-fro motion shifts its lines."
+            },
+            {
+              "type": "mc",
+              "q": "Why is a small planet easier to find by transit around a small star?",
+              "options": [
+                { "t": "Small stars are always closer to us" },
+                { "t": "The same planet blocks a bigger fraction of a smaller star", "ok": true },
+                { "t": "Small stars are brighter" },
+                { "t": "Planets around small stars are bigger" }
+              ],
+              "explain": "Depth = (Rp/R★)². Halve the star's radius and the same planet makes a dip four times deeper."
+            },
+            {
+              "type": "mc",
+              "q": "Combining a planet's radius (from transits) with its mass (from radial velocity) gives its…",
+              "options": [
+                { "t": "distance from Earth" },
+                { "t": "age" },
+                { "t": "average density", "ok": true },
+                { "t": "colour" }
+              ],
+              "explain": "Density = mass ÷ volume, which tells rocky worlds from water worlds and gas giants."
+            },
+            {
+              "type": "num",
+              "q": "A planet 11.2 times Earth's radius crosses a star the size of the Sun. What is the transit depth, in percent? (Earth radius 6 371 km, Sun radius 695 700 km.)",
+              "answer": 1.05,
+              "tol": 0.03,
+              "unit": "%",
+              "explain": "Rp/R★ = 11.2 × 6371 ÷ 695 700 ≈ 0.1026, and 0.1026² ≈ 0.0105 = 1.05 %.",
+              "check": { "eq": "transit-depth", "set": { "Rp": 11.2, "Rs": 1 }, "out": "pct" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "t4",
+      "n": 4,
+      "title": "Engineering a spacecraft",
+      "color": "nebula",
+      "blurb": "Power, heat, radio links and the systems engineering that turns an idea into flight hardware.",
+      "label": [985, 612, "end"],
+      "lessons": [
+        {
+          "id": "power",
+          "title": "Power: living on sunlight",
+          "minutes": 6,
+          "star": [900, 260],
+          "body": [
+            "Every spacecraft needs electricity for computers, radios, heaters and instruments. Near the Sun, solar arrays are the obvious choice, but sunlight spreads out as it travels, so its intensity falls with the square of distance. At Mars, 1.52 astronomical units (AU) from the Sun, a panel makes only 43 % of its Earth-orbit power; at Jupiter, 5.2 AU, under 4 %. Juno needed huge arrays, and most missions to Saturn and beyond carry radioisotope thermoelectric generators (RTGs), which turn the heat of decaying plutonium-238 into electricity. Batteries carry spacecraft through eclipses."
+          ],
+          "widget": {
+            "type": "calc",
+            "eq": "solar-array-power",
+            "sliders": ["r", "A"],
+            "show": ["P", "S", "rel"],
+            "fixed": { "A": 20, "eta": 0.3, "r": 1, "th": 0 },
+            "slider": { "r": { "min": 0.3, "max": 10 }, "A": { "min": 1, "max": 100 } },
+            "presets": [
+              { "label": "Venus, 0.72 AU", "set": { "r": 0.723 } },
+              { "label": "Earth, 1 AU", "set": { "r": 1 } },
+              { "label": "Mars, 1.52 AU", "set": { "r": 1.524 } },
+              { "label": "Jupiter, 5.2 AU", "set": { "r": 5.2 } }
+            ],
+            "caption": "A 30 %-efficient array facing the Sun. Fly it outward."
+          },
+          "links": [
+            { "href": "equations.html#solar-array-power", "label": "Equation: solar array power versus distance" },
+            { "href": "equations.html#inverse-square", "label": "Equation: the inverse-square law" },
+            { "href": "solar-system.html", "label": "Solar system: how far each planet is" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Move a solar-powered probe twice as far from the Sun. Its array now makes…",
+              "options": [
+                { "t": "half the power" },
+                { "t": "a quarter of the power", "ok": true },
+                { "t": "an eighth of the power" },
+                { "t": "the same power" }
+              ],
+              "explain": "Sunlight spreads over a sphere whose area grows with distance squared: (1/2)² = 1/4."
+            },
+            {
+              "type": "mc",
+              "q": "Why do most missions to Saturn and beyond carry RTGs instead of solar arrays?",
+              "options": [
+                { "t": "RTGs are cheaper" },
+                { "t": "Sunlight out there is too weak for practical solar arrays", "ok": true },
+                { "t": "Solar arrays freeze solid" },
+                { "t": "RTGs also provide thrust" }
+              ],
+              "explain": "At Saturn (about 9.5 AU) sunlight is roughly 1 % as strong as at Earth."
+            },
+            {
+              "type": "mc",
+              "q": "What keeps an Earth-orbiting satellite powered while it passes through Earth's shadow?",
+              "options": [
+                { "t": "Batteries charged in sunlight", "ok": true },
+                { "t": "Moonlight on the arrays" },
+                { "t": "Nothing: it switches off completely" },
+                { "t": "The Earth's magnetic field" }
+              ],
+              "explain": "In low orbit a satellite spends up to about 36 minutes of every 92-minute orbit in shadow, so batteries cycle thousands of times a year."
+            },
+            {
+              "type": "mc",
+              "q": "Tilt a solar array 60° away from facing the Sun. Its power falls to about…",
+              "options": [
+                { "t": "zero" },
+                { "t": "a quarter" },
+                { "t": "half", "ok": true },
+                { "t": "It stays the same" }
+              ],
+              "explain": "The array intercepts sunlight in proportion to cos θ, and cos 60° = 0.5."
+            },
+            {
+              "type": "num",
+              "q": "A solar array makes 1 000 W at 1 astronomical unit (AU). How many watts does it make at Mars, 1.52 AU from the Sun?",
+              "answer": 433,
+              "tol": 5,
+              "unit": "W",
+              "explain": "P = 1000 W ÷ 1.52² ≈ 1000 ÷ 2.31 ≈ 433 W.",
+              "check": { "formula": "1000/1.52**2" }
+            }
+          ]
+        },
+        {
+          "id": "thermal",
+          "title": "Thermal: not too hot, not too cold",
+          "minutes": 6,
+          "star": [820, 330],
+          "body": [
+            "In space there is no air to carry heat away. A spacecraft warms by absorbing sunlight and cools only by radiating infrared into the cold sky, so its temperature settles where the two balance. That balance depends on its surface: the absorptivity α (how much sunlight it soaks up) and the emissivity ε (how well it radiates heat). White paint stays cool in sunlight; black paint runs warmer; bare polished metal can run hotter still, because it hardly radiates.",
+            "Engineers add multi-layer insulation (MLI) blankets, radiators and heaters to keep every part in its safe range."
+          ],
+          "widget": {
+            "type": "calc",
+            "eq": "spacecraft-temperature",
+            "sliders": ["alpha", "eps", "r"],
+            "show": ["T", "Tc", "ae"],
+            "fixed": { "alpha": 0.25, "eps": 0.88, "r": 1, "geom": 0.25 },
+            "slider": { "r": { "min": 0.3, "max": 10 } },
+            "presets": [
+              { "label": "White paint", "set": { "alpha": 0.25, "eps": 0.88 } },
+              { "label": "Black paint", "set": { "alpha": 0.95, "eps": 0.88 } },
+              { "label": "Polished aluminium", "set": { "alpha": 0.15, "eps": 0.05 } }
+            ],
+            "caption": "Equilibrium temperature of a sphere in sunlight. Try the coatings, then fly it closer to the Sun."
+          },
+          "links": [
+            { "href": "equations.html#spacecraft-temperature", "label": "Equation: spacecraft equilibrium temperature" },
+            { "href": "equations.html#stefan-boltzmann", "label": "Equation: the Stefan–Boltzmann law" },
+            { "href": "equations.html#equilibrium-temperature", "label": "Equation: planetary equilibrium temperature" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "In vacuum, a spacecraft gets rid of heat mainly by…",
+              "options": [
+                { "t": "radiating infrared light", "ok": true },
+                { "t": "convection currents" },
+                { "t": "conduction into the surrounding air" },
+                { "t": "evaporation" }
+              ],
+              "explain": "With no air, radiation is the only way out. Heat pipes and loops carry heat to radiators that shed it."
+            },
+            {
+              "type": "mc",
+              "q": "Which surface runs hottest in full sunlight?",
+              "options": [
+                { "t": "White paint (α ≈ 0.25, ε ≈ 0.88)" },
+                { "t": "Black paint (α ≈ 0.95, ε ≈ 0.88)" },
+                { "t": "Polished aluminium (α ≈ 0.15, ε ≈ 0.05)", "ok": true },
+                { "t": "A mirror-like radiator (α ≈ 0.08, ε ≈ 0.8)" }
+              ],
+              "explain": "What matters is α/ε: 0.28, 1.1, 3 and 0.1. Polished metal absorbs little but radiates even less."
+            },
+            {
+              "type": "mc",
+              "q": "What do multi-layer insulation (MLI) blankets do?",
+              "options": [
+                { "t": "Store heat for the night" },
+                { "t": "Block radiative heat flow with many thin reflective layers", "ok": true },
+                { "t": "Generate electricity" },
+                { "t": "Cool the spacecraft by evaporation" }
+              ],
+              "explain": "Each shiny layer reflects most of the heat radiated by the layer next to it."
+            },
+            {
+              "type": "mc",
+              "q": "In the equilibrium temperature, α and ε matter only through…",
+              "options": [
+                { "t": "their sum" },
+                { "t": "their ratio, α/ε", "ok": true },
+                { "t": "α alone" },
+                { "t": "ε alone" }
+              ],
+              "explain": "T = (α S f / ε σ)^¼: absorbed and emitted power both scale with area, so only α/ε survives."
+            },
+            {
+              "type": "num",
+              "q": "A black sphere (α = ε = 1) sits in sunlight 1 astronomical unit (AU) from the Sun. What is its equilibrium temperature, in kelvin?",
+              "answer": 278,
+              "tol": 2,
+              "unit": "K",
+              "explain": "T = (S/4σ)^¼ with S ≈ 1361 W/m²: (340 ÷ 5.67 × 10⁻⁸)^¼ ≈ 278 K, about 5 °C.",
+              "check": { "eq": "spacecraft-temperature", "set": { "alpha": 1, "eps": 1, "r": 1, "geom": 0.25 }, "out": "T" }
+            }
+          ]
+        },
+        {
+          "id": "link-budget",
+          "title": "Communications: the link budget",
+          "minutes": 7,
+          "star": [870, 420],
+          "body": [
+            "A deep-space probe may transmit only 20 watts, yet the Deep Space Network (DSN) of giant dishes hears it from billions of kilometres away. The trick is careful bookkeeping in decibels (dB), called a link budget. Start with the transmitter power, add the gain of each dish (bigger dishes focus more), then subtract the path loss: the signal spreads over a growing sphere, so every tenfold increase in distance costs 20 dB. What arrives must still beat the receiver's noise, and that margin sets how many bits per second you can send."
+          ],
+          "widget": { "type": "link", "d": 1.5, "caption": "A toy probe: 20 W at X-band (8.42 GHz) from a 3.7 m dish. Drag it across the Solar System." },
+          "links": [
+            { "href": "dsn.html", "label": "Deep Space Network: who is talking now" },
+            { "href": "equations.html#dsn-data-rate", "label": "Equation: deep-space data rate" },
+            { "href": "equations.html#fspl", "label": "Equation: free-space path loss" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "Move a spacecraft 10 times farther away. Its received signal gets weaker by…",
+              "options": [
+                { "t": "10 dB (a factor of 10)" },
+                { "t": "20 dB (a factor of 100)", "ok": true },
+                { "t": "100 dB" },
+                { "t": "It does not change" }
+              ],
+              "explain": "Power falls with distance squared: 10² = 100, and 10 log₁₀(100) = 20 dB."
+            },
+            {
+              "type": "mc",
+              "q": "Why do deep-space missions use big dish antennas?",
+              "options": [
+                { "t": "A larger dish focuses the beam more tightly and collects more signal", "ok": true },
+                { "t": "Big dishes are lighter" },
+                { "t": "They also generate power" },
+                { "t": "They protect the spacecraft from dust" }
+              ],
+              "explain": "Antenna gain grows with (πD/λ)², on both the spacecraft and the ground."
+            },
+            {
+              "type": "mc",
+              "q": "Adding 3 dB to a link means the power has roughly…",
+              "options": [
+                { "t": "tripled" },
+                { "t": "doubled", "ok": true },
+                { "t": "gone up tenfold" },
+                { "t": "halved" }
+              ],
+              "explain": "10 log₁₀(2) ≈ 3.01 dB."
+            },
+            {
+              "type": "mc",
+              "q": "The received signal gets weaker but the receiver noise stays the same. To keep the link working you must…",
+              "options": [
+                { "t": "send more bits per second" },
+                { "t": "send fewer bits per second", "ok": true },
+                { "t": "switch the receiver off" },
+                { "t": "nothing: data rate does not depend on signal" }
+              ],
+              "explain": "Each bit needs a minimum energy above the noise, so less power means fewer bits per second."
+            },
+            {
+              "type": "num",
+              "q": "Everything else being equal, how many decibels weaker is a signal from 170 astronomical units (AU), about Voyager 1's distance, than from Mars at 1.5 AU?",
+              "answer": 41.1,
+              "tol": 0.3,
+              "unit": "dB",
+              "explain": "20 log₁₀(170 ÷ 1.5) = 20 × 2.054 ≈ 41.1 dB: about 13 000 times less power.",
+              "check": { "formula": "20*log10(170/1.5)" }
+            }
+          ]
+        },
+        {
+          "id": "systems-life-cycle",
+          "title": "The systems-engineering life cycle",
+          "minutes": 8,
+          "star": [760, 470],
+          "body": [
+            "A spacecraft is thousands of parts built by hundreds of people, so the National Aeronautics and Space Administration (NASA) runs every project through a life cycle: Pre-Phase A, A and B to formulate the idea, then C to F to build, fly and retire it, each phase ending in reviews and a key decision point. Inside, engineers follow the V-model: down the left side, needs become requirements and designs; the hardware is built at the bottom; climbing the right side, every level is integrated and verified against the requirement opposite it. Reviews also track margins: spare mass, power and schedule."
+          ],
+          "widget": { "type": "order", "layout": "v", "set": "vmodel", "caption": "Put the nine steps of the V-model in order: define down the left, build at the bottom, verify up the right." },
+          "links": [
+            { "href": "library.html#systems", "label": "Documents: systems engineering corner" },
+            { "href": "library.html#vModel", "label": "The V-model, step by step" },
+            { "href": "library.html#life", "label": "NASA project phases and reviews" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "In the V-model, the right-hand side is where you…",
+              "options": [
+                { "t": "write the stakeholder expectations" },
+                { "t": "integrate the parts and verify them, level by level", "ok": true },
+                { "t": "draw the first sketches" },
+                { "t": "decide the launch date" }
+              ],
+              "explain": "Each level on the right is checked against the requirements written at the same level on the left."
+            },
+            {
+              "type": "mc",
+              "q": "Verification asks 'did we build it right?'. Validation asks…",
+              "options": [
+                { "t": "'did we build the right thing?'", "ok": true },
+                { "t": "'was it cheap enough?'" },
+                { "t": "'was it on time?'" },
+                { "t": "'did it launch?'" }
+              ],
+              "explain": "A system can meet every written requirement and still fail its users if the requirements were wrong."
+            },
+            {
+              "type": "mc",
+              "q": "Which NASA phase covers final design and fabrication, and includes the Critical Design Review (CDR)?",
+              "options": [
+                { "t": "Pre-Phase A" },
+                { "t": "Phase A" },
+                { "t": "Phase C", "ok": true },
+                { "t": "Phase E" }
+              ],
+              "explain": "Phase C is final design and fabrication; Phase D is assembly, test and launch; Phase E is operations."
+            },
+            {
+              "type": "mc",
+              "q": "Which phases make up a NASA project's formulation?",
+              "options": [
+                { "t": "Pre-Phase A, Phase A and Phase B", "ok": true },
+                { "t": "Phases C and D" },
+                { "t": "Phases E and F" },
+                { "t": "Phase A only" }
+              ],
+              "explain": "Formulation studies and designs the mission; implementation (C to F) builds, flies and retires it."
+            },
+            {
+              "type": "num",
+              "q": "A spacecraft's current mass estimate is 800 kg and the launch vehicle can carry 1 000 kg. Defining margin as (capability − estimate) ÷ capability, what is the mass margin, in percent?",
+              "answer": 20,
+              "tol": 0.5,
+              "unit": "%",
+              "explain": "(1000 − 800) ÷ 1000 = 0.20 = 20 %. Some projects divide by the estimate instead (25 % here), so always check which definition is used.",
+              "check": { "formula": "100*(1000-800)/1000" }
+            }
+          ]
+        },
+        {
+          "id": "design-review",
+          "title": "Mission design review",
+          "minutes": 7,
+          "star": [680, 560],
+          "body": [
+            "Before a project may spend big money, an independent board grills it at reviews such as the Preliminary Design Review (PDR) and the Critical Design Review (CDR). Does the design meet every requirement? Is there enough margin to absorb surprises? And is every new technology mature enough?",
+            "Maturity is graded on the Technology Readiness Level (TRL) scale, from 1 (basic principles observed) to 9 (flight proven on a real mission). The National Aeronautics and Space Administration (NASA) expects critical technologies to reach TRL 6, a prototype working in a relevant environment, by PDR."
+          ],
+          "widget": { "type": "order", "layout": "ladder", "set": "trl", "caption": "Climb the ladder: place each Technology Readiness Level on its rung, 1 at the bottom and 9 at the top." },
+          "links": [
+            { "href": "library.html#trl", "label": "Technology Readiness Levels, explained" },
+            { "href": "library.html#systems", "label": "Documents: systems engineering corner" },
+            { "href": "mission-designer.html", "label": "Mission designer: budgets and margins" }
+          ],
+          "quiz": [
+            {
+              "type": "mc",
+              "q": "TRL 9 means…",
+              "options": [
+                { "t": "basic principles have been observed" },
+                { "t": "a breadboard works in a laboratory" },
+                { "t": "a prototype has worked in a relevant environment" },
+                { "t": "the actual system is flight proven through successful mission operations", "ok": true }
+              ],
+              "explain": "TRL 9 is the top of the ladder: it has already flown and done its job."
+            },
+            {
+              "type": "mc",
+              "q": "A component has only been shown to work as a breadboard on a laboratory bench. It is at about…",
+              "options": [
+                { "t": "TRL 1" },
+                { "t": "TRL 4", "ok": true },
+                { "t": "TRL 7" },
+                { "t": "TRL 9" }
+              ],
+              "explain": "TRL 4: component and/or breadboard validation in a laboratory environment."
+            },
+            {
+              "type": "mc",
+              "q": "Why do review boards insist on margins?",
+              "options": [
+                { "t": "Designs almost always grow heavier and hungrier as details are added; margins absorb that growth", "ok": true },
+                { "t": "To use up the budget" },
+                { "t": "Rockets need ballast" },
+                { "t": "To slow the project down" }
+              ],
+              "explain": "Mass, power and data estimates creep upward through design. A project with no margin at PDR almost always overruns later."
+            },
+            {
+              "type": "mc",
+              "q": "Which review confirms the detailed design is ready before full-scale fabrication?",
+              "options": [
+                { "t": "Mission Concept Review (MCR)" },
+                { "t": "Preliminary Design Review (PDR)" },
+                { "t": "Critical Design Review (CDR)", "ok": true },
+                { "t": "Flight Readiness Review (FRR)" }
+              ],
+              "explain": "The CDR shows the design is mature enough to proceed with fabrication, assembly, integration and test."
+            },
+            {
+              "type": "num",
+              "q": "NASA expects every critical technology to reach which Technology Readiness Level by the Preliminary Design Review?",
+              "answer": 6,
+              "tol": 0,
+              "unit": "",
+              "explain": "TRL 6: a system or subsystem model or prototype demonstrated in a relevant environment. The Government Accountability Office measures NASA projects against this rule.",
+              "check": { "formula": "6", "source": "NASA Technology Readiness Assessment Best Practices Guide (SP-20205003605) and GAO NASA Assessments of Major Projects" }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "orderSets": {
+    "vmodel": {
+      "title": "V-model",
+      "note": "Steps from the NASA Systems Engineering Handbook (SP-2016-6105 Rev 2), as on the Documents page.",
+      "items": [
+        "Stakeholder expectations",
+        "System requirements",
+        "Subsystem design",
+        "Component design",
+        "Build & code",
+        "Component test",
+        "Subsystem integration",
+        "System verification",
+        "Validation"
+      ]
+    },
+    "trl": {
+      "title": "Technology Readiness Levels",
+      "note": "NASA Technology Readiness Level definitions (NPR 7123.1), as on the Documents page.",
+      "items": [
+        "Basic principles observed and reported",
+        "Technology concept and/or application formulated",
+        "Proof of concept: analytical and experimental critical function",
+        "Component or breadboard validated in a laboratory",
+        "Component or breadboard validated in a relevant environment",
+        "System or subsystem prototype demonstrated in a relevant environment",
+        "System prototype demonstrated in space",
+        "Actual system completed and flight qualified",
+        "Actual system flight proven on a successful mission"
+      ]
+    }
+  }
+}

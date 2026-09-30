@@ -1,0 +1,317 @@
+{
+  "meta": {
+    "title": "Mission Designer: destinations, launch vehicles, subsystem rules of thumb, life cycle and presets",
+    "read": "2026-09-29",
+    "note": "Numbers marked 'estimate' are modelling assumptions for a Pre-Phase A concept study, not flight data. Launch-vehicle curves are rocket-equation estimates calibrated to one published payload each; the authoritative figures are on the NASA Launch Services Program (LSP) performance website.",
+    "sources": [
+      { "id": "STANDISH", "label": "E. M. Standish, JPL, Keplerian Elements for Approximate Positions of the Major Planets (Table 1)", "url": "https://ssd.jpl.nasa.gov/planets/approx_pos.html" },
+      { "id": "SSD", "label": "JPL Solar System Dynamics: planetary physical and astrodynamic parameters", "url": "https://ssd.jpl.nasa.gov/planets/phys_par.html" },
+      { "id": "CURTIS", "label": "H. D. Curtis, Orbital Mechanics for Engineering Students, Algorithms 3.4 and 5.2, Example 5.2", "url": "https://www.sciencedirect.com/book/9780081021330/orbital-mechanics-for-engineering-students" },
+      { "id": "MARSHB", "label": "L. M. Burke, R. D. Falck, M. L. McGuire, Interplanetary Mission Design Handbook: Earth-to-Mars Mission Opportunities 2026 to 2045, NASA/TM-2010-216764", "url": "https://ntrs.nasa.gov/citations/20100037210" },
+      { "id": "LSP", "label": "NASA Launch Services Program, Launch Vehicle Performance Website (authoritative payload-versus-C3 curves)", "url": "https://elvperf.ksc.nasa.gov/" },
+      { "id": "SEHB", "label": "NASA Systems Engineering Handbook, SP-2016-6105 Rev 2 (life cycle, Figure 3.0-1; reviews)", "url": "https://www.nasa.gov/reference/systems-engineering-handbook" },
+      { "id": "NPR7120", "label": "NASA Procedural Requirements NPR 7120.5, Space Flight Program and Project Management Requirements", "url": "https://nodis3.gsfc.nasa.gov/" },
+      { "id": "SMAD", "label": "J. R. Wertz, W. J. Larson (eds.), Space Mission Analysis and Design, 3rd ed., ch. 10 (subsystem mass fractions, power sizing)", "url": "https://www.worldcat.org/search?q=Space+Mission+Analysis+and+Design" },
+      { "id": "JPLDP", "label": "JPL Design, Verification/Validation and Operations Principles for Flight Systems (D-17868): margins at project start", "url": "https://www.jpl.nasa.gov/" },
+      { "id": "AIAA120", "label": "AIAA S-120A-2015, Mass Properties Control for Space Systems (mass growth allowance by design maturity)", "url": "https://arc.aiaa.org/doi/book/10.2514/4.103858" },
+      { "id": "DSN810", "label": "JPL DSN Telecommunications Link Design Handbook 810-005 (antenna gains, system noise temperatures)", "url": "https://deepspace.jpl.nasa.gov/dsndocs/810-005/" },
+      { "id": "MROTEL", "label": "J. Taylor, D. K. Lee, S. Shambayati, Mars Reconnaissance Orbiter Telecommunications, JPL DESCANSO Design and Performance Summary Series, Article 12 (2006)", "url": "https://descanso.jpl.nasa.gov/DPSummary/summary.html" },
+      { "id": "RPS", "label": "NASA Radioisotope Power Systems program: Multi-Mission Radioisotope Thermoelectric Generator (MMRTG) fact sheet", "url": "https://science.nasa.gov/planetary-science/programs/radioisotope-power-systems/" },
+      { "id": "GILMORE", "label": "D. G. Gilmore (ed.), Spacecraft Thermal Control Handbook, Vol. I (surface finishes, multi-layer insulation)", "url": "https://arc.aiaa.org/doi/book/10.2514/4.989117" },
+      { "id": "TEAMX", "label": "JPL Team X concurrent engineering (A-Team / Team X studies)", "url": "https://jplteamx.jpl.nasa.gov/" }
+    ]
+  },
+
+  "destinations": [
+    {
+      "id": "moon", "name": "The Moon", "short": "Moon", "kind": "lunar", "color": "#cfd3dc",
+      "facts": "1.3 light-seconds · any month",
+      "goals": ["Map water ice in permanently shadowed craters", "Relay communications for far-side landers", "Measure the lunar gravity field"],
+      "payloadHint": "A 12-unit CubeSat carries 2–5 kg of instruments; Lunar Reconnaissance Orbiter carried about 100 kg.",
+      "tofDefault": 4.5, "tofRange": [2.5, 5.0],
+      "orbits": [
+        { "id": "llo", "label": "Low lunar orbit, 100 km circular", "kind": "orbit", "hp": 100, "ha": 100, "eclipse": 1.5 },
+        { "id": "elliptic", "label": "Elliptical orbit, 100 × 8,000 km", "kind": "orbit", "hp": 100, "ha": 8000, "eclipse": 1.2 },
+        { "id": "flyby", "label": "Flyby", "kind": "flyby", "eclipse": 1.0 }
+      ],
+      "dvTcm": 0.03, "dvOps": 0.04,
+      "note": "No planetary launch window: the Moon comes round every 27.3 days, so this step shows the patched-conic transfer instead of a porkchop plot."
+    },
+    {
+      "id": "mars", "name": "Mars", "short": "Mars", "kind": "planet", "color": "#e0764a",
+      "facts": "1.52 AU · a window every 26 months",
+      "goals": ["Map buried ice and ancient shorelines from orbit", "Relay data for rovers on the surface", "Watch the atmosphere escape to space"],
+      "payloadHint": "Mars Reconnaissance Orbiter (MRO) carried about 139 kg of science instruments.",
+      "tofRange": [100, 500], "halfWidth": 85, "scanYears": 7,
+      "orbits": [
+        { "id": "capture", "label": "Capture ellipse 300 × 45,000 km (then aerobrake, MRO-like)", "kind": "orbit", "hp": 300, "ha": 45000, "eclipse": 1.1 },
+        { "id": "low", "label": "Low circular orbit, 400 km (all propulsive)", "kind": "orbit", "hp": 400, "ha": 400, "eclipse": 1.5 },
+        { "id": "flyby", "label": "Flyby", "kind": "flyby", "eclipse": 1.0 }
+      ],
+      "dvTcm": 0.04, "dvOps": 0.06
+    },
+    {
+      "id": "venus", "name": "Venus", "short": "Venus", "kind": "planet", "color": "#f3d9a4",
+      "facts": "0.72 AU · every 19 months · hot",
+      "goals": ["Sample noble gases while descending through the atmosphere", "Map the surface with radar from orbit", "Track the super-rotating clouds"],
+      "payloadHint": "An entry probe with its heat shield weighs a few hundred kilograms; Venus Express carried about 93 kg of instruments.",
+      "tofRange": [80, 400], "halfWidth": 130, "scanYears": 4.5,
+      "orbits": [
+        { "id": "entry", "label": "Atmospheric entry probe (entry interface 250 km)", "kind": "entry", "hEntry": 250, "eclipse": 1.0 },
+        { "id": "day", "label": "Elliptical 24-hour orbit, 250 × 66,000 km (Venus Express-like)", "kind": "orbit", "hp": 250, "ha": 66000, "eclipse": 1.1 },
+        { "id": "low", "label": "Low circular orbit, 300 km (all propulsive)", "kind": "orbit", "hp": 300, "ha": 300, "eclipse": 1.5 },
+        { "id": "flyby", "label": "Flyby", "kind": "flyby", "eclipse": 1.0 }
+      ],
+      "dvTcm": 0.04, "dvOps": 0.03
+    },
+    {
+      "id": "jupiter", "name": "Jupiter", "short": "Jupiter", "kind": "planet", "color": "#e3c39a",
+      "facts": "5.2 AU · every 13 months · dim Sun",
+      "goals": ["Search for a habitable ocean under Europa's ice", "Map Jupiter's deep interior and magnetic field", "Watch Io's volcanoes"],
+      "payloadHint": "Europa Clipper carries about 350 kg of instruments; Juno about 174 kg.",
+      "tofRange": [700, 1300], "halfWidth": 75, "scanYears": 3.5,
+      "orbits": [
+        { "id": "tour", "label": "Tour capture: perijove 12 R♃, 200-day orbit (illustrative)", "kind": "orbit", "hpR": 12, "periodDays": 200, "eclipse": 1.0 },
+        { "id": "juno", "label": "Juno-style capture: perijove 1.06 R♃, 53.5-day orbit", "kind": "orbit", "hpR": 1.06, "periodDays": 53.5, "eclipse": 1.0 },
+        { "id": "flyby", "label": "Flyby", "kind": "flyby", "eclipse": 1.0 }
+      ],
+      "dvTcm": 0.06, "dvOps": 0.2,
+      "defaults": { "payload": 300, "dsn": 70 },
+      "extraMass": { "label": "Radiation vault", "kg": 180, "how": "titanium vault for the electronics (Juno's weighs about 200 kg)" },
+      "note": "Real Jupiter missions (Galileo, Juno, Europa Clipper) use gravity assists at Venus, Earth or Mars to cut the launch energy. Gravity assists are out of scope here: this tool designs the direct ballistic transfer."
+    },
+    {
+      "id": "saturn", "name": "Saturn", "short": "Saturn", "kind": "planet", "color": "#ecd9a8",
+      "facts": "9.5 AU · every 12 months · very dim",
+      "goals": ["Fly through the plumes of Enceladus", "Study Titan's lakes and haze", "Measure the rings' mass and age"],
+      "payloadHint": "Cassini carried about 360 kg of instruments (plus the 350 kg Huygens probe).",
+      "tofRange": [1500, 2800], "halfWidth": 75, "scanYears": 3.5,
+      "orbits": [
+        { "id": "cassini", "label": "Cassini-style capture: periapsis 1.3 R♄, 150-day orbit", "kind": "orbit", "hpR": 1.3, "periodDays": 150, "eclipse": 1.0 },
+        { "id": "flyby", "label": "Flyby", "kind": "flyby", "eclipse": 1.0 }
+      ],
+      "dvTcm": 0.06, "dvOps": 0.3,
+      "defaults": { "powerSource": "rtg", "rtgCount": 0, "dsn": 70, "payload": 300, "lv": "sls1", "dataGbitDay": 1 },
+      "note": "Cassini reached Saturn with Venus-Venus-Earth-Jupiter gravity assists. Gravity assists are out of scope: this is the direct transfer."
+    },
+    {
+      "id": "asteroid", "name": "Near-Earth asteroid (illustrative)", "short": "Asteroid", "kind": "planet", "color": "#b6aa98",
+      "facts": "Bennu-like orbit · every ~6 years",
+      "goals": ["Rendezvous, map and characterise a carbon-rich asteroid", "Test planetary-defence reconnaissance", "Touch-and-go sampling reconnaissance"],
+      "payloadHint": "OSIRIS-REx carried about 250 kg of instruments and sampling hardware.",
+      "tofRange": [80, 700], "halfWidth": 150, "scanYears": 13,
+      "orbits": [
+        { "id": "rdv", "label": "Rendezvous (match its orbit, then hover)", "kind": "rendezvous", "eclipse": 1.0 },
+        { "id": "flyby", "label": "Flyby", "kind": "flyby", "eclipse": 1.0 }
+      ],
+      "dvTcm": 0.04, "dvOps": 0.08,
+      "defaults": { "lv": "av551" },
+      "note": "ILLUSTRATIVE ORBIT: a Bennu-like shape and size (JPL Small-Body Database, rounded), but its position along the orbit is invented, so these launch windows are not those of any real asteroid."
+    }
+  ],
+
+  "vehicles": [
+    {
+      "id": "f9r", "name": "Falcon 9", "variant": "drone-ship landing", "family": "SpaceX", "base": "f9e", "reserve": [0.1, 0, 0],
+      "note": "Most NASA missions on Falcon 9 land the booster on a drone ship. Reserve for the entry and landing burns: 10 % of first-stage propellant (estimate).",
+      "check": { "c3": -16.36, "mass": 5500, "label": "≈5.5 t to GTO when reused, as reported by SpaceX (not re-verified)" },
+      "sources": ["https://en.wikipedia.org/wiki/Falcon_9"]
+    },
+    {
+      "id": "f9e", "name": "Falcon 9", "variant": "expendable", "family": "SpaceX",
+      "phases": [
+        { "label": "First stage (9 Merlin 1D)", "prop": 395700, "drop": 25600, "isp": 297 },
+        { "label": "Second stage to fairing jettison", "prop": 9267, "drop": 1900, "isp": 348 },
+        { "label": "Second stage (Merlin Vacuum)", "prop": 83403, "drop": 4000, "isp": 348 }
+      ],
+      "calib": { "c3": -16.36, "mass": 8300, "label": "8,300 kg to geostationary transfer orbit (GTO), SpaceX capabilities page" },
+      "sources": ["https://en.wikipedia.org/wiki/Falcon_9", "https://www.spacex.com/vehicles/falcon-9/"]
+    },
+    {
+      "id": "fhe", "name": "Falcon Heavy", "variant": "expendable", "family": "SpaceX",
+      "phases": [
+        { "label": "Two side boosters + core (throttled)", "prop": 969465, "drop": 51200, "isp": 297 },
+        { "label": "Centre core alone", "prop": 217635, "drop": 30000, "isp": 308 },
+        { "label": "Second stage to fairing jettison", "prop": 9267, "drop": 1900, "isp": 348 },
+        { "label": "Second stage (Merlin Vacuum)", "prop": 83403, "drop": 4000, "isp": 348 }
+      ],
+      "calib": { "c3": -16.36, "mass": 26700, "label": "26,700 kg to GTO, SpaceX capabilities page" },
+      "sources": ["https://en.wikipedia.org/wiki/Falcon_Heavy", "https://www.spacex.com/vehicles/falcon-heavy/"]
+    },
+    {
+      "id": "fhr", "name": "Falcon Heavy", "variant": "side boosters recovered", "family": "SpaceX", "base": "fhe", "reserve": [0.12, 0, 0, 0],
+      "note": "Side boosters fly back and land; the centre core is expended (as for Psyche). Reserve: 12 % of the first-phase propellant (estimate)."
+    },
+    {
+      "id": "av551", "name": "Atlas V 551", "variant": "5 m fairing, 5 solid boosters", "family": "ULA",
+      "phases": [
+        { "label": "5 AJ-60A boosters + RD-180 core", "prop": 318263, "drop": 20335, "isp": 280 },
+        { "label": "Common Core Booster alone (fairing jettison)", "prop": 178976, "drop": 25354, "isp": 335 },
+        { "label": "Centaur III (one RL10C)", "prop": 20830, "drop": 2316, "isp": 449.7 }
+      ],
+      "calib": { "c3": -16.36, "mass": 8900, "label": "8,900 kg to GTO (United Launch Alliance, Atlas V 551)" },
+      "check": { "c3": 31.1, "mass": 3625, "label": "Juno, 3,625 kg at C3 ≈ 31 km²/s² (2011) — values from memory of NASA press material, not re-verified" },
+      "sources": ["https://en.wikipedia.org/wiki/Atlas_V", "https://en.wikipedia.org/wiki/Centaur_(rocket_stage)"]
+    },
+    {
+      "id": "vc6", "name": "Vulcan VC6", "variant": "6 GEM 63XL boosters, Centaur V", "family": "ULA",
+      "phases": [
+        { "label": "6 GEM 63XL + 2 BE-4 core", "prop": 427000, "drop": 38400, "isp": 286 },
+        { "label": "Vulcan core alone (fairing jettison)", "prop": 255000, "drop": 40000, "isp": 335 },
+        { "label": "Centaur V (two RL10C-X)", "prop": 54000, "drop": 5000, "isp": 453.8 }
+      ],
+      "calib": { "c3": -2.0, "mass": 12100, "label": "≈12,100 kg to trans-lunar injection (TLI), as listed for VC6 (ULA / Wikipedia infobox; not re-verified)" },
+      "estimated": "Stage masses are estimates from vehicle dimensions; ULA has not published them.",
+      "sources": ["https://en.wikipedia.org/wiki/Vulcan_Centaur"]
+    },
+    {
+      "id": "sls1", "name": "SLS Block 1", "variant": "Interim Cryogenic Propulsion Stage", "family": "NASA",
+      "phases": [
+        { "label": "2 five-segment boosters + 4 RS-25", "prop": 1521000, "drop": 190000, "isp": 284 },
+        { "label": "Core stage alone", "prop": 725000, "drop": 85270, "isp": 445 },
+        { "label": "Interim Cryogenic Propulsion Stage (RL10B-2)", "prop": 27220, "drop": 3490, "isp": 462 }
+      ],
+      "calib": { "c3": -2.0, "mass": 27000, "label": "27 t to trans-lunar injection (NASA SLS Reference Guide)" },
+      "sources": ["https://en.wikipedia.org/wiki/Space_Launch_System", "https://www.nasa.gov/humans-in-space/space-launch-system/"]
+    },
+    {
+      "id": "ng", "name": "New Glenn", "variant": "reusable first stage", "family": "Blue Origin", "reserve": [0.07, 0, 0],
+      "phases": [
+        { "label": "First stage (7 BE-4), landing reserve held back", "prop": 1000000, "drop": 100000, "isp": 325 },
+        { "label": "Second stage to fairing jettison", "prop": 17000, "drop": 8000, "isp": 445 },
+        { "label": "Second stage (2 BE-3U)", "prop": 153000, "drop": 20000, "isp": 445 }
+      ],
+      "calib": { "c3": -16.36, "mass": 13600, "label": "13,600 kg to GTO (Blue Origin)" },
+      "estimated": "Stage masses are estimates; Blue Origin has not published them.",
+      "sources": ["https://en.wikipedia.org/wiki/New_Glenn", "https://www.blueorigin.com/new-glenn"]
+    },
+    {
+      "id": "a64", "name": "Ariane 6", "variant": "A64, four P120C boosters", "family": "Arianespace / ESA",
+      "phases": [
+        { "label": "4 P120C + Vulcain 2.1 core", "prop": 609600, "drop": 52000, "isp": 281 },
+        { "label": "Core alone (fairing jettison)", "prop": 107400, "drop": 18000, "isp": 420 },
+        { "label": "Upper stage (Vinci)", "prop": 31000, "drop": 5000, "isp": 457 }
+      ],
+      "calib": { "c3": -16.36, "mass": 11500, "label": "11,500 kg to GTO (ESA, Ariane 64)" },
+      "note": "Launches from Kourou, 5° N: low declinations are cheap from there.",
+      "sources": ["https://en.wikipedia.org/wiki/Ariane_6", "https://www.esa.int/Enabling_Support/Space_Transportation/Ariane"]
+    },
+    {
+      "id": "ss", "name": "Starship", "variant": "single launch, no in-orbit refilling", "family": "SpaceX", "reserve": [0.08, 0], "speculative": true,
+      "phases": [
+        { "label": "Super Heavy booster (landing reserve held back)", "prop": 3400000, "drop": 200000, "isp": 335 },
+        { "label": "Starship upper stage (expended beyond orbit)", "prop": 1500000, "drop": 120000, "isp": 365 }
+      ],
+      "lossFixed": 1.6,
+      "check": { "c3": -60.73, "mass": 100000, "label": "100–150 t to low Earth orbit, reusable: SpaceX's stated goal (the model expends the ship, so it predicts more)" },
+      "note": "Speculative: no published beyond-orbit figure exists to calibrate against, so the loss term is fixed at 1.6 km/s, typical of the other vehicles here. Speculative: the vehicle is still in development. SpaceX's Mars plans rely on refilling in orbit, which is out of scope here.",
+      "sources": ["https://en.wikipedia.org/wiki/SpaceX_Starship"]
+    }
+  ],
+
+  "spacecraft": {
+    "fractions": {
+      "structure": { "f": 0.24, "label": "Structure & mechanisms" },
+      "thermal": { "f": 0.05, "label": "Thermal control" },
+      "adcs": { "f": 0.06, "label": "Attitude determination & control" },
+      "cdh": { "f": 0.04, "label": "Command & data handling" },
+      "harness": { "f": 0.05, "label": "Cabling (harness)" }
+    },
+    "fractionsSource": "Typical planetary-spacecraft dry-mass fractions after SMAD Table 10-9 (rounded): power, telecommunications and propulsion are computed from their own equations instead.",
+    "power": {
+      "busK": 3.5, "busExp": 0.6, "target": 0.3, "batteryHours": 1.0, "dod": 0.6, "whPerKg": 120, "pmadKgPerW": 0.02,
+      "solar": { "eta": 0.21, "decay": 0.015, "liltFromAU": 3.0, "lilt": 0.8, "kgPerM2": 4.0 },
+      "rtg": { "watts": 110, "mass": 45, "decay": 0.04 },
+      "notes": "Array: triple-junction cells (~29 %) times packing, temperature and wiring losses gives η ≈ 0.21 at the start of life; 1.5 %/yr degradation; beyond 3 AU a low-intensity, low-temperature (LILT) penalty of 20 %; about 4 kg per m² with substrate and deployment. MMRTG: 110 W, 45 kg at launch, output falls ≈4 %/yr (NASA RPS). Bus electronics load ≈ 3.5 × (dry mass in kg)^0.6 W (estimate: about 220 W for a 1-tonne spacecraft). Battery sized for one hour of full load at 60 % depth of discharge, 120 Wh/kg."
+    },
+    "telecom": { "baseKg": 6, "dishKgPerM2": 4, "kgPerRfW": 0.1 },
+    "bands": {
+      "X": { "f": 8.42, "ampEff": 0.55, "lossDB": 3, "label": "X-band 8.4 GHz" },
+      "Ka": { "f": 32.0, "ampEff": 0.45, "lossDB": 6, "label": "Ka-band 32 GHz" }
+    },
+    "dsn": {
+      "34": { "D": 34, "eta": 0.6, "tsys": { "X": 30, "Ka": 38 }, "label": "34 m beam-waveguide antenna" },
+      "70": { "D": 70, "eta": 0.6, "tsys": { "X": 22, "Ka": null }, "label": "70 m antenna (X-band only)" }
+    },
+    "link": { "ebn0dB": 7, "etaT": 0.55, "passHours": 8, "notes": "E_b/N_0 = 7 dB covers the channel code plus a link margin (as in the equation atlas). System losses: X-band 3 dB (circuit, pointing, polarisation, atmosphere), Ka-band 6 dB (adds about 3 dB for weather at 90 % availability). One 8-hour DSN pass per day. System noise temperatures typical of DSN 810-005." },
+    "propulsion": { "tankFraction": 0.1, "engineKg": 25, "residual": 0.03, "maxMassRatio": 8 },
+    "isp": [
+      { "isp": 225, "label": "Monopropellant hydrazine, 225 s" },
+      { "isp": 320, "label": "Bipropellant (hydrazine / nitrogen tetroxide), 320 s" },
+      { "isp": 440, "label": "Cryogenic (liquid hydrogen / oxygen), 440 s — not yet flown on a planetary spacecraft" }
+    ],
+    "thermal": { "density": 100, "mliEps": 0.02, "selfHeat": 0.8, "tMin": 273, "tMax": 323, "notes": "Bus as a cube of 100 kg/m³ wrapped in multi-layer insulation (effective emittance 0.02, Gilmore). Heaters keep it above 0 °C (propellant lines must not freeze); 80 % of the bus electronics power counts as internal heat. Surfaces: sphere equilibrium temperature at the destination (cold case) and the closest point to the Sun (hot case)." },
+    "finishes": {
+      "white": { "alpha": 0.25, "eps": 0.88, "label": "White paint (α 0.25, ε 0.88)" },
+      "osr": { "alpha": 0.08, "eps": 0.8, "label": "Optical solar reflectors, OSR (α 0.08, ε 0.80)" },
+      "black": { "alpha": 0.95, "eps": 0.88, "label": "Black paint (α 0.95, ε 0.88)" },
+      "gold": { "alpha": 0.3, "eps": 0.03, "label": "Polished gold (α 0.30, ε 0.03)" }
+    },
+    "maturity": [
+      { "id": "prea", "label": "Pre-Phase A concept", "contingency": 0.3 },
+      { "id": "a", "label": "Phase A", "contingency": 0.25 },
+      { "id": "pdr", "label": "At Preliminary Design Review (PDR)", "contingency": 0.2 }
+    ],
+    "maturitySource": "Mass growth allowance falls as the design matures: about 30 % for a new concept, 20 % by PDR (AIAA S-120A-2015; JPL Design Principles D-17868).",
+    "targets": { "launchMargin": 0.1, "powerMargin": 0.3, "linkDB": 3, "propFractionWarn": 0.5, "propFractionBad": 0.65 }
+  },
+
+  "lifecycle": [
+    { "id": "prea", "phase": "Pre-Phase A", "name": "Concept Studies", "review": "Mission Concept Review (MCR)", "text": "Find a mission worth flying and show that at least one concept closes: trajectory, launch vehicle, mass, power, data. This is a Team X study — and this page." },
+    { "id": "a", "phase": "Phase A", "name": "Concept & Technology Development", "review": "System Requirements Review (SRR), Mission / System Definition Review (MDR/SDR)", "text": "Write the requirements, pick the architecture, start maturing risky technology." },
+    { "id": "b", "phase": "Phase B", "name": "Preliminary Design & Technology Completion", "review": "Preliminary Design Review (PDR)", "text": "A complete preliminary design with margins; the project is confirmed and its cost baselined (Key Decision Point C)." },
+    { "id": "c", "phase": "Phase C", "name": "Final Design & Fabrication", "review": "Critical Design Review (CDR), System Integration Review (SIR)", "text": "Drawings are final; flight hardware and software are built." },
+    { "id": "d", "phase": "Phase D", "name": "Assembly, Integration & Test, Launch & Checkout", "review": "Operational Readiness Review (ORR), Flight Readiness Review (FRR)", "text": "Put it together, test it as it will fly, ship it, launch it, check it out in space." },
+    { "id": "e", "phase": "Phase E", "name": "Operations & Sustainment", "review": "Post-Launch Assessment Review (PLAR)", "text": "Cruise, orbit insertion, science." },
+    { "id": "f", "phase": "Phase F", "name": "Closeout", "review": "Decommissioning Review (DR)", "text": "End the mission safely (planetary protection!) and archive the data." }
+  ],
+
+  "why": {
+    "c3": { "t": "Launch energy, C3", "b": "Characteristic energy (C3) is twice the orbital energy per kilogram the rocket must give you, C3 = v∞² in km²/s². Zero means just escaping Earth; Mars needs about 9, Jupiter about 80. The launch vehicle's payload falls steeply as C3 rises.", "l": [["Vis-viva equation", "equations.html#vis-viva"], ["Escape velocity", "equations.html#escape-velocity"]] },
+    "vinf": { "t": "Hyperbolic excess velocity, v∞", "b": "The speed a spacecraft still has when it has climbed out of a planet's gravity well. At departure it sets C3 = v∞²; at arrival it decides how hard you must brake to be captured — or how fast you hit the atmosphere.", "l": [["Sphere of influence", "equations.html#sphere-of-influence"]] },
+    "porkchop": { "t": "Why a porkchop?", "b": "Every pixel is one solution of Lambert's problem: which orbit leaves Earth on this date and reaches the target after this many days? Colour is the launch energy. The cheap 'eye' repeats every synodic period, when the planets line up again. Type I transfers go less than halfway round the Sun, Type II more.", "l": [["Synodic period", "equations.html#synodic-period"], ["Hohmann transfer in the Orbit Lab", "orbits.html#hohmann"]] },
+    "lambert": { "t": "Lambert's problem", "b": "Given two positions and a flight time, find the connecting orbit. Here it is solved with universal variables (Curtis, Algorithm 5.2) and checked against Curtis Example 5.2 and the repository's Python toolkit.", "l": [["Kepler's third law", "equations.html#kepler-third"]] },
+    "hohmann": { "t": "Hohmann baseline", "b": "The idealised transfer between two circular, coplanar orbits: half an ellipse touching both. Real planets have eccentric, tilted orbits, so the best real transfer differs a little — the porkchop shows by how much.", "l": [["Hohmann equation", "equations.html#hohmann"], ["Fly it in the Orbit Lab", "orbits.html#hohmann"]] },
+    "dla": { "t": "Declination of the launch asymptote (DLA)", "b": "How far north or south of Earth's equator the departure v∞ points. From Cape Canaveral (28.5° N) a |DLA| above about 28.5° costs extra performance (a dog-leg or plane change). This model does not charge for it — a real study would.", "l": [] },
+    "lv": { "t": "Payload versus C3", "b": "Each curve is the rocket equation run stage by stage, with one loss term fitted so the model hits a published payload (marked ◆). Treat them as estimates: the NASA Launch Services Program (LSP) performance website publishes the official curves that real proposals must use.", "l": [["Multi-stage Δv", "equations.html#multistage"], ["Design your own rocket", "builder.html"]] },
+    "margin": { "t": "Why margins?", "b": "Early designs always grow. NASA and JPL carry mass, power and data margins that shrink as the design matures, so that growth never breaks the mission. A design 'closes' when every margin is positive with room to spare.", "l": [["NASA Systems Engineering Handbook", "library.html"]] },
+    "mass": { "t": "Mass budget", "b": "Payload, power, telecommunications and propulsion hardware are computed from their own equations; structure, thermal, attitude control, data handling and cabling are typical fractions of dry mass. Contingency is added on top, then propellant from the rocket equation.", "l": [["Tsiolkovsky rocket equation", "equations.html#tsiolkovsky"]] },
+    "power": { "t": "Power: solar or radioisotope?", "b": "Sunlight falls with the square of distance: an array that gives 1 kW at Earth gives 37 W at Jupiter and 11 W at Saturn. Juno and Europa Clipper still fly solar at Jupiter with huge arrays; beyond that, missions carry radioisotope generators, and plutonium-238 is scarce.", "l": [["Solar array power", "equations.html#solar-array-power"], ["Inverse-square law", "equations.html#inverse-square"]] },
+    "link": { "t": "The link budget", "b": "Friis's equation gives the power that reaches a Deep Space Network (DSN) dish; dividing by the energy each bit needs above the receiver's noise gives the data rate. Twice the distance means a quarter of the bits. Ka-band's shorter wavelength makes both dishes four times sharper each, but rain and pointing cost some of it back.", "l": [["Friis link budget", "equations.html#friis"], ["DSN data rate", "equations.html#dsn-data-rate"], ["Free-space path loss", "equations.html#fspl"]] },
+    "capture": { "t": "Orbit insertion", "b": "Braking at the lowest point of the approach hyperbola is cheapest (the Oberth effect): Δv = √(v∞² + 2μ/r_p) − √(μ(2/r_p − 1/a)). A long, loose capture orbit costs far less than a low circular one; aerobraking can then lower it for free.", "l": [["Vis-viva equation", "equations.html#vis-viva"], ["Specific impulse", "equations.html#specific-impulse"]] },
+    "thermal": { "t": "Thermal balance", "b": "In vacuum a spacecraft only cools by radiating, so its temperature is set by the ratio of absorptivity to emissivity of its surfaces and the sunlight it receives. Blankets of multi-layer insulation (MLI) slow the heat leak; heaters make up the rest.", "l": [["Spacecraft temperature", "equations.html#spacecraft-temperature"], ["Stefan–Boltzmann law", "equations.html#stefan-boltzmann"]] },
+    "lighttime": { "t": "Light time", "b": "Radio travels at the speed of light, so a command to Mars takes 3–22 minutes. Nothing at the destination can be flown by joystick: sequences are uploaded in advance and the spacecraft protects itself.", "l": [["Shapiro delay", "equations.html#shapiro-delay"]] },
+    "lifecycle": { "t": "The NASA project life cycle", "b": "Every NASA flight project walks from Pre-Phase A to Phase F, passing Key Decision Points (KDPs) and technical reviews. This page is a Pre-Phase A concept study: its product is a concept that closes, presented at a Mission Concept Review (MCR).", "l": [["NASA Systems Engineering Handbook (library)", "library.html"]] }
+  },
+
+  "presets": [
+    {
+      "id": "mars2026", "label": "Mars 2026 orbiter",
+      "blurb": "An orbiter class of the Mars Reconnaissance Orbiter, launched in the late-2026 window.",
+      "state": { "dest": "mars", "name": "Mars 2026 Orbiter", "goal": "Map buried ice and ancient shorelines from orbit", "payload": 150, "orbit": "capture", "years": 2,
+        "dep": 2461343.84, "tof": 294.7, "lv": "f9r", "payloadPower": 250, "dataGbitDay": 4, "band": "X", "dish": 3, "rf": 100, "dsn": 34,
+        "powerSource": "solar", "areaScale": 1, "rtgCount": 0, "isp": 320, "finish": "white", "maturity": "prea" }
+    },
+    {
+      "id": "europa", "label": "Europa-style Jupiter mission",
+      "blurb": "A Europa Clipper-sized spacecraft on a direct trajectory. Gravity assists (which the real Clipper used) are out of scope.",
+      "state": { "dest": "jupiter", "name": "Europa Explorer", "goal": "Search for a habitable ocean under Europa's ice", "payload": 350, "orbit": "tour", "years": 4,
+        "dep": 2462132.31, "tof": 1099.2, "lv": "sls1", "payloadPower": 180, "dataGbitDay": 1.5, "band": "X", "dish": 3, "rf": 40, "dsn": 70,
+        "powerSource": "solar", "areaScale": 1, "rtgCount": 0, "isp": 320, "finish": "white", "maturity": "prea" }
+    },
+    {
+      "id": "venus2027", "label": "Venus 2027 probe",
+      "blurb": "An atmospheric entry probe launched at the December 2027 opening of the window — try moving to the window's cheapest day in March 2028.",
+      "state": { "dest": "venus", "name": "Venus 2027 Probe", "goal": "Sample noble gases while descending through the atmosphere", "payload": 250, "orbit": "entry", "years": 0.2,
+        "dep": 2461759.5, "tof": 203.5, "lv": "f9e", "payloadPower": 60, "dataGbitDay": 0.3, "band": "X", "dish": 1.5, "rf": 25, "dsn": 34,
+        "powerSource": "solar", "areaScale": 1, "rtgCount": 0, "isp": 225, "finish": "white", "maturity": "prea" }
+    },
+    {
+      "id": "lunarcube", "label": "Lunar CubeSat",
+      "blurb": "A 12-unit CubeSat riding along on a larger launch, captured into an elliptical lunar orbit.",
+      "state": { "dest": "moon", "name": "Lunar Ice CubeSat", "goal": "Map water ice in permanently shadowed craters", "payload": 3, "orbit": "elliptic", "years": 1,
+        "dep": 2461537.5, "tof": 4.5, "lv": "f9r", "payloadPower": 20, "dataGbitDay": 0.2, "band": "X", "dish": 0.2, "rf": 4, "dsn": 34,
+        "powerSource": "solar", "areaScale": 1, "rtgCount": 0, "isp": 225, "finish": "black", "maturity": "prea" }
+    }
+  ]
+}

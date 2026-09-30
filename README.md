@@ -33,7 +33,9 @@ Pick what you're in the mood for. Every link opens a live, interactive page.
 | 🤯 **See something amazing, right now** | [Black hole](https://normansrule.github.io/cosmic-library/black-hole.html) → [Cosmic scale](https://normansrule.github.io/cosmic-library/scale.html) | 2 min |
 | ☀️ **See the real Sun as it looks today** | [Solar observatory](https://normansrule.github.io/cosmic-library/solar-observatory.html) → [Space weather](https://normansrule.github.io/cosmic-library/space-weather.html) | 3 min |
 | 🎮 **Fly a mission yourself** | [Booster landing](https://normansrule.github.io/cosmic-library/booster.html) → [Moon landing](https://normansrule.github.io/cosmic-library/moon-landing.html) → [Mars landing](https://normansrule.github.io/cosmic-library/mars-landing.html) | 10 min |
+| 🎓 **Learn it properly, step by step** | [Space Academy](https://normansrule.github.io/cosmic-library/academy.html): 20 lessons, quizzes and badges | 20 × 10 min |
 | 🛠️ **Design your own rocket** | [Rocket builder](https://normansrule.github.io/cosmic-library/builder.html) → [Rocket hangar](https://normansrule.github.io/cosmic-library/hangar.html) | 10 min |
+| 🪐 **Plan a real mission to Mars** | [Mission designer](https://normansrule.github.io/cosmic-library/mission-designer.html) → [Deep Space Network](https://normansrule.github.io/cosmic-library/dsn.html) | 20 min |
 | 🔭 **Use a real telescope, for free** | [Use a telescope](https://normansrule.github.io/cosmic-library/telescopes.html) → [Sky surveys](https://normansrule.github.io/cosmic-library/surveys.html) | tonight |
 | 🌌 **Know what's in the sky tonight** | [Night sky](https://normansrule.github.io/cosmic-library/sky.html) → [Live Earth orbit](https://normansrule.github.io/cosmic-library/earth.html) | 5 min |
 | 📐 **Actually understand orbital mechanics** | [Orbit Lab](https://normansrule.github.io/cosmic-library/orbits.html) → [Equations](https://normansrule.github.io/cosmic-library/equations.html) → [Documents](https://normansrule.github.io/cosmic-library/library.html) | an evening |
@@ -45,7 +47,7 @@ Pick what you're in the mood for. Every link opens a live, interactive page.
 <br>
 <p align="center"><img src="media/readme/concepts/learning-path.svg" alt="A transit-style map of the site: Fly, Explore, Learn and Build lines with each page as a station" width="100%"></p>
 
-Each coloured line is a group of pages and each station is a page. Interchanges mark where lines meet: the Rocket builder, the Solar system and the Equations. Beginners can start at either **START HERE** marker.
+Each coloured line is a group of pages and each station is a page. Interchanges mark where lines meet: the Mission designer, the Rocket builder, Use a telescope and the Equations. Start at **Saturn V launch** to fly, or at **Space Academy** to learn.
 </details>
 
 <p align="center"><img src="media/readme/dividers/comet.svg" alt="" width="100%"></p>
@@ -67,9 +69,10 @@ Each coloured line is a group of pages and each station is a page. Interchanges 
 </tr>
 <tr>
 <td align="center"><a href="https://normansrule.github.io/cosmic-library/shuttle.html"><img src="media/readme/tiles/shuttle.svg" alt="Space Shuttle Endeavour" width="100%"></a></td>
-<td colspan="2" valign="middle">
+<td align="center"><a href="https://normansrule.github.io/cosmic-library/mission-designer.html"><img src="media/readme/tiles/mission-designer.svg" alt="Mission designer" width="100%"></a></td>
+<td valign="middle">
 
-**Try this:** open [Booster landing](https://normansrule.github.io/cosmic-library/booster.html), press **P** to hand over to the autopilot, and watch the *burn-start altitude* readout. That's the height where a single engine must light so the stage reaches zero speed exactly at the deck: $h = v^2/2a_{net}$.
+**Try this:** open [Booster landing](https://normansrule.github.io/cosmic-library/booster.html), press **P** for the autopilot, and watch the *burn-start altitude* readout: $h = v^2/2a_{net}$.
 
 </td>
 </tr>
@@ -84,6 +87,7 @@ Each coloured line is a group of pages and each station is a page. Interchanges 
 | <a href="https://normansrule.github.io/cosmic-library/launch.html"><img src="media/gifs/launch.gif" alt="Saturn V lifting off past the tower" width="100%"></a><br>**Saturn V** lifts off and clears the tower | <a href="https://normansrule.github.io/cosmic-library/booster.html"><img src="media/gifs/booster.gif" alt="Booster landing on a drone ship" width="100%"></a><br>**Booster** hoverslams onto the drone ship |
 | <a href="https://normansrule.github.io/cosmic-library/moon-landing.html"><img src="media/gifs/moon-landing.gif" alt="Lunar module touching down in blowing dust" width="100%"></a><br>**Eagle**: the last 120 m to contact light | <a href="https://normansrule.github.io/cosmic-library/mars-landing.html"><img src="media/gifs/mars-landing.gif" alt="Sky crane lowering Perseverance" width="100%"></a><br>**Sky crane** lowers Perseverance onto Jezero |
 | <a href="https://normansrule.github.io/cosmic-library/builder.html"><img src="media/gifs/builder.gif" alt="A user-designed rocket separating stages" width="100%"></a><br>**Your rocket** separating its stages | <a href="https://normansrule.github.io/cosmic-library/hangar.html"><img src="media/gifs/hangar.gif" alt="Camera gliding along 26 rockets at scale" width="100%"></a><br>**26 rockets** at true scale, V-2 to Starship |
+| <a href="https://normansrule.github.io/cosmic-library/mission-designer.html"><img src="media/gifs/mission-designer.gif" alt="Porkchop plot choosing the cheapest Earth-to-Mars transfer, then the transfer in 3D" width="100%"></a><br>**Mission designer**: find the cheapest day to leave for Mars | <a href="https://normansrule.github.io/cosmic-library/moon.html"><img src="media/gifs/moon.gif" alt="A month of lunar phases and libration" width="100%"></a><br>**Moon explorer**: one month of phases and wobble |
 
 </details>
 
@@ -110,6 +114,9 @@ Perseverance's Entry, Descent and Landing (EDL) at Jezero crater, 18 February 20
 
 #### Rocket builder · [`builder.html`](site/builder.html)
 Stack real engines (F-1, RS-25, Merlin, Raptor, RD-180…), tanks, boosters and payloads. The analysis updates as you build: Thrust-to-Weight Ratio (TWR), per-stage Δv, a Δv map to Low Earth Orbit (LEO), the Moon and Mars, and plain-language reasons a design fails. Then launch it on a 2-D gravity-turn ascent. Designs are shareable as links.
+
+#### Mission designer · [`mission-designer.html`](site/mission-designer.html)
+Plan an interplanetary mission like a Jet Propulsion Laboratory (JPL) concept study, in five steps along a systems-engineering "V": destination, launch window, launch vehicle, spacecraft, and a review that asks whether it closes. The launch window is a porkchop plot computed in your browser with a Lambert solver, and the 2026 Mars minimum lands on 30 Oct 2026 at a characteristic energy (C3) of 9.1 km²/s², matching the Python toolkit. The spacecraft step sizes the mass, power, radio link (Friis equation) and propellant budgets with live margins. Launch-vehicle curves are labelled estimates; the NASA Launch Services Program site is the authoritative source.
 
 #### Rocket hangar · [`hangar.html`](site/hangar.html)
 26 rockets at true scale beside the Statue of Liberty. Sort, filter, and compare height, thrust and payload. Every figure is sourced in [`rockets.json`](site/data/rockets.json).
@@ -200,9 +207,13 @@ A disc blocks the blinding Sun so the faint corona shows. This is where coronal 
 <tr>
 <td align="center"><a href="https://normansrule.github.io/cosmic-library/galaxies.html"><img src="media/readme/tiles/galaxies.svg" alt="Galaxy collision" width="100%"></a></td>
 <td align="center"><a href="https://normansrule.github.io/cosmic-library/scale.html"><img src="media/readme/tiles/scale.svg" alt="Cosmic scale" width="100%"></a></td>
-<td valign="middle">
+<td align="center"><a href="https://normansrule.github.io/cosmic-library/moon.html"><img src="media/readme/tiles/moon.svg" alt="Moon explorer" width="100%"></a></td>
+</tr>
+<tr>
+<td align="center"><a href="https://normansrule.github.io/cosmic-library/dsn.html"><img src="media/readme/tiles/dsn.svg" alt="Deep Space Network" width="100%"></a></td>
+<td colspan="2" valign="middle">
 
-**Try this:** open [Night sky](https://normansrule.github.io/cosmic-library/sky.html), press play at 3600×, and watch the sky turn around Polaris. It sits at the same altitude as your latitude.
+**Try this:** open [Night sky](https://normansrule.github.io/cosmic-library/sky.html), press play at 3600×, and watch the sky turn around Polaris. It sits at the same altitude as your latitude. Then open [Deep Space Network](https://normansrule.github.io/cosmic-library/dsn.html) and see which spacecraft Goldstone, Madrid and Canberra are talking to right now.
 
 </td>
 </tr>
@@ -218,6 +229,7 @@ A disc blocks the blinding Sun so the faint corona shows. This is where coronal 
 | <a href="https://normansrule.github.io/cosmic-library/earth.html"><img src="media/gifs/earth.gif" alt="Earth rotating with satellites orbiting" width="100%"></a><br>**Live Earth orbit**: satellites propagated with SGP4 | <a href="https://normansrule.github.io/cosmic-library/galaxies.html"><img src="media/gifs/galaxies.gif" alt="Milky Way and Andromeda passing each other" width="100%"></a><br>**Milky Way meets Andromeda**, 4 billion years from now |
 | <a href="https://normansrule.github.io/cosmic-library/sun.html"><img src="media/gifs/sun.gif" alt="The Sun rotating with a flare" width="100%"></a><br>**The Sun**: granulation, a flare and a CME | <a href="https://normansrule.github.io/cosmic-library/sky.html"><img src="media/gifs/sky.gif" alt="Stars wheeling over Los Angeles" width="100%"></a><br>**Night sky** over Los Angeles, six hours in four seconds |
 | <a href="https://normansrule.github.io/cosmic-library/solar-system.html"><img src="media/gifs/solar-system.gif" alt="Planets orbiting in a time-lapse" width="100%"></a><br>**Solar system**: every planet where it really is | <a href="https://normansrule.github.io/cosmic-library/space-weather.html"><img src="media/gifs/space-weather.gif" alt="Solar wind hitting Earth's magnetosphere" width="100%"></a><br>**Space weather**: solar wind against the magnetosphere |
+| <a href="https://normansrule.github.io/cosmic-library/dsn.html"><img src="media/gifs/dsn.gif" alt="Earth turning with beams from the three Deep Space Network complexes" width="100%"></a><br>**Deep Space Network**: beams to the spacecraft, with light-time | <a href="https://normansrule.github.io/cosmic-library/orbits.html"><img src="media/gifs/orbits.gif" alt="Newton's cannonball series" width="100%"></a><br>**Orbit Lab**: fire faster until it never lands |
 
 </details>
 
@@ -235,6 +247,12 @@ A planetarium for any place and time: 5,044 stars, 88 constellations, the Milky 
 
 #### Galaxy collision · [`galaxies.html`](site/galaxies.html)
 A GPU restricted N-body simulation in the style of Toomre & Toomre (1972). With the 2012 orbit the galaxies meet at 4.0 billion years and merge at 6.2. With the 2019 Gaia orbit they may not merge at all, consistent with Sawala et al. (2025), who found only about a 50% chance within 10 billion years.
+
+#### Moon explorer · [`moon.html`](site/moon.html)
+Tonight's Moon at its true phase, orientation and libration (Meeus ch. 53), with all 35 landing and impact sites from Luna 2 (1959) to Blue Ghost (2025), plus Artemis III's planned south-polar region. There's a phase calendar and a list of upcoming solar and lunar eclipses; the shadow model reproduces all 16 solar eclipses in NASA's 2026–2035 catalogue.
+
+#### Deep Space Network · [`dsn.html`](site/dsn.html)
+Live from NASA's DSN Now feed: which dish at Goldstone, Madrid or Canberra is talking to which spacecraft, on which band, at what data rate, and the round-trip light time (RTLT). It refreshes every 5 seconds. Offline, it shows a labelled sample. It includes the new DSS-23 dish at Goldstone and a live "talk to Voyager" link budget.
 
 #### Solar observatory · Sky surveys · Use a telescope
 The **solar observatory** shows the latest SDO, SOHO and GOES-19 Solar Ultraviolet Imager (SUVI) images, a two-wavelength wipe comparison, any date in history via Helioviewer, and the greatest solar telescope photos. **Sky surveys** is Aladin Lite with twelve Hierarchical Progressive Survey (HiPS) layers and an auto-tour. **Use a telescope** is a verified directory of remote telescopes, radio dishes, live streams, simulators and citizen science.
@@ -322,10 +340,11 @@ The **solar observatory** shows the latest SDO, SOHO and GOES-19 Solar Ultraviol
 <tr>
 <td align="center"><a href="https://normansrule.github.io/cosmic-library/timeline.html"><img src="media/readme/tiles/timeline.svg" alt="Timeline" width="100%"></a></td>
 <td align="center"><a href="https://normansrule.github.io/cosmic-library/library.html"><img src="media/readme/tiles/library.svg" alt="Documents" width="100%"></a></td>
-<td align="center"><a href="https://normansrule.github.io/cosmic-library/orbits.html"><img src="media/gifs/orbits.gif" alt="Newton's cannonball: faster and faster shots until one orbits" width="100%"></a><br><sub><b>Orbit Lab</b>: fire faster until it never lands</sub></td>
+<td align="center"><a href="https://normansrule.github.io/cosmic-library/academy.html"><img src="media/readme/tiles/academy.svg" alt="Space Academy" width="100%"></a></td>
 </tr>
 </table>
 
+- **[Space Academy](site/academy.html):** a free guided course in 4 tracks and 20 lessons, from "why orbiting is falling" to designing a spacecraft. Each lesson has a hands-on widget and a quick check (100 questions, every numeric answer recomputed by `scripts/test_academy.mjs`). Progress lights up a star map and earns badges.
 - **[Equation Atlas](site/equations.html) · [`docs/EQUATIONS.md`](docs/EQUATIONS.md):** **94 equations in 10 chapters**, now including telescopes and optics, the Sun and space weather, exoplanets and spacecraft engineering. Each has a live calculator, a plot and a worked example using real mission numbers. `scripts/check_equations.mjs` re-derives all of them in 2,985 checks, including published values such as Hubble's 0.05″ resolution and Mercury's 43″-per-century precession.
 - **[Orbit Lab](site/orbits.html):** Newton's cannonball, Kepler's laws, Hohmann vs bi-elliptic transfers, a Jupiter gravity assist and Lagrange points, each with its equation beside it.
 - **[Documents](site/library.html) · [`docs/REFERENCES.md`](docs/REFERENCES.md):** 79 primary sources from NASA, the Jet Propulsion Laboratory (JPL), SpaceX, ESA and MIT OpenCourseWare, as a card grid or a bookshelf, with a beginner → expert reading path. Also [videos](docs/VIDEOS.md) and [engineering primers](docs/engineering/).
@@ -441,7 +460,7 @@ In a second terminal, for the Python toolkit and all the checks:
 
 ```bash
 bash scripts/setup_ubuntu.sh                      # venv, dependencies, core tests
-npm run check                                     # 8 Node suites: equations, ephemeris, sky, flight models
+npm run check                                     # 12 Node suites: equations, ephemeris, sky, Moon, flight models, mission design, DSN, academy
 ```
 
 The full walkthrough from a blank machine to a live GitHub Pages site is in **[`docs/SETUP_UBUNTU.md`](docs/SETUP_UBUNTU.md)**.
@@ -451,12 +470,12 @@ The full walkthrough from a blank machine to a live GitHub Pages site is in **[`
 
 ```
 cosmic-library/
-├── site/                     GitHub Pages website (static, no build step), 25 pages
+├── site/                     GitHub Pages website (static, no build step), 29 pages
 │   ├── index.html            landing page: live galaxy, start-here chooser, tonight's sky
-│   ├── launch · booster · moon-landing · mars-landing · builder · hangar · shuttle          (Fly)
-│   ├── earth · space-weather · sky · solar-system · sun · solar-observatory · black-hole
-│   │   · galaxies · scale · surveys                                                      (Explore)
-│   ├── orbits · equations · gallery · timeline · library · telescopes                     (Learn)
+│   ├── launch · booster · moon-landing · mars-landing · builder · mission-designer · hangar · shuttle   (Fly)
+│   ├── earth · space-weather · sky · moon · solar-system · sun · solar-observatory · black-hole
+│   │   · galaxies · scale · surveys · dsn                                                (Explore)
+│   ├── academy · orbits · equations · gallery · timeline · library · telescopes            (Learn)
 │   ├── experiments                                                                      (Build)
 │   ├── assets/css/codex.css  the design system        ├── assets/js/        page logic + physics modules
 │   ├── data/*.json           curated, sourced data    ├── data/sky/         star catalogue (d3-celestial)
