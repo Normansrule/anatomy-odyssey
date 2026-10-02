@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Strict Content Security Policy: everything is served from this origin; no inline scripts, no third-party calls. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="Anatomy Odyssey: a guided journey through the human body, from whole body to molecule." />
+    <meta name="color-scheme" content="dark light" />
+    <title>Anatomy Odyssey</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231a1533'/%3E%3Cpath d='M11 6c6 5 4 15 10 20M21 6c-6 5-4 15-10 20' stroke='%23f08baf' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <div id="app" class="app" data-busy="false">
+      <canvas id="view" class="view" aria-label="3D view of the current tier. Use the structure list in the side panel to select parts with a keyboard."></canvas>
+
+      <header class="topbar">
+        <a class="wordmark" href="./" aria-label="Anatomy Odyssey, home">
+          <svg class="wordmark__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M11 5c6 5 4 17 10 22M21 5c-6 5-4 17-10 22M12.5 10h7M11.5 16h9M12.5 22h7" /></svg>
+          <span>Anatomy Odyssey</span>
+        </a>
+        <div class="dive-picker">
+          <button id="dive-button" class="chip-button" aria-haspopup="true" aria-expanded="false" aria-controls="dive-menu">Skeletal dive</button>
+          <div id="dive-menu" class="menu" role="menu" hidden></div>
+        </div>
+        <button id="tour-button" class="icon-button" aria-pressed="false">Play tour</button>
+        <div class="search" role="search">
+          <label class="visually-hidden" for="search-input">Search structures and molecules</label>
+          <input id="search-input" type="search" maxlength="60" autocomplete="off" spellcheck="false" placeholder="Search: femur, DNA, nucleus…" aria-controls="search-results" aria-expanded="false" />
+          <ul id="search-results" class="search__results" role="listbox" hidden></ul>
+        </div>
+        <button id="glossary-button" class="icon-button" aria-haspopup="dialog" aria-controls="glossary">Glossary</button>
+        <button id="about-button" class="icon-button" aria-haspopup="dialog" aria-controls="about">About</button>
+      </header>
+
+      <aside class="gauge" aria-label="Depth gauge: how big the current view is">
+        <div class="gauge__rail" id="gauge-rail"></div>
+        <div class="gauge__marker" id="gauge-marker" aria-live="off">
+          <span class="gauge__value" id="gauge-value">2.1 m</span>
+        </div>
+      </aside>
+
+      <section class="systems" id="systems" aria-label="Body systems shown"></section>
+
+      <div class="scalebar" id="scalebar" aria-hidden="true">
+        <div class="scalebar__bar" id="scalebar-bar"></div>
+        <span class="scalebar__label" id="scalebar-label"></span>
+      </div>
+
+      <section class="scene-controls" id="scene-controls" aria-label="Scene controls" hidden>
+        <div class="scene-controls__row">
+          <label class="scene-controls__label" for="scene-range" id="scene-range-label"></label>
+          <output class="scene-controls__value" id="scene-value" for="scene-range"></output>
+        </div>
+        <input type="range" id="scene-range" class="scene-controls__range" />
+        <div class="scene-controls__presets" id="scene-presets"></div>
+        <p class="scene-controls__readout" id="scene-readout" aria-live="polite"></p>
+      </section>
+
+      <section class="caption" id="caption" aria-live="polite" hidden>
+        <p class="caption__text" id="caption-text"></p>
+        <button class="text-button caption__stop" id="caption-stop">Stop tour</button>
+      </section>
+
+      <div class="tooltip" id="tooltip" role="presentation" hidden></div>
+
+      <aside class="panel" id="panel" aria-labelledby="card-title" hidden>
+        <button class="panel__close icon-button" id="panel-close" aria-label="Close card">Close</button>
+        <div class="panel__body" id="panel-body"></div>
+      </aside>
+
+      <section class="intro" id="intro" aria-labelledby="intro-title" hidden>
+        <h1 id="intro-title">A journey from your whole body down to single molecules.</h1>
+        <p>Pick a dive and move through the scales that matter for one part of you: bone to DNA, heart to the iron that holds oxygen, muscle to the motors that pull, lymph node to antibody. The gauge on the left shows how big the view is at every step.</p>
+        <div class="intro__actions">
+          <button class="primary-button" id="intro-start">Start the skeletal dive</button>
+          <button class="text-button" id="intro-tour">Watch a guided tour</button>
+          <button class="text-button" id="intro-explore">Explore the body first</button>
+        </div>
+      </section>
+
+      <nav class="track" aria-label="Dive steps">
+        <button class="track__nav" id="back-button">Zoom out</button>
+        <ol class="track__steps" id="track-steps"></ol>
+        <button class="track__nav track__nav--deeper" id="next-button">Dive deeper</button>
+      </nav>
+
+      <p class="disclaimer">Teaching model, not medical advice.</p>
+      <div class="visually-hidden" id="announcer" aria-live="polite"></div>
+    </div>
+
+    <dialog id="about" class="about" aria-labelledby="about-title">
+      <div class="about__inner" id="about-body"></div>
+    </dialog>
+
+    <dialog id="glossary" class="about" aria-labelledby="glossary-title">
+      <div class="about__inner" id="glossary-body"></div>
+    </dialog>
+
+    <dialog id="quiz" class="about" aria-labelledby="quiz-title">
+      <div class="about__inner" id="quiz-body"></div>
+    </dialog>
+
+    <noscript>Anatomy Odyssey needs JavaScript and a browser with WebGPU or WebGL 2.</noscript>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

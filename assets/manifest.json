@@ -1,0 +1,5 @@
+{
+  "generated": "tools/build-asset-manifest.mjs",
+  "note": "Hashes of every shipped asset. Licenses are listed per file in assets/CREDITS.md.",
+  "assets": {}
+}

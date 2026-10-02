@@ -1,0 +1,8 @@
+node_modules/
+dist/
+dist-preview/
+*.log
+.DS_Store
+sbom.cdx.json
+# Large source atlases are downloaded locally, never committed (see tools/README.md)
+tools/sources/

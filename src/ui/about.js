@@ -1,0 +1,82 @@
+// The About dialog: settings, how to use it, the honest state of the model,
+// privacy, and credits.
+import { el, clear } from './dom.js';
+import { DIVES } from '../data/dives.js';
+import { LIBRARY } from '../data/library.js';
+
+function radioGroup(name, legend, options, current, onChange) {
+  return el('fieldset', { class: 'setting' },
+    el('legend', { class: 'setting__legend', text: legend }),
+    el('div', { class: 'setting__options' },
+      options.map(([value, label]) => {
+        const input = el('input', { type: 'radio', name, value, id: `${name}-${value}` });
+        input.checked = value === current;
+        input.addEventListener('change', () => input.checked && onChange(value));
+        return el('label', { class: 'setting__option', for: `${name}-${value}` }, input, el('span', { text: label }));
+      }),
+    ),
+  );
+}
+
+/** Lowercase a name for mid-sentence use, but keep acronyms such as DNA. */
+const lower = (t) => (/^[A-Z]{2,}/.test(t) ? t : t.toLowerCase());
+
+export function renderAbout(container, { backend, settings, onSetting, onReset, onClose }) {
+  clear(container);
+  const built = DIVES.filter((d) => d.status === 'built' && d.kind === 'dive');
+  const modules = DIVES.filter((d) => d.status === 'built' && d.kind === 'module');
+  const planned = DIVES.filter((d) => d.status === 'planned');
+  const speakBox = el('input', { type: 'checkbox', id: 'setting-speak' });
+  speakBox.checked = Boolean(settings.speak);
+  speakBox.addEventListener('change', () => onSetting('speak', speakBox.checked));
+  const speechAvailable = typeof window !== 'undefined' && 'speechSynthesis' in window;
+
+  container.append(...[
+    el('div', { class: 'about__head' },
+      el('h2', { id: 'about-title', text: 'About Anatomy Odyssey' }),
+      el('button', { class: 'icon-button', text: 'Close', onclick: onClose }),
+    ),
+    el('p', { text: 'An open-source guided journey through the human body across scales. Each dive is a short, authored descent that stops at the smallest building block well-understood biology supports for that path. Shared building blocks, like the nucleus and DNA, are built once and reused by every dive that reaches them.' }),
+
+    el('h3', { text: 'Settings' }),
+    radioGroup('motion', 'Motion', [['system', 'Follow my device'], ['reduce', 'Reduce motion'], ['full', 'Full motion']], settings.motion, (v) => onSetting('motion', v)),
+    radioGroup('quality', 'Picture quality', [['low', 'Battery saver'], ['auto', 'Balanced'], ['high', 'Sharp']], settings.quality, (v) => onSetting('quality', v)),
+    el('label', { class: 'setting__option setting__check', for: 'setting-speak' }, speakBox, el('span', { text: speechAvailable ? 'Read tour captions aloud' : 'Read tour captions aloud (not supported in this browser)' })),
+
+    el('h3', { text: 'How to move around' }),
+    el('ul', {},
+      el('li', { text: 'Drag to orbit, scroll or pinch to zoom, right-drag or two-finger drag to pan.' }),
+      el('li', { text: 'Click any structure to open its card. The card also lists everything in view, so you can pick parts with the keyboard.' }),
+      el('li', { text: 'Keyboard: → or Page Down dives deeper, ← or Page Up zooms out, / jumps to search, G opens the glossary, T plays the tour, Esc closes cards and stops the tour.' }),
+    ),
+
+    el('h3', { text: 'State of the model' }),
+    el('p', { text: 'Built and playable:' }),
+    el('ul', {},
+      built.map((d) => {
+        const trips = d.steps.filter((s) => s.branch).map((s) => `side trip from the ${s.title.toLowerCase()} into the shared ${s.branch.via.map((id) => lower(LIBRARY.find((e) => e.id === id)?.title.split(' (')[0] ?? id)).join(' and ')}`);
+        return el('li', {}, el('strong', { text: d.title }), `: ${d.steps.map((s) => s.title).join(' → ')}.${trips.length ? ` Also a ${trips.join('; ')}.` : ''}`);
+      }),
+      modules.map((d) => el('li', {}, el('strong', { text: d.title }), `: ${d.summary}`)),
+    ),
+    planned.length ? el('p', { text: 'Planned:' }) : null,
+    planned.length ? el('ul', {}, planned.map((d) => el('li', {}, el('strong', { text: d.title }), `: ${d.path.join(' → ')}.`))) : null,
+    el('p', { text: `Shared library: ${LIBRARY.filter((e) => e.status === 'built').map((e) => e.title).join(', ')} are built; ${LIBRARY.filter((e) => e.status === 'planned').length} more building blocks are planned.` }),
+    el('p', { text: 'All anatomy is procedural (built from simple shapes in code) and labeled as a generalized teaching model. The red blood cell uses a measured shape (Evans and Fung, 1972). Planned next: Z-Anatomy meshes (CC BY-SA 4.0) for the organs and real Protein Data Bank structures for the molecules.' }),
+
+    el('h3', { text: 'Privacy and safety' }),
+    el('ul', {},
+      el('li', { text: 'No accounts, no analytics, no network calls. Your progress and settings stay in this browser.' }),
+      el('li', { text: 'This is an educational model, not medical advice, and it cannot diagnose anything.' }),
+    ),
+    el('button', { class: 'text-button', text: 'Clear my progress', onclick: onReset }),
+
+    el('h3', { text: 'Credits' }),
+    el('ul', {},
+      el('li', { text: 'Rendering: three.js (MIT license).' }),
+      el('li', { text: 'Type: Atkinson Hyperlegible Next and Literata (SIL Open Font License 1.1).' }),
+      el('li', { text: 'Content sources are cited on every card.' }),
+    ),
+    el('p', { class: 'about__meta', text: `Renderer in use: ${backend}.` }),
+  ].filter(Boolean));
+}

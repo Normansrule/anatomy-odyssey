@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 250" role="img" aria-labelledby="t d" font-family="Atkinson Hyperlegible Next, system-ui, sans-serif">
+  <title id="t">Powers of ten across the skeletal dive</title>
+  <desc id="d">A logarithmic axis from 10 meters to 0.1 nanometers with the seven stops of the skeletal dive: whole body 2.5 m, skeleton 1.2 m, femur 55 cm, bone tissue 1.6 mm, osteocyte 45 micrometers, nucleus 9 micrometers, DNA 11 nanometers.</desc>
+  <style>
+    .bg { fill: #1a1533; }
+    .axis { stroke: #8a78e8; stroke-width: 2; }
+    .tick { stroke: #8a78e8; stroke-width: 1.5; }
+    .tl { fill: #aaa3c9; font-size: 12px; }
+    .stop { fill: #f08baf; }
+    .sl { fill: #eeecf6; font-size: 13px; font-weight: 700; }
+    .sv { fill: #aaa3c9; font-size: 12px; }
+    .note { fill: #aaa3c9; font-size: 13px; }
+  </style>
+  <rect class="bg" width="880" height="250" rx="16" />
+  <!-- x = 60 + (1 - log10(m)) * 70 ; 10 m → 60, 0.1 nm → 830 -->
+  <line class="axis" x1="60" y1="130" x2="830" y2="130" />
+  <g class="tick">
+    <line x1="60" y1="124" x2="60" y2="136" /><line x1="130" y1="124" x2="130" y2="136" /><line x1="200" y1="124" x2="200" y2="136" />
+    <line x1="270" y1="124" x2="270" y2="136" /><line x1="340" y1="124" x2="340" y2="136" /><line x1="410" y1="124" x2="410" y2="136" />
+    <line x1="480" y1="124" x2="480" y2="136" /><line x1="550" y1="124" x2="550" y2="136" /><line x1="620" y1="124" x2="620" y2="136" />
+    <line x1="690" y1="124" x2="690" y2="136" /><line x1="760" y1="124" x2="760" y2="136" /><line x1="830" y1="124" x2="830" y2="136" />
+  </g>
+  <g class="tl" text-anchor="middle">
+    <text x="60" y="156">10 m</text><text x="130" y="156">1 m</text><text x="200" y="156">10 cm</text><text x="270" y="156">1 cm</text>
+    <text x="340" y="156">1 mm</text><text x="410" y="156">100 µm</text><text x="480" y="156">10 µm</text><text x="550" y="156">1 µm</text>
+    <text x="620" y="156">100 nm</text><text x="690" y="156">10 nm</text><text x="760" y="156">1 nm</text><text x="830" y="156">0.1 nm</text>
+  </g>
+  <!-- stops -->
+  <circle class="stop" cx="102" cy="130" r="6" /><circle class="stop" cx="124" cy="130" r="6" /><circle class="stop" cx="148" cy="130" r="6" />
+  <circle class="stop" cx="326" cy="130" r="6" /><circle class="stop" cx="434" cy="130" r="6" /><circle class="stop" cx="483" cy="130" r="6" />
+  <circle class="stop" cx="687" cy="130" r="6" />
+  <g text-anchor="middle">
+    <text class="sl" x="96" y="70">Whole body</text><text class="sv" x="96" y="86">2.5 m</text>
+    <line class="tick" x1="102" y1="92" x2="102" y2="122" />
+    <text class="sl" x="165" y="40">Skeleton · Femur</text><text class="sv" x="165" y="56">1.2 m · 55 cm</text>
+    <line class="tick" x1="136" y1="62" x2="136" y2="122" />
+    <text class="sl" x="326" y="100">Bone tissue</text><text class="sv" x="326" y="116" dy="-2">1.6 mm</text>
+    <text class="sl" x="434" y="200">Osteocyte</text><text class="sv" x="434" y="216">45 µm</text>
+    <line class="tick" x1="434" y1="138" x2="434" y2="186" />
+    <text class="sl" x="505" y="100">Nucleus</text><text class="sv" x="505" y="116" dy="-2">9 µm</text>
+    <text class="sl" x="687" y="200">DNA</text><text class="sv" x="687" y="216">11 nm</text>
+    <line class="tick" x1="687" y1="138" x2="687" y2="186" />
+  </g>
+  <text class="note" x="60" y="238">Each step is the height of the view on arrival. Body to DNA spans about 8 orders of magnitude.</text>
+</svg>

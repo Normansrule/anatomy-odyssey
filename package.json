@@ -1,0 +1,39 @@
+{
+  "name": "anatomy-odyssey",
+  "version": "0.3.0",
+  "description": "A guided journey through the human body, from whole body to molecule.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:preview": "vite build --mode preview",
+    "preview": "vite preview",
+    "test": "vitest run && node tools/build-asset-manifest.mjs --check",
+    "manifest": "node tools/build-asset-manifest.mjs",
+    "screenshots": "python3 tools/screenshots.py"
+  },
+  "author": "Aleksander Norman",
+  "license": "MIT",
+  "dependencies": {
+    "@fontsource/atkinson-hyperlegible-next": "5.3.0",
+    "@fontsource/literata": "5.3.0",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "vite": "8.3.1",
+    "vite-plugin-singlefile": "2.3.3",
+    "vitest": "5.0.3"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "anatomy",
+    "education",
+    "three.js",
+    "webgpu",
+    "dna",
+    "biology"
+  ]
+}
