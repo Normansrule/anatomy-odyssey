@@ -402,6 +402,32 @@ def _dsn(p):
     hide_loading(p)
 
 
+# Telescope simulator (eyepiece.html): the same first-quarter Moon through binoculars, a 70 mm
+# refractor, an 8-inch Dobsonian and a 1 m observatory telescope (default eyepiece), about 1 s
+# each, so the view enlarges and sharpens. The page computes "tonight at 9 pm" from Date.now(),
+# so the virtual clock is pinned to a date with the Moon (and Jupiter) up over Los Angeles.
+EP_DATE = "2027-01-15T20:00:00Z"
+EP_INSTS = ["binoculars", "refractor70", "dob8", "obs1m"]
+EP_EACH = 12
+
+
+def _ep_setup(p, target):
+    wait_ready(p, "!!window.__eyepiece", 300)
+    p.evaluate("""([d, t]) => { __vc.freeze(); __vc.setDate(Date.parse(d));
+        document.querySelector('#whenSeg button[data-when=tonight]').click();
+        document.querySelector(`.ep-tgt[data-tgt=${t}]`).click(); return 0; }""", [EP_DATE, target])
+
+
+@recipe("eyepiece", url="eyepiece.html", frames=EP_EACH * len(EP_INSTS), step=83.33, fps=12, loop="none", wait=3000,
+        ladder=SMOOTH_LADDER,
+        per=lambda p, i: i % EP_EACH == 0 and p.evaluate(
+            "id => { document.querySelector(`.ep-inst[data-inst=${id}]`).click(); return 0; }", EP_INSTS[i // EP_EACH]))
+def _eyepiece(p):
+    _ep_setup(p, "moon")
+    p.mouse.move(5, 890)                      # no hover highlight on the pickers
+    hide_loading(p)
+
+
 def capture(p, name, r, frames_dir):
     os.makedirs(frames_dir, exist_ok=True)
     for i in range(r.get("settle", 3)):
@@ -563,12 +589,21 @@ def _still_academy(p):
     p.wait_for_timeout(2000)
 
 
+def _still_eyepiece(p):
+    _ep_setup(p, "jupiter")                    # 8-inch Dobsonian on Jupiter and its moons
+    p.evaluate("document.querySelector('.ep-inst[data-inst=dob8]').click(); 0")
+    p.mouse.move(5, 890)
+    for _ in range(4):
+        p.evaluate("__vc.step(83)")
+
+
 STILLS = {"builder": ("builder.html", _still_builder), "space-weather": ("space-weather.html?offline", _still_space_weather),
           "galaxies": ("galaxies.html?q=low", _still_galaxies),
           "mission-designer": ("mission-designer.html", _still_mission),
           "moon": ("moon.html?t=2026-10-20T04:00:00Z", _still_moon),      # waxing gibbous, fixed date
           "dsn": ("dsn.html?offline", _still_dsn),                         # the labelled sample snapshot
-          "academy": ("academy.html", _still_academy)}
+          "academy": ("academy.html", _still_academy),
+          "eyepiece": ("eyepiece.html", _still_eyepiece)}
 
 
 def stills(names):

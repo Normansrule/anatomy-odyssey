@@ -5,7 +5,8 @@
         [--only hero|tile-id] [--size 400] [--page preview_more.html]
 
 --page preview_more.html shows the section banners, dividers, stats, sub-README banners,
-new tiles and new concept animations on GitHub light and dark.
+new tiles and new concept animations on GitHub light and dark; --page "preview_more.html#new"
+shows only the v6 art (buttons, how-to strips, start / observe-first banners, eyepiece tile).
 
 --only renders a single SVG at native size (x --scale) for close inspection.
 """
@@ -72,7 +73,8 @@ def main():
         for t in [int(x) for x in a.times.split(",")]:
             pg.wait_for_timeout(max(0, t - last))
             last = t
-            name = f"{('grid' if a.grid else '') or a.only or a.page[:-5]}{'-reduced' if a.reduced else ''}{'-dark' if a.dark else ''}-{t}.png"
+            stem = a.page.split("#")[0][:-5] + ("-" + a.page.split("#")[1] if "#" in a.page else "")
+            name = f"{('grid' if a.grid else '') or a.only or stem}{'-reduced' if a.reduced else ''}{'-dark' if a.dark else ''}-{t}.png"
             pg.screenshot(path=os.path.join(a.out, name), full_page=True)
             print("saved", name)
         b.close()

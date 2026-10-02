@@ -14,27 +14,39 @@ Groups (output folder, size budget):
     stats      stats.svg                     50 KB   (stats.py)     counts read from the repo (facts.py)
     sub        sub/<name>.svg                70 KB   (sub.py)       1000 x 220 sub-README banners
     concepts   concepts/<name>.svg           60 KB   (concepts/fig_*.py)
+    buttons    buttons/<name>.svg            20 KB   (buttons.py)   560 x 120 call-to-action buttons
+               buttons/small/<name>.svg                             380 x 90 compact twins
+    howto      howto/<name>.svg              60 KB   (howto.py)     gestures strip, devices strip
+
+Tiles that the site itself shows (any already in site/assets/img/tiles/, plus SITE_TILES)
+are copied there too, so the site and the README always carry the same card.
 
 Pure standard library. Random stars use fixed seeds, so the output is reproducible.
 """
 import importlib
 import os
+import shutil
 import sys
 import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
+import buttons  # noqa: E402
 import dividers  # noqa: E402
 import hero  # noqa: E402
+import howto  # noqa: E402
 import sections  # noqa: E402
 import stats  # noqa: E402
 import sub  # noqa: E402
 import tiles  # noqa: E402
 
 OUT = os.path.normpath(os.path.join(HERE, "..", "..", "media", "readme"))
-GROUPS = ["hero", "tiles", "sections", "dividers", "stats", "sub", "concepts"]
-LIMITS = {"hero": 150_000, "tiles": 40_000, "sections": 60_000, "dividers": 15_000, "stats": 50_000, "sub": 70_000}
+SITE_TILES_DIR = os.path.normpath(os.path.join(HERE, "..", "..", "site", "assets", "img", "tiles"))
+SITE_TILES = {"eyepiece"}          # always mirrored into the site, even before the site references them
+GROUPS = ["hero", "tiles", "sections", "dividers", "stats", "sub", "concepts", "buttons", "howto"]
+LIMITS = {"hero": 150_000, "tiles": 40_000, "sections": 60_000, "dividers": 15_000, "stats": 50_000, "sub": 70_000,
+          "buttons": 20_000, "howto": 60_000}
 
 
 def write(path, svg):
@@ -58,8 +70,12 @@ def main():
         rows.append(("hero", "hero.svg", write(os.path.join(OUT, "hero.svg"), hero.build())))
     for pid, svg in tiles.build_all():
         if want("tiles", pid):
-            rows.append(("tiles", f"tiles/{pid}.svg", write(os.path.join(OUT, "tiles", f"{pid}.svg"), svg)))
-    for grp, mod in (("sections", sections), ("dividers", dividers), ("sub", sub)):
+            dst = os.path.join(OUT, "tiles", f"{pid}.svg")
+            rows.append(("tiles", f"tiles/{pid}.svg", write(dst, svg)))
+            if pid in SITE_TILES or os.path.exists(os.path.join(SITE_TILES_DIR, f"{pid}.svg")):
+                os.makedirs(SITE_TILES_DIR, exist_ok=True)
+                shutil.copyfile(dst, os.path.join(SITE_TILES_DIR, f"{pid}.svg"))
+    for grp, mod in (("sections", sections), ("dividers", dividers), ("sub", sub), ("buttons", buttons), ("howto", howto)):
         for key, svg in mod.build_all():
             if want(grp, key):
                 rows.append((grp, f"{grp}/{key}.svg", write(os.path.join(OUT, grp, f"{key}.svg"), svg)))

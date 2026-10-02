@@ -1,0 +1,1195 @@
+{
+  "about": "Per-page help for Cosmic Library. Read by assets/js/codex.js (the ? help panel, first-visit hints, the low-graphics switch) and by scripts/build_user_guide.mjs (docs/USER_GUIDE.md). Check with: node scripts/build_user_guide.mjs --check",
+  "version": 1,
+  "icons": "mouse: drag, rdrag, scroll, click, dblclick · touch: tdrag, twodrag, pinch, tap, dtap, hold",
+  "pages": {
+    "index": {
+      "title": "Home",
+      "what": "The front door: a tour of every page, tonight's sky over your city and a zoom from a proton to the universe.",
+      "try": [
+        "Pick a mood under \"Where do you want to start?\" and follow the suggested pages.",
+        "Drag the handle under \"Drag from a proton to the universe\" to feel the powers of ten.",
+        "Press \"Use my location\" to see tonight's sky for where you are (optional; nothing is sent anywhere)."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Open any card or tile" },
+          { "icon": "drag", "do": "Move the zoom handle and the sky time slider" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Open any card or tile" },
+          { "icon": "tdrag", "do": "Move the zoom handle and the sky time slider" }
+        ],
+        "keyboard": [
+          { "keys": ["Tab"], "do": "Move between links and controls" },
+          { "keys": ["←", "→"], "do": "Step the zoom handle when it has focus" },
+          { "keys": ["Enter"], "do": "Open the page for the current zoom stop" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Planet and Moon positions are calculated in your browser from published orbital elements. Nothing on this page is fetched live.",
+        "offline": "Everything works offline once the page has loaded."
+      },
+      "slow": { "text": "This page is light. If it stutters, turn on reduced motion in your system settings: the starfield and meteors stop." },
+      "phone": { "level": "yes", "text": "Fully usable on phones." },
+      "related": ["academy", "sky", "launch"]
+    },
+
+    "launch": {
+      "title": "Saturn V launch",
+      "what": "Ride Apollo 11 from the launch pad to Earth orbit, with live telemetry computed from the real flight report.",
+      "try": [
+        "Press Launch (or Space) and watch the director camera follow the climb.",
+        "Try the cameras: 1 Director, 2 Pad, 3 Track, 4 Chase, 5 Onboard, 6 Free.",
+        "Speed things up with the time-warp buttons or [ and ].",
+        "Open Telemetry to see speed, altitude and the rocket equation update live."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Launch, pause, restart, change camera and time warp with the on-screen buttons" },
+          { "icon": "drag", "do": "Orbit the rocket (Free camera only)" },
+          { "icon": "scroll", "do": "Zoom (Free camera only)" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Use the on-screen Launch, camera and warp buttons" },
+          { "icon": "tdrag", "do": "Orbit the rocket (Free camera only)" },
+          { "icon": "pinch", "do": "Zoom (Free camera only)" }
+        ],
+        "keyboard": [
+          { "keys": ["Space"], "do": "Launch, then pause / resume" },
+          { "keys": ["R"], "do": "Restart" },
+          { "keys": ["1–6"], "do": "Cameras: Director, Pad, Track, Chase, Onboard, Free" },
+          { "keys": ["[", "]"], "do": "Slower / faster time warp (1× to 50×)" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "A physics simulation of the real flight, tuned to the Saturn V Flight Evaluation Report for Apollo 11 (AS-506).",
+        "offline": "Everything is built in your browser, so it works offline."
+      },
+      "slow": {
+        "text": "Open Settings and choose Rendering quality: Low. Your choice is remembered on this device.",
+        "low": { "store": { "cx-launch-q": "low" } }
+      },
+      "phone": { "level": "yes", "text": "Works on phones; the telemetry sheet starts folded so the rocket stays in view." },
+      "hint": "New here? Press Launch or Space · pick a camera with 1–6 · press ? for help",
+      "hintTouch": "New here? Tap Launch · pick a camera below · tap ? for help",
+      "webgl": true,
+      "related": ["booster", "builder", "orbits"]
+    },
+
+    "booster": {
+      "title": "Booster landing",
+      "what": "Land a reusable first stage on a drone ship or back at the launch site, by hand or with the autopilot.",
+      "try": [
+        "Pick a scenario (Drone ship, Return to launch site or Final approach).",
+        "Press \"Watch the autopilot\" first to see a good landing.",
+        "Then press \"Fly it yourself\": W / S throttle, A / D tilt, Space to light the engines, G for legs.",
+        "Watch the dashed yellow predicted path: land with it on the pad and your speed near zero."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Swing the camera around the booster" },
+          { "icon": "scroll", "do": "Zoom in and out" },
+          { "icon": "click", "do": "Autopilot, ignite, legs, engines, camera and warp buttons" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Swing the camera around the booster" },
+          { "icon": "hold", "do": "Hold ◀ ▶ to tilt and ▲ ▼ to throttle (flight pad appears while flying)" },
+          { "icon": "tap", "do": "IGNITE, LEGS, AUTO, CAM and warp buttons" }
+        ],
+        "keyboard": [
+          { "keys": ["W", "S"], "do": "Throttle up / down (also ↑ ↓)" },
+          { "keys": ["A", "D"], "do": "Tilt left / right (also ← →)" },
+          { "keys": ["Space"], "do": "Start, then ignite / cut the engines" },
+          { "keys": ["G"], "do": "Landing legs" },
+          { "keys": ["1", "3", "9"], "do": "Number of engines" },
+          { "keys": ["H"], "do": "Retrograde hold" },
+          { "keys": ["P"], "do": "Autopilot on / off" },
+          { "keys": ["C"], "do": "Next camera" },
+          { "keys": ["R"], "do": "Restart" },
+          { "keys": ["[", "]"], "do": "Time warp (1×, 3×, 10×, 30×)" },
+          { "keys": ["Esc"], "do": "Pause (or close the result card)" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "A rigid-body flight simulation with a real atmosphere model and published Falcon 9-class numbers. Not live.",
+        "offline": "Works offline."
+      },
+      "slow": {
+        "text": "Open Settings and choose Low, or add ?q=low to the address. Phones start on Low automatically.",
+        "low": { "set": { "q": "low" } }
+      },
+      "phone": { "level": "yes", "text": "Yes: on-screen hold buttons appear while you fly." },
+      "hint": "New here? Try \"Watch the autopilot\" first · drag to look around · press ? for help",
+      "hintTouch": "New here? Try \"Watch the autopilot\" first · drag to look around · tap ? for help",
+      "webgl": true,
+      "related": ["launch", "moon-landing", "builder"]
+    },
+
+    "moon-landing": {
+      "title": "Moon landing",
+      "what": "Fly the Apollo 11 lunar module down to the Sea of Tranquility, or watch Neil Armstrong's real descent.",
+      "try": [
+        "Choose where to start: the whole descent (Powered Descent Initiation), High Gate or Low Gate.",
+        "Pick \"Watch Armstrong\" to see the real flight, or \"I'll fly\" to try it yourself.",
+        "Press Begin descent (or Space). Press P to take over by hand for the last few hundred feet.",
+        "Use ↑ ↓ to change the descent rate by 1 foot per second and ← → to lean forward or back."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Begin, pause, take over, cameras, warp, and the ▲ ▼ ◀ ▶ pads" },
+          { "icon": "drag", "do": "Orbit the lander (Free camera only)" },
+          { "icon": "scroll", "do": "Zoom (Free camera only)" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Tap ▲ ▼ for descent rate, hold ◀ ▶ to pitch" },
+          { "icon": "tdrag", "do": "Orbit the lander (Free camera only)" },
+          { "icon": "pinch", "do": "Zoom (Free camera only)" }
+        ],
+        "keyboard": [
+          { "keys": ["Space"], "do": "Begin, then pause / resume" },
+          { "keys": ["P"], "do": "Take over by hand (P66) / give control back" },
+          { "keys": ["↑", "↓"], "do": "Descent rate ±1 ft/s (also W / S)" },
+          { "keys": ["←", "→"], "do": "Pitch back / forward, or move the landing point (also A / D)" },
+          { "keys": ["X"], "do": "Engine off after contact (manual only)" },
+          { "keys": ["1–6"], "do": "Cameras: Director, Window, Chase, Side, Plot, Free" },
+          { "keys": ["[", "]"], "do": "Time warp (1× to 20×)" },
+          { "keys": ["R"], "do": "Restart" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "A guidance and flight simulation checked against the Apollo 11 descent record (including the 1202 and 1201 alarms).",
+        "offline": "Works offline."
+      },
+      "slow": {
+        "text": "Open Settings and choose Low, or add ?q=low to the address. Phones start on Low automatically.",
+        "low": { "set": { "q": "low" } }
+      },
+      "phone": { "level": "yes", "text": "Yes: use the ▲ ▼ ◀ ▶ pads on screen." },
+      "hint": "New here? Pick \"Watch Armstrong\" or \"I'll fly\" · press Space to begin · press ? for help",
+      "hintTouch": "New here? Pick \"Watch Armstrong\" or \"I'll fly\" · tap Begin descent · tap ? for help",
+      "webgl": true,
+      "related": ["moon", "booster", "mars-landing"]
+    },
+
+    "mars-landing": {
+      "title": "Mars landing",
+      "what": "The Perseverance rover's \"seven minutes of terror\": entry, parachute, powered descent and sky crane, step by step.",
+      "try": [
+        "Press \"Watch the landing\" and let the director camera tell the story.",
+        "Use ← → to jump between events (parachute, heat shield, sky crane…).",
+        "Press \"Why Mars is hard\" for a short explainer.",
+        "Switch to \"Be the engineer\", change the parachute trigger or crane height, then \"Fly my landing\"."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Play, restart, speed, cameras and the timeline" },
+          { "icon": "drag", "do": "Scrub the timeline; orbit the spacecraft in the Free camera" },
+          { "icon": "scroll", "do": "Zoom (Free camera only)" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Play, cameras, and events on the timeline" },
+          { "icon": "tdrag", "do": "Scrub the timeline; orbit in the Free camera" }
+        ],
+        "keyboard": [
+          { "keys": ["Space"], "do": "Play / pause" },
+          { "keys": ["←", "→"], "do": "Previous / next event" },
+          { "keys": ["1–5"], "do": "Cameras: Director, Chase, Side, Ground, Free" },
+          { "keys": ["E"], "do": "Switch between Watch and Engineer" },
+          { "keys": ["Esc"], "do": "Close the explainer" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "A reconstruction of the Mars 2020 entry, descent and landing from published Jet Propulsion Laboratory (JPL) numbers. Your engineer runs are simulated with the same physics.",
+        "offline": "Works offline (event notes come from a local file)."
+      },
+      "slow": {
+        "text": "Open Settings and choose Low, or add ?q=low to the address.",
+        "low": { "set": { "q": "low" } }
+      },
+      "phone": { "level": "yes", "text": "Yes; the telemetry sheet starts folded." },
+      "hint": "New here? Press \"Watch the landing\" · ← → jump between events · press ? for help",
+      "hintTouch": "New here? Tap \"Watch the landing\" · tap events on the timeline · tap ? for help",
+      "webgl": true,
+      "related": ["moon-landing", "booster", "mission-designer"]
+    },
+
+    "shuttle": {
+      "title": "Endeavour",
+      "what": "A 3D model of Space Shuttle Endeavour: see it on display in Los Angeles, stacked for launch, or in orbit.",
+      "try": [
+        "Drag to walk around the orbiter, scroll to get close.",
+        "Select a glowing marker to read about that part.",
+        "Switch between Pavilion, Launch stack and In orbit at the top.",
+        "In orbit, open the bay doors and move the Canadarm."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Orbit the shuttle" },
+          { "icon": "rdrag", "do": "Pan (right-drag)" },
+          { "icon": "scroll", "do": "Zoom" },
+          { "icon": "click", "do": "Select a glowing marker or any part" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Orbit the shuttle" },
+          { "icon": "pinch", "do": "Zoom" },
+          { "icon": "twodrag", "do": "Pan with two fingers" },
+          { "icon": "tap", "do": "Select a marker or part" }
+        ],
+        "keyboard": [
+          { "keys": ["Tab"], "do": "Move between the buttons and markers" },
+          { "keys": ["Esc"], "do": "Close the part card" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "An original 3D model built from public reference drawings; the mission facts come from NASA and the California Science Center.",
+        "offline": "Works offline."
+      },
+      "slow": {
+        "text": "Open Settings → Render quality → Low, or add ?q=low to the address.",
+        "low": { "set": { "q": "low" } }
+      },
+      "phone": { "level": "yes", "text": "Yes; phones start on Balanced quality." },
+      "hint": "New here? Drag to walk around · scroll to zoom · tap a glowing marker · press ? for help",
+      "hintTouch": "New here? Drag to walk around · pinch to zoom · tap a glowing marker · tap ? for help",
+      "webgl": true,
+      "related": ["hangar", "launch", "earth"]
+    },
+
+    "hangar": {
+      "title": "Rocket hangar",
+      "what": "Every major rocket, from the V-2 to Starship, standing side by side at true scale.",
+      "try": [
+        "Sort the line-up by Year, Height, Thrust or Payload.",
+        "Click a rocket to fly to it; use ← → to step along the line.",
+        "Open the Compare tab and add two or three rockets.",
+        "Press Esc to go back to the overview."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Orbit the camera" },
+          { "icon": "rdrag", "do": "Pan (right-drag)" },
+          { "icon": "scroll", "do": "Zoom toward the cursor" },
+          { "icon": "click", "do": "Select a rocket" },
+          { "icon": "dblclick", "do": "Double-click empty ground: back to the overview" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Orbit the camera" },
+          { "icon": "pinch", "do": "Zoom" },
+          { "icon": "twodrag", "do": "Pan with two fingers" },
+          { "icon": "tap", "do": "Select a rocket" }
+        ],
+        "keyboard": [
+          { "keys": ["←", "→"], "do": "Previous / next rocket" },
+          { "keys": ["Esc"], "do": "Back to the overview" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "Original 3D models drawn to published dimensions; heights, thrust and payload come from the sources listed on the page.",
+        "offline": "Works offline."
+      },
+      "slow": {
+        "text": "Open Settings and choose Low, or add ?q=low to the address.",
+        "low": { "set": { "q": "low" } }
+      },
+      "phone": { "level": "yes", "text": "Yes." },
+      "hint": "New here? Drag to look around · scroll to zoom · click a rocket · press ? for help",
+      "hintTouch": "New here? Drag to look around · pinch to zoom · tap a rocket · tap ? for help",
+      "webgl": true,
+      "related": ["builder", "launch", "shuttle"]
+    },
+
+    "builder": {
+      "title": "Rocket builder",
+      "what": "Design a rocket from real engines and tanks, check its change in velocity (Δv), then fly it to orbit.",
+      "try": [
+        "Load a preset from \"Load a preset…\" to start from a working rocket.",
+        "Drag a part from Parts onto a stage, or click it to add it to the selected stage.",
+        "Open Analysis to see where the mass goes and whether you can reach orbit.",
+        "Press Launch (or Shift + Enter) and watch the flight; press Esc to come back and improve it."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Orbit the rocket; drag parts from the palette onto a stage" },
+          { "icon": "rdrag", "do": "Pan (right-drag)" },
+          { "icon": "scroll", "do": "Zoom" },
+          { "icon": "click", "do": "Click part of the 3D rocket to select its stage" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Tap a part to add it to the selected stage" },
+          { "icon": "tdrag", "do": "Orbit the rocket" },
+          { "icon": "pinch", "do": "Zoom" }
+        ],
+        "keyboard": [
+          { "keys": ["Ctrl+Z"], "do": "Undo (⌘ on a Mac)" },
+          { "keys": ["Ctrl+Y"], "do": "Redo (also Ctrl + Shift + Z)" },
+          { "keys": ["Shift+Enter"], "do": "Launch the design" },
+          { "keys": ["Space"], "do": "Pause / resume the flight" },
+          { "keys": ["Esc"], "do": "Back to the builder" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "A two-dimensional ascent simulation (real atmosphere, Earth's rotation and gravity) using published engine data.",
+        "offline": "Works offline. Your design lives in the page address, so \"Copy link\" shares it."
+      },
+      "slow": {
+        "text": "Add ?q=low to the address (phones start on low automatically).",
+        "low": { "set": { "q": "low" } }
+      },
+      "phone": { "level": "partly", "text": "Works, but building is easier on a larger screen." },
+      "hint": "New here? Load a preset, then press Launch · drag to look around · press ? for help",
+      "hintTouch": "New here? Load a preset, then tap Launch · drag to look around · tap ? for help",
+      "webgl": true,
+      "related": ["hangar", "launch", "mission-designer"]
+    },
+
+    "mission-designer": {
+      "title": "Mission designer",
+      "what": "Plan a real interplanetary mission in five steps: destination, launch window, launch vehicle, spacecraft budgets, review.",
+      "try": [
+        "Pick a destination in step 1 (or a ready-made mission from Presets…).",
+        "In step 2, click a cool colour on the porkchop plot to choose a cheap launch date.",
+        "Walk through steps 3–5 with Next and keep an eye on the Margins box.",
+        "Press any \"why?\" button for a short explanation."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Pick a destination, a porkchop cell and the step buttons" },
+          { "icon": "drag", "do": "Rotate the 3D trajectory view" },
+          { "icon": "scroll", "do": "Zoom the 3D view" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Pick a destination, a porkchop cell and the step buttons" },
+          { "icon": "tdrag", "do": "Rotate the 3D view" },
+          { "icon": "pinch", "do": "Zoom the 3D view" }
+        ],
+        "keyboard": [
+          { "keys": ["←", "→", "↑", "↓"], "do": "Move on the porkchop plot or the destination list (when focused)" },
+          { "keys": ["Shift"], "do": "Hold for bigger porkchop steps" },
+          { "keys": ["Esc"], "do": "Close pop-ups" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Trajectories are calculated in your browser (Lambert solutions from planet positions); vehicle and spacecraft numbers come from published sources.",
+        "offline": "Works offline. Your plan is saved in the page address, so you can bookmark or share it."
+      },
+      "slow": {
+        "text": "Add ?q=low to the address for a lighter 3D view.",
+        "low": { "set": { "q": "low" } }
+      },
+      "phone": { "level": "partly", "text": "Works; the porkchop plot is small on a phone." },
+      "hint": "New here? Pick a destination, then press Next · drag the 3D view · press ? for help",
+      "hintTouch": "New here? Pick a destination, then tap Next · drag the 3D view · tap ? for help",
+      "webgl": "part",
+      "related": ["orbits", "builder", "solar-system"]
+    },
+
+    "earth": {
+      "title": "Live Earth orbit",
+      "what": "A globe with thousands of real satellites where they are right now, plus upcoming launches and spaceflight news.",
+      "try": [
+        "Press \"Where is the ISS?\" (or I) to fly to the International Space Station (ISS).",
+        "Click any dot to see which satellite it is and draw its orbit.",
+        "Open the Passes tab and press \"Use my location\" to see when the ISS flies over you.",
+        "Speed time up with + and press Now to come back to the present."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Spin the globe" },
+          { "icon": "scroll", "do": "Zoom" },
+          { "icon": "click", "do": "Select a satellite" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Spin the globe" },
+          { "icon": "pinch", "do": "Zoom" },
+          { "icon": "tap", "do": "Select a satellite" }
+        ],
+        "keyboard": [
+          { "keys": ["/"], "do": "Search satellites" },
+          { "keys": ["I"], "do": "Fly to the ISS" },
+          { "keys": ["F"], "do": "Follow the selected satellite" },
+          { "keys": ["N"], "do": "Back to now" },
+          { "keys": ["+", "−"], "do": "Faster / slower time" },
+          { "keys": ["Esc"], "do": "Deselect and reset the view" }
+        ]
+      },
+      "data": {
+        "kind": "live",
+        "text": "Live: orbits from CelesTrak, launches from The Space Devs and news from the Spaceflight News API, cached for a while on your device.",
+        "offline": "If CelesTrak can't be reached, the page builds illustrative constellations from a local file and says so. Add ?offline to see that mode."
+      },
+      "slow": { "text": "No quality switch here. Turn off Labels and Clouds in the Satellites tab, and close other tabs." },
+      "phone": { "level": "yes", "text": "Yes; the panel becomes a bottom sheet." },
+      "hint": "New here? Drag to spin the globe · scroll to zoom · press I for the ISS · press ? for help",
+      "hintTouch": "New here? Drag to spin the globe · pinch to zoom · tap a dot · tap ? for help",
+      "webgl": true,
+      "related": ["sky", "dsn", "space-weather"]
+    },
+
+    "sky": {
+      "title": "Night sky",
+      "what": "A planetarium for any place and time: stars, planets, the Moon and constellations as they are above you tonight.",
+      "try": [
+        "Press the place button at the top (it starts on Los Angeles) or \"Use my location\".",
+        "Drag to look around; scroll or pinch to zoom in on the Moon or a planet.",
+        "Click a star or planet for its name, distance and rise and set times.",
+        "Open the Tonight tab for five highlights, or press 3600× to watch the sky turn."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Look around" },
+          { "icon": "scroll", "do": "Zoom (field of view 10° to 180°)" },
+          { "icon": "click", "do": "Select a star, planet or deep-sky object" },
+          { "icon": "dblclick", "do": "Centre the view on that spot" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Look around" },
+          { "icon": "pinch", "do": "Zoom" },
+          { "icon": "tap", "do": "Select an object" }
+        ],
+        "keyboard": [
+          { "keys": ["←", "→", "↑", "↓"], "do": "Look around" },
+          { "keys": ["+", "−"], "do": "Zoom in / out" },
+          { "keys": ["/"], "do": "Search" },
+          { "keys": ["Space"], "do": "Play / pause time" },
+          { "keys": ["N"], "do": "Back to now" },
+          { "keys": ["R"], "do": "Run time backwards / forwards" },
+          { "keys": ["C", "V", "B", "L"], "do": "Constellation lines, names, boundaries, star names" },
+          { "keys": ["M", "P", "K"], "do": "Messier objects, planet labels, ecliptic" },
+          { "keys": ["Z", "E", "G", "A"], "do": "Alt-azimuth grid, equatorial grid, ground, atmosphere" },
+          { "keys": ["Esc"], "do": "Close the info card" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Calculated in your browser from a real star catalogue (Hipparcos, via d3-celestial) and standard astronomy formulas. Nothing is fetched live.",
+        "offline": "Works offline. \"Use my location\" asks your browser once and keeps the answer on the page only."
+      },
+      "slow": { "text": "No quality switch: the page lowers its own resolution when frames are slow. Turning off Atmosphere (A) and Twinkling also helps." },
+      "phone": { "level": "yes", "text": "Yes; made for holding up to the real sky." },
+      "hint": "New here? Drag to look around · scroll or pinch to zoom · press ? for help",
+      "hintTouch": "New here? Drag to look around · pinch to zoom · tap a star · tap ? for help",
+      "webgl": true,
+      "related": ["surveys", "moon", "solar-system"]
+    },
+
+    "moon": {
+      "title": "Moon explorer",
+      "what": "A 3D Moon with every landing site, today's phase and libration, and the eclipses coming up.",
+      "try": [
+        "\"Seen from Earth\" shows tonight's Moon as you would see it; press Now any time.",
+        "Switch to \"Free orbit\" and drag to fly around the far side.",
+        "Open Sites and pick a landing (Apollo 11, Chang'e 4…) to fly there.",
+        "Open Eclipses and play one of the coming lunar or solar eclipses."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Rotate the Moon (Free orbit only)" },
+          { "icon": "scroll", "do": "Zoom" },
+          { "icon": "click", "do": "Select a landing-site pin" },
+          { "icon": "dblclick", "do": "Fly toward that point" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Rotate the Moon (Free orbit only)" },
+          { "icon": "pinch", "do": "Zoom" },
+          { "icon": "tap", "do": "Select a landing-site pin" }
+        ],
+        "keyboard": [
+          { "keys": ["Space"], "do": "Play / pause time" },
+          { "keys": ["[", "]"], "do": "One day back / forward" },
+          { "keys": ["Esc"], "do": "Close the site card" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Phase, libration and eclipses are calculated in your browser with Jean Meeus's Astronomical Algorithms; the surface is an original procedural map.",
+        "offline": "Works offline."
+      },
+      "slow": {
+        "text": "Add ?q=low to the address (fewer triangles, no close-up detail).",
+        "low": { "set": { "q": "low" } }
+      },
+      "phone": { "level": "yes", "text": "Yes; the panel becomes a bottom sheet." },
+      "hint": "New here? Try \"Free orbit\" and drag to fly around · scroll to zoom · press ? for help",
+      "hintTouch": "New here? Try \"Free orbit\" and drag to fly around · pinch to zoom · tap ? for help",
+      "webgl": true,
+      "related": ["moon-landing", "sky", "solar-system"]
+    },
+
+    "solar-system": {
+      "title": "Solar system",
+      "what": "An orrery with every planet where it is today, switchable between a readable view and true scale.",
+      "try": [
+        "Click a planet (or press 1–9) to fly to it; press 0 or Esc for the Sun.",
+        "Press T to switch between Readable and True scale and see how empty space is.",
+        "Drag the speed slider to spin the planets; press Now to return to today.",
+        "Turn on Spacecraft to see where the Voyagers are."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Orbit the camera" },
+          { "icon": "scroll", "do": "Zoom" },
+          { "icon": "click", "do": "Fly to a world" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Orbit the camera" },
+          { "icon": "pinch", "do": "Zoom" },
+          { "icon": "tap", "do": "Fly to a world" }
+        ],
+        "keyboard": [
+          { "keys": ["0–9"], "do": "Sun, Mercury … Neptune, Pluto" },
+          { "keys": ["Space"], "do": "Play / pause" },
+          { "keys": ["R"], "do": "Reverse time" },
+          { "keys": ["N"], "do": "Back to now" },
+          { "keys": ["T"], "do": "Readable / true scale" },
+          { "keys": ["Esc"], "do": "Back to the Sun" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Positions are calculated in your browser from Jet Propulsion Laboratory (JPL) orbital elements; the planet facts are from the NASA Planetary Fact Sheet.",
+        "offline": "Works offline."
+      },
+      "slow": {
+        "text": "Add ?quality=low to the address for smaller planet textures.",
+        "low": { "set": { "quality": "low" } }
+      },
+      "phone": { "level": "yes", "text": "Yes; the controls start folded." },
+      "hint": "New here? Drag to look around · scroll to zoom · click a planet · press ? for help",
+      "hintTouch": "New here? Drag to look around · pinch to zoom · tap a planet · tap ? for help",
+      "webgl": true,
+      "related": ["orbits", "sky", "scale"]
+    },
+
+    "sun": {
+      "title": "The Sun",
+      "what": "A 3D model of our star in five wavelengths, with flares, a cutaway of the inside and calculators.",
+      "try": [
+        "Drag to turn the Sun; scroll or pinch all the way in to see the granulation.",
+        "Switch wavelength: White light, H-alpha, 171, 304, 193.",
+        "Press Flare to trigger a flare and coronal mass ejection (CME).",
+        "Open the Inside tab and press \"Open the cutaway\"."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Orbit the Sun" },
+          { "icon": "scroll", "do": "Zoom" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Orbit the Sun" },
+          { "icon": "pinch", "do": "Zoom" }
+        ],
+        "keyboard": [
+          { "keys": ["Shift+←", "Shift+→"], "do": "Rotate left / right" },
+          { "keys": ["Shift+↑", "Shift+↓"], "do": "Rotate up / down" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "A procedural model: nothing on the disc is a photograph, but every number shown comes from a cited source. For today's real Sun see the Solar observatory.",
+        "offline": "Works offline."
+      },
+      "slow": {
+        "text": "Rendering → Quality → Low, or add ?q=low to the address.",
+        "low": { "set": { "q": "low" } }
+      },
+      "phone": { "level": "yes", "text": "Yes; phones start on Medium." },
+      "hint": "New here? Drag to turn the Sun · scroll or pinch to zoom · press ? for help",
+      "hintTouch": "New here? Drag to turn the Sun · pinch to zoom · tap ? for help",
+      "webgl": true,
+      "related": ["solar-observatory", "space-weather", "solar-system"]
+    },
+
+    "solar-observatory": {
+      "title": "Solar observatory",
+      "what": "Today's real Sun, straight from the Solar Dynamics Observatory (SDO), the Solar and Heliospheric Observatory (SOHO) and the GOES weather satellites, plus great solar images.",
+      "try": [
+        "Pick a channel to see the Sun in a different colour of light.",
+        "Press Compare and drag the divider to wipe between two channels.",
+        "Press \"48-hour movie\" to watch the last two days.",
+        "Scroll to \"The Sun on the day you choose\" and pick your birthday."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Choose channels, modes and gallery images" },
+          { "icon": "drag", "do": "Move the compare divider" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Choose channels, modes and gallery images" },
+          { "icon": "tdrag", "do": "Move the compare divider" }
+        ],
+        "keyboard": [
+          { "keys": ["←", "→"], "do": "Move the divider (when focused); browse the gallery viewer" },
+          { "keys": ["Esc"], "do": "Close the gallery viewer" }
+        ]
+      },
+      "data": {
+        "kind": "live",
+        "text": "Live pictures loaded straight from NASA and National Oceanic and Atmospheric Administration (NOAA) servers, refreshed at most every 15 minutes. Past dates come from Helioviewer.",
+        "offline": "If a server can't be reached you see a clearly labelled drawing, never an old picture passed off as new."
+      },
+      "slow": { "text": "On a slow connection the page uses smaller images (and honours your browser's Save-Data setting)." },
+      "phone": { "level": "yes", "text": "Yes; phones get 512-pixel images." },
+      "related": ["sun", "space-weather", "gallery"]
+    },
+
+    "black-hole": {
+      "title": "Black hole",
+      "what": "A real-time ray tracer that bends light around a black hole, the way Einstein's general relativity says it should.",
+      "try": [
+        "Drag to orbit and watch the disk's light wrap over the top of the hole.",
+        "Try the camera buttons: Edge-on, Face-on, Close-up.",
+        "Press \"Fall in\" to ride toward the event horizon.",
+        "Open the Calculator tab to see how time slows near the hole."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Orbit the black hole" },
+          { "icon": "scroll", "do": "Zoom" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Orbit the black hole" },
+          { "icon": "pinch", "do": "Zoom" }
+        ],
+        "keyboard": [
+          { "keys": ["←", "→"], "do": "Orbit around" },
+          { "keys": ["↑", "↓"], "do": "Raise / lower the camera" },
+          { "keys": ["+", "−"], "do": "Zoom in / out" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "Every pixel is traced through Schwarzschild spacetime in your graphics card. The EHT tab shows the real Event Horizon Telescope (EHT) images.",
+        "offline": "Works offline."
+      },
+      "slow": {
+        "text": "Rendering → lower Ray-tracing quality and Render resolution, keep Adaptive resolution on; or add ?scale=0.5 to the address.",
+        "low": { "set": { "scale": "0.5" } }
+      },
+      "phone": { "level": "partly", "text": "Works on recent phones; older ones run at low resolution." },
+      "hint": "New here? Drag to orbit · scroll or pinch to zoom · press ? for help",
+      "hintTouch": "New here? Drag to orbit · pinch to zoom · tap ? for help",
+      "webgl": true,
+      "related": ["galaxies", "scale", "equations"]
+    },
+
+    "scale": {
+      "title": "Cosmic scale",
+      "what": "One continuous zoom from a proton to the whole observable universe, with everything drawn at its true relative size.",
+      "try": [
+        "Scroll (or pinch) to zoom out from a person to the Earth, the Sun and beyond.",
+        "Press ▶ Tour (or T) for a guided trip through 42 powers of ten.",
+        "Click anything on screen to fly to it.",
+        "Open \"All 56\" to jump straight to one object."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "scroll", "do": "Zoom" },
+          { "icon": "drag", "do": "Drag up / down to zoom; drag the ruler to scrub" },
+          { "icon": "click", "do": "Fly to an object" }
+        ],
+        "touch": [
+          { "icon": "pinch", "do": "Zoom" },
+          { "icon": "tdrag", "do": "Drag up / down to zoom" },
+          { "icon": "tap", "do": "Fly to an object" }
+        ],
+        "keyboard": [
+          { "keys": ["↑", "↓"], "do": "Zoom out / in a little (also ← → + −)" },
+          { "keys": ["Shift"], "do": "Hold with an arrow: jump a whole power of ten" },
+          { "keys": ["PgUp", "PgDn"], "do": "Jump a power of ten" },
+          { "keys": ["Home"], "do": "Back to the human" },
+          { "keys": ["T"], "do": "Start / end the tour" },
+          { "keys": ["Space"], "do": "Pause the tour" },
+          { "keys": ["Esc"], "do": "End the tour" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Sizes and distances come from the sources listed on each object; everything is drawn in your browser. Nothing is downloaded.",
+        "offline": "Works offline."
+      },
+      "slow": { "text": "No quality switch: this is a 2D canvas and runs on almost anything. Close other tabs if it stutters." },
+      "phone": { "level": "yes", "text": "Yes; pinch to zoom." },
+      "hint": "New here? Scroll or pinch to zoom · press T for a tour · press ? for help",
+      "hintTouch": "New here? Pinch to zoom · tap ▶ Tour · tap anything to fly to it · tap ? for help",
+      "webgl": false,
+      "related": ["solar-system", "galaxies", "index"]
+    },
+
+    "space-weather": {
+      "title": "Space weather",
+      "what": "Live solar wind, geomagnetic storms and your chance of seeing the aurora tonight, with a 3D magnetosphere.",
+      "try": [
+        "Read \"At L1 now\" for the solar wind reaching Earth right now.",
+        "Pick your city (or \"Use my location\") under \"Could I see the aurora tonight?\".",
+        "Switch the 3D view: Magnetosphere, Sun → Earth, Aurora; press \"Launch a CME\".",
+        "Scroll down to the dashboard and the step-by-step explainer."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Rotate the 3D view" },
+          { "icon": "scroll", "do": "Zoom the 3D view" },
+          { "icon": "click", "do": "Views, CME launch and chart points" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Rotate the 3D view" },
+          { "icon": "pinch", "do": "Zoom the 3D view" },
+          { "icon": "tap", "do": "Views, CME launch and chart points" }
+        ],
+        "keyboard": [
+          { "keys": ["←", "→"], "do": "Move along a focused chart (Shift: 12 steps)" },
+          { "keys": ["Home", "End"], "do": "First / latest point on a focused chart" }
+        ]
+      },
+      "data": {
+        "kind": "live",
+        "text": "Live from the Space Weather Prediction Center (SWPC) of the National Oceanic and Atmospheric Administration (NOAA), refreshed every few minutes and cached on your device.",
+        "offline": "If NOAA can't be reached and nothing is cached, the page replays the May 2024 storm and labels it clearly. Add ?offline to see that mode."
+      },
+      "slow": { "text": "No quality switch. The 3D view pauses when scrolled away; close other tabs if it stutters." },
+      "phone": { "level": "yes", "text": "Yes." },
+      "hint": "New here? Drag the 3D view to rotate · scroll down for the dashboard · press ? for help",
+      "hintTouch": "New here? Drag the 3D view to rotate · scroll down for the dashboard · tap ? for help",
+      "webgl": "part",
+      "related": ["sun", "solar-observatory", "earth"]
+    },
+
+    "galaxies": {
+      "title": "Galaxy collision",
+      "what": "The Milky Way and Andromeda colliding over ten billion years, with up to a quarter of a million stars on your graphics card.",
+      "try": [
+        "Press play (Space) and watch the first close pass.",
+        "Try the views: 1 Overview, 2 Milky Way, 3 Andromeda, 4 Edge-on, 5 View from the Sun.",
+        "Drag the timeline at the bottom to jump in time.",
+        "Try another scenario: The Antennae, The Mice or Cartwheel-like."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Orbit the camera (look around in the View from the Sun)" },
+          { "icon": "scroll", "do": "Zoom" },
+          { "icon": "click", "do": "Play, reset, views and the timeline" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Orbit the camera" },
+          { "icon": "pinch", "do": "Zoom" },
+          { "icon": "tap", "do": "Play, views and the timeline" }
+        ],
+        "keyboard": [
+          { "keys": ["Space"], "do": "Play / pause" },
+          { "keys": ["R"], "do": "Reset" },
+          { "keys": ["1–5"], "do": "Views: overview, Milky Way, Andromeda, edge-on, from the Sun" },
+          { "keys": ["[", "]"], "do": "Slower / faster time warp" },
+          { "keys": ["←", "→"], "do": "Step the timeline (when focused)" }
+        ]
+      },
+      "data": {
+        "kind": "simulated",
+        "text": "A restricted N-body simulation on your graphics card, set up from published masses and orbits (including the 2019 Gaia estimate).",
+        "offline": "Works offline."
+      },
+      "slow": {
+        "text": "Lower \"Star particles\" in Controls, or add ?q=low&n=32768 to the address.",
+        "low": { "set": { "q": "low", "n": "32768" } }
+      },
+      "phone": { "level": "partly", "text": "Works on recent phones with fewer stars; needs WebGL 2." },
+      "hint": "New here? Press Space to play · drag to orbit · scroll to zoom · press ? for help",
+      "hintTouch": "New here? Tap play · drag to orbit · pinch to zoom · tap ? for help",
+      "webgl": true,
+      "related": ["black-hole", "scale", "surveys"]
+    },
+
+    "surveys": {
+      "title": "Sky surveys",
+      "what": "Pan the real sky in a dozen wavelengths, from radio to gamma rays, with a guided tour.",
+      "try": [
+        "Drag the wavelength slider at the bottom to blend from visible light to infrared or X-rays.",
+        "Press Auto-tour (or P) for famous targets.",
+        "Search for a name like M31 or Orion Nebula.",
+        "Press W to wipe between two wavelengths side by side."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Pan the sky" },
+          { "icon": "scroll", "do": "Zoom" },
+          { "icon": "click", "do": "Pick a wavelength, a tour target or an overlay" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Pan the sky" },
+          { "icon": "pinch", "do": "Zoom" },
+          { "icon": "tap", "do": "Pick a wavelength or a tour target" }
+        ],
+        "keyboard": [
+          { "keys": ["/"], "do": "Search" },
+          { "keys": ["[", "]"], "do": "Previous / next wavelength" },
+          { "keys": ["P"], "do": "Start / stop the tour" },
+          { "keys": ["W"], "do": "Wipe comparison on / off" },
+          { "keys": ["G", "C", "N"], "do": "Grid, constellation lines, constellation names" },
+          { "keys": ["M", "S", "T"], "do": "Messier objects, bright-star names, tour targets" },
+          { "keys": ["Esc"], "do": "Close the caption" }
+        ]
+      },
+      "data": {
+        "kind": "live",
+        "text": "Survey images stream live from the Strasbourg astronomical Data Centre (CDS) through Aladin Lite; name search uses its Sesame service.",
+        "offline": "Offline you get a local Milky Way map with our overlays, clearly labelled \"offline preview\"."
+      },
+      "slow": { "text": "No quality switch. Choose a lower-resolution survey, zoom out, and turn off the wipe comparison." },
+      "phone": { "level": "yes", "text": "Yes; needs WebGL 2." },
+      "hint": "New here? Drag to pan · scroll or pinch to zoom · drag the wavelength slider · press ? for help",
+      "hintTouch": "New here? Drag to pan · pinch to zoom · slide the wavelength bar · tap ? for help",
+      "webgl": true,
+      "related": ["sky", "telescopes", "galaxies"]
+    },
+
+    "dsn": {
+      "title": "Deep Space Network",
+      "what": "Which spacecraft are talking to the Deep Space Network (DSN), NASA's giant dishes in California, Spain and Australia right now.",
+      "try": [
+        "Read \"Talking now\" for each live link and how long its signal takes.",
+        "Drag the globe to see which dishes point where; press Orbit to spin it.",
+        "Scroll to \"Every dish, right now\" for each antenna's status.",
+        "Scroll to \"A conversation that takes two days\" to feel the delay to Voyager."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "drag", "do": "Rotate the globe" },
+          { "icon": "scroll", "do": "Zoom the globe" },
+          { "icon": "click", "do": "Open a dish or a spacecraft" }
+        ],
+        "touch": [
+          { "icon": "tdrag", "do": "Rotate the globe" },
+          { "icon": "pinch", "do": "Zoom the globe" },
+          { "icon": "tap", "do": "Open a dish or a spacecraft" }
+        ],
+        "keyboard": [
+          { "keys": ["Tab"], "do": "Move between links and dishes" }
+        ]
+      },
+      "data": {
+        "kind": "live",
+        "text": "Live from DSN Now, run by NASA's Jet Propulsion Laboratory (JPL), refreshed every 5 seconds. The last good copy is kept on your device.",
+        "offline": "Offline it shows that saved copy with its age; with no copy it shows an illustrative sample, clearly labelled. Add ?offline to see it."
+      },
+      "slow": { "text": "No quality switch. The globe is light; close other tabs if it stutters." },
+      "phone": { "level": "yes", "text": "Yes." },
+      "hint": "New here? Drag the globe to rotate · scroll down for every dish · press ? for help",
+      "hintTouch": "New here? Drag the globe to rotate · scroll down for every dish · tap ? for help",
+      "webgl": "part",
+      "related": ["earth", "mission-designer", "solar-system"]
+    },
+
+    "academy": {
+      "title": "Space Academy",
+      "what": "A guided course: short lessons with interactive widgets, quizzes, mission patches and a printable certificate.",
+      "try": [
+        "Start at the first star on the course map, or pick a track under \"Pick up anywhere\".",
+        "Play with each lesson's widget, then answer its quiz.",
+        "Collect mission patches as you finish tracks.",
+        "Use \"Copy code\" to move your progress to another device."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Open lessons, answer quizzes" },
+          { "icon": "drag", "do": "Use the sliders and plots inside lessons" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Open lessons, answer quizzes" },
+          { "icon": "tdrag", "do": "Scroll the course map sideways; use sliders" }
+        ],
+        "keyboard": [
+          { "keys": ["←", "→"], "do": "Move between stars on the course map" },
+          { "keys": ["Enter"], "do": "Open the focused lesson" },
+          { "keys": ["Tab"], "do": "Move through answers and controls" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Lessons and widgets run in your browser from the site's own data files.",
+        "offline": "Works offline. Progress is saved only in this browser (use \"Copy code\" to take it with you)."
+      },
+      "slow": { "text": "This page is light. Turn on reduced motion in your system settings to stop the background animation." },
+      "phone": { "level": "yes", "text": "Yes." },
+      "related": ["orbits", "equations", "library"]
+    },
+
+    "orbits": {
+      "title": "Orbit Lab",
+      "what": "Five hands-on experiments: Newton's cannonball, Kepler's laws, a Hohmann transfer, a gravity assist and Lagrange points.",
+      "try": [
+        "In Cannonball (1), press Fire (Space) at 6.2, then at circular speed, then at escape speed.",
+        "In Kepler (2), turn on the equal-area wedges and watch the planet speed up near the Sun.",
+        "In Hohmann (3), pick Earth → Mars and see the two burns.",
+        "In Lagrange (5), click the canvas to drop test particles."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Fire the cannon (1) or drop a particle (5) on the canvas" },
+          { "icon": "drag", "do": "Move the sliders" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Fire the cannon (1) or drop a particle (5)" },
+          { "icon": "tdrag", "do": "Move the sliders" }
+        ],
+        "keyboard": [
+          { "keys": ["1–5"], "do": "Cannonball, Kepler, Hohmann, Flyby, Lagrange" },
+          { "keys": ["Space"], "do": "Fire, or play / pause" },
+          { "keys": ["C"], "do": "Clear (Cannonball, Lagrange)" },
+          { "keys": ["R"], "do": "Replay (Hohmann, Flyby)" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Every orbit is integrated in your browser from textbook equations with standard constants (listed under \"How this is computed\").",
+        "offline": "Works offline."
+      },
+      "slow": { "text": "No quality switch: it is a light 2D canvas." },
+      "phone": { "level": "yes", "text": "Yes." },
+      "hint": "New here? Press 1–5 to switch experiments · Space to fire or play · press ? for help",
+      "hintTouch": "New here? Tap a mode at the top · tap Fire or Play · tap ? for help",
+      "webgl": false,
+      "related": ["mission-designer", "equations", "solar-system"]
+    },
+
+    "equations": {
+      "title": "Equations",
+      "what": "94 equations of spaceflight and astronomy, each with a worked example and a live calculator.",
+      "try": [
+        "Press / and search for \"rocket\" or \"orbit\".",
+        "Change a number in any calculator and watch the answer update.",
+        "Press j / k to step through equations, r for a random one.",
+        "Press c to copy the current equation as LaTeX."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Open chapters, copy formulas, use calculators" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Open chapters, copy formulas, use calculators" }
+        ],
+        "keyboard": [
+          { "keys": ["/"], "do": "Search" },
+          { "keys": ["J", "K"], "do": "Next / previous equation" },
+          { "keys": ["[", "]"], "do": "Previous / next chapter" },
+          { "keys": ["R"], "do": "Random equation" },
+          { "keys": ["C"], "do": "Copy the LaTeX of the current equation" },
+          { "keys": ["?"], "do": "This page's own shortcut list" },
+          { "keys": ["Esc"], "do": "Clear the search" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Equations and constants come from the cited references; calculators run in your browser.",
+        "offline": "Works offline."
+      },
+      "slow": { "text": "This page is light." },
+      "phone": { "level": "yes", "text": "Yes." },
+      "shortcut": false,
+      "related": ["orbits", "academy", "library"]
+    },
+
+    "gallery": {
+      "title": "Gallery",
+      "what": "Photographs that changed how we see the universe, each with its story, date and credit.",
+      "try": [
+        "Open any photograph for its story; use ← → to browse.",
+        "Drag across the time machine axis to show only a range of years.",
+        "Press Cinema mode for a full-screen slideshow.",
+        "Scroll down for today's Astronomy Picture of the Day (APOD)."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Open a photograph" },
+          { "icon": "drag", "do": "Pick a window of years on the time machine" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Open a photograph" },
+          { "icon": "tdrag", "do": "Swipe in the viewer to browse" }
+        ],
+        "keyboard": [
+          { "keys": ["←", "→"], "do": "Previous / next photograph (viewer and cinema)" },
+          { "keys": ["Space"], "do": "Pause cinema mode" },
+          { "keys": ["Esc"], "do": "Close the viewer" }
+        ]
+      },
+      "data": {
+        "kind": "live",
+        "text": "Images load from NASA, ESA, ESO and Wikimedia servers (hotlinked, not copied). APOD comes live from NASA's API.",
+        "offline": "Offline the stories still show; images are marked unavailable and the APOD section hides."
+      },
+      "slow": { "text": "Images load as you scroll; a slow connection just fills in more slowly." },
+      "phone": { "level": "yes", "text": "Yes; swipe in the viewer." },
+      "related": ["timeline", "solar-observatory", "surveys"]
+    },
+
+    "timeline": {
+      "title": "Timeline",
+      "what": "Every spaceflight milestone from 1903 to today, filterable by agency and kind, with a race chart of who did it first.",
+      "try": [
+        "Press \"Jump to 2026\" to see the latest events.",
+        "Filter by agency or category to follow one story.",
+        "Click a band on \"Who reached the milestones, and when?\" to highlight one agency."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Filters, chart bands and stars" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Filters, chart bands and stars" }
+        ],
+        "keyboard": [
+          { "keys": ["Tab"], "do": "Move to a chart band or star" },
+          { "keys": ["Enter"], "do": "Select it" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "A curated list of events with sources, stored with the site.",
+        "offline": "Works offline."
+      },
+      "slow": { "text": "This page is light." },
+      "phone": { "level": "yes", "text": "Yes." },
+      "related": ["gallery", "library", "hangar"]
+    },
+
+    "library": {
+      "title": "Documents",
+      "what": "Flight manuals, mission reports, datasets and tools, filterable by who published them and how hard they are.",
+      "try": [
+        "Follow \"A reading path from launch pad to deep space\".",
+        "Press / and search, or filter by publisher, kind and level.",
+        "Switch between Cards and Bookshelf view."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Filters, documents, bookshelf spines" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Filters, documents, bookshelf spines" }
+        ],
+        "keyboard": [
+          { "keys": ["/"], "do": "Search" },
+          { "keys": ["Esc"], "do": "Leave the search box, close an open spine" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "A curated catalogue stored with the site; each entry links to the original publisher.",
+        "offline": "The catalogue works offline; the documents themselves open on their publishers' sites."
+      },
+      "slow": { "text": "This page is light." },
+      "phone": { "level": "yes", "text": "Yes." },
+      "related": ["equations", "timeline", "academy"]
+    },
+
+    "telescopes": {
+      "title": "Use a telescope",
+      "what": "Free robotic telescopes you can book, live observatory feeds and simulators, sorted by what you want to do.",
+      "try": [
+        "Pick a goal under \"What do you want to do?\"; the directory rearranges itself.",
+        "Check the map to see where it is dark right now.",
+        "Follow one of the \"Three first observations, step by step\" guides."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Goals, filters, map pins and cards" },
+          { "icon": "drag", "do": "Move the map's time slider" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Goals, filters, map pins and cards" },
+          { "icon": "tdrag", "do": "Move the map's time slider" }
+        ],
+        "keyboard": [
+          { "keys": ["/"], "do": "Search the directory" },
+          { "keys": ["←", "→"], "do": "Switch between the step-by-step guides (when focused)" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "A curated directory stored with the site; day and night on the map is calculated in your browser.",
+        "offline": "The directory works offline; the telescopes and feeds need the internet."
+      },
+      "slow": { "text": "This page is light." },
+      "phone": { "level": "yes", "text": "Yes." },
+      "related": ["eyepiece", "surveys", "sky"]
+    },
+
+    "eyepiece": {
+      "title": "Telescope simulator",
+      "what": "See what binoculars, a telescope or a camera would really show you of the Moon, planets and deep-sky objects from your sky tonight.",
+      "try": [
+        "Pick an instrument in step 1, or set your own aperture and focal length.",
+        "Pick an eyepiece in step 2; tick the 2× Barlow lens to double the power.",
+        "Pick a target that is up now in step 3 and look at \"What you get\".",
+        "In step 5, set the air steadiness, light pollution (Bortle class) and minutes in the dark.",
+        "Tick \"Compare two instruments\" and try \"70 mm vs 8-inch\"."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Choose instrument, eyepiece, target and sky" },
+          { "icon": "drag", "do": "Move around a target bigger than the field of view" },
+          { "icon": "dblclick", "do": "Re-centre the view" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Choose instrument, eyepiece, target and sky" },
+          { "icon": "tdrag", "do": "Move around a target bigger than the field of view" }
+        ],
+        "keyboard": [
+          { "keys": ["←", "→"], "do": "Step through the instruments, eyepieces or targets (when that row has focus)" },
+          { "keys": ["Tab"], "do": "Move between the steps and controls" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Tonight's sky is calculated in your browser; the view is modelled from the optics (aperture, focal length, eyepiece), the steadiness of the air, light pollution and how dark-adapted your eyes are.",
+        "offline": "Works offline. \"Use my location\" asks your browser once and keeps the answer on the page only."
+      },
+      "slow": { "text": "This page draws on a light 2D canvas and only redraws the view when you change something. Close other tabs if it stutters." },
+      "phone": { "level": "yes", "text": "Yes; the steps stack into one column." },
+      "related": ["telescopes", "sky", "surveys"]
+    },
+
+    "experiments": {
+      "title": "Experiments",
+      "what": "20 hands-on builds in five levels, from a $0 kitchen-table experiment to a custom circuit board, with 3D parts you can inspect.",
+      "try": [
+        "Pick a level (0–4) or set a budget to filter the builds.",
+        "Open a build for its parts list, steps and safety notes.",
+        "In \"Inspect every STL before you print it\", drag to orbit a part and press Exploded view."
+      ],
+      "controls": {
+        "mouse": [
+          { "icon": "click", "do": "Filters and builds" },
+          { "icon": "drag", "do": "Orbit a 3D part" },
+          { "icon": "scroll", "do": "Zoom a 3D part" }
+        ],
+        "touch": [
+          { "icon": "tap", "do": "Filters and builds" },
+          { "icon": "tdrag", "do": "Orbit a 3D part" },
+          { "icon": "pinch", "do": "Zoom a 3D part" }
+        ],
+        "keyboard": [
+          { "keys": ["Tab"], "do": "Move to a point on the map" },
+          { "keys": ["Enter"], "do": "Jump to that build's card" }
+        ]
+      },
+      "data": {
+        "kind": "computed",
+        "text": "Builds, parts and 3D files are stored with the site.",
+        "offline": "Works offline; shop links need the internet."
+      },
+      "slow": { "text": "Turn off Auto-rotate on the 3D viewer." },
+      "phone": { "level": "yes", "text": "Yes." },
+      "webgl": "part",
+      "related": ["builder", "academy", "library"]
+    }
+  }
+}

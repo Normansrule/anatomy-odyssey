@@ -827,6 +827,13 @@ function atlas() {
   const setOn = i => chips.forEach((c, k) => c.classList.toggle("on", k === i));
   setOn(0);
 
+  // Title counts the real page list, so it never goes stale as pages are added.
+  const atlasTitle = tail => {
+    const n = window.Codex ? Codex.pages.length : 0;
+    return n ? `All ${n} pages${tail}` : `Every page${tail}`;
+  };
+  $("#atlas-title").textContent = atlasTitle(" at a glance");
+
   let st = null;
   chips.forEach((c, i) => c.addEventListener("click", () => {
     setOn(i);
@@ -841,7 +848,7 @@ function atlas() {
   if (!G || !ST) return;
   const mm = G.matchMedia();
   mm.add("(min-width: 900px) and (min-height: 560px) and (prefers-reduced-motion: no-preference)", () => {
-    sec.classList.add("h"); $("#atlas-title").textContent = "Twenty-two pages, one swipe";
+    sec.classList.add("h"); $("#atlas-title").textContent = atlasTitle(", one swipe");
     const dist = () => Math.max(0, track.scrollWidth - innerWidth);
     const bar = $("#atlas-bar");
     const tw = G.to(track, { x: () => -dist(), ease: "none", scrollTrigger: {
@@ -862,7 +869,7 @@ function atlas() {
     });
     $$(".agroup-head", track).forEach(h => G.from(h.children, { y: 30, opacity: 0, stagger: 0.08, ease: "power2.out",
       scrollTrigger: { trigger: h, containerAnimation: tw, start: "left 90%", end: "left 55%", scrub: true } }));
-    return () => { sec.classList.remove("h"); st = null; $("#atlas-title").textContent = "Twenty-two pages at a glance"; };
+    return () => { sec.classList.remove("h"); st = null; $("#atlas-title").textContent = atlasTitle(" at a glance"); };
   });
 }
 

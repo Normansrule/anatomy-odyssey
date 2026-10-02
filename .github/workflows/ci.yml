@@ -67,5 +67,7 @@ jobs:
           node --no-warnings scripts/test_academy.mjs
           node --no-warnings scripts/test_dsn.mjs
           node --no-warnings scripts/test_moon.mjs
+          node --no-warnings scripts/test_eyepiece.mjs
+          node scripts/build_user_guide.mjs --check
       - name: JSON files parse
         run: for f in site/data/*.json; do node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || exit 1; done

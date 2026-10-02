@@ -16,6 +16,10 @@
   .w { width: 830px; max-width: 100%; }
   .tiles { display: flex; flex-wrap: wrap; gap: 10px; }
   .tiles img { width: 260px; }
+  .btn560 { width: 560px; max-width: 100%; }
+  .btn420 { width: 420px; max-width: 100%; }
+  .pair { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pair img { width: 380px; }
 </style>
 </head>
 <body>
@@ -32,9 +36,17 @@
     ...["telescope-resolution", "transit", "redshift", "sunspot-rotation", "link-budget"].map(c => [`concepts/${c}.svg`, "w"]),
     ["concepts/wavelengths.svg", "w"],
   ];
-  const html = parts.map(([src, cls]) => cls === "tiles"
+  // v6: general-reader art (buttons, how-to strips, friendlier banners, telescope-simulator tile)
+  const BTN = ["open-site", "telescope", "sun", "sky", "fly", "learn", "simulator", "help"];
+  const v6 = `<h2>v6 · buttons at 560 px</h2>${BTN.slice(0, 4).map(b => `<img class="btn560" src="${M}buttons/${b}.svg" style="margin-bottom:6px">`).join("")}`
+    + `<h2>v6 · buttons at 420 px</h2>${BTN.slice(4).map(b => `<img class="btn420" src="${M}buttons/${b}.svg" style="margin-bottom:6px">`).join("")}`
+    + `<h2>v6 · small buttons, 380 px, two per row</h2><div class="pair">${BTN.map(b => `<img src="${M}buttons/small/${b}.svg">`).join("")}</div>`
+    + ["howto/gestures.svg", "howto/devices.svg", "sections/start.svg", "sections/observe-first.svg"].map(s => `<h2>v6 · ${s}</h2><img class="w" src="${M}${s}">`).join("")
+    + `<h2>v6 · tiles/eyepiece.svg</h2><div class="tiles"><img src="${M}tiles/eyepiece.svg" style="width:400px"><img src="${M}tiles/telescopes.svg"></div>`;
+  const onlyNew = location.hash === "#new";
+  const html = v6 + (onlyNew ? "" : parts.map(([src, cls]) => cls === "tiles"
     ? `<h2>tiles</h2><div class="tiles">${["solar-observatory", "surveys", "telescopes", "mission-designer", "moon", "dsn", "academy"].map(t => `<img src="${M}tiles/${t}.svg">`).join("")}</div>`
-    : `<h2>${src}</h2><img class="${cls}" src="${M}${src}">`).join("");
+    : `<h2>${src}</h2><img class="${cls}" src="${M}${src}">`).join(""));
   document.getElementById("L").innerHTML = "<h2>GitHub light (#ffffff)</h2>" + html;
   document.getElementById("D").innerHTML = "<h2>GitHub dark (#0d1117)</h2>" + html;
 </script>

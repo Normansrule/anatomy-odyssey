@@ -1,0 +1,425 @@
+{
+ "about": "Instruments, eyepieces and targets for the Telescope simulator (eyepiece.html). Apertures and focal lengths are typical of each class of instrument, not of any one product. Surface brightnesses (sb, V magnitudes per square arcsecond) are what the naked eye would receive; see eyepiece-optics.js for every formula and its source.",
+ "instruments": [
+  {
+   "id": "eye",
+   "name": "Your eyes",
+   "short": "Naked eye",
+   "kind": "eye",
+   "aperture": 7,
+   "tau": 1,
+   "fixedField": 12,
+   "orientation": "correct",
+   "blurb": "A 7 mm pupil, no magnification. The baseline everything else is compared with.",
+   "note": "Your eye's pupil opens to about 7 mm in the dark (a little less as we get older). The circle shows a 12° patch of sky: about the width of your fist held at arm's length."
+  },
+  {
+   "id": "binoculars",
+   "name": "10×50 binoculars",
+   "short": "Binoculars",
+   "kind": "binocular",
+   "aperture": 50,
+   "fixedMag": 10,
+   "fixedField": 6.5,
+   "tau": 0.85,
+   "orientation": "correct",
+   "blurb": "10× magnification, 50 mm lenses. Wide, bright, right way up, and fits in a drawer.",
+   "note": "Binoculars use prisms, so the view is the right way up. A 6.5° field shows whole star clusters that are too big for most telescopes."
+  },
+  {
+   "id": "refractor70",
+   "name": "70 mm refractor",
+   "short": "70 mm refractor",
+   "kind": "telescope",
+   "aperture": 70,
+   "focal": 700,
+   "tau": 0.85,
+   "orientation": "mirror",
+   "blurb": "A lens at the front, on a light tripod: the classic beginner's telescope.",
+   "note": "A 70 mm lens with a 700 mm focal length (f/10). Most refractors are used with a star diagonal, a mirror that makes viewing comfortable but shows the sky mirror-reversed."
+  },
+  {
+   "id": "reflector130",
+   "name": "130 mm reflector",
+   "short": "130 mm reflector",
+   "kind": "telescope",
+   "aperture": 130,
+   "focal": 650,
+   "tau": 0.8,
+   "obstruction": 0.3,
+   "spider": 4,
+   "orientation": "rotate",
+   "blurb": "A mirror at the bottom of the tube. Collects 3.4× the light of a 70 mm lens.",
+   "note": "A Newtonian reflector: 130 mm mirror, 650 mm focal length (f/5). Newtonians show the sky upside down (rotated 180°), which makes no difference in space."
+  },
+  {
+   "id": "dob8",
+   "name": "8-inch Dobsonian",
+   "short": "8-inch Dob",
+   "kind": "telescope",
+   "aperture": 203,
+   "focal": 1200,
+   "tau": 0.8,
+   "obstruction": 0.23,
+   "spider": 4,
+   "orientation": "rotate",
+   "blurb": "A 203 mm mirror on a simple swivel box. The most-recommended first 'serious' telescope.",
+   "note": "A Newtonian reflector on a Dobsonian mount: a wooden box that turns left-right and up-down by hand. 203 mm (8 inches), 1200 mm focal length (f/5.9)."
+  },
+  {
+   "id": "sct11",
+   "name": "11-inch Schmidt-Cassegrain",
+   "short": "11-inch SCT",
+   "kind": "telescope",
+   "aperture": 280,
+   "focal": 2800,
+   "tau": 0.75,
+   "obstruction": 0.36,
+   "orientation": "mirror",
+   "blurb": "A compact folded telescope, 280 mm across, usually on a motorised 'go-to' mount.",
+   "note": "A Schmidt-Cassegrain telescope (SCT): a mirror plus a thin corrector lens folds 2800 mm of focal length (f/10) into a short tube. Used with a star diagonal, so the view is mirror-reversed."
+  },
+  {
+   "id": "obs1m",
+   "name": "1 m observatory telescope",
+   "short": "1 m observatory",
+   "kind": "telescope",
+   "aperture": 1000,
+   "focal": 8000,
+   "tau": 0.75,
+   "obstruction": 0.3,
+   "spider": 4,
+   "orientation": "rotate",
+   "blurb": "A research-class mirror under a dome. Some observatories hold public viewing nights.",
+   "note": "A 1-metre Cassegrain at f/8. Mirrors this big are almost always limited by the air, not by their size: the extra aperture mostly buys brightness."
+  },
+  {
+   "id": "hubble",
+   "name": "Hubble Space Telescope",
+   "short": "Hubble",
+   "kind": "camera",
+   "aperture": 2400,
+   "focal": 57600,
+   "space": true,
+   "lambdaNm": 500,
+   "cameraFieldArcsec": 162,
+   "cameraName": "Wide Field Camera 3 (WFC3)",
+   "cameraLimit": 27.5,
+   "spider": 4,
+   "orientation": "correct",
+   "blurb": "A 2.4 m mirror above the air, in visible and ultraviolet light. Camera only: nobody looks through it.",
+   "note": "The Hubble Space Telescope (HST) orbits above the atmosphere, so there is no twinkling and no light pollution. It has no eyepiece: its cameras take pictures. The square shows the 162″ field of its Wide Field Camera 3 (WFC3), at 500 nm (green light)."
+  },
+  {
+   "id": "webb",
+   "name": "James Webb Space Telescope",
+   "short": "Webb",
+   "kind": "camera",
+   "aperture": 6500,
+   "focal": 131400,
+   "space": true,
+   "lambdaNm": 2000,
+   "cameraFieldArcsec": 132,
+   "cameraName": "Near Infrared Camera (NIRCam)",
+   "cameraLimit": 29,
+   "spider": 6,
+   "infrared": true,
+   "orientation": "correct",
+   "blurb": "A 6.5 m gold mirror, 1.5 million km away, seeing infrared (heat) light. Camera only.",
+   "note": "The James Webb Space Telescope (JWST) sees infrared light, which our eyes cannot. It has no eyepiece: pictures are made in infrared and shown in 'false colour' (longer wavelengths drawn redder). The square shows 2.2′, one module of its Near Infrared Camera (NIRCam), at 2 micrometres (µm)."
+  },
+  {
+   "id": "custom",
+   "name": "Your own telescope",
+   "short": "Custom",
+   "kind": "telescope",
+   "aperture": 150,
+   "focal": 750,
+   "tau": 0.8,
+   "obstruction": 0.25,
+   "spider": 4,
+   "orientation": "rotate",
+   "custom": true,
+   "blurb": "Type in the aperture and focal length printed on any telescope.",
+   "note": "Enter the two numbers printed on the tube or in the manual: aperture (the width of the main lens or mirror) and focal length."
+  }
+ ],
+ "eyepieces": [
+  {
+   "focal": 32,
+   "afov": 52,
+   "name": "32 mm",
+   "type": "Plössl",
+   "role": "Widest view"
+  },
+  {
+   "focal": 25,
+   "afov": 52,
+   "name": "25 mm",
+   "type": "Plössl",
+   "role": "Finder / low power"
+  },
+  {
+   "focal": 15,
+   "afov": 66,
+   "name": "15 mm",
+   "type": "wide-angle",
+   "role": "Medium power"
+  },
+  {
+   "focal": 10,
+   "afov": 66,
+   "name": "10 mm",
+   "type": "wide-angle",
+   "role": "High power"
+  },
+  {
+   "focal": 6,
+   "afov": 66,
+   "name": "6 mm",
+   "type": "wide-angle",
+   "role": "Planets, steady nights"
+  }
+ ],
+ "targets": [
+  {
+   "id": "moon",
+   "name": "Moon",
+   "kind": "moon",
+   "sb": 3.3,
+   "color": [
+    1.0,
+    0.97,
+    0.92
+   ],
+   "eye": "Craters line up along the terminator, the line between day and night, where long shadows show every bump. The full Moon is flat and dazzling.",
+   "photo": "Photos look much the same as the eye: the Moon is bright enough for the colour-seeing cones of your eye.",
+   "tip": "Best a few days either side of first or last quarter, not at full Moon."
+  },
+  {
+   "id": "jupiter",
+   "name": "Jupiter",
+   "kind": "planet",
+   "sb": 5.4,
+   "color": [
+    0.9,
+    0.82,
+    0.7
+   ],
+   "eye": "A small, bright disc with two dark belts and up to four 'stars' in a line: the moons Galileo found in 1610. They move from night to night, and Io visibly from hour to hour.",
+   "photo": "Planetary cameras record thousands of frames and keep the sharpest, showing far more than one glance.",
+   "tip": "About 50× shows the moons; 100–200× shows the belts."
+  },
+  {
+   "id": "saturn",
+   "name": "Saturn",
+   "kind": "planet",
+   "sb": 6.9,
+   "color": [
+    0.92,
+    0.83,
+    0.62
+   ],
+   "eye": "The rings are the moment most people fall for astronomy. Around 2025–2026 they are close to edge-on, a thin line through the planet, opening up again over the next years.",
+   "photo": "Same shape, more colour and sharper detail from stacked video.",
+   "tip": "Any telescope from 70 mm shows the rings at 50× or more."
+  },
+  {
+   "id": "mars",
+   "name": "Mars",
+   "kind": "planet",
+   "sb": 4.5,
+   "color": [
+    0.92,
+    0.5,
+    0.3
+   ],
+   "eye": "Small and orange. Only near opposition, every 26 months, is Mars close enough to show a polar cap and dark markings.",
+   "photo": "Stacked video brings out the dark features and the white polar cap.",
+   "tip": "Wait for opposition (next: February 2027) and use high power on a steady night."
+  },
+  {
+   "id": "venus",
+   "name": "Venus",
+   "kind": "planet",
+   "sb": 1.6,
+   "color": [
+    1.0,
+    0.97,
+    0.88
+   ],
+   "eye": "Dazzling, featureless cloud tops, but it shows phases like the Moon: Galileo's proof that Venus orbits the Sun.",
+   "photo": "In ultraviolet, cameras catch faint cloud bands. In visible light it is just as plain.",
+   "tip": "Observe in twilight so it is not so glaring."
+  },
+  {
+   "id": "m42",
+   "name": "Orion Nebula",
+   "short": "Orion Nebula (M42)",
+   "kind": "nebula",
+   "ra": 83.822,
+   "dec": -5.4,
+   "extent": 70,
+   "eye": "A ghostly grey-green glow shaped like a bird with spread wings, around four hot stars called the Trapezium. It is the brightest nebula in the sky, but the eye still sees it without colour.",
+   "photo": "The famous pink and red come from hydrogen gas, glowing at a wavelength the dark-adapted eye barely registers: a long exposure collects it.",
+   "tip": "Low power (20–60×) and a dark sky. Visible in the evening from about December to March.",
+   "chip": "Orion Nebula"
+  },
+  {
+   "id": "m31",
+   "name": "Andromeda Galaxy",
+   "short": "Andromeda (M31)",
+   "kind": "galaxy",
+   "ra": 10.6846,
+   "dec": 41.2692,
+   "extent": 190,
+   "eye": "A soft oval smudge with a bright centre: the light of a trillion stars that left 2.5 million years ago. It is six full Moons long, but the eye sees mostly the core.",
+   "photo": "Photos show spiral dust lanes, blue star-forming regions and two companion galaxies (M32 and M110) across 3°: far wider than most telescope views.",
+   "tip": "Binoculars or the lowest power you have, from a dark site. Autumn evenings.",
+   "chip": "Andromeda"
+  },
+  {
+   "id": "m45",
+   "name": "Pleiades",
+   "short": "Pleiades (M45)",
+   "kind": "cluster",
+   "ra": 56.75,
+   "dec": 24.117,
+   "extent": 110,
+   "eye": "A little dipper of blue-white stars, with dozens more appearing in binoculars. Too big for most telescopes at high power.",
+   "photo": "Long exposures reveal blue dust the cluster is passing through, lit like fog in headlights. The eye rarely sees it.",
+   "tip": "Binoculars are ideal. Autumn to spring evenings.",
+   "chip": "Pleiades"
+  },
+  {
+   "id": "albireo",
+   "name": "Albireo",
+   "short": "Albireo (double star)",
+   "kind": "double",
+   "ra": 292.6803,
+   "dec": 27.9597,
+   "stars": [
+    {
+     "name": "Albireo A",
+     "mag": 3.18,
+     "bv": 1.09
+    },
+    {
+     "name": "Albireo B",
+     "mag": 5.09,
+     "bv": -0.06,
+     "sep": 34.4,
+     "pa": 54
+    }
+   ],
+   "eye": "Gold and blue: the prettiest colour contrast in the sky. The two stars are 34″ apart, easy at 30× in any telescope.",
+   "photo": "The colours look the same: the stars are bright enough for colour vision.",
+   "tip": "Summer and autumn evenings, in the Swan (Cygnus).",
+   "chip": "Albireo"
+  },
+  {
+   "id": "epslyr",
+   "name": "Epsilon Lyrae",
+   "short": "Double Double (ε Lyr)",
+   "kind": "double",
+   "ra": 281.08479,
+   "dec": 39.67013,
+   "stars": [
+    {
+     "name": "ε1 A",
+     "mag": 5.15,
+     "bv": 0.16,
+     "ra": 281.08479,
+     "dec": 39.67013
+    },
+    {
+     "name": "ε1 B",
+     "mag": 6.1,
+     "bv": 0.2,
+     "sep": 2.3,
+     "pa": 347,
+     "of": 0
+    },
+    {
+     "name": "ε2 C",
+     "mag": 5.25,
+     "bv": 0.19,
+     "ra": 281.09492,
+     "dec": 39.61272
+    },
+    {
+     "name": "ε2 D",
+     "mag": 5.38,
+     "bv": 0.2,
+     "sep": 2.4,
+     "pa": 79,
+     "of": 2
+    }
+   ],
+   "eye": "Sharp eyes see two stars 3.5′ apart. A telescope splits each of those again, 2.3″ and 2.4″ apart: a classic test of resolution and steady air. The view starts on ε1; ε2 is 3.5′ to the south (drag to find it).",
+   "photo": "Same stars: this target is about sharpness, not colour.",
+   "tip": "About 100× or more with 70 mm or larger, on a steady night. Next to Vega.",
+   "chip": "ε Lyrae"
+  },
+  {
+   "id": "sun",
+   "name": "Sun",
+   "short": "Sun (with filter)",
+   "kind": "sun",
+   "color": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "eye": "Through a certified white-light filter: a white disc darker at the edge, with dark sunspots that change day by day.",
+   "photo": "Special hydrogen-alpha filters show prominences and flares; see our Solar observatory page for today's Sun.",
+   "tip": "Only with a certified full-aperture solar filter over the FRONT of the telescope. Never an eyepiece filter.",
+   "chip": "Sun"
+  }
+ ],
+ "trapezium": [
+  {
+   "name": "θ¹ Ori A",
+   "ra": 83.81596,
+   "dec": -5.38731,
+   "mag": 6.73,
+   "bv": 0.0
+  },
+  {
+   "name": "θ¹ Ori B",
+   "ra": 83.81721,
+   "dec": -5.38522,
+   "mag": 7.96,
+   "bv": 0.1
+  },
+  {
+   "name": "θ¹ Ori C",
+   "ra": 83.81858,
+   "dec": -5.38967,
+   "mag": 5.13,
+   "bv": -0.2
+  },
+  {
+   "name": "θ¹ Ori D",
+   "ra": 83.82192,
+   "dec": -5.38794,
+   "mag": 6.7,
+   "bv": 0.0
+  }
+ ],
+ "galilean": {
+  "diamKm": [
+   3643,
+   3122,
+   5268,
+   4821
+  ],
+  "mag0": [
+   5.02,
+   5.29,
+   4.61,
+   5.65
+  ],
+  "note": "Opposition magnitudes (Jupiter at 4.2 AU from Earth, 5.2 AU from the Sun), NASA Jupiter satellite fact sheet."
+ }
+}

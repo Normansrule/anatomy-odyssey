@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Telescope simulator · Cosmic Library</title>
+<meta name="description" content="What would I actually see? Pick binoculars, a beginner telescope, a big Dobsonian, Hubble or Webb, choose an eyepiece, and see tonight's Moon, Jupiter, Saturn, nebulae and double stars as they really look, with the maths on tap.">
+<meta property="og:title" content="Telescope simulator · Cosmic Library">
+<meta property="og:description" content="What would I actually see? Pick binoculars, a beginner telescope, a big Dobsonian, Hubble or Webb, choose an eyepiece, and see tonight's Moon, Jupiter, Saturn, nebulae and double stars as they really look, with the maths on tap.">
+<meta name="theme-color" content="#04050a">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/codex.css">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="assets/css/eyepiece.css">
+</head>
+<body data-page="eyepiece" data-no-sky>
+
+<main class="ep-page">
+  <header class="ep-head">
+    <div class="ep-head-text">
+      <h1><span class="ep-kicker">Telescope simulator</span>What would I <span class="grad-text">actually see?</span></h1>
+      <p class="ep-lede">Pick an instrument, an eyepiece and a target. The circle shows it as it really looks: true size, brightness and blur, with tonight's Moon and Jupiter's moons where they really are.</p>
+    </div>
+    <div class="ep-where" role="group" aria-label="Where and when">
+      <div class="ep-where-row">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.6" fill="currentColor"/></svg>
+        <span id="locName">Los Angeles</span>
+        <button class="btn small" id="geoBtn" type="button">Use my location</button>
+      </div>
+      <div class="seg" id="whenSeg" role="group" aria-label="Time">
+        <button type="button" data-when="now" aria-pressed="true">Right now</button>
+        <button type="button" data-when="tonight" aria-pressed="false">Tonight 9 pm</button>
+      </div>
+      <p class="ep-when-note" id="whenNote" aria-live="polite"></p>
+    </div>
+  </header>
+
+  <div class="ep-bench" id="bench">
+    <!-- 1. instrument + eyepiece -->
+    <section class="ep-col ep-kit" aria-labelledby="kitH">
+      <h2 class="ep-step" id="kitH"><b>1</b> Your instrument</h2>
+      <div class="ep-insts" id="instGrid" role="radiogroup" aria-label="Instrument"></div>
+      <div class="ep-custom" id="customBox" hidden>
+        <div class="field"><label for="cusD">Aperture <output id="cusDv">150 mm</output></label><input type="range" id="cusD" min="30" max="600" step="1" value="150"></div>
+        <div class="field"><label for="cusF">Focal length <output id="cusFv">750 mm</output></label><input type="range" id="cusF" min="200" max="4000" step="10" value="750"></div>
+      </div>
+      <p class="ep-inst-note" id="instNote"></p>
+
+      <h2 class="ep-step" id="epH"><b>2</b> Eyepiece</h2>
+      <div class="ep-eps" id="epRow" role="radiogroup" aria-labelledby="epH"></div>
+      <label class="switch ep-barlow"><span>2× Barlow lens <small class="muted">doubles the power</small></span><input type="checkbox" id="barlow"></label>
+      <p class="ep-ep-note" id="epNote"></p>
+    </section>
+
+    <!-- 2. the view -->
+    <section class="ep-col ep-viewcol" aria-labelledby="tgtH">
+      <div class="ep-viewbar">
+        <h2 class="ep-step" id="tgtH"><b>3</b> Pick a target <span class="ep-up-legend"><i></i>up now</span></h2>
+        <label class="switch ep-compare-sw"><span>Compare two instruments</span><input type="checkbox" id="compare"></label>
+      </div>
+      <div class="ep-targets" id="tgtRow" role="radiogroup" aria-labelledby="tgtH"></div>
+      <div class="ep-presets" id="presets" hidden>
+        <span class="hint">Try:</span>
+        <button class="btn small" type="button" data-preset="bino-dob">Binoculars vs 8-inch</button>
+        <button class="btn small" type="button" data-preset="70-dob">70 mm vs 8-inch</button>
+        <button class="btn small" type="button" data-preset="hst-jwst">Hubble vs Webb</button>
+      </div>
+      <div class="ep-views" id="views" aria-label="The eyepiece view"></div>
+      <div class="ep-target-info" id="tgtInfo" aria-live="polite"></div>
+      <div class="ep-conds" role="group" aria-labelledby="condH">
+        <h2 class="ep-step" id="condH"><b>5</b> Your sky tonight</h2>
+        <div class="field">
+          <label for="seeing">Air steadiness (seeing) <output id="seeingV">1.5″</output></label>
+          <input type="range" id="seeing" min="0.5" max="4" step="0.1" value="1.5" aria-describedby="seeingH">
+          <div class="ep-scale" id="seeingH"><span>Rock steady</span><span>Average</span><span>Boiling</span></div>
+        </div>
+        <div class="field">
+          <label for="bortle">Light pollution <output id="bortleV">Bortle 5</output></label>
+          <input type="range" id="bortle" min="1" max="9" step="1" value="6" aria-describedby="bortleH">
+          <div class="ep-scale ep-bortle-bar" id="bortleH"><span>Dark site</span><span>Suburbs</span><span>City</span></div>
+        </div>
+        <div class="field">
+          <label for="dark">Minutes in the dark <output id="darkV">30 min</output></label>
+          <input type="range" id="dark" min="0" max="30" step="1" value="30">
+          <p class="hint ep-hint" id="darkH">Your eyes take 20–30 minutes to adapt. One glance at a phone resets them.</p>
+        </div>
+        <div class="seg ep-mode" id="modeSeg" role="group" aria-label="Eye or photo">
+          <button type="button" data-mode="eye" aria-pressed="true">What your eye sees</button>
+          <button type="button" data-mode="photo" aria-pressed="false">Long-exposure photo</button>
+        </div>
+        <label class="switch"><span>Turn the view the right way up</span><input type="checkbox" id="correct"></label>
+      </div>
+    </section>
+
+    <!-- 3. readouts + conditions -->
+    <section class="ep-col ep-side" aria-labelledby="outH">
+      <h2 class="ep-step" id="outH"><b>4</b> What you get</h2>
+      <div class="ep-reads" id="reads"></div>
+      <div class="ep-cmp" id="cmpTable" hidden></div>
+
+    </section>
+  </div>
+
+  <!-- buying advice -->
+  <section class="ep-advice shell" aria-labelledby="advH">
+    <div class="eyebrow">Thinking of buying a telescope?</div>
+    <h2 id="advH">Five things worth knowing first</h2>
+    <div class="ep-adv-grid">
+      <article class="card spot ep-adv">
+        <svg class="ep-adv-ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="16" cy="24" r="6" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="24" r="12" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 24h6M44 24h-0" stroke="currentColor" stroke-width="2"/></svg>
+        <h3>Aperture matters most</h3>
+        <p>Aperture is the width of the main lens or mirror. It sets how much light you collect (twice the width, four times the light) and how fine the detail can be. Everything else is secondary.</p>
+        <button class="btn small" type="button" data-try="aperture">Try it: 70 mm vs 8-inch on Jupiter</button>
+      </article>
+      <article class="card spot ep-adv">
+        <svg class="ep-adv-ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 40h28M14 40l4-14h12l4 14" fill="none" stroke="currentColor" stroke-width="2"/><rect x="17" y="6" width="12" height="26" rx="2" transform="rotate(-22 23 19)" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <h3>Why so many people start with a Dobsonian</h3>
+        <p>A Dobsonian is a reflector on a simple swivel box. No motors, no wobbly tripod, nothing to set up: point and look. Most of the money goes into the mirror, so it gives the most aperture for the price.</p>
+        <button class="btn small" type="button" data-try="dob">See the 8-inch on the Orion Nebula</button>
+      </article>
+      <article class="card spot ep-adv">
+        <svg class="ep-adv-ico" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="10" width="32" height="28" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 30l18-12M15 18l18 12" stroke="currentColor" stroke-width="2"/></svg>
+        <h3>Ignore "600× power!" on the box</h3>
+        <p>Magnification is set by the eyepiece, so any telescope can claim any number. The useful limit is about 2× the aperture in millimetres (140× for 70 mm), and the air usually stops you near 250×. Beyond that you only enlarge the blur.</p>
+        <button class="btn small" type="button" data-try="power">Try it: 70 mm at 233×</button>
+      </article>
+      <article class="card spot ep-adv">
+        <svg class="ep-adv-ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2"/><path d="M24 12v12l8 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <h3>Binoculars are a great first step</h3>
+        <p>A pair of 10×50s shows the Moon's craters, Jupiter's moons, the Pleiades and Andromeda, needs no setup and never goes out of use. Many observers keep them next to the telescope.</p>
+        <button class="btn small" type="button" data-try="bino">See the Pleiades in binoculars</button>
+      </article>
+      <article class="card spot ep-adv ep-adv-links">
+        <svg class="ep-adv-ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 34l10-10 8 6 14-16" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="40" cy="14" r="3" fill="currentColor"/></svg>
+        <h3>Try real telescopes first, for free</h3>
+        <p>Robotic observatories take pictures for you over the internet, and astronomy clubs hold free star parties. Plan what to look at before you go out.</p>
+        <div class="ep-links">
+          <a class="btn small" href="telescopes.html">Use a telescope ↗</a>
+          <a class="btn small" href="sky.html">Night sky tonight</a>
+          <a class="btn small" href="moon.html">Moon explorer</a>
+          <a class="btn small" href="equations.html#magnification">The optics equations</a>
+        </div>
+      </article>
+    </div>
+
+    <details class="ep-honest">
+      <summary>How this simulator works, and where it cheats</summary>
+      <div class="prose">
+        <p><b>Positions are real.</b> The Moon's phase, tilt and libration come from Jean Meeus's <i>Astronomical Algorithms</i> (the same code as our Moon explorer); planets from NASA Jet Propulsion Laboratory (JPL) orbital elements; Jupiter's four big moons from their mean longitudes (checked against Meeus's worked example to about a quarter of a Jupiter radius). Stars brighter than magnitude 6 are real (Hipparcos catalogue); fainter stars are placed at random with the real average number per square degree.</p>
+        <p><b>The optics are real formulas:</b> magnification, field, exit pupil, the Rayleigh and Dawes limits, the limiting-magnitude rule of thumb, light-gathering power and the "2× aperture" limit are the ones on our <a href="equations.html#rayleigh">equations page</a>. Blur adds three things: the Airy disk of the aperture, the air (seeing, split into image motion and blur after Fried) and your eye's 1-arcminute sharpness divided by the magnification. Brightness follows the exit pupil: a telescope can never make a nebula brighter per square arcsecond than your naked eye sees it.</p>
+        <p><b>Approximations.</b> The Moon map is procedural (real maria and big craters, invented small ones, about 5 km per pixel), so at high power it runs out of detail long before a real telescope would. Jupiter's belts, the Great Red Spot's longitude, Mars's markings and the sunspots are illustrative. Nebula and galaxy shapes are hand-built models with realistic sizes and surface brightnesses. The eye model (colour fading in dim light, the detection threshold, dark adaptation) is simplified. Telescopes also show the sky tilted at an angle that changes through the night; we only show the flips.</p>
+      </div>
+    </details>
+  </section>
+</main>
+
+<script src="vendor/katex/katex.min.js"></script>
+<script src="assets/js/codex.js"></script>
+<script type="module" src="assets/js/eyepiece.js"></script>
+</body>
+</html>

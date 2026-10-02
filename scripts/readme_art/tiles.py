@@ -9,6 +9,7 @@ import random
 
 from tiles_extra import s_solar_obs, s_surveys, s_telescopes
 from tiles_extra2 import s_academy, s_dsn, s_mission, s_moon as s_moon_explorer
+from tiles_extra3 import s_eyepiece
 from common import (AURORA, BG, FLAME, FAINT, ICE, MUTED, NEBULA, PLASMA, SOL, TEXT, TEXT2, anim, arclen_sampler,
                     ellipse_arc, ellipse_pts, f, kf, neg, orbit_kf, pts_path, rrpath, stars, svg_doc, tr, twinkle_css,
                     window_kf)
@@ -45,6 +46,7 @@ PAGES = [
     ("library", "Documents", "Learn", "Flight manuals, reports and user guides", "library.html"),
     ("telescopes", "Use a telescope", "Learn", "Free robotic telescopes, live feeds, simulators", "telescopes.html"),
     ("academy", "Space Academy", "Learn", "A guided course with quizzes and badges", "academy.html"),
+    ("eyepiece", "Telescope simulator", "Learn", "See what a telescope would really show you", "eyepiece.html"),
     ("experiments", "Experiments", "Build", "20 builds from $0 to a custom circuit board", "experiments.html"),
     ("python", "Python toolkit", "Compute", "7 simulations and 52 physics tests", "simulations/"),
 ]
@@ -1334,6 +1336,7 @@ SCENES = {
     "experiments": s_experiments, "python": s_python,
     "solar-observatory": s_solar_obs, "surveys": s_surveys, "telescopes": s_telescopes,
     "mission-designer": s_mission, "moon": s_moon_explorer, "dsn": s_dsn, "academy": s_academy,
+    "eyepiece": s_eyepiece,
 }
 
 ALT = {
@@ -1365,6 +1368,9 @@ ALT = {
     "moon": "The near side of the Moon, maria in their real places, slowly librating while its phase cycles from new to full and back; landing sites from Luna 9 and Apollo 11 to Chandrayaan-3 blink in turn with their coordinates.",
     "dsn": "The Earth seen from above the North Pole turns with the Deep Space Network's three complexes, Goldstone, Madrid and Canberra, on its rim; the one facing Voyager 1 is named while a signal travels out and back and a round-trip light-time counter climbs to 46.3 hours.",
     "academy": "A star-map skill tree: lesson stars light up one by one and constellation lines join them, then a badge pops out with a shine.",
+    "eyepiece": "A round telescope eyepiece view cycles through what a small telescope really shows: Saturn with its rings and the Cassini gap, "
+                "craters along the Moon's terminator drifting past, Jupiter with its four Galilean moons in a row, and a close double star "
+                "that is a blended blob at 60 mm aperture, just split at 100 mm and cleanly split at 200 mm. A small telescope sits beside it.",
     "python": "A terminal types python simulations/run.py rocket, then plots the ascent curves of Saturn V and Falcon 9.",
 }
 

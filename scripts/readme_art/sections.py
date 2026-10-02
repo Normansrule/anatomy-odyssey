@@ -561,6 +561,139 @@ def sc_credits(x0):
     return dict(css="".join(css), body=body, x0=x0)
 
 
+def sc_observe_first(x0):
+    """Friendlier observe banner: a laptop on a hill shows a live view (Sun, Moon, galaxy) streamed from a
+    remote observatory dome across the valley, under a slowly wheeling sky."""
+    T = 12
+    gy = 134
+    pole = (x0 + 300, 8)
+    rng = random.Random(45)
+    st = []
+    for _ in range(80):
+        r = rng.uniform(14, 330)
+        a = rng.uniform(0, 2 * math.pi)
+        st.append(f'<circle cx="{f(r * math.cos(a))}" cy="{f(r * math.sin(a))}" r="{f(rng.uniform(.5, 1.5), 2)}" opacity="{f(rng.uniform(.3, .95), 2)}"/>')
+    lx, ly, lw, lh = x0 + 70, 58, 128, 72            # laptop screen
+    sx, sy, sr = lx + lw / 2 + 18, ly + lh / 2 + 2, 24   # round live view on the screen
+    dome_x, dr = x0 + 344, 26
+    css = [kf("sky", [(0, "transform:rotate(0)"), (100, "transform:rotate(-360deg)")]), anim(".sky", "sky", 90),
+           kf("sl", [(0, "opacity:.45"), (50, "opacity:1"), (100, "opacity:.45")]), anim(".sl", "sl", 3, "ease-in-out"),
+           kf("sig", [(0, "stroke-dashoffset:0"), (100, "stroke-dashoffset:-44")]), anim(".sig", "sig", 1.6),
+           kf("lvb", [(0, "opacity:1"), (50, "opacity:.2"), (100, "opacity:1")]) + anim(".lvb", "lvb", 1.4, "ease-in-out"),
+           kf("ds", [(0, "transform:rotate(-34deg)"), (50, "transform:rotate(-10deg)"), (100, "transform:rotate(-34deg)")]),
+           anim(".ds", "ds", 9, "ease-in-out"),
+           kf("gs", [(0, "transform:rotate(0)"), (100, "transform:rotate(-360deg)")]) + anim(".gs", "gs", 16)]
+    for i in range(3):
+        a, b = i * 33.33 + 2.5, (i + 1) * 33.33 - 2.5
+        if i == 0:
+            css.append(kf(f"lv{i}", [(0, "opacity:1"), (b, "opacity:1"), (b + 2.5, "opacity:0"), (97.5, "opacity:0"), (100, "opacity:1")]))
+        else:
+            css.append(win(f"lv{i}", a, b, 2.5))
+        css.append(anim(f".lv{i}", f"lv{i}", T))
+    spots = '<circle cx="-7" cy="-4" r="2.4" fill="#7a3a0a" opacity=".7"/><circle cx="6" cy="5" r="1.8" fill="#7a3a0a" opacity=".6"/>'
+    views = [
+        f'<circle r="{sr - 4}" fill="url(#osun)"/>{spots}',
+        f'<circle r="{sr - 4}" fill="#c9c6bd"/><circle cx="-6" cy="-5" r="5" fill="#8f8b83" opacity=".7"/><circle cx="7" cy="6" r="3.5" fill="#8f8b83" opacity=".7"/>'
+        f'<circle cx="5" cy="-8" r="2" fill="#8f8b83" opacity=".7"/><path d="M{sr - 4} 0A{sr - 4} {sr - 4} 0 0 1 0 {sr - 4}A{sr - 12} {sr - 4} 0 0 0 {sr - 4} 0Z" '
+        'fill="#04050a" opacity=".0"/>',
+        '<g class="gs"><ellipse rx="15" ry="6" fill="#b18cff" opacity=".35" transform="rotate(-25)"/><ellipse rx="8" ry="3.2" fill="#e2d4ff" opacity=".7" transform="rotate(-25)"/>'
+        '<path d="M-14 2Q-4 -10 10 -3M14 -2Q4 10 -10 3" stroke="#e2d4ff" stroke-opacity=".5" stroke-width="2" fill="none"/></g>',
+    ]
+    names = ["the Sun", "the Moon", "a galaxy"]
+    lv = "".join(f'<g class="lv{i}" style="opacity:{1 if i == 0 else 0}">{v}</g>' for i, v in enumerate(views))
+    lab = "".join(f'<g class="lv{i}" style="opacity:{1 if i == 0 else 0}"><text x="{lx + 10}" y="{ly + 36}" class="mono" font-size="11" fill="{TEXT2}">{n}</text></g>'
+                  for i, n in enumerate(names))
+    laptop = (f'<rect x="{lx - 5}" y="{ly - 5}" width="{lw + 10}" height="{lh + 10}" rx="6" fill="#2a3150" stroke="#cfd5e8" stroke-opacity=".55"/>'
+              f'<rect x="{lx}" y="{ly}" width="{lw}" height="{lh}" fill="#04050a"/>'
+              f'<circle class="lvb" cx="{lx + 11}" cy="{ly + 12}" r="3" fill="{PLASMA}"/>'
+              f'<text x="{lx + 18}" y="{ly + 16}" class="mono" font-size="10.5" font-weight="700" fill="{PLASMA}">LIVE</text>' + lab +
+              f'<g transform="translate({sx + 16} {sy})"><circle r="{sr}" fill="#000" stroke="{AURORA}" stroke-opacity=".6" stroke-width="1.4"/>'
+              f'<clipPath id="lvc"><circle r="{sr - 1}"/></clipPath><g clip-path="url(#lvc)">{lv}</g></g>'
+              f'<path d="M{lx - 16} {ly + lh + 5}H{lx + lw + 16}L{lx + lw + 6} {ly + lh + 13}H{lx - 6}Z" fill="#3a4262" stroke="#cfd5e8" stroke-opacity=".45"/>')
+    sig = (f'<path class="sig" d="M{dome_x - 4} {gy - 24 - dr - 2}Q{x0 + 300} {-6} {lx + lw - 6} {ly - 7}" fill="none" stroke="{SOL}" '
+           'stroke-opacity=".8" stroke-width="1.8" stroke-dasharray="4 7" stroke-linecap="round"/>')
+    body = (
+        f'<g transform="translate({pole[0]} {pole[1]})"><g class="sky"><g fill="#eaf4ff">{"".join(st)}</g></g></g>'
+        f'<path d="M{x0 + 214} 30A13 13 0 1 0 {x0 + 226} 48A10 10 0 1 1 {x0 + 214} 30Z" fill="#fff3c4"/>'
+        f'<path d="M{x0 - 40} {gy}Q{x0 + 120} {gy - 12} {x0 + 260} {gy - 2}T{x0 + 460} {gy - 6}V160H{x0 - 40}Z" fill="#070912"/>'
+        f'<path d="M{x0 - 40} {gy}Q{x0 + 120} {gy - 12} {x0 + 260} {gy - 2}T{x0 + 460} {gy - 6}" fill="none" stroke="{AURORA}" stroke-opacity=".35"/>'
+        + sig +
+        f'<rect x="{dome_x - dr}" y="{gy - 26}" width="{2 * dr}" height="24" fill="#10152a" stroke="#96aaff" stroke-opacity=".3"/>'
+        f'<path d="M{dome_x - dr} {gy - 26}A{dr} {dr} 0 0 1 {dome_x + dr} {gy - 26}Z" fill="#1a2140" stroke="#cfd5e8" stroke-opacity=".7" stroke-width="1.4"/>'
+        f'<path class="sl" d="M{dome_x - 5} {gy - 26 - dr + 1}H{dome_x + 5}V{gy - 26}H{dome_x - 5}Z" fill="{SOL}" opacity=".6"/>'
+        f'<path d="M{x0 + 400} {gy - 5}L{x0 + 406} {gy - 23}L{x0 + 412} {gy - 5}" fill="none" stroke="#8f98bd" stroke-width="2"/>'
+        f'<g transform="translate({x0 + 406} {gy - 23})"><g class="ds" style="transform:rotate(-20deg)"><path d="M-17 -3Q0 13 17 -3" fill="#1b2236" stroke="#cfd5e8" stroke-width="1.8"/>'
+        f'<path d="M-11 1L0 -14L11 1" fill="none" stroke="#8f98bd"/><circle cy="-14" r="2" fill="{AURORA}"/></g></g>'
+        + laptop
+    )
+    defs = ('<radialGradient id="osun" cx=".4" cy=".38" r=".7"><stop offset="0" stop-color="#fff3c4"/><stop offset=".55" stop-color="#ffc24b"/>'
+            '<stop offset="1" stop-color="#ff7a3d"/></radialGradient>')
+    return dict(css="".join(css), body=body, defs=defs, x0=x0)
+
+
+def sc_pick(x0):
+    """Start in 10 seconds: three page cards; a hand glides to the middle one, it lights up, the hand clicks and it opens."""
+    from pointers import hand
+    T = 7
+    cw, ch, gap = 112, 84, 14
+    cx0, cy0 = x0 + 50, 32
+    cards = [("Fly", FLAME), ("Explore", SOL), ("Look up", NEBULA)]
+    icons = [
+        ('<g transform="rotate(40)"><path d="M-4 9V-5Q-4 -12 0 -16Q4 -12 4 -5V9Z" fill="#eef2ff"/><path d="M-4 3L-8 10H-4ZM4 3L8 10H4Z" fill="#ff7a3d"/>'
+         '<path d="M-2.5 10Q0 18 2.5 10Z" fill="#ffc24b"/></g>'),
+        ('<ellipse rx="19" ry="5.5" transform="rotate(-16)" fill="none" stroke="#e8d7a8" stroke-width="2.5"/><circle r="10" fill="url(#psat)"/>'
+         '<path d="M-19 0A19 5.5 0 0 0 19 0" transform="rotate(-16)" fill="none" stroke="#e8d7a8" stroke-width="2.5"/>'),
+        ('<g stroke="#c9d0ea" stroke-width="1.8" stroke-linecap="round"><path d="M0 2L-8 16M0 2L8 16M0 2V17"/></g>'
+         '<g transform="rotate(-38)"><rect x="-4" y="-18" width="8" height="22" rx="1.5" fill="#e6e9f7"/><rect x="-5" y="-21" width="10" height="5" rx="1.5" fill="#b18cff"/></g>'
+         '<path d="M14 -14L15 -11L18 -10L15 -9L14 -6L13 -9L10 -10L13 -11Z" fill="#fff6d8"/>'),
+    ]
+    k = 1
+    tx, ty = cx0 + k * (cw + gap) + cw - 15, cy0 + ch - 27            # where the fingertip lands (clear of the label)
+    home = (x0 + 420, 190)
+    css = [kf("hd", [(0, f"transform:translate({home[0]}px,{home[1]}px) scale(1);opacity:0"), (6, "opacity:1"),
+                     (32, f"transform:translate({f(tx)}px,{f(ty)}px) scale(1)"), (38, f"transform:translate({f(tx)}px,{f(ty)}px) scale(1)"),
+                     (42, f"transform:translate({f(tx)}px,{f(ty)}px) scale(.86)"), (47, f"transform:translate({f(tx)}px,{f(ty)}px) scale(1)"),
+                     (72, f"transform:translate({f(tx + 10)}px,{f(ty + 22)}px) scale(1);opacity:1"), (84, "opacity:0"),
+                     (100, f"transform:translate({home[0]}px,{home[1]}px) scale(1);opacity:0")]) + anim(".hd", "hd", T, "ease-in-out"),
+           kf("lift", [(0, "transform:translateY(0)"), (26, "transform:translateY(0)"), (34, "transform:translateY(-5px)"), (42, "transform:translateY(-2px)"),
+                       (47, "transform:translateY(-5px)"), (84, "transform:translateY(-5px)"), (94, "transform:translateY(0)"), (100, "transform:translateY(0)")])
+           + anim(".lift", "lift", T, "ease-out"),
+           win("glo", 30, 86, 5) + anim(".glo", "glo", T),
+           kf("rp", [(0, "transform:scale(.3);opacity:0"), (42, "transform:scale(.3);opacity:0"), (43, "transform:scale(.4);opacity:.9"),
+                     (62, "transform:scale(2.2);opacity:0"), (100, "transform:scale(2.2);opacity:0")]) + anim(".rp", "rp", T, "ease-out"),
+           kf("op", [(0, "transform:scale(1);opacity:0"), (45, "transform:scale(1);opacity:0"), (48, "transform:scale(1.02);opacity:.85"),
+                     (66, "transform:scale(1.45);opacity:0"), (100, "transform:scale(1.45);opacity:0")]) + anim(".op", "op", T, "ease-out"),
+           win("ok", 50, 86, 4) + anim(".ok", "ok", T),
+           kf("dim", [(0, "opacity:1"), (30, "opacity:1"), (36, "opacity:.45"), (86, "opacity:.45"), (92, "opacity:1"), (100, "opacity:1")])
+           + anim(".dim", "dim", T)]
+    out = []
+    for i, ((lab, col), ic) in enumerate(zip(cards, icons)):
+        x = cx0 + i * (cw + gap)
+        mcx, mcy = x + cw / 2, cy0 + ch / 2
+        face = (f'<rect x="{x}" y="{cy0}" width="{cw}" height="{ch}" rx="12" fill="#0f1528" stroke="{col}" stroke-opacity=".45" stroke-width="1.3"/>'
+                f'<rect x="{x}" y="{cy0}" width="{cw}" height="{ch}" rx="12" fill="{col}" fill-opacity=".07"/>'
+                f'<g transform="translate({f(mcx)} {cy0 + 32})">{ic}</g>'
+                f'<text x="{f(mcx)}" y="{cy0 + ch - 12}" class="sans" font-size="14" font-weight="700" text-anchor="middle" fill="{TEXT}">{lab}</text>')
+        if i == k:
+            out.append(
+                f'<g class="lift">'
+                f'<g class="glo" style="opacity:1"><rect x="{x - 6}" y="{cy0 - 6}" width="{cw + 12}" height="{ch + 12}" rx="17" fill="{col}" opacity=".16"/>'
+                f'<rect x="{x - 2.5}" y="{cy0 - 2.5}" width="{cw + 5}" height="{ch + 5}" rx="14" fill="none" stroke="{col}" stroke-width="2"/></g>'
+                + face +
+                f'<g transform="translate({f(mcx)} {f(mcy)})"><g class="op" style="opacity:0"><rect x="{-cw / 2}" y="{-ch / 2}" width="{cw}" height="{ch}" rx="12" '
+                f'fill="none" stroke="{col}" stroke-width="2.4"/></g></g>'
+                f'<g class="ok" style="opacity:0"><g transform="translate({x + cw - 18} {cy0 + 16})"><circle r="9" fill="{col}"/>'
+                f'<path d="M-3.5 3.5L3.5 -3.5M-1 -3.5H3.5V1" stroke="#04050a" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></g>'
+                '</g>'
+                f'<g transform="translate({f(tx)} {f(ty)})"><g class="rp" style="opacity:0"><circle r="12" fill="none" stroke="{col}" stroke-width="2"/></g></g>')
+        else:
+            out.append(f'<g class="dim">{face}</g>')
+    body = "".join(out) + f'<g class="hd" style="transform:translate({f(tx)}px,{f(ty)}px)">{hand()}</g>'
+    defs = ('<radialGradient id="psat" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#fff1cf"/><stop offset=".6" stop-color="#e3c27f"/>'
+            '<stop offset="1" stop-color="#8a6a33"/></radialGradient>')
+    return dict(css="".join(css), body=body, defs=defs, x0=x0)
+
+
 # ------------------------------------------------------------------------------ build
 def specs():
     c = counts()
@@ -590,6 +723,14 @@ def specs():
         ("credits", "CONTRIBUTING · CREDITS · LICENCE", "Credits", "Built on open data, open source and people like you", PLASMA, SOL, sc_credits,
          "Stars light up one by one and join into a constellation, each named after something this project builds on: three.js, KaTeX, NASA, "
          "ESA/Webb, NOAA, CelesTrak and d3-celestial; the last, brightest star is labelled you."),
+        ("observe-first", "NO TELESCOPE NEEDED", "Look at the real sky", "Today's real Sun, tonight's sky and real telescopes", AURORA, SOL,
+         sc_observe_first,
+         "A laptop on a hillside shows a LIVE view that cycles through the Sun, the Moon and a galaxy, streamed along a dashed signal from an "
+         "observatory dome across the valley, while the night sky wheels slowly overhead and a radio dish nods."),
+        ("start", "PICK ONE AND CLICK", "Start in 10 seconds", "Every card opens a live page in your browser. Nothing to install.", ICE, AURORA,
+         sc_pick,
+         "Three page cards, Fly, Explore and Look up; a hand cursor glides to the middle card, which lifts and glows, clicks it with a ripple, "
+         "and the card opens."),
     ]
 
 

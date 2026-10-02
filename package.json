@@ -4,8 +4,9 @@
   "description": "An open atlas of space and spaceflight: 3D launch and landing simulations, live satellites, a planetarium, equations, documents and hands-on builds.",
   "scripts": {
     "serve": "python3 -m http.server 8000 --directory site",
-    "check": "node --no-warnings scripts/check_equations.mjs && node --no-warnings scripts/test_ephemeris.mjs && node --no-warnings scripts/test_sky.mjs && node --no-warnings scripts/test_booster.mjs && node --no-warnings scripts/test_moon_physics.mjs && node --no-warnings scripts/test_mars_edl.mjs && node --no-warnings scripts/test_builder.mjs && node --no-warnings scripts/test_space_weather.mjs && node --no-warnings scripts/test_mission.mjs && node --no-warnings scripts/test_academy.mjs && node --no-warnings scripts/test_dsn.mjs && node --no-warnings scripts/test_moon.mjs",
-    "build:equations-md": "node scripts/build_equations_md.mjs"
+    "check": "node --no-warnings scripts/check_equations.mjs && node --no-warnings scripts/test_ephemeris.mjs && node --no-warnings scripts/test_sky.mjs && node --no-warnings scripts/test_booster.mjs && node --no-warnings scripts/test_moon_physics.mjs && node --no-warnings scripts/test_mars_edl.mjs && node --no-warnings scripts/test_builder.mjs && node --no-warnings scripts/test_space_weather.mjs && node --no-warnings scripts/test_mission.mjs && node --no-warnings scripts/test_academy.mjs && node --no-warnings scripts/test_dsn.mjs && node --no-warnings scripts/test_moon.mjs && node --no-warnings scripts/test_eyepiece.mjs && node scripts/build_user_guide.mjs --check",
+    "build:equations-md": "node scripts/build_equations_md.mjs",
+    "build:guide": "node scripts/build_user_guide.mjs"
   },
   "author": "Aleksander Norman",
   "license": "MIT",

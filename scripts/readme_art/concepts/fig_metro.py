@@ -23,7 +23,8 @@ ST = {
     "moon": (130, 250, 0, A, "middle"),
     "telescopes": (140, 350, 0, -20, "middle"), "surveys": (250, 350, 0, B, "middle"), "black-hole": (360, 350, 0, A, "middle"),
     "galaxies": (470, 350, 0, B, "middle"), "scale": (580, 350, 0, A, "middle"),
-    # LEARN: down from Use a telescope, right along y = 450
+    # LEARN: down from Use a telescope (via the Telescope simulator), right along y = 450
+    "eyepiece": (140, 400, 14, 5, "start"),
     "academy": (140, 450, 0, B, "middle"), "orbits": (250, 450, 0, B, "middle"), "equations": (360, 450, 14, -14, "start"),
     "timeline": (470, 450, 0, B, "middle"), "gallery": (580, 450, 0, B, "middle"), "library": (690, 450, 0, B, "middle"),
     # BUILD: bottom row
@@ -39,7 +40,7 @@ MEMBERS = {
     "FLY": ["launch", "booster", "moon-landing", "mars-landing", "shuttle", "hangar", "mission-designer", "builder"],
     "EXPLORE": ["mission-designer", "dsn", "earth", "space-weather", "solar-observatory", "sun", "solar-system", "sky", "moon",
                 "telescopes", "surveys", "black-hole", "galaxies", "scale"],
-    "LEARN": ["telescopes", "academy", "orbits", "equations", "timeline", "gallery", "library"],
+    "LEARN": ["telescopes", "eyepiece", "academy", "orbits", "equations", "timeline", "gallery", "library"],
     "BUILD": ["builder", "experiments", "equations"],
 }
 INTERCHANGE = {p for p in ST if sum(p in m for m in MEMBERS.values()) > 1}

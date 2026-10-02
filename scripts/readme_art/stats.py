@@ -65,12 +65,16 @@ def counter(i, final, label, x, y, col):
     vals = [str(round(n_final * (1 - (1 - k / K) ** 2.2))) for k in range(K)] + [final]
     step = 42
     t0, t1 = 6 + i * 2.5, 30 + i * 2.5
-    css = kf(f"c{i}", [(0, "transform:translateY(0);opacity:1"), (t0, f"transform:translateY(0);animation-timing-function:steps({K},end)"),
-                       (t1, f"transform:translateY({-K * step}px)"), (90, f"transform:translateY({-K * step}px);opacity:1"),
-                       (95, f"transform:translateY({-K * step}px);opacity:0"), (95.1, "transform:translateY(0);opacity:0"),
-                       (100, "transform:translateY(0);opacity:1")]) + anim(f".c{i}", f"c{i}", T)
-    css += kf(f"g{i}", [(0, "transform:scaleX(0);opacity:0"), (t1 - 1, "transform:scaleX(0);opacity:0"), (t1 + 2, "transform:scaleX(1);opacity:1"),
-                        (90, "transform:scaleX(1);opacity:1"), (95, "transform:scaleX(1);opacity:0"), (100, "transform:scaleX(0);opacity:0")]) + anim(f".g{i}", f"g{i}", T, "ease-out")
+    # Start on the real value (so a first paint or a still screenshot is never "0"),
+    # blink out, then roll up from zero and hold on the final value to the end of the loop.
+    F = f"transform:translateY({-K * step}px)"
+    css = kf(f"c{i}", [(0, F + ";opacity:1"), (t0 - 3, F + ";opacity:1"), (t0 - 1, F + ";opacity:0"),
+                       (t0 - .9, "transform:translateY(0);opacity:0"),
+                       (t0, f"transform:translateY(0);opacity:1;animation-timing-function:steps({K},end)"),
+                       (t1, F + ";opacity:1"), (100, F + ";opacity:1")]) + anim(f".c{i}", f"c{i}", T)
+    css += kf(f"g{i}", [(0, "transform:scaleX(1);opacity:1"), (t0 - 3, "transform:scaleX(1);opacity:1"), (t0 - 1, "transform:scaleX(0);opacity:0"),
+                        (t1 - 1, "transform:scaleX(0);opacity:0"), (t1 + 2, "transform:scaleX(1);opacity:1"),
+                        (100, "transform:scaleX(1);opacity:1")]) + anim(f".g{i}", f"g{i}", T, "ease-out")
     col_txt = "".join(f'<text x="0" y="{k * step}" text-anchor="middle" class="sans" font-size="34" font-weight="800" fill="{TEXT}">{v}</text>'
                       for k, v in enumerate(vals))
     svg = (f'<clipPath id="w{i}"><rect x="{f(x - 70)}" y="{y - 32}" width="140" height="42"/></clipPath>'
@@ -115,5 +119,5 @@ def build():
     desc = ("Cosmic Library in numbers, counted from the repository when this image was built: "
             + ", ".join(f"{fin} {lab}" for _, fin, lab, _ in items)
             + ". Sources: site/assets/js/codex.js (pages), site/data/equations.json, gallery.json, timeline.json and library.json, "
-              "the experiments/ folders and simulations/cosmic/. Each counter ticks up from zero beside a small animated icon.")
+              "the experiments/ folders and simulations/cosmic/. Each counter rolls up from zero beside a small animated icon.")
     return svg_doc(W, H, "Cosmic Library in numbers", desc, defs, "".join(css), "".join(body), uid="st")

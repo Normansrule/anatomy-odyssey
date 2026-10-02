@@ -57,6 +57,7 @@ cosmic-library/
 | moon | moon.html | sim — 3D Moon, landing sites, phases, libration, eclipses |
 | dsn | dsn.html | sim — live Deep Space Network antennas and spacecraft |
 | academy | academy.html | atlas — guided course: lessons, widgets, quizzes, badges |
+| eyepiece | eyepiece.html | sim — telescope + eyepiece view simulator |
 
 ## Page skeleton
 
@@ -117,3 +118,7 @@ cosmic-library/
 ```bash
 python3 -m http.server 8000 --directory site   # then open http://localhost:8000
 ```
+
+## Help panel and user guide
+
+Every page gets a "?" button (and the `?` key) from `codex.js`, which shows that page's entry in `site/data/help.json`: what it is, try-this steps, controls, live-or-simulated, and how to make it faster. **When you add a page or change its controls, update its `help.json` entry**, then run `npm run build:guide` to regenerate `docs/USER_GUIDE.md`. `node scripts/build_user_guide.mjs --check` (part of `npm run check` and CI) fails if a page has no entry or names a quality setting the page doesn't read.
