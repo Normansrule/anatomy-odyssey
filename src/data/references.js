@@ -204,4 +204,28 @@ export const REFERENCES = {
     text: 'OpenStax Microbiology, section 18.4: B Lymphocytes and Humoral Immunity (primary and secondary responses).',
     url: 'https://openstax.org/books/microbiology/pages/18-4-b-lymphocytes-and-humoral-immunity',
   },
+  'openstax-micro-tcell': {
+    text: 'OpenStax Microbiology, section 18.3: T Lymphocytes and Cellular Immunity.',
+    url: 'https://openstax.org/books/microbiology/pages/18-3-t-lymphocytes-and-cellular-immunity',
+  },
+  yoon2010: {
+    text: 'Yoon, H., Kim, T. S., and Braciale, T. J. "The cell cycle time of CD8+ T cells responding in vivo is controlled by the type of antigenic stimulus." PLoS ONE 5(11):e15423, 2010.',
+    url: 'https://doi.org/10.1371/journal.pone.0015423',
+  },
+  alaghbar2022: {
+    text: 'Al-Aghbar, M. A., et al. "The interplay between membrane topology and mechanical forces in regulating T cell receptor activity." Communications Biology 5:40, 2022.',
+    url: 'https://doi.org/10.1038/s42003-021-02995-1',
+  },
+  bjorkman1987: {
+    text: 'Bjorkman, P. J., et al. "Structure of the human class I histocompatibility antigen, HLA-A2." Nature 329:506–512, 1987.',
+    url: 'https://doi.org/10.1038/329506a0',
+  },
+  garboczi1996: {
+    text: 'Garboczi, D. N., et al. "Structure of the complex between human T-cell receptor, viral peptide and HLA-A2." Nature 384:134–141, 1996.',
+    url: 'https://doi.org/10.1038/384134a0',
+  },
+  law2010: {
+    text: 'Law, R. H. P., et al. "The structural basis for membrane binding and pore formation by lymphocyte perforin." Nature 468:447–451, 2010.',
+    url: 'https://doi.org/10.1038/nature09518',
+  },
 };

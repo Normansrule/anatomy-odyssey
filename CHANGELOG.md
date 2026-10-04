@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0
+
+- **Repository fixed.** The GitHub repository had been filled with a copy of Cosmic Library; it now holds only Anatomy Odyssey. The telescope eyepiece work that was in it moved to cosmic-library (pull request #1 there).
+- **T cells module.** Three steps: antigen presentation and clonal expansion (a dendritic cell, passing T cells that do not fit, and a helper T cell that docks and divides to 16); a killer T cell destroying a virus-infected cell (recognize, aim, strike, apoptosis); and a T-cell receptor reading a nine-amino-acid peptide on MHC class I with CD8 and CD3, with a self-versus-viral peptide control and a side trip into the amino acids.
+- **New tested science.** Clonal expansion (N = 2ⁿ, t = t_d · log₂ N), the 15 nm receptor gap against the 36–45 nm adhesion ring, and peptide length (equations 26–27).
+- A shared stage-by-stage animation control for step-through scenes; the antigen card now covers T cells as well as antibodies.
+- 15 new cards, 4 quiz questions and 6 references; 263 tests (from 250).
+
 ## 0.5.0
 
 - **Chemistry of life module.** Your body as about 2,300 cubes sorted by element, switchable between mass and number of atoms (hydrogen goes from 9.5% to 61%); carbonic anhydrase as a bead model with its zinc site, histidines and proton shuttle, running its catalytic cycle under a "barrier lowered" control (41.6 kJ/mol gives the real ten-million-fold speed-up); and the bicarbonate buffer with a blood CO₂ control that sets pH through the Henderson–Hasselbalch equation.

@@ -28,6 +28,9 @@ import { buildCarbonicAnhydrase } from './carbonicAnhydrase.js';
 import { buildBicarbonateBuffer } from './bicarbonateBuffer.js';
 import { buildImmuneCells } from './immuneCells.js';
 import { buildImmuneMemory } from './immuneMemory.js';
+import { buildAntigenPresentation } from './antigenPresentation.js';
+import { buildKillerTCell } from './killerTCell.js';
+import { buildTcrMhc } from './tcrMhc.js';
 import { buildNucleus } from '../library/nucleus.js';
 import { buildDna } from '../library/dna.js';
 import { buildHemoglobin } from '../library/hemoglobin.js';
@@ -73,6 +76,9 @@ export const SCENES = {
   'bicarbonate-buffer': buildBicarbonateBuffer,
   'immune-cells': buildImmuneCells,
   'immune-memory': buildImmuneMemory,
+  'antigen-presentation': buildAntigenPresentation,
+  'killer-t-cell': buildKillerTCell,
+  'tcr-mhc': buildTcrMhc,
   nucleus: buildNucleus,
   dna: buildDna,
   hemoglobin: buildHemoglobin,

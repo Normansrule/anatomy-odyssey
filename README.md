@@ -8,7 +8,7 @@ Anatomy Odyssey is an open-source web app for exploring the human body across sc
 
 > Teaching model, not medical advice. Every scene is labeled for what it is: a generalized teaching model, drawn to scale except where a card says otherwise.
 
-## Six dives and four modules
+## Six dives and five modules
 
 | Dive | Path | Ends at (shared) | Interactive control |
 |---|---|---|---|
@@ -22,12 +22,13 @@ Anatomy Odyssey is an open-source web app for exploring the human body across sc
 | **From gene to protein** (module) | the start of the β-globin gene → mRNA → ribosome → protein | RNA → amino acids | Transcribe, export, translate, fold |
 | **Chemistry of life** (module) | your body as cubes sorted by element → carbonic anhydrase → the blood buffer | bicarbonate, carbonic acid, hydronium | Count by mass or atoms; how far the enzyme lowers the barrier; blood CO₂ (Henderson–Hasselbalch pH) |
 | **Immune response and memory** (module) | immune cells side by side at true size → a first and a second infection | — | Pick a cell; day 0–140 of an illustrative response model |
+| **T cells: presenting and killing** (module) | a dendritic cell presents to helper T cells → a killer T cell destroys an infected cell → a T-cell receptor reads a peptide on MHC | amino acids (side trip) | Six-stage presentation and clonal expansion; five-stage killing; self versus viral peptide |
 
-Side trips branch off the main path into shared scenes: from a muscle fiber, a plasma cell or a neuron into the shared **nucleus → DNA**; from a red blood cell or a synapse into the **lipid bilayer → phospholipid**; from the nucleus into a **nucleosome**; from DNA into its **nucleotides**; from myosin into **ATP**; from an antibody into its **amino acids**.
+Side trips branch off the main path into shared scenes: from a muscle fiber, a plasma cell or a neuron into the shared **nucleus → DNA**; from a red blood cell or a synapse into the **lipid bilayer → phospholipid**; from the nucleus into a **nucleosome**; from DNA into its **nucleotides**; from myosin into **ATP**; from an antibody, or the peptide a T-cell receptor reads, into its **amino acids**.
 
 Every shared building block is built, and each one's card links **up** to what it is part of and **down** to what it is made of, so you can keep zooming from wherever you are.
 
-New in 0.5.0: the Chemistry of life and Immune response and memory modules.
+New in 0.6.0: the T cells module. New in 0.5.0: the Chemistry of life and Immune response and memory modules.
 
 <table>
 <tr>
@@ -38,6 +39,11 @@ New in 0.5.0: the Chemistry of life and Immune response and memory modules.
 <tr>
 <td><img src="docs/screenshots/immune-cells.webp" alt="Immune cells side by side at true size: neutrophil, eosinophil, basophil, monocyte, macrophage, and below a red blood cell, platelet, lymphocyte, natural killer cell, plasma cell, dendritic cell, a bacterium and a virus" /></td>
 <td><img src="docs/screenshots/immune-memory.webp" alt="A chart of germs, antibody and memory B cells over 140 days, above a tissue strip with neutrophils and bacteria" /></td>
+<td><img src="docs/screenshots/antigen-presentation.webp" alt="A dendritic cell showing germ peptides on MHC molecules beside a growing clone of sixteen helper T cells" /></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/killer-t-cell.webp" alt="A killer T cell docked on a virus-infected cell, with its adhesion ring and perforin pores" /></td>
+<td><img src="docs/screenshots/tcr-mhc.webp" alt="A T-cell receptor docked diagonally on a peptide held by MHC class I, with CD8 and CD3, between two membranes 15 nm apart" /></td>
 </tr>
 </table>
 
@@ -92,6 +98,7 @@ New in 0.5.0: the Chemistry of life and Immune response and memory modules.
 - **Map by scale.** One view of every dive, side trip and shared building block, laid out by size on a log scale. Press M; choose any point to fly there.
 - **Desktop app.** The same app in a native window for Windows, macOS and Linux (Tauri 2), fully offline, with no system permissions granted to the page.
 - **Chemistry of life module.** What you are made of, counted by mass and by atoms; carbonic anhydrase speeding CO₂ hydration ten million times (a 41.6 kJ/mol drop in the barrier); and the bicarbonate buffer, where your breathing sets blood pH through the Henderson–Hasselbalch equation.
+- **T cells module.** A dendritic cell presents germ peptides on MHC class II and the one helper T cell that fits multiplies (2ⁿ cells after n divisions); a killer T cell finds a virus-infected cell, aims its perforin and granzymes, and triggers apoptosis; then the molecular contact itself, a T-cell receptor reading a nine-amino-acid peptide across a 15 nm gap, with a side trip into the amino acids.
 - **Immune response and memory module.** Thirteen immune cells and particles at true relative size, then a 140-day illustrative model of a first and second infection (solved with Runge–Kutta and tested for the textbook shape): slow first response, fast and five-fold bigger second one.
 - **Scene controls** that run real equations: the Hill curve on hemoglobin, sliding filaments in the sarcomere, Hursh's conduction rule on the axon, first-order oxygen loading in the lung capillary, and ball-and-stick versus space-filling molecules.
 - **Guided tour** with narration captions on every step, optionally read aloud.
@@ -99,7 +106,7 @@ New in 0.5.0: the Chemistry of life and Immune response and memory modules.
 - **Search and jump** to any part, including planned building blocks.
 - **Settings**: reduced motion, picture quality, and read-aloud captions. On first launch the app times a few seconds of frames and tunes the "Balanced" picture setting to the device (About shows the result and can measure again).
 - **Local-first and private.** No accounts, analytics or network calls; progress stays in your browser.
-- **Accessible.** Keyboard navigation (→ deeper, ← out, / search, M map, G glossary, T tour, Esc close), screen-reader announcements, `prefers-reduced-motion`, and a phone layout. An axe-core audit (`npm run a11y`) checks 18 states, including every dialog and a phone view, against WCAG 2.2 A and AA rules, with no violations.
+- **Accessible.** Keyboard navigation (→ deeper, ← out, / search, M map, G glossary, T tour, Esc close), screen-reader announcements, `prefers-reduced-motion`, and a phone layout. An axe-core audit (`npm run a11y`) checks 20 states, including every dialog and a phone view, against WCAG 2.2 A and AA rules, with no violations.
 
 ## How the zoom works
 
@@ -123,7 +130,7 @@ npm run dev          # http://localhost:5173
 Other scripts:
 
 ```bash
-npm test               # 250 unit tests: scale math, every worked equation, the genetic code, the immune model, dive graph and routes, scenes, molecules, benchmark, security guards
+npm test               # 263 unit tests: scale math, every worked equation, the genetic code, the immune model, dive graph and routes, scenes, molecules, benchmark, security guards
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run manifest       # rebuild assets/manifest.json after adding assets
@@ -206,7 +213,7 @@ assets/        anatomy/ (CC BY-SA) and molecular/ (per-file licenses), CREDITS.m
 3. ~~**Modules and learning tools**: the inflammatory response, quizzes, glossary, guided tour.~~
 4. ~~**Complete the shared library and the gene-to-protein module**, with generated small-molecule geometry and a map by scale.~~
 5. ~~**Desktop app** (Tauri) with parity, a first-launch hardware benchmark and an accessibility audit.~~
-6. ~~**Chemistry of life and immune response modules**, with tested equations and an illustrative immune model.~~
+6. ~~**Chemistry of life, immune response and T-cell modules**, with tested equations and an illustrative immune model.~~
 7. **Real assets**: Z-Anatomy meshes for the organ tiers and Protein Data Bank structures via Mol* for the large molecules (the export script and integrity checks are ready).
 8. **Hardening**: reviewer accuracy pass against cited sources, full asset-license audit, code-signed releases.
 

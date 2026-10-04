@@ -33,6 +33,8 @@ STEPS = [
     ("circulatory", "phospholipids", "&trip=1"),
     ("chemistry", "body-elements", ""), ("chemistry", "carbonic-anhydrase", ""), ("chemistry", "bicarbonate-buffer", ""),
     ("immune-response", "immune-cells", ""), ("immune-response", "immune-memory", ""),
+    ("t-cells", "antigen-presentation", ""), ("t-cells", "killer-t-cell", ""), ("t-cells", "tcr-mhc", ""),
+    ("t-cells", "amino-acids", "&trip=1"),
 ]
 
 

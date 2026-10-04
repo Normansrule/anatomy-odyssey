@@ -110,6 +110,18 @@ export const DIVES = [
     ],
   },
   {
+    id: 't-cells',
+    kind: 'module',
+    title: 'T cells: presenting and killing',
+    status: 'built',
+    summary: 'A dendritic cell shows germ pieces to helper T cells, a killer T cell destroys an infected cell, and one receptor reads one peptide.',
+    steps: [
+      { id: 'antigen-presentation', tier: 5, scene: 'antigen-presentation', title: 'Antigen presentation', card: 'antigen-presentation', frameMeters: 3.6e-5, focusCard: 'helper-t-cell', narration: 'In a lymph node, a dendritic cell shows pieces of a germ. Thousands of T cells check them; the rare one that fits switches on and multiplies.' },
+      { id: 'killer-t-cell', tier: 5, scene: 'killer-t-cell', title: 'A killer T cell at work', card: 'killer-t-cell', frameMeters: 2.8e-5, focusCard: 'immunological-synapse', narration: 'A killer T cell finds a virus-infected cell by the viral peptides on its surface, grips it, and makes it destroy itself.' },
+      { id: 'tcr-mhc', tier: 6, scene: 'tcr-mhc', title: 'Receptor meets peptide', card: 'tcr-mhc', frameMeters: 2.4e-8, branch: { label: 'Side trip into the peptide’s amino acids', card: 'mhc-peptide', via: ['amino-acids'] }, narration: 'Zoom into the contact: a T-cell receptor reads a nine-amino-acid peptide held in the groove of an MHC molecule, across a 15 nanometer gap.' },
+    ],
+  },
+  {
     id: 'gene-to-protein',
     kind: 'module',
     title: 'From gene to protein',

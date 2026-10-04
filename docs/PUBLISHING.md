@@ -132,3 +132,31 @@ python tools/a11y-audit.py
 python tools/screenshots.py --only chemistry
 kill %1
 ```
+
+## Troubleshooting
+
+### `fatal: Not possible to fast-forward` when pulling
+
+Your folder's history and GitHub's have split (for example, the folder was made with `git init` from a zip while GitHub got different commits). GitHub's `main` is the one to keep. Save your local state on a branch first, then line the folder up with GitHub:
+
+```bash
+cd ~/projects/anatomy-odyssey
+git status --short                      # anything listed here is uncommitted; commit or copy it out first
+git branch backup-before-sync           # your old local commits stay on this branch
+git fetch origin
+git reset --hard origin/main
+git log --oneline -3                    # now matches GitHub
+```
+
+Delete the backup later with `git branch -D backup-before-sync` once you are sure you do not need it.
+
+### Check that each folder pushes to its own repository
+
+Two project folders pointing at the same GitHub repository is how space content ended up in this one. Check before pushing:
+
+```bash
+cd ~/projects/anatomy-odyssey && git remote -v      # should say Normansrule/anatomy-odyssey.git
+cd ~/projects/cosmic-library  && git remote -v      # should say Normansrule/cosmic-library.git
+```
+
+Fix a wrong one with `git remote set-url origin git@github-normansrule:Normansrule/<repo>.git`.

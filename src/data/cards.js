@@ -9,6 +9,7 @@ import { MORE_CARDS } from './cards-more.js';
 import { SIGNAL_CARDS } from './cards-signals.js';
 import { MOLECULE_CARDS } from './cards-molecules.js';
 import { CHEM_IMMUNE_CARDS } from './cards-chem-immune.js';
+import { TCELL_CARDS } from './cards-tcells.js';
 
 const humanDiploidBp = 6.4e9;
 const dnaPerCell = formatLength(dnaLength(humanDiploidBp)).text; // ≈ 2.2 m
@@ -410,6 +411,7 @@ export const CARDS = [
   ...SIGNAL_CARDS,
   ...MOLECULE_CARDS,
   ...CHEM_IMMUNE_CARDS,
+  ...TCELL_CARDS,
 ];
 
 // Short cards for planned library entries, so search and cross-links can explain them.

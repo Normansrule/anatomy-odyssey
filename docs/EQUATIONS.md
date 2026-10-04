@@ -318,3 +318,31 @@ Parameters are in `src/science/immuneModel.js`; the model is solved with fourth-
 Not biology, but it is tested the same way. The app times about 120 frames after a warm-up and takes the median and the 90th percentile by linear interpolation: q(p) = x⌊k⌋ + (x⌈k⌉ − x⌊k⌋)(k − ⌊k⌋), with k = (n − 1)p on the sorted times. Median over 25 ms (under about 40 frames per second) or a 90th percentile over 40 ms switches "Balanced" to fewer pixels; a steady 90 frames per second or more allows extra sharpness.
 
 **Tests.** `tests/benchmark.test.js`.
+
+## 26. Clonal expansion
+
+**Intuition.** A T cell that fits a germ divides, and so does every daughter, so the clone doubles each generation.
+
+**Equation.** N = N₀ · 2ⁿ, so n = log₂(N / N₀) and t = t_d · log₂(N / N₀)
+
+| Symbol | Meaning | Unit |
+|---|---|---|
+| N₀, N | Cells at the start and after n divisions | cells |
+| n | Number of divisions (generations) | — |
+| t_d | Time per division (as short as about 2 hours, often about 6, in activated killer T cells; Yoon et al., 2010) | hours |
+
+**Worked example.** 4 divisions make 16 cells (the scene's clone); 10 make 1,024; 14 make 16,384, which takes 14 × 6 = 84 hours = 3.5 days at 6 hours per division.
+
+**Where you see it.** The antigen presentation step's Divide and Clone stages.
+
+**Tests.** `tests/tcells.test.js` → "doubling n times gives 2ⁿ cells", "reaching 16,384 cells takes 14 divisions, 3.5 days at 6 hours each", "the scene shows 1, 2, 4, 8, then 16 cells".
+
+## 27. The size of recognition
+
+**Facts used.** A T-cell receptor bound to a peptide–MHC spans about 15 nm between the two membranes; the LFA-1–ICAM-1 adhesion pair that rings the synapse spans 36–45 nm (Al-Aghbar et al., 2022). MHC class I holds peptides of 8–10 amino acids; an extended chain adds about 0.34 nm per amino acid.
+
+**Equation.** L = (n − 1) × 0.34 nm for a peptide of n amino acids, end to end.
+
+**Worked example.** 9 amino acids: 8 × 0.34 = 2.72 nm, which fits the groove between the two MHC helices.
+
+**Tests.** "spans a 15 nm gap, much narrower than the 36–45 nm adhesion ring", "the peptide is 9 amino acids, inside the 8–10 MHC class I holds, about 2.7 nm long".

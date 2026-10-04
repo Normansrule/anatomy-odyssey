@@ -34,6 +34,8 @@ STATES = [
     ("immune response: cells", "?dive=immune-response&step=immune-cells", None, DESKTOP),
     ("immune response: memory", "?dive=immune-response&step=immune-memory", None, DESKTOP),
     ("gene to protein", "?dive=gene-to-protein&step=gene-expression", None, DESKTOP),
+    ("T cells: presentation", "?dive=t-cells&step=antigen-presentation", None, DESKTOP),
+    ("T cells: receptor and peptide", "?dive=t-cells&step=tcr-mhc", None, DESKTOP),
     ("About dialog", "?dive=skeletal&step=femur", "#about-button", DESKTOP),
     ("Map dialog", "?dive=skeletal&step=femur", "#atlas-button", DESKTOP),
     ("Glossary dialog", "?dive=skeletal&step=femur", "#glossary-button", DESKTOP),

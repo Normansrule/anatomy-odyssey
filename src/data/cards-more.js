@@ -620,12 +620,12 @@ export const MORE_CARDS = [
   {
     id: 'antigen',
     title: 'Antigen',
-    aliases: ['epitope', 'target'],
+    aliases: ['epitope', 'target', 'germ pieces'],
     home: 'antibody',
     size: 'The contact patch is a few nanometers',
-    what: 'Any molecule an antibody can grip. Here it stands for part of a virus’s surface protein.',
+    what: 'Any molecule the immune system can recognize. Antibodies grip it whole; T cells only see short pieces of it, shown on MHC molecules. In the antibody scene it stands for part of a virus’s surface protein.',
     why: 'Vaccines work by showing your immune system a harmless antigen first.',
-    expert: 'The exact patch the antibody touches is called the epitope.',
+    expert: 'The exact patch an antibody touches is called the epitope. For a T cell, the epitope is a peptide of about 8–10 amino acids (on MHC class I) or 13 or more, with open ends (on MHC class II).',
     refs: ['janeway'],
   },
   // ── Inflammatory response module ──────────────────────────────────

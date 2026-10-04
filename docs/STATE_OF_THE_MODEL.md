@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.5.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.6.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -90,6 +90,13 @@ A single animated scene of a splinter wound at about 100 µm scale: injury, alar
 | 5 | Immune cells to scale | 55 µm | Thirteen cells and particles at mid-range textbook diameters (OpenStax; macrophage from Krombach et al., 1997). Nuclei and granules simplified; granules larger and fewer than life. The virus is to scale, so a marker ring shows where it is |
 | 5 | First and second exposure | 50 µm | A chart of an illustrative model (not fitted to data) over 140 days on log scales, above a tissue strip whose contents follow the model. Cells and bacteria to scale; antibodies drawn as dots about 40× too big |
 
+### T cells: presenting and killing (module, new in v0.6.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 5 | Antigen presentation | 36 µm | Dendritic cell and T cells to scale; MHC class II knobs more than 100× too big; the clone stops at 16 cells (four divisions) |
+| 5 | A killer T cell at work | 28 µm | Infected cell 15 µm, killer T cell 8 µm; virus particles about 4× too big; perforin pores and MHC knobs enlarged; minutes compressed into seconds |
+| 6 | Receptor meets peptide | 24 nm | Domains as smooth shapes at roughly real size, not atomic coordinates; membranes 15 nm apart; diagonal docking as in Garboczi et al., 1996; 9-amino-acid peptide. Side trip into the shared amino acids |
+
 ## Shared library
 
 Every entry is built. Main path means the dive passes through it; side trip means a branch from a step; "made of" means you reach it by zooming in from a card.
@@ -106,7 +113,7 @@ Every entry is built. Main path means the dive passes through it; side trip mean
 | Actin and myosin | Muscular (main) | Procedural, real repeat lengths |
 | ATP | Muscular (side trip from myosin) | RDKit-generated, with hydrolysis |
 | Antibody | Immune (main) | IgG domains as ellipsoids |
-| Amino acids | Gene to protein (main); immune (side trip); made of → from hemoglobin, myosin, antibody, nucleosome | RDKit-generated, all 20 |
+| Amino acids | Gene to protein (main); immune and T cells (side trips); made of → from hemoglobin, myosin, antibody, nucleosome | RDKit-generated, all 20 |
 | Glutamate | Nervous (main) | Idealized bond lengths |
 | Lipid bilayer | Circulatory and nervous (side trips) | Procedural lattice snapshot |
 | Phospholipid | Circulatory and nervous (side trips) | RDKit-generated POPC |
@@ -120,7 +127,7 @@ Every entry is built. Main path means the dive passes through it; side trip mean
 - Real atomic structures for the large molecules (hemoglobin, antibody, myosin, nucleosome) from the Protein Data Bank, loaded through Mol*. Small molecules already use generated 3D geometry.
 - Tissue-tier scenes for the nervous dive (cortical layers) and a spinal-cord branch.
 - The real fold of carbonic anhydrase (PDB structures such as 3KS3) in place of the bead model.
-- A T-cell module: antigen presentation by dendritic cells, helper and killer T cells.
+- Real atomic structures for the T-cell receptor and MHC (for example PDB 1AO7) in place of the smooth domains.
 
 ## Known simplifications
 

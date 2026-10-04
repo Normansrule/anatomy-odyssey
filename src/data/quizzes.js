@@ -237,6 +237,32 @@ export const QUIZZES = {
       explain: 'More CO₂ pushes CO₂ + H₂O ⇌ H⁺ + HCO₃⁻ to the right, making more H⁺. Doubling the CO₂ drops pH by about 0.3.',
     },
   ],
+  't-cells': [
+    {
+      q: 'What does a T cell actually recognize?',
+      choices: ['A whole virus floating in the blood', 'A short peptide held by an MHC molecule on another cell', 'The color of a cell', 'Antibodies'],
+      answer: 1,
+      explain: 'T cells only see short pieces of proteins, displayed by MHC molecules on the surface of other cells.',
+    },
+    {
+      q: 'Which cells do killer (CD8) T cells destroy?',
+      choices: ['Healthy red blood cells', 'Your own cells that show foreign peptides on MHC class I, such as virus-infected cells', 'Free-floating bacteria only', 'Helper T cells'],
+      answer: 1,
+      explain: 'Almost every cell shows samples of its proteins on MHC class I; a viral peptide marks it for destruction.',
+    },
+    {
+      q: 'How does a killer T cell make its target die?',
+      choices: ['It swallows the whole cell', 'Perforin opens pores and granzymes switch on the cell’s own self-destruct program (apoptosis)', 'It starves the cell of oxygen', 'It releases antibodies'],
+      answer: 1,
+      explain: 'Apoptosis keeps the cell’s contents, and any virus, wrapped up, so macrophages can clear the pieces quietly.',
+    },
+    {
+      q: 'A matching T cell doubles 10 times. About how many cells does it make?',
+      choices: ['20', '100', 'About 1,000', 'About a million'],
+      answer: 2,
+      explain: '2¹⁰ = 1,024. Twenty doublings would make about a million.',
+    },
+  ],
   'gene-to-protein': [
     {
       q: 'Where in a human cell is a gene copied into messenger RNA?',
