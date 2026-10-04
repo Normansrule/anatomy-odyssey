@@ -32,11 +32,12 @@ describe('dives', () => {
     const ids = LIBRARY.map((e) => e.id);
     for (const d of DIVES.filter((x) => x.status === 'planned')) for (const s of d.shared) expect(ids).toContain(s);
   });
-  it('the nervous dive runs brain → neuron → synapse → glutamate, with two side trips', () => {
+  it('the nervous dive runs brain → cortex → neuron → synapse → glutamate, with two side trips', () => {
     const d = getDive('nervous');
-    expect(d.steps.map((s) => s.id)).toEqual(['body', 'brain', 'neuron', 'synapse', 'neurotransmitter']);
-    expect(sideTripPath(d, 2).slice(-2).map((s) => s.id)).toEqual(['nucleus', 'dna']);
-    expect(sideTripPath(d, 3).slice(-2).map((s) => s.id)).toEqual(['lipid-bilayer', 'phospholipids']);
+    expect(d.steps.map((s) => s.id)).toEqual(['body', 'brain', 'cortex', 'neuron', 'synapse', 'neurotransmitter']);
+    expect(d.steps.map((s) => s.tier)).toEqual([1, 3, 4, 5, 6, 7]);
+    expect(sideTripPath(d, 3).slice(-2).map((s) => s.id)).toEqual(['nucleus', 'dna']);
+    expect(sideTripPath(d, 4).slice(-2).map((s) => s.id)).toEqual(['lipid-bilayer', 'phospholipids']);
   });
   it('the respiratory dive ends at the shared gas molecules via shared hemoglobin', () => {
     const d = getDive('respiratory');

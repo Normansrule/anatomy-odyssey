@@ -150,10 +150,11 @@ export const DIVES = [
     kind: 'dive',
     title: 'Nervous dive',
     status: 'built',
-    summary: 'Brain → a neuron → a synapse → the glutamate molecule that carries the signal.',
+    summary: 'Brain → the layered cortex → a neuron → a synapse → the glutamate molecule that carries the signal.',
     steps: [
       { ...BODY, focusCard: 'brain', focus: [0, 1.655, -0.005], systems: ['nervous'], narration: 'Everything you are thinking right now runs on electrical and chemical signals. We will follow one from the brain down to a single molecule.' },
       { id: 'brain', tier: 3, scene: 'brain', title: 'Brain', card: 'brain', frameMeters: 0.21, focusCard: 'cerebral-cortex', narration: 'Sliced front to back, the brain has a thin folded rind of gray matter, the cortex, over a core of white matter wiring.' },
+      { id: 'cortex', tier: 4, scene: 'cortex', title: 'Cortex', card: 'cortex-layers', frameMeters: 4.2e-3, focusCard: 'pyramidal-neuron', narration: 'Cut a block out of that rind and it has six layers. Inputs arrive in the middle; the big pyramidal neurons in layer V send commands out. Pick a layer to see what lives there.' },
       { id: 'neuron', tier: 5, scene: 'neuron', title: 'Neuron', card: 'neuron', frameMeters: 3.9e-4, focusCard: 'axon-terminal', branch: { label: 'Side trip into its nucleus', card: 'neuron-nucleus', via: ['nucleus', 'dna'] }, narration: 'One neuron from the cortex. Dendrites collect signals, and a wrapped axon sends a spike out. Change the axon width to see how fast the spike travels.' },
       { id: 'synapse', tier: 6, scene: 'synapse', title: 'Synapse', card: 'synapse', frameMeters: 2.1e-6, focusCard: 'neurotransmitter', branch: { label: 'Side trip into the membrane', card: 'neuron-membrane', via: ['lipid-bilayer', 'phospholipids'] }, narration: 'Where the axon meets the next cell, a gap only twenty nanometers wide. Step through the stages to watch a vesicle release its cargo.' },
       libStep('neurotransmitter', { narration: 'The cargo: glutamate, the brain’s main excitatory messenger. It is also one of the twenty amino acids your proteins are built from.' }),

@@ -54,3 +54,15 @@ describe('the receptor–peptide contact', () => {
     expect(dive.steps.at(-1).branch.via).toEqual(['amino-acids']);
   });
 });
+
+describe('cortex layers', () => {
+  it('six layers fill the 2.5 mm cortex exactly, numbered from the surface down', async () => {
+    const { LAYERS, layerBounds, CORTEX_THICKNESS_UM } = await import('../src/scenes/cortex.js');
+    expect(LAYERS.map((l) => l.n)).toEqual(['I', 'II', 'III', 'IV', 'V', 'VI']);
+    expect(LAYERS.reduce((s, l) => s + l.share, 0)).toBeCloseTo(1, 9);
+    const b = layerBounds();
+    expect(b[0].top).toBe(0);
+    expect(b.at(-1).bottom).toBeCloseTo(CORTEX_THICKNESS_UM, 6);
+    for (let i = 1; i < b.length; i++) expect(b[i].top).toBeCloseTo(b[i - 1].bottom, 9);
+  });
+});

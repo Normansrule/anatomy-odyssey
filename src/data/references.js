@@ -228,4 +228,16 @@ export const REFERENCES = {
     text: 'Law, R. H. P., et al. "The structural basis for membrane binding and pore formation by lymphocyte perforin." Nature 468:447–451, 2010.',
     url: 'https://doi.org/10.1038/nature09518',
   },
+  fischl2000: {
+    text: 'Fischl, B., and Dale, A. M. "Measuring the thickness of the human cerebral cortex from magnetic resonance images." PNAS 97(20):11050–11055, 2000.',
+    url: 'https://doi.org/10.1073/pnas.200033797',
+  },
+  'wiki-neocortex': {
+    text: 'Wikipedia. "Neocortex" (layers, columns, thickness).',
+    url: 'https://en.wikipedia.org/wiki/Neocortex',
+  },
+  'tartu-cortex': {
+    text: 'University of Tartu, Histology: "Cerebral cortex" (the six layers and their cells).',
+    url: 'https://sisu.ut.ee/histology/cerebral-cortex/',
+  },
 };

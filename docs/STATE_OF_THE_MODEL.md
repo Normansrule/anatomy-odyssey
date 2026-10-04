@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.6.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.7.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -53,6 +53,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 |---|---|---|---|
 | 1 | Whole body | 2.5 m | Nervous system on |
 | 3 | Brain | 21 cm | Folds are a generated pattern; left hemisphere cut open to show gray and white matter |
+| 4 | Cortex (new in v0.7.0) | 4.2 mm | A 2.5 mm thick block with six layers in typical proportions (real ones vary by region); roughly 1 neuron in 100 drawn, cell bodies to scale; dendrites as thin lines for some pyramidal cells |
 | 5 | Neuron | 390 µm | Cortical pyramidal neuron. Myelin segments drawn much shorter than life. Axon diameter control (Hursh's rule). Side trip into the shared nucleus and DNA |
 | 6 | Synapse | 2.1 µm | Five-stage release control. Molecules enlarged. Side trip into the shared lipid bilayer |
 | 7 | Glutamate (shared) | 1.5 nm | Stops here. Idealized bond lengths, fully extended chain, charged as at body pH |
@@ -125,7 +126,7 @@ Every entry is built. Main path means the dive passes through it; side trip mean
 
 - Real anatomical meshes (Milestone 4 swaps organ tiers for Z-Anatomy meshes through `tools/zanatomy_export_blender.py`).
 - Real atomic structures for the large molecules (hemoglobin, antibody, myosin, nucleosome) from the Protein Data Bank, loaded through Mol*. Small molecules already use generated 3D geometry.
-- Tissue-tier scenes for the nervous dive (cortical layers) and a spinal-cord branch.
+- A spinal-cord branch for the nervous dive.
 - The real fold of carbonic anhydrase (PDB structures such as 3KS3) in place of the bead model.
 - Real atomic structures for the T-cell receptor and MHC (for example PDB 1AO7) in place of the smooth domains.
 

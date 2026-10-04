@@ -17,6 +17,7 @@ import { buildFollicle } from './follicle.js';
 import { buildPlasmaCell } from './plasmaCell.js';
 import { buildInflammation } from './inflammation.js';
 import { buildBrain } from './brain.js';
+import { buildCortex } from './cortex.js';
 import { buildNeuron } from './neuron.js';
 import { buildSynapse } from './synapse.js';
 import { buildLungs } from './lungs.js';
@@ -65,6 +66,7 @@ export const SCENES = {
   'plasma-cell': buildPlasmaCell,
   inflammation: buildInflammation,
   brain: buildBrain,
+  cortex: buildCortex,
   neuron: buildNeuron,
   synapse: buildSynapse,
   lungs: buildLungs,

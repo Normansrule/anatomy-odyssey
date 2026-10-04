@@ -609,6 +609,10 @@ input {
   color: var(--mordant);
 }
 
+.card__refs li + li {
+  margin-top: 4px; /* keeps neighboring links at least 24px apart (WCAG 2.2 target size) */
+}
+
 .card__refs a {
   color: var(--mordant);
 }

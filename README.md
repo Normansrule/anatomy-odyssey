@@ -16,7 +16,7 @@ Anatomy Odyssey is an open-source web app for exploring the human body across sc
 | **Circulatory** | body → heart → blood → red blood cell | hemoglobin → heme | Oxygen pressure slider (Hill curve) |
 | **Muscular** | body → biceps → fascicle → muscle fiber → sarcomere | actin and myosin | Sarcomere length; cross-bridge cycle |
 | **Immune** | body → lymph node → follicle → plasma cell | antibody | — |
-| **Nervous** | body → brain → neuron → synapse | glutamate | Axon diameter (conduction speed); release stages |
+| **Nervous** | body → brain → cortex (six layers) → neuron → synapse | glutamate | Axon diameter (conduction speed); release stages |
 | **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ | Breathing; capillary transit time |
 | **Inflammatory response** (module) | a splinter wound, from the first alarm to healing | — | Five-stage animation |
 | **From gene to protein** (module) | the start of the β-globin gene → mRNA → ribosome → protein | RNA → amino acids | Transcribe, export, translate, fold |
@@ -48,6 +48,9 @@ New in 0.6.0: the T cells module. New in 0.5.0: the Chemistry of life and Immune
 </table>
 
 <table>
+<tr>
+<td><img src="docs/screenshots/cortex.webp" alt="A block of cerebral cortex with six layers, layer V highlighted, pyramidal neurons with dendrites reaching the surface, and white matter below" /></td>
+</tr>
 <tr>
 <td><img src="docs/screenshots/neuron.webp" alt="A cortical pyramidal neuron with dendrites, spines, a myelinated axon and terminal boutons, with the axon diameter control" /></td>
 <td><img src="docs/screenshots/synapse.webp" alt="A synapse cut open: vesicles in the presynaptic terminal, the 20 nm cleft, and receptors on a dendritic spine" /></td>
@@ -106,7 +109,7 @@ New in 0.6.0: the T cells module. New in 0.5.0: the Chemistry of life and Immune
 - **Search and jump** to any part, including planned building blocks.
 - **Settings**: reduced motion, picture quality, and read-aloud captions. On first launch the app times a few seconds of frames and tunes the "Balanced" picture setting to the device (About shows the result and can measure again).
 - **Local-first and private.** No accounts, analytics or network calls; progress stays in your browser.
-- **Accessible.** Keyboard navigation (→ deeper, ← out, / search, M map, G glossary, T tour, Esc close), screen-reader announcements, `prefers-reduced-motion`, and a phone layout. An axe-core audit (`npm run a11y`) checks 20 states, including every dialog and a phone view, against WCAG 2.2 A and AA rules, with no violations.
+- **Accessible.** Keyboard navigation (→ deeper, ← out, / search, M map, G glossary, T tour, Esc close), screen-reader announcements, `prefers-reduced-motion`, and a phone layout. An axe-core audit (`npm run a11y`) checks 21 states, including every dialog and a phone view, against WCAG 2.2 A and AA rules, with no violations.
 
 ## How the zoom works
 
@@ -130,7 +133,7 @@ npm run dev          # http://localhost:5173
 Other scripts:
 
 ```bash
-npm test               # 263 unit tests: scale math, every worked equation, the genetic code, the immune model, dive graph and routes, scenes, molecules, benchmark, security guards
+npm test               # 265 unit tests: scale math, every worked equation, the genetic code, the immune model, dive graph and routes, scenes, molecules, benchmark, security guards
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run manifest       # rebuild assets/manifest.json after adding assets

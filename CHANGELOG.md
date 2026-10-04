@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.7.0
+
+- **Cortex step in the nervous dive.** A new tissue-tier step between the brain and the neuron: a 2.5 mm block of cerebral cortex with its six layers, about 2,500 neurons (cell bodies to scale), apical dendrites reaching layer I, three large layer V pyramidal neurons drawn in full, a 0.5 mm cortical column and the white matter below. A layer control highlights each layer and explains what lives there.
+- 9 new cards (one per layer, pyramidal neuron, cortical column) and 3 references.
+- Fix: short reference links on cards sat too close together for touch (found by the accessibility audit); they now have WCAG 2.2 target spacing.
+- Fix: the old repository mix-up is cleaned up (the stray telescope branch is gone from this repository; the telescope work is in cosmic-library).
+- 265 tests (from 263).
+
 ## 0.6.0
 
 - **Repository fixed.** The GitHub repository had been filled with a copy of Cosmic Library; it now holds only Anatomy Odyssey. The telescope eyepiece work that was in it moved to cosmic-library (pull request #1 there).
