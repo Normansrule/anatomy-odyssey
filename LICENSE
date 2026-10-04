@@ -20,7 +20,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
----
-Third-party code under site/vendor/ keeps its own licence (see the LICENSE
-file in each folder). Third-party images are listed in CREDITS.md with their
-terms. Written content and original diagrams are licensed CC BY 4.0.
+This license covers the source code. Assets under assets/anatomy/ are licensed
+CC BY-SA 4.0, and assets under assets/molecular/ carry the per-file licenses
+listed in assets/CREDITS.md.

@@ -1,2 +1,0 @@
-flight,date,log_file,sensor,rocket,motor,liftoff_mass_g,pad_pressure_pa,apogee_logger_m,apogee_led_readout_m,t_apogee_s,ejection_t_s,max_baro_speed_mps,descent_rate_mps,openrocket_prediction_m,notes
-1,,flight_001.csv,BMP390,,,,,,,,,,,,

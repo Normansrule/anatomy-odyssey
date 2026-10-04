@@ -1,73 +1,34 @@
-name: Tests
+# Test and build on every push and pull request.
+# Every third-party action is pinned to a full commit hash (supply-chain hardening);
+# the comment after each hash is the release it corresponds to. Dependabot keeps them current.
+name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
-  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  python:
-    name: Python simulations & experiment tools
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          python-version: "3.12"
-          cache: pip
-          cache-dependency-path: simulations/requirements.txt
-      - run: pip install -r simulations/requirements.txt
-      - name: Simulation physics tests
-        run: python -m pytest simulations/tests -q
-      - name: Experiment tool tests
-        run: |
-          set -e
-          for t in experiments/22-barometric-altimeter-payload/tools/test_flightlogic.py \
-                   experiments/31-lora-telemetry-ground-station/ground_station/test_ground_station.py \
-                   experiments/41-openrocket-deep-dive/sim/test_rocketsim.py \
-                   experiments/42-near-space-balloon-cubesat/tools/test_balloon.py; do
-            (cd "$(dirname "$t")" && python -m pytest -q "$(basename "$t")")
-          done
-
-  firmware:
-    name: Firmware host tests (C++)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      # The host tests generate synthetic flights and check the star-tracker
-      # maths with small Python scripts that need NumPy.
-      - uses: actions/setup-python@v6
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          python-version: "3.12"
-      - run: pip install numpy matplotlib
-      - run: make -C experiments/30-flight-computer-pcb/firmware/test
-      - run: make -C experiments/31-lora-telemetry-ground-station/firmware
-      - run: make -C experiments/32-barn-door-star-tracker/firmware/test
-
-  site:
-    name: Site data checks
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm audit --omit=dev --audit-level=high
+      - run: npm test   # includes the asset manifest check
+      - run: npm run build
+      - name: Software Bill of Materials (SBOM)
+        run: npm sbom --sbom-format cyclonedx --omit=dev > sbom.cdx.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          node-version: 22
-      - run: node --no-warnings scripts/check_equations.mjs
-      - run: node --no-warnings scripts/test_ephemeris.mjs
-      - name: Flight-model and astronomy tests
-        run: |
-          node --no-warnings scripts/test_sky.mjs
-          node --no-warnings scripts/test_booster.mjs
-          node --no-warnings scripts/test_moon_physics.mjs
-          node --no-warnings scripts/test_mars_edl.mjs
-          node --no-warnings scripts/test_builder.mjs
-          node --no-warnings scripts/test_space_weather.mjs
-          node --no-warnings scripts/test_mission.mjs
-          node --no-warnings scripts/test_academy.mjs
-          node --no-warnings scripts/test_dsn.mjs
-          node --no-warnings scripts/test_moon.mjs
-          node --no-warnings scripts/test_eyepiece.mjs
-          node scripts/build_user_guide.mjs --check
-      - name: JSON files parse
-        run: for f in site/data/*.json; do node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || exit 1; done
+          name: sbom
+          path: sbom.cdx.json

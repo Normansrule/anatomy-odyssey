@@ -1,9 +1,0 @@
-aladin-lite 3.8.2 (npm, dist/aladin.js, ES module with embedded WebAssembly core)
-Source:   https://www.npmjs.com/package/aladin-lite/v/3.8.2
-Upstream: https://github.com/cds-astro/aladin-lite  (CDS, Strasbourg astronomical Data Centre)
-Authors:  Thomas Boch and Matthieu Baumann
-Licence:  GNU Lesser General Public License v3 (LICENSE / COPYING.LESSER, with COPYING = GPL v3 text),
-          as shipped in the npm package. Unmodified.
-Terms of use (upstream README): keep the Aladin logo and link intact at the bottom right of the view.
-Used by:  site/surveys.html via site/assets/js/surveys.js
-bed9c8ef1d1e83501b1cb782366092c72c5ecd1c88f16fef3166188ae8062066  aladin.js

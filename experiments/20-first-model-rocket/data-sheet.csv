@@ -1,4 +1,0 @@
-flight,date,rocket,motor,liftoff_mass_g,cg_mm_from_tip,cp_mm_barrowman,stability_calibers,swing_test,wind_mph,launch_angle_deg,apogee_estimate_m,ejection_timing,recovery,damage,notes
-1,,,A8-3,,,,,pass/fail,,0,,,,,
-2,,,B6-4,,,,,pass/fail,,0,,,,,
-3,,,C6-5,,,,,pass/fail,,0,,,,,

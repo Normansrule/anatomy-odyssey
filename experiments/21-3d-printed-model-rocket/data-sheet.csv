@@ -1,4 +1,0 @@
-part,profile_or_tube,material,nozzle_mm,layer_mm,walls,infill_pct,print_time_min,mass_g,measured_od_mm,fit(tight/good/loose),notes
-nose,vonkarman BT-60,PETG,0.4,0.16,3,15,,,,,
-fin can,BT-60,PETG,0.4,0.2,4,30,,,,,
-motor mount,24mm BT-60,PETG,0.4,0.2,4,40,,,,,

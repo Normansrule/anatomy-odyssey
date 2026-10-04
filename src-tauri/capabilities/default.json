@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "The main window gets no system permissions: no file system, shell, network or OS access. The page is a self-contained teaching app that never calls into Rust.",
+  "windows": ["main"],
+  "permissions": []
+}

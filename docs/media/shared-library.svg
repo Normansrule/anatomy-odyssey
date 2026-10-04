@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 420" role="img" aria-labelledby="t d" font-family="Atkinson Hyperlegible Next, system-ui, sans-serif">
+  <title id="t">Shared library: several dives converge on one DNA scene</title>
+  <desc id="d">The skeletal dive is built and routes through the shared nucleus scene into the shared DNA scene. The muscular, nervous and immune dives are planned and will route into the same two scenes.</desc>
+  <style>
+    .bg { fill: #1a1533; }
+    .dive { fill: #231c44; stroke: #3a3066; stroke-width: 1.5; }
+    .built { stroke: #f08baf; stroke-width: 2; }
+    .lib { fill: #2c2458; stroke: #8a78e8; stroke-width: 2; }
+    .h { fill: #eeecf6; font-size: 16px; font-weight: 700; }
+    .s { fill: #aaa3c9; font-size: 13px; }
+    .edge { fill: none; stroke: #8a78e8; stroke-width: 2; }
+    .edge-built { fill: none; stroke: #f08baf; stroke-width: 3; }
+    .planned { stroke-dasharray: 6 6; }
+  </style>
+  <rect class="bg" width="880" height="420" rx="16" />
+
+  <g>
+    <rect class="dive built" x="30" y="40" width="250" height="64" rx="10" />
+    <text class="h" x="48" y="68">Skeletal dive</text>
+    <text class="s" x="48" y="90">femur → bone tissue → osteocyte</text>
+
+    <rect class="dive" x="30" y="130" width="250" height="64" rx="10" />
+    <text class="h" x="48" y="158">Muscular dive (planned)</text>
+    <text class="s" x="48" y="180">muscle → fiber → muscle cell</text>
+
+    <rect class="dive" x="30" y="220" width="250" height="64" rx="10" />
+    <text class="h" x="48" y="248">Nervous dive (planned)</text>
+    <text class="s" x="48" y="270">brain → neuron</text>
+
+    <rect class="dive" x="30" y="310" width="250" height="64" rx="10" />
+    <text class="h" x="48" y="338">Immune dive (planned)</text>
+    <text class="s" x="48" y="360">lymph node → T cell</text>
+  </g>
+
+  <path class="edge-built" d="M280 72 C 380 72, 380 190, 470 190" />
+  <path class="edge planned" d="M280 162 C 380 162, 390 200, 470 200" />
+  <path class="edge planned" d="M280 252 C 380 252, 390 212, 470 212" />
+  <path class="edge planned" d="M280 342 C 380 342, 390 224, 470 224" />
+
+  <rect class="lib" x="470" y="170" width="160" height="72" rx="36" />
+  <text class="h" x="550" y="202" text-anchor="middle">Nucleus</text>
+  <text class="s" x="550" y="224" text-anchor="middle">built once</text>
+
+  <path class="edge-built" d="M630 206 L 690 206" />
+
+  <rect class="lib" x="690" y="170" width="160" height="72" rx="36" />
+  <text class="h" x="770" y="202" text-anchor="middle">DNA</text>
+  <text class="s" x="770" y="224" text-anchor="middle">built once</text>
+
+  <text class="s" x="470" y="290">Solid pink: playable today.</text>
+  <text class="s" x="470" y="312">Dashed: planned dives that reuse the same scenes.</text>
+  <text class="s" x="470" y="334">Cross-links on each card are computed from this graph.</text>
+</svg>

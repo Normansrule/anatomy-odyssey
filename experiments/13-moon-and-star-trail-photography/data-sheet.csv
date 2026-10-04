@@ -1,3 +1,0 @@
-frame_set,date,target,camera,focal_length_mm,crop_factor,aperture_f,shutter_s,iso,frames,interval_s,moon_phase,bortle_class,stack_mode,trail_arc_deg_measured,trail_arc_deg_expected,notes
-1,,Polaris region,phone,,,,,,,,,,trails,,,
-2,,Moon,DSLR,,,,,,,,,,moon,,,
