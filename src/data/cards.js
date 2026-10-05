@@ -12,6 +12,7 @@ import { CHEM_IMMUNE_CARDS } from './cards-chem-immune.js';
 import { TCELL_CARDS } from './cards-tcells.js';
 import { CORTEX_CARDS } from './cards-cortex.js';
 import { REFLEX_CARDS } from './cards-reflex.js';
+import { ORGAN_CARDS } from './cards-organs.js';
 
 const humanDiploidBp = 6.4e9;
 const dnaPerCell = formatLength(dnaLength(humanDiploidBp)).text; // ≈ 2.2 m
@@ -464,6 +465,7 @@ export const CARDS = [
   ...TCELL_CARDS,
   ...CORTEX_CARDS,
   ...REFLEX_CARDS,
+  ...ORGAN_CARDS,
 ];
 
 // Short cards for planned library entries, so search and cross-links can explain them.

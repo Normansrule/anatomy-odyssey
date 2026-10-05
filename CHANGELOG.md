@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.3
+
+- **Digestive system on the body.** A new Digestive button shows the esophagus passing through the diaphragm, the J-shaped stomach, the liver (right and left lobes) with the gallbladder, the pancreas behind the stomach, the duodenum, loops of small intestine, and the large intestine framing them with its pouches (haustra), S-bend, rectum and appendix. Each organ has its own color in life and its own card.
+- **A real heart shape.** The heart is a rounded cone pointing down and to the left, with both atria, the coronary arteries in their groove and down the front, and the pulmonary trunk splitting to the lungs.
+- **Lungs and diaphragm.** The lungs taper to their tips, flatten where they face the heart, show the fissures between their lobes (three on the right, two on the left) and the left lung's cardiac notch, and sit on a dome-shaped diaphragm. The windpipe has its C-shaped cartilage rings.
+- Organs share one generated surface but each gets its own natural color (a new `natural` option for tissue materials).
+- 6 new cards (digestive system, stomach, liver and gallbladder, pancreas, small intestine, large intestine), 1 new reference (OpenStax chapter 23); 297 tests (from 296).
+
 ## 0.9.2
 
 - **A detailed skeleton.** The spine now has 7 neck, 12 chest and 5 lower-back vertebrae on an adult S-curve, each with its spinous and transverse processes and a disc below it, then the sacrum and tailbone. The 12 rib pairs follow the vertebrae, with costal cartilage: ribs 1–7 run to the breastbone (now manubrium, body and xiphoid), 8–10 join the cartilage above and 11–12 float. The shoulder blades are triangular plates with their spine and acromion, the collarbones S-curved. The pelvis is a bowl of two iliac wings with a crest that rises at the sides, around the hip sockets, pubis and ischium. Every hand has 8 wrist bones, 5 palm bones and 14 finger bones; every foot has 7 ankle bones, 5 metatarsals and 14 toe bones. The skull gains cheekbones, a jaw with rami and 32 teeth.

@@ -219,3 +219,27 @@ export function mergedMesh(parts, material) {
   for (const g of geos) g.dispose();
   return new THREE.Mesh(merged, material);
 }
+
+/**
+ * A tube through `points` whose radius varies along its length:
+ * radiusAt(t) for t from 0 to 1 (stomach, colon, pancreas).
+ */
+export function taperedTube(points, radiusAt, material, segments = 64, radial = 12) {
+  const curve = new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(...p)));
+  const geo = new THREE.TubeGeometry(curve, segments, 1, radial, false);
+  const pos = geo.attributes.position;
+  const center = new THREE.Vector3();
+  const v = new THREE.Vector3();
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    curve.getPointAt(t, center);
+    const r = radiusAt(t);
+    for (let j = 0; j <= radial; j++) {
+      const k = i * (radial + 1) + j;
+      v.fromBufferAttribute(pos, k).sub(center).multiplyScalar(r).add(center);
+      pos.setXYZ(k, v.x, v.y, v.z);
+    }
+  }
+  geo.computeVertexNormals();
+  return new THREE.Mesh(geo, material);
+}

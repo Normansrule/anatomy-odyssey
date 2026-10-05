@@ -4,7 +4,7 @@
 // Milestone 2 replaces these primitives with Z-Anatomy meshes (see tools/).
 import * as THREE from 'three/webgpu';
 import {
-  COLORS, materialBank, pick, capsuleBetween, tubeThrough, ellipsoid, disposeTree, latheBetween, longBone, softShadowTexture, mergedMesh,
+  COLORS, materialBank, pick, capsuleBetween, tubeThrough, ellipsoid, disposeTree, latheBetween, longBone, softShadowTexture, mergedMesh, taperedTube,
 } from './kit.js';
 
 export const SYSTEMS = [
@@ -15,6 +15,7 @@ export const SYSTEMS = [
   { id: 'nervous', label: 'Nervous', card: 'nervous-system' },
   { id: 'respiratory', label: 'Respiratory', card: 'respiratory-system' },
   { id: 'immune', label: 'Immune', card: 'immune-system' },
+  { id: 'digestive', label: 'Digestive', card: 'digestive-system' },
 ];
 
 export const DEFAULT_SYSTEMS = ['skin', 'skeletal', 'circulatory', 'nervous', 'respiratory', 'immune'];
@@ -409,13 +410,72 @@ function buildMuscles(M) {
   return g;
 }
 
+/**
+ * The heart as a rounded cone pointing down, forward and to the body's left,
+ * with both atria at its base and the coronary arteries on its surface.
+ */
+function buildHeartShape(M) {
+  const art = M(COLORS.artery, { roughness: 0.4, tissue: 'myocardium' });
+  const atrium = M(0xb63f5e, { roughness: 0.45, tissue: 'myocardium' });
+  const coronary = M(0xf06a5a, { roughness: 0.3, emissive: 0x5a0d10, emissiveIntensity: 0.4 });
+  const fat = M(0xe9cf8a, { roughness: 0.5 });
+  const heart = new THREE.Group();
+  const apex = new THREE.Vector3(0.068, 1.195, 0.075);
+  const base = new THREE.Vector3(-0.005, 1.29, 0.035);
+  const axis = base.clone().sub(apex);
+  const L = axis.length();
+  heart.position.copy(apex);
+  heart.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), axis.normalize());
+  // Radius of the ventricles along the axis, apex (0) to base (1), as a share of the length.
+  const profile = [[0, 0], [0.06, 0.16], [0.2, 0.3], [0.45, 0.4], [0.7, 0.42], [0.88, 0.36], [1, 0.22]];
+  const rAt = (t) => {
+    for (let i = 1; i < profile.length; i++) {
+      if (t <= profile[i][0]) {
+        const [t0, r0] = profile[i - 1];
+        const [t1, r1] = profile[i];
+        return (r0 + ((t - t0) / (t1 - t0)) * (r1 - r0)) * L;
+      }
+    }
+    return profile[profile.length - 1][1] * L;
+  };
+  const ventricles = new THREE.Mesh(new THREE.LatheGeometry(profile.map(([t, r]) => new THREE.Vector2(r * L, t * L)), 40), art);
+  ventricles.scale.z = 0.82; // flatter front to back
+  ventricles.userData.label = 'Heart (ventricles)';
+  heart.add(ventricles);
+  for (const [x, z, label] of [[-0.42, 0.05, 'Right atrium'], [0.36, -0.12, 'Left atrium']]) {
+    const a = ellipsoid([x * L, 0.98 * L, z * L], [0.24 * L, 0.2 * L, 0.22 * L], atrium, 20);
+    a.userData.label = label;
+    heart.add(a);
+  }
+  // Coronary arteries: a ring in the groove between atria and ventricles and a
+  // branch down the front (anterior interventricular), with fat along it.
+  const ring = [];
+  for (let i = 0; i < 16; i++) {
+    const a = (i / 16) * Math.PI * 2;
+    ring.push(new THREE.Vector3(Math.sin(a) * rAt(0.86) * 1.04, 0.86 * L, Math.cos(a) * rAt(0.86) * 0.82 * 1.04));
+  }
+  const crown = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(ring, true), 48, 0.0022, 6, true), coronary);
+  const front = [0.86, 0.65, 0.42, 0.2, 0.06].map((t, i) => new THREE.Vector3(0.12 * L * (i / 4), t * L, rAt(t) * 0.82 * 1.04));
+  const branch = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(front), 32, 0.0018, 6, false), coronary);
+  for (const m of [crown, branch]) {
+    m.userData.label = 'Coronary arteries (the heart’s own blood supply)';
+    heart.add(m);
+  }
+  const fatMesh = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(front.slice(0, 3).map((p) => p.clone().multiplyScalar(1.01))), 16, 0.0038, 6, false), fat);
+  fatMesh.userData.label = 'Fat along the coronary arteries';
+  heart.add(fatMesh);
+  heart.traverse((o) => o.isMesh && pick(o, 'heart', o.userData.label));
+  return heart;
+}
+
 function buildCirculatory(M) {
   const g = new THREE.Group();
   const art = M(COLORS.artery, { roughness: 0.4, tissue: 'vessel' });
   const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein' });
-  const heart = ellipsoid([0.02, 1.25, 0.04], [0.048, 0.06, 0.042], art);
-  heart.rotation.z = -0.4;
-  g.add(pick(heart, 'heart', 'Heart'));
+  g.add(buildHeartShape(M));
+  // Pulmonary trunk: from the right ventricle up and splitting to both lungs (oxygen-poor, so blue).
+  g.add(pick(tubeThrough([[0.012, 1.285, 0.075], [0.022, 1.315, 0.06], [0.02, 1.335, 0.035]], 0.0085, vein, 20, 10), 'heart', 'Pulmonary trunk (to the lungs)'));
+  for (const s of SIDES) g.add(pick(tubeThrough([[0.02, 1.335, 0.035], [s * 0.035 + 0.01, 1.33, 0.02], [s * 0.06, 1.315, 0.005]], 0.0055, vein, 16, 8), 'heart', s < 0 ? 'Right pulmonary artery' : 'Left pulmonary artery'));
   const vessel = (pts, r, material, label) => g.add(pick(tubeThrough(pts, r, material, 64, 8), 'circulatory-system', label));
   vessel([[0.01, 1.28, 0.03], [0.02, 1.335, 0.02], [-0.005, 1.335, -0.02], [-0.01, 1.2, -0.035], [0, 1.0, -0.03], [0, 0.95, -0.02]], 0.011, art, 'Aorta');
   vessel([[0.035, 1.22, 0.02], [0.03, 1.1, -0.02], [0.012, 0.95, -0.01]], 0.01, vein, 'Vena cava');
@@ -446,16 +506,80 @@ function buildNervous(M) {
   return g;
 }
 
+/** Lung outline from base (on the diaphragm) to apex: [radius, height] in meters. */
+const LUNG_PROFILE = [[0.004, 1.18], [0.045, 1.166], [0.074, 1.15], [0.078, 1.18], [0.074, 1.23], [0.066, 1.29], [0.053, 1.35], [0.037, 1.4], [0.019, 1.44], [0.003, 1.46]];
+const LUNG_DEPTH = 0.88;
+const LUNG_X = 0.074; // distance of each lung's axis from the midline
+
+/** The lung's outer surface at height y, angle a (0 = front, π/2 = to the side away from the heart). */
+function lungSurface(s, y, a) {
+  let r = LUNG_PROFILE[0][0];
+  for (let i = 1; i < LUNG_PROFILE.length; i++) {
+    const [r0, y0] = LUNG_PROFILE[i - 1];
+    const [r1, y1] = LUNG_PROFILE[i];
+    if (y >= Math.min(y0, y1) && y <= Math.max(y0, y1)) r = r0 + ((y - y0) / (y1 - y0)) * (r1 - r0);
+  }
+  return [s * LUNG_X + s * Math.sin(a) * r * 1.01, y, Math.cos(a) * r * LUNG_DEPTH * 1.01];
+}
+
 function buildRespiratory(M) {
   const g = new THREE.Group();
   const airway = M(0xf3c1cf, { roughness: 0.5 });
-  const lung = M(COLORS.lung, { roughness: 0.7, transparent: true, opacity: 0.82, tissue: 'lung' });
-  g.add(pick(tubeThrough([[0, 1.5, 0.035], [0, 1.42, 0.035], [0, 1.34, 0.03]], 0.009, airway, 24, 10), 'respiratory-system', 'Trachea'));
-  for (const s of SIDES) {
-    g.add(pick(tubeThrough([[0, 1.34, 0.03], [s * 0.035, 1.3, 0.02], [s * 0.06, 1.27, 0.01]], 0.0065, airway, 16, 8), 'respiratory-system', 'Bronchus'));
-    const l = ellipsoid([s * 0.078, 1.27, 0.0], [0.062, 0.12, 0.068], lung);
-    g.add(pick(l, 'respiratory-system', s < 0 ? 'Right lung' : 'Left lung'));
+  const ringMat = M(COLORS.cartilage, { roughness: 0.35, tissue: 'cartilage' });
+  const lung = M(COLORS.lung, { roughness: 0.7, transparent: true, opacity: 0.8, tissue: 'lung' });
+  const fissure = M(0x8a4660, { roughness: 0.8 });
+  const diaphragm = M(0xc95468, { roughness: 0.55, tissue: 'muscle', transparent: true, opacity: 0.7, side: THREE.DoubleSide });
+  // Windpipe with its C-shaped cartilage rings (open at the back), then the two main bronchi.
+  g.add(pick(tubeThrough([[0, 1.5, 0.035], [0, 1.42, 0.035], [0, 1.34, 0.03]], 0.009, airway, 24, 10), 'respiratory-system', 'Windpipe (trachea)'));
+  const rings = [];
+  for (let i = 0; i < 12; i++) {
+    const r = new THREE.Mesh(new THREE.TorusGeometry(0.0098, 0.0016, 6, 18, Math.PI * 1.6), ringMat);
+    r.rotation.set(Math.PI / 2, 0, Math.PI * 0.7);
+    r.position.set(0, 1.49 - i * 0.012, 0.035 - i * 0.0004);
+    rings.push(r);
   }
+  g.add(pick(mergedMesh(rings, ringMat), 'respiratory-system', 'Cartilage rings of the windpipe'));
+  for (const s of SIDES) {
+    g.add(pick(tubeThrough([[0, 1.34, 0.03], [s * 0.035, 1.3, 0.02], [s * 0.06, 1.27, 0.01]], 0.0065, airway, 16, 8), 'respiratory-system', 'Main bronchus'));
+    // Each lung: a rounded cone, flatter where it faces the heart; the left lung
+    // has a notch for the heart (the cardiac notch).
+    const geo = new THREE.LatheGeometry(LUNG_PROFILE.map(([r, y]) => new THREE.Vector2(r, y)), 36);
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      let x = pos.getX(i);
+      const z = pos.getZ(i) * LUNG_DEPTH;
+      const y = pos.getY(i);
+      if (x * s < 0) x *= 0.5;
+      if (s === 1 && x < 0.02 && z > 0 && y < 1.3) {
+        const notch = Math.max(0, 1 - Math.abs(y - 1.22) / 0.08) * Math.min(1, z / 0.04);
+        x += 0.03 * notch;
+      }
+      pos.setXYZ(i, x + s * LUNG_X, y, z);
+    }
+    geo.computeVertexNormals();
+    g.add(pick(new THREE.Mesh(geo, lung), 'lungs', s < 0 ? 'Right lung (three lobes)' : 'Left lung (two lobes)'));
+    // Fissures between the lobes: an oblique one on both lungs, a horizontal one on the right.
+    const oblique = [];
+    for (let i = 0; i <= 10; i++) oblique.push(lungSurface(s, 1.37 - 0.2 * (i / 10), Math.PI * (1 - i / 10) * 0.95));
+    g.add(pick(tubeThrough(oblique, 0.0014, fissure, 32, 5), 'lungs', 'Fissure between lung lobes'));
+    if (s < 0) {
+      const horiz = [];
+      for (let i = 0; i <= 6; i++) horiz.push(lungSurface(s, 1.29, (Math.PI / 2) * 1.05 * (1 - i / 6)));
+      g.add(pick(tubeThrough(horiz, 0.0014, fissure, 24, 5), 'lungs', 'Fissure between lung lobes'));
+    }
+  }
+  // Diaphragm: the dome of muscle under the lungs, a little higher on the right (over the liver).
+  const dome = new THREE.SphereGeometry(0.15, 40, 14, 0, Math.PI * 2, 0, 1.05);
+  const dp = dome.attributes.position;
+  for (let i = 0; i < dp.count; i++) {
+    const x = dp.getX(i);
+    const lift = x < 0 ? 0.01 * Math.min(1, -x / 0.08) : 0;
+    dp.setXYZ(i, x, dp.getY(i) + lift, dp.getZ(i) * 0.68);
+  }
+  dome.computeVertexNormals();
+  const dia = new THREE.Mesh(dome, diaphragm);
+  dia.position.set(0, 1.0, -0.005);
+  g.add(pick(dia, 'diaphragm', 'Diaphragm (the main breathing muscle)'));
   return g;
 }
 
@@ -483,6 +607,49 @@ function buildImmune(M) {
   return g;
 }
 
+/** Small-intestine loops (a centre line, meters): drawn far shorter than the real 3 m. */
+export function smallIntestinePath() {
+  const pts = [];
+  for (let row = 0; row < 6; row++) {
+    const y = 0.958 - row * 0.019;
+    for (let k = 0; k <= 8; k++) {
+      const u = row % 2 ? 1 - k / 8 : k / 8;
+      pts.push([-0.06 + 0.12 * u, y + 0.006 * Math.sin(k * 1.9 + row), 0.03 + 0.022 * Math.sin(k * 1.3 + row * 0.7)]);
+    }
+  }
+  return pts;
+}
+
+function buildDigestive(M) {
+  const g = new THREE.Group();
+  // Each organ keeps the shared organ surface but its own color in life.
+  const gut = M(0xe39aa0, { roughness: 0.45, tissue: 'organ', natural: 0xd99088 });
+  const colon = M(0xd9a184, { roughness: 0.5, tissue: 'organ', natural: 0xc79574 });
+  const liverMat = M(0x8c3a3e, { roughness: 0.38, tissue: 'organ', natural: 0x7a2c28 });
+  const add = (mesh, card, label) => g.add(pick(mesh, card, label));
+  // Esophagus: behind the windpipe and heart, through the diaphragm into the stomach.
+  add(tubeThrough([[0, 1.52, 0.012], [0.0, 1.4, 0.0], [0.005, 1.27, -0.012], [0.02, 1.15, 0.0], [0.035, 1.1, 0.018]], 0.0065, gut, 40, 8), 'digestive-system', 'Esophagus (food pipe)');
+  // Stomach: a J-shaped bag, widest in its body, narrowing to the pylorus.
+  add(taperedTube([[0.035, 1.1, 0.018], [0.07, 1.115, 0.0], [0.09, 1.07, 0.025], [0.07, 1.01, 0.05], [0.02, 0.995, 0.055], [-0.025, 1.01, 0.045]],
+    (t) => 0.011 + 0.03 * Math.sin(Math.PI * Math.min(1, t * 1.25)) * (1 - 0.35 * t), gut, 64, 16), 'stomach', 'Stomach');
+  // Liver, the largest gland: a big right lobe and a thinner left lobe under the diaphragm; gallbladder below.
+  const right = ellipsoid([-0.06, 1.095, 0.035], [0.088, 0.052, 0.066], liverMat, 32);
+  right.rotation.z = 0.22;
+  const left = ellipsoid([0.035, 1.115, 0.052], [0.055, 0.026, 0.04], liverMat, 24);
+  left.rotation.z = -0.15;
+  add(mergedMesh([right, left], liverMat), 'liver', 'Liver');
+  add(ellipsoid([-0.045, 1.055, 0.085], [0.011, 0.022, 0.011], M(0x6f9a3f, { roughness: 0.3 }), 14), 'liver', 'Gallbladder (stores bile)');
+  // Duodenum curving around the head of the pancreas, which runs left toward the spleen.
+  add(tubeThrough([[-0.025, 1.01, 0.045], [-0.045, 0.99, 0.025], [-0.042, 0.958, 0.012], [-0.005, 0.952, 0.004], [0.02, 0.965, 0.0]], 0.0085, gut, 32, 8), 'small-intestine', 'Duodenum (first part of the small intestine)');
+  add(taperedTube([[-0.025, 0.98, 0.012], [0.01, 0.995, 0.0], [0.05, 1.01, -0.012], [0.078, 1.03, -0.03]], (t) => 0.012 - 0.006 * t, M(0xe6bf86, { roughness: 0.55, tissue: 'organ', natural: 0xdcb377 }), 32, 10), 'pancreas', 'Pancreas');
+  add(tubeThrough(smallIntestinePath(), 0.0085, gut, 300, 8), 'small-intestine', 'Small intestine (jejunum and ileum)');
+  // Large intestine framing the small one: up the right side, across, down the left, then the S-bend and rectum.
+  const frame = [[-0.075, 0.875, 0.03], [-0.082, 0.94, 0.03], [-0.078, 0.995, 0.035], [-0.03, 0.985, 0.066], [0.03, 0.98, 0.066], [0.082, 1.01, 0.03], [0.088, 0.95, 0.02], [0.084, 0.885, 0.025], [0.05, 0.86, 0.045], [0.015, 0.87, 0.02], [0.0, 0.858, -0.02], [0.0, 0.84, -0.03]];
+  add(taperedTube(frame, (t) => 0.0155 * (1 + 0.14 * Math.abs(Math.sin(t * Math.PI * 38))) * (t > 0.85 ? 0.85 : 1), colon, 220, 12), 'large-intestine', 'Large intestine (colon)');
+  add(tubeThrough([[-0.072, 0.868, 0.03], [-0.066, 0.852, 0.038], [-0.058, 0.846, 0.034]], 0.0035, colon, 12, 6), 'large-intestine', 'Appendix');
+  return g;
+}
+
 function build({ mode = 'body', systems = DEFAULT_SYSTEMS } = {}) {
   const M = materialBank();
   const root = new THREE.Group();
@@ -495,6 +662,7 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS } = {}) {
     nervous: buildNervous(M),
     respiratory: buildRespiratory(M),
     immune: buildImmune(M),
+    digestive: buildDigestive(M),
   };
   for (const [id, grp] of Object.entries(groups)) {
     grp.name = id;

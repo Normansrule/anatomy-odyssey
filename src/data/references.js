@@ -112,6 +112,10 @@ export const REFERENCES = {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 13: Anatomy of the Nervous System.',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/13-introduction',
   },
+  'openstax-digestive': {
+    text: 'OpenStax Anatomy and Physiology 2e, chapter 23: The Digestive System (sections 23.3 to 23.6).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/23-introduction',
+  },
   'openstax-respiratory': {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 22: The Respiratory System.',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/22-introduction',

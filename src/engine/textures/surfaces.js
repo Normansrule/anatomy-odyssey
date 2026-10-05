@@ -53,6 +53,14 @@ function textureSet(kind, look, size) {
   return sets.get(key);
 }
 
+/** Multiplier that turns a map painted in `from` into one that reads as `to` (linear color). */
+export function naturalTint(from, to) {
+  if (to === undefined || to === from) return new THREE.Color(0xffffff);
+  const a = new THREE.Color(from);
+  const b = new THREE.Color(to);
+  return new THREE.Color(b.r / Math.max(a.r, 1e-3), b.g / Math.max(a.g, 1e-3), b.b / Math.max(a.b, 1e-3));
+}
+
 // Per-repeat copies share the same image data, so each set uploads once.
 const repeated = new Map();
 function withRepeat(tex, key, rx, ry) {
@@ -71,12 +79,14 @@ function withRepeat(tex, key, rx, ry) {
  * in the stain look); other options (opacity, side, emissive, …) pass through.
  */
 export function tissueMaterial(color, opts) {
-  const { tissue, repeat, normalScale, ...rest } = opts;
+  const { tissue, repeat, normalScale, natural, ...rest } = opts;
   const recipe = TISSUES[tissue];
   if (!recipe) throw new Error(`unknown tissue "${tissue}"`);
   const look = options.look;
   const size = options.detail;
-  const base = look === 'natural' ? recipe.natural : color;
+  // `natural` (optional) gives one organ its own life color while sharing the
+  // tissue's generated surface: the map is tinted by natural ÷ recipe.natural.
+  const base = look === 'natural' ? natural ?? recipe.natural : color;
   const params = {
     color: base,
     roughness: recipe.roughness[0],
@@ -95,7 +105,7 @@ export function tissueMaterial(color, opts) {
   const key = `${tissue}|${look}|${size}`;
   const mat = new THREE.MeshPhysicalMaterial({
     ...params,
-    color: look === 'natural' ? 0xffffff : color,
+    color: look === 'natural' ? naturalTint(recipe.natural, natural) : color,
     roughness: 1, // the roughness map carries the value
     map: withRepeat(set.color, `${key}|c`, rx, ry),
     normalMap: withRepeat(set.normal, `${key}|n`, rx, ry),

@@ -13,7 +13,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 ### Skeletal dive
 | Tier | Step | Frame | Honest stopping point and simplifications |
 |---|---|---|---|
-| 1 | Whole body | 2.1 m | Stylized adult figure with seven toggleable systems |
+| 1 | Whole body | 2.1 m | Stylized adult figure with eight toggleable systems (Digestive is off until you switch it on). Heart: a rounded cone with both atria, the coronary arteries and the pulmonary trunk. Lungs: tapered, flatter toward the heart, with lobe fissures and the left lung's cardiac notch, on a diaphragm dome. Digestive organs: esophagus, stomach, liver and gallbladder, pancreas, duodenum, small-intestine loops (far shorter than the real 3 m) and the large intestine with its pouches and appendix |
 | 2 | Skeleton | 1.9 m | The whole skeleton, head to feet; the femur the dive enters glows. Built from simple shapes: 24 vertebrae on an S-curve with discs, 12 rib pairs with costal cartilage, breastbone, shoulder blades and collarbones, a pelvic bowl, and every bone of the hands (27) and feet (26), simplified in shape |
 | 3 | Femur | 55 cm | Lathed cutaway; 125° neck angle |
 | 4 | Bone tissue | 1.6 mm | Osteons 0.2 mm, central canals 50 µm |

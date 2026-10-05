@@ -157,3 +157,13 @@ describe('surfaces used by the scenes', () => {
     expect(() => tissueMaterial(0xffffff, { tissue: 'nope' })).toThrow();
   });
 });
+
+describe('organ colors in the natural look', async () => {
+  const { naturalTint } = await import('../src/engine/textures/surfaces.js');
+  it('a tint turns the shared organ map into each organ’s own color, and is neutral when not asked for', () => {
+    const t = naturalTint(0x7d3a35, 0xd99088);
+    expect(t.r).toBeGreaterThan(1); // lighter than the shared map
+    const same = naturalTint(0x7d3a35);
+    expect([same.r, same.g, same.b]).toEqual([1, 1, 1]);
+  });
+});
