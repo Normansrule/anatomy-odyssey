@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.0
+
+- **Realistic tissue surfaces.** A new surface framework (`src/engine/textures/`) generates tileable color, normal and roughness maps in code for 17 tissues (skin, bone, muscle, heart muscle, organ, artery, vein, lung, gray and white matter, cartilage, red and yellow marrow, tendon, nerve, fascia) and builds physically based materials with a wet clearcoat where tissue is wet. The organ and tissue steps of every dive use them.
+- **Studio lighting.** Soft image-based reflections from a studio built in code (no downloads), so wet and glossy surfaces read as real.
+- **Natural or stain colors.** About → Look switches organs and tissues between the colors they have in life and the stained-slide palette. Cells and molecules keep stain colors.
+- **Scales with the device.** Texture size and reflections follow picture quality and the first-launch device check: none on slow devices, 256 px by default, 512 px on Sharp.
+- **New README**: shorter, scannable, with screenshots and details folded away.
+- **Contributors**: Aleksander Norman and Claude are both listed (README, `CITATION.cff`, package metadata), and commits carry both names.
+- 280 tests (from 265), including tileable-noise, normal-map and material tests.
+
 ## 0.7.0
 
 - **Cortex step in the nervous dive.** A new tissue-tier step between the brain and the neuron: a 2.5 mm block of cerebral cortex with its six layers, about 2,500 neurons (cell bodies to scale), apical dendrites reaching layer I, three large layer V pyramidal neurons drawn in full, a 0.5 mm cortical column and the white matter below. A layer control highlights each layer and explains what lives there.

@@ -44,6 +44,7 @@ Planned for Milestone 5: sign `manifest.json` in CI and verify the signature in 
 
 ### Privacy
 - No analytics, trackers, third-party fonts or CDNs. Fonts are bundled.
+- Tissue textures and the lighting environment are generated in the browser from seeded noise; no image files are fetched, so they add nothing to the attack surface or the asset-integrity checks.
 - Progress (visited tiers, preferences) is stored only in `localStorage` under one key, and **About → Clear my progress** removes it.
 - The first-launch benchmark stores two frame times, a tier name and a date with the other preferences. It reads no device identifiers, uses no fingerprinting APIs (no GPU strings, no canvas readback) and sends nothing anywhere.
 - Test tools (`tools/screenshots.py`, `tools/a11y-audit.py`) open headless pages with Playwright's `bypass_csp` so they can inject axe-core or poll state. That applies only to the test browser; the shipped page keeps its strict Content Security Policy, and axe-core is a development dependency that is never bundled.

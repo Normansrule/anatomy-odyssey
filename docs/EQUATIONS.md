@@ -346,3 +346,13 @@ Not biology, but it is tested the same way. The app times about 120 frames after
 **Worked example.** 9 amino acids: 8 × 0.34 = 2.72 nm, which fits the groove between the two MHC helices.
 
 **Tests.** "spans a 15 nm gap, much narrower than the 36–45 nm adhesion ring", "the peptide is 9 amino acids, inside the 8–10 MHC class I holds, about 2.7 nm long".
+
+## 28. Tileable noise and normal maps (tissue surfaces)
+
+Not biology, but tested the same way. Tissue textures are built from seeded noise that repeats exactly, so they tile without seams.
+
+**Value noise.** Random values on an integer lattice that wraps every P cells, blended with the quintic fade f(t) = 6t⁵ − 15t⁴ + 10t³. **Fractal noise (fBm)** sums octaves: Σ aᵏ · noise(2ᵏ x), with gain a = 0.5 and the period doubling each octave so every octave still wraps. **Cellular (Worley) noise** gives the distance to the nearest (f₁) and second-nearest (f₂) random point; f₂ − f₁ is near zero along cell borders (lung lobules, brain surface vessels).
+
+**Normal map from height.** With central differences on the wrapped height field h, the surface normal is n = normalize(−s·∂h/∂u, −s·∂h/∂v, 1), stored as RGB = (n + 1) / 2. A flat field gives (128, 128, 255).
+
+**Tests.** `tests/textures.test.js` → "is deterministic and stays in [0, 1]", "tiles: the left edge matches the right and the top matches the bottom", "cellular noise: f1 ≤ f2, and f1 is zero at a feature point", "normal maps point outward with unit length; a flat field gives a flat normal".

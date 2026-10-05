@@ -31,9 +31,9 @@ function radiusAt(y) {
 export function buildFemur() {
   const M = materialBank();
   const root = new THREE.Group();
-  const bone = M(COLORS.bone, { roughness: 0.5, side: THREE.DoubleSide });
-  const cut = M(0xf4ecd9, { roughness: 0.8, side: THREE.DoubleSide });
-  const inner = M(COLORS.boneShade, { roughness: 0.8, side: THREE.BackSide });
+  const bone = M(COLORS.bone, { roughness: 0.5, side: THREE.DoubleSide, tissue: 'bone' });
+  const cut = M(0xf4ecd9, { roughness: 0.8, side: THREE.DoubleSide, tissue: 'bone', repeat: [12, 12] });
+  const inner = M(COLORS.boneShade, { roughness: 0.8, side: THREE.BackSide, tissue: 'bone' });
 
   // Densify the profile so the inner surface follows the cortex function.
   const ys = [];
@@ -62,13 +62,13 @@ export function buildFemur() {
   }
 
   // Marrow cavity along the shaft (yellow marrow in adults).
-  const cavity = cylinderBetween([0, SHAFT_LO + 0.05, 0], [0, SHAFT_HI - 0.05, 0], 0.074, 0.08, M(COLORS.marrowYellow, { roughness: 0.9 }), 32);
+  const cavity = cylinderBetween([0, SHAFT_LO + 0.05, 0], [0, SHAFT_HI - 0.05, 0], 0.074, 0.08, M(COLORS.marrowYellow, { roughness: 0.9, tissue: 'marrowYellow', repeat: [2, 8] }), 32);
   root.add(pick(cavity, 'bone-marrow', 'Yellow marrow'));
 
   // Spongy ends: red marrow filling a lattice of short struts (trabeculae).
   const rand = seeded(7);
   const strut = new THREE.CylinderGeometry(0.012, 0.012, 1, 5);
-  const strutMat = M(COLORS.bone, { roughness: 0.7 });
+  const strutMat = M(COLORS.bone, { roughness: 0.7, tissue: 'bone' });
   const struts = new THREE.InstancedMesh(strut, strutMat, 520);
   const up = new THREE.Vector3(0, 1, 0);
   const m4 = new THREE.Matrix4();
@@ -99,7 +99,7 @@ export function buildFemur() {
   };
   for (const [y0, y1] of [[0.1, SHAFT_LO + 0.05], [SHAFT_HI - 0.05, 3.96]]) {
     const pts = endProfile(y0, y1);
-    const mesh = new THREE.Mesh(new THREE.LatheGeometry(pts, 48, phiStart + 0.05, phiLength - 0.1), M(COLORS.marrowRed, { roughness: 0.85, side: THREE.DoubleSide }));
+    const mesh = new THREE.Mesh(new THREE.LatheGeometry(pts, 48, phiStart + 0.05, phiLength - 0.1), M(COLORS.marrowRed, { roughness: 0.85, side: THREE.DoubleSide, tissue: 'marrowRed' }));
     root.add(pick(mesh, 'bone-marrow', 'Red marrow'));
   }
 
@@ -111,7 +111,7 @@ export function buildFemur() {
   root.add(pick(cylinderBetween(neckBase.toArray(), headCenter.toArray(), 0.13, 0.16, bone, 32), 'femur', 'Femoral neck'));
   root.add(pick(ellipsoid(headCenter.toArray(), [0.23, 0.23, 0.23], bone, 40), 'femoral-head', 'Femoral head'));
   const capGeo = new THREE.SphereGeometry(0.238, 40, 20, 0, Math.PI * 2, 0, 1.15);
-  const cartilage = M(COLORS.cartilage, { roughness: 0.25, transparent: true, opacity: 0.7 });
+  const cartilage = M(COLORS.cartilage, { roughness: 0.25, transparent: true, opacity: 0.7, tissue: 'cartilage' });
   const headCap = new THREE.Mesh(capGeo, cartilage);
   headCap.position.copy(headCenter);
   headCap.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), neckDir.clone().add(new THREE.Vector3(0, 0.35, 0)).normalize());

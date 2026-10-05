@@ -1,8 +1,8 @@
 [package]
 name = "anatomy-odyssey"
-version = "0.7.0"
+version = "0.8.0"
 description = "A guided journey through the human body, from whole body to molecule."
-authors = ["Aleksander Norman"]
+authors = ["Aleksander Norman", "Claude (Anthropic)"]
 license = "MIT"
 edition = "2021"
 rust-version = "1.77"

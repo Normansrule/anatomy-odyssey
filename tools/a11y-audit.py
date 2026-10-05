@@ -63,7 +63,8 @@ def main():
         for name, query, action, (w, h) in STATES:
             # bypass_csp lets the audit inject axe; the app itself keeps its strict CSP.
             page = browser.new_page(viewport={"width": w, "height": h}, bypass_csp=True)
-            page.goto(args.url + query)
+            # env=0 skips the studio reflections, which only slow software rendering here.
+            page.goto(args.url + query + ("&" if "?" in query else "?") + "env=0")
             page.wait_for_function("document.getElementById('app').dataset.ready === 'true'", timeout=60000)
             page.wait_for_timeout(2500)
             if action == "quiz":

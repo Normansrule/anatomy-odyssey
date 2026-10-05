@@ -25,11 +25,11 @@ export function buildFascicle() {
   }
   const fiberGeo = new THREE.CylinderGeometry(1, 1, 1, 18);
   fiberGeo.rotateZ(Math.PI / 2); // along x
-  const fiberMat = M(0xd65a6e, { roughness: 0.55 });
+  const fiberMat = M(0xd65a6e, { roughness: 0.55, tissue: 'muscle', repeat: [1, 0.5] });
   const mesh = new THREE.InstancedMesh(fiberGeo, fiberMat, fibers.length);
   const endGeo = new THREE.CircleGeometry(1, 18);
   endGeo.rotateY(Math.PI / 2);
-  const ends = new THREE.InstancedMesh(endGeo, M(0xf08baf, { roughness: 0.7 }), fibers.length);
+  const ends = new THREE.InstancedMesh(endGeo, M(0xf08baf, { roughness: 0.7, tissue: 'muscle', repeat: [0.3, 0.3] }), fibers.length);
   const m4 = new THREE.Matrix4();
   const q = new THREE.Quaternion();
   fibers.forEach((f, i) => {
@@ -47,12 +47,12 @@ export function buildFascicle() {
   // Perimysium: translucent sheath around the bundle (back half).
   const sheathGeo = new THREE.CylinderGeometry(R, R, LENGTH - 12, 64, 1, true, Math.PI / 2, Math.PI);
   sheathGeo.rotateZ(Math.PI / 2);
-  const sheath = new THREE.Mesh(sheathGeo, M(0xe8d7e4, { roughness: 0.5, transparent: true, opacity: 0.45, side: THREE.DoubleSide, depthWrite: false }));
+  const sheath = new THREE.Mesh(sheathGeo, M(0xe8d7e4, { roughness: 0.5, transparent: true, opacity: 0.45, side: THREE.DoubleSide, depthWrite: false, tissue: 'fascia' }));
   sheath.position.x = -6;
   root.add(pick(sheath, 'perimysium', 'Perimysium'));
 
   // Capillaries in the gaps between fibers.
-  const capMat = M(0xd9434f, { roughness: 0.4 });
+  const capMat = M(0xd9434f, { roughness: 0.4, tissue: 'vessel' });
   const capGeo = new THREE.CylinderGeometry(0.45, 0.45, LENGTH - 8, 8);
   capGeo.rotateZ(Math.PI / 2);
   const caps = [];

@@ -73,10 +73,10 @@ function meridian(field, phi, inset, steps = 180) {
 export function buildBrain() {
   const M = materialBank();
   const root = new THREE.Group();
-  const gray = M(0xd9a6b8, { roughness: 0.62 });
-  const grayCut = M(0xb88aa6, { roughness: 0.8, side: THREE.DoubleSide });
-  const white = M(0xf1e7ee, { roughness: 0.75, side: THREE.DoubleSide });
-  const inner = M(0x8e6a86, { roughness: 0.8, side: THREE.BackSide });
+  const gray = M(0xd9a6b8, { roughness: 0.62, tissue: 'brain', repeat: [6, 4] });
+  const grayCut = M(0xb88aa6, { roughness: 0.8, side: THREE.DoubleSide, tissue: 'brain', repeat: [0.4, 0.4] });
+  const white = M(0xf1e7ee, { roughness: 0.75, side: THREE.DoubleSide, tissue: 'whiteMatter', repeat: [0.4, 0.4] });
+  const inner = M(0x8e6a86, { roughness: 0.8, side: THREE.BackSide, tissue: 'whiteMatter' });
 
   // Body's right hemisphere (whole) at −x.
   const fieldR = foldField(3);
@@ -140,15 +140,15 @@ export function buildBrain() {
     cp.setXYZ(i, v.x * 5.0 * k, v.y * 2.5 * k, v.z * 3.3 * k);
   }
   cbGeo.computeVertexNormals();
-  const cerebellum = new THREE.Mesh(cbGeo, M(0xcf97ad, { roughness: 0.6 }));
+  const cerebellum = new THREE.Mesh(cbGeo, M(0xcf97ad, { roughness: 0.6, tissue: 'brain', repeat: [8, 6] }));
   cerebellum.position.set(0, -3.1, -5.6);
   cerebellum.rotation.x = -0.25;
   root.add(pick(cerebellum, 'cerebellum', 'Cerebellum'));
 
   // Brainstem: midbrain, pons and medulla, continuing as the spinal cord.
-  const stem = tubeThrough([[0, -0.6, -1.4], [0, -2.6, -2.4], [0, -4.8, -3.1], [0, -7.2, -3.4]], 1.0, M(0xe0bfa0, { roughness: 0.65 }), 40, 16);
+  const stem = tubeThrough([[0, -0.6, -1.4], [0, -2.6, -2.4], [0, -4.8, -3.1], [0, -7.2, -3.4]], 1.0, M(0xe0bfa0, { roughness: 0.65, tissue: 'whiteMatter' }), 40, 16);
   root.add(pick(stem, 'brainstem', 'Brainstem'));
-  const pons = ellipsoid([0, -3.3, -1.9], [1.5, 1.2, 1.2], M(0xe0bfa0, { roughness: 0.65 }), 28);
+  const pons = ellipsoid([0, -3.3, -1.9], [1.5, 1.2, 1.2], M(0xe0bfa0, { roughness: 0.65, tissue: 'whiteMatter' }), 28);
   root.add(pick(pons, 'brainstem', 'Pons'));
 
   // Focus: a point on the cut gray band of the lower face, where the dive continues into the cortex.

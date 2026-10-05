@@ -3,6 +3,7 @@
 // eosin (pink, cytoplasm and matrix), plus ivory bone and conventional
 // red/blue for arteries/veins.
 import * as THREE from 'three/webgpu';
+import { tissueMaterial } from '../engine/textures/surfaces.js';
 
 export const COLORS = {
   bone: 0xe9dfc8,
@@ -45,10 +46,12 @@ export function materialBank() {
           : p,
       ),
     );
+  // opts.tissue (see src/engine/textures/tissues.js) asks for a textured,
+  // physically based tissue surface; everything else is a plain standard material.
   const mat = (color, opts = {}) => {
     const key = keyOf([color, opts]);
     if (!cache.has(key)) {
-      cache.set(key, new THREE.MeshStandardMaterial({ color, roughness: 0.62, metalness: 0.0, ...opts }));
+      cache.set(key, opts.tissue ? tissueMaterial(color, opts) : new THREE.MeshStandardMaterial({ color, roughness: 0.62, metalness: 0.0, ...opts }));
     }
     return cache.get(key);
   };

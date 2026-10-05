@@ -4,6 +4,7 @@
 // runs, the reported view size is interpolated on a log scale so the depth
 // gauge sweeps smoothly through the powers of ten.
 import * as THREE from 'three/webgpu';
+import { createEnvironment } from './environment.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { setOpacity } from './fade.js';
 import { lerpLog, distanceForFrame, visibleHeightMeters } from '../science/scale.js';
@@ -41,6 +42,33 @@ export class TierEngine {
     this.scene.add(rim);
     this.key = key;
     this.rim = rim;
+    this.renderer = renderer;
+    this.envTexture = null;
+  }
+
+  /**
+   * Soft studio reflections for wet and glossy surfaces (see environment.js).
+   * Off on slow devices (it is the costliest lighting feature) and with ?env=0.
+   */
+  setEnvironment(on) {
+    const allowed = typeof location === 'undefined' || new URLSearchParams(location.search).get('env') !== '0';
+    if (on && allowed && !this.envTexture) this.envTexture = createEnvironment(this.renderer);
+    this.scene.environment = on && allowed ? this.envTexture : null;
+    this.scene.environmentIntensity = 0.55;
+  }
+
+  /** Rebuild the current step in place (after a look or detail change), keeping the camera. */
+  rebuild() {
+    if (!this.current || this.busy) return false;
+    const { step } = this.current;
+    const position = this.camera.position.clone();
+    const target = this.controls.target.clone();
+    const built = this.build(step);
+    this.discard(this.current.built);
+    this.scene.add(built.root);
+    this.placeCamera(built, position, target);
+    this.current = { step, built };
+    return true;
   }
 
   /** Build the scene for a dive step. */

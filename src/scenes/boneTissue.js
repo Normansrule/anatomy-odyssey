@@ -14,13 +14,13 @@ export function buildBoneTissue() {
   const M = materialBank();
   const root = new THREE.Group();
   const rand = seeded(11);
-  const matrix = M(COLORS.matrix, { roughness: 0.8 });
+  const matrix = M(COLORS.matrix, { roughness: 0.8, tissue: 'bone', repeat: [3, 3] });
   const ringA = M(0xf1e8d6, { roughness: 0.7, side: THREE.DoubleSide });
   const ringB = M(0xd9c9a8, { roughness: 0.7, side: THREE.DoubleSide });
   const canalMat = M(COLORS.hemaDeep, { roughness: 0.9, side: THREE.DoubleSide });
-  const artery = M(COLORS.artery, { roughness: 0.4 });
-  const vein = M(COLORS.vein, { roughness: 0.4 });
-  const nerve = M(COLORS.nerve, { roughness: 0.4 });
+  const artery = M(COLORS.artery, { roughness: 0.4, tissue: 'vessel' });
+  const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein' });
+  const nerve = M(COLORS.nerve, { roughness: 0.4, tissue: 'nerve' });
 
   // The block of compact bone (interstitial matrix between osteons).
   const block = new THREE.Mesh(new THREE.BoxGeometry(10, 5, 7), matrix);
@@ -108,13 +108,13 @@ export function buildBoneTissue() {
   // filling the spaces, drawn as a translucent volume so the struts show.
   const marrow = new THREE.Mesh(
     new THREE.BoxGeometry(4.6, 5, 7),
-    M(COLORS.marrowRed, { roughness: 0.85, transparent: true, opacity: 0.45, depthWrite: false }),
+    M(COLORS.marrowRed, { roughness: 0.85, transparent: true, opacity: 0.45, depthWrite: false, tissue: 'marrowRed' }),
   );
   marrow.position.set(-7.6, 0, 0);
   root.add(pick(marrow, 'bone-marrow', 'Red marrow'));
   const nodes = [];
   for (let i = 0; i < 70; i++) nodes.push([-9.7 + rand() * 4.2, -2.3 + rand() * 4.6, -3.3 + rand() * 6.6]);
-  const strutMat = M(COLORS.bone, { roughness: 0.55 });
+  const strutMat = M(COLORS.bone, { roughness: 0.55, tissue: 'bone' });
   const nodeGeo = new THREE.SphereGeometry(1, 10, 8);
   for (let i = 0; i < nodes.length; i++) {
     let links = 0;

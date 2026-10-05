@@ -1,6 +1,6 @@
 {
   "name": "anatomy-odyssey",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A guided journey through the human body, from whole body to molecule.",
   "scripts": {
     "dev": "vite",
@@ -15,7 +15,10 @@
     "molecules": "python3 tools/gen_molecules.py",
     "a11y": "python3 tools/a11y-audit.py"
   },
-  "author": "Aleksander Norman",
+  "author": {
+    "name": "Aleksander Norman",
+    "url": "https://github.com/Normansrule"
+  },
   "license": "MIT",
   "dependencies": {
     "@fontsource/atkinson-hyperlegible-next": "5.3.0",
@@ -41,5 +44,12 @@
     "webgpu",
     "dna",
     "biology"
+  ],
+  "contributors": [
+    {
+      "name": "Claude (Anthropic)",
+      "email": "noreply@anthropic.com",
+      "url": "https://github.com/claude"
+    }
   ]
 }

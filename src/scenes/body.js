@@ -23,9 +23,9 @@ const SIDES = [-1, 1];
 
 function buildSkeleton(M, highlightFemur) {
   const g = new THREE.Group();
-  const bone = M(COLORS.bone, { roughness: 0.55 });
-  const glow = M(COLORS.bone, { roughness: 0.45, emissive: COLORS.eosin, emissiveIntensity: 0.55 });
-  const dim = highlightFemur ? M(COLORS.boneShade, { roughness: 0.7, transparent: true, opacity: 0.55 }) : bone;
+  const bone = M(COLORS.bone, { roughness: 0.55, tissue: 'bone', repeat: [1, 6] });
+  const glow = M(COLORS.bone, { roughness: 0.45, emissive: COLORS.eosin, emissiveIntensity: 0.55, tissue: 'bone', repeat: [1, 6] });
+  const dim = highlightFemur ? M(COLORS.boneShade, { roughness: 0.7, transparent: true, opacity: 0.55, tissue: 'bone', repeat: [1, 6] }) : bone;
   const add = (mesh, card, label) => g.add(pick(mesh, card, label));
 
   // Skull and jaw
@@ -107,7 +107,7 @@ function buildSkeleton(M, highlightFemur) {
 
 function buildSkin(M) {
   const g = new THREE.Group();
-  const skin = M(COLORS.skin, { transparent: true, opacity: 0.14, depthWrite: false, roughness: 0.4 });
+  const skin = M(COLORS.skin, { transparent: true, opacity: 0.14, depthWrite: false, roughness: 0.4, tissue: 'skin', repeat: [8, 12] });
   const add = (m) => {
     pick(m, 'body', 'Body');
     m.userData.pickPriority = -1; // skin never blocks a click on what is inside
@@ -135,7 +135,7 @@ function buildSkin(M) {
 
 function buildMuscles(M) {
   const g = new THREE.Group();
-  const m = M(COLORS.muscle, { roughness: 0.5 });
+  const m = M(COLORS.muscle, { roughness: 0.5, tissue: 'muscle', repeat: [1, 3] });
   const add = (mesh, label, card = 'muscular-system') => g.add(pick(mesh, card, label));
   for (const s of SIDES) {
     add(ellipsoid([s * 0.1, 0.72, 0.03], [0.058, 0.17, 0.055], m), 'Quadriceps');
@@ -154,8 +154,8 @@ function buildMuscles(M) {
 
 function buildCirculatory(M) {
   const g = new THREE.Group();
-  const art = M(COLORS.artery, { roughness: 0.4 });
-  const vein = M(COLORS.vein, { roughness: 0.4 });
+  const art = M(COLORS.artery, { roughness: 0.4, tissue: 'vessel' });
+  const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein' });
   const heart = ellipsoid([0.02, 1.25, 0.04], [0.048, 0.06, 0.042], art);
   heart.rotation.z = -0.4;
   g.add(pick(heart, 'heart', 'Heart'));
@@ -174,8 +174,8 @@ function buildCirculatory(M) {
 
 function buildNervous(M) {
   const g = new THREE.Group();
-  const n = M(COLORS.nerve, { roughness: 0.45, emissive: COLORS.nerve, emissiveIntensity: 0.12 });
-  g.add(pick(ellipsoid([0, 1.655, -0.005], [0.072, 0.058, 0.088], M(0xf0d68a, { roughness: 0.6 })), 'brain', 'Brain'));
+  const n = M(COLORS.nerve, { roughness: 0.45, emissive: COLORS.nerve, emissiveIntensity: 0.12, tissue: 'nerve' });
+  g.add(pick(ellipsoid([0, 1.655, -0.005], [0.072, 0.058, 0.088], M(0xf0d68a, { roughness: 0.6, tissue: 'brain' })), 'brain', 'Brain'));
   const nerve = (pts, r, label) => g.add(pick(tubeThrough(pts, r, n, 64, 6), 'nervous-system', label));
   nerve([[0, 1.6, -0.02], [0, 1.5, -0.035], [0, 1.3, -0.055], [0, 1.1, -0.04], [0, 1.02, -0.035]], 0.006, 'Spinal cord');
   for (const s of SIDES) {
@@ -192,7 +192,7 @@ function buildNervous(M) {
 function buildRespiratory(M) {
   const g = new THREE.Group();
   const airway = M(0xf3c1cf, { roughness: 0.5 });
-  const lung = M(COLORS.lung, { roughness: 0.7, transparent: true, opacity: 0.82 });
+  const lung = M(COLORS.lung, { roughness: 0.7, transparent: true, opacity: 0.82, tissue: 'lung' });
   g.add(pick(tubeThrough([[0, 1.5, 0.035], [0, 1.42, 0.035], [0, 1.34, 0.03]], 0.009, airway, 24, 10), 'respiratory-system', 'Trachea'));
   for (const s of SIDES) {
     g.add(pick(tubeThrough([[0, 1.34, 0.03], [s * 0.035, 1.3, 0.02], [s * 0.06, 1.27, 0.01]], 0.0065, airway, 16, 8), 'respiratory-system', 'Bronchus'));
@@ -218,7 +218,7 @@ function buildImmune(M) {
     }
   }
   add(ellipsoid([0, 1.36, 0.075], [0.025, 0.03, 0.012], node), 'Thymus');
-  add(ellipsoid([0.085, 1.12, -0.04], [0.028, 0.05, 0.02], M(0x8a4f7d, { roughness: 0.6 })), 'Spleen');
+  add(ellipsoid([0.085, 1.12, -0.04], [0.028, 0.05, 0.02], M(0x8a4f7d, { roughness: 0.6, tissue: 'organ' })), 'Spleen');
   add(tubeThrough([[0.0, 1.0, -0.02], [0.0, 1.2, -0.03], [-0.01, 1.4, -0.01], [-0.03, 1.46, 0.02]], 0.0025, duct, 32, 6), 'Thoracic duct');
   for (const s of SIDES) {
     add(tubeThrough([[s * 0.08, 0.88, 0.05], [s * 0.04, 0.96, 0.01], [0, 1.0, -0.02]], 0.002, duct, 16, 6), 'Lymphatic vessel');

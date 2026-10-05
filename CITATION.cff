@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use Anatomy Odyssey in teaching or research, please cite it as below."
+title: "Anatomy Odyssey"
+abstract: "An open-source guided journey through the human body across scales, from whole body to molecule."
+type: software
+authors:
+  - given-names: Aleksander
+    family-names: Norman
+    alias: Normansrule
+  - name: "Claude (Anthropic)"
+    website: "https://www.anthropic.com/claude"
+repository-code: "https://github.com/Normansrule/anatomy-odyssey"
+url: "https://normansrule.github.io/anatomy-odyssey/"
+license: MIT
+version: 0.8.0
+date-released: 2026-10-05

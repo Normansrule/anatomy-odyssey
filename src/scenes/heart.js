@@ -27,10 +27,10 @@ export function buildHeart({ reducedMotion = false } = {}) {
   heart.rotation.z = 0.42; // apex points to the body's left (the viewer's right)
   root.add(heart);
 
-  const myo = M(0xc4566a, { roughness: 0.55 });
-  const myoInner = M(0x8e3346, { roughness: 0.7, side: THREE.BackSide });
-  const cutMat = M(0xa8445a, { roughness: 0.8, side: THREE.DoubleSide });
-  const fibrous = M(0xeadcc0, { roughness: 0.6, side: THREE.DoubleSide });
+  const myo = M(0xc4566a, { roughness: 0.55, tissue: 'myocardium' });
+  const myoInner = M(0x8e3346, { roughness: 0.7, side: THREE.BackSide, tissue: 'myocardium' });
+  const cutMat = M(0xa8445a, { roughness: 0.8, side: THREE.DoubleSide, tissue: 'myocardium', repeat: [0.4, 0.4] });
+  const fibrous = M(0xeadcc0, { roughness: 0.6, side: THREE.DoubleSide, tissue: 'fascia' });
   const redBlood = M(COLORS.artery, { roughness: 0.35, transparent: true, opacity: 0.82 });
   const blueBlood = M(COLORS.vein, { roughness: 0.35, transparent: true, opacity: 0.82 });
 
@@ -56,7 +56,7 @@ export function buildHeart({ reducedMotion = false } = {}) {
   // The left ventricle's wall is about three times thicker than the right's.
   const lvWall = new THREE.Mesh(
     new THREE.LatheGeometry(ys.filter((y) => y < 0.6 && y > -5.6).map((y) => new THREE.Vector2(Math.max(0, radiusAt(y) - 1.9), y)), 48, Math.PI / 2, Math.PI / 2),
-    M(0x9c3a50, { roughness: 0.7, side: THREE.DoubleSide }),
+    M(0x9c3a50, { roughness: 0.7, side: THREE.DoubleSide, tissue: 'myocardium' }),
   );
   heart.add(pick(lvWall, 'left-ventricle', 'Left ventricle wall'));
 
@@ -67,7 +67,7 @@ export function buildHeart({ reducedMotion = false } = {}) {
   for (const y of sys) sShape.lineTo(-(radiusAt(y) - 0.3), y);
   sShape.lineTo(0, sys[sys.length - 1]);
   const septumGeo = new THREE.ExtrudeGeometry(sShape, { depth: 0.8, bevelEnabled: false });
-  const septum = new THREE.Mesh(septumGeo, M(0xb34a60, { roughness: 0.7 }));
+  const septum = new THREE.Mesh(septumGeo, M(0xb34a60, { roughness: 0.7, tissue: 'myocardium', repeat: [0.4, 0.4] }));
   septum.rotation.y = -Math.PI / 2; // shape x → world z (backward), extrude along world x
   septum.position.x = -0.4;
   heart.add(pick(septum, 'septum', 'Septum'));
@@ -106,8 +106,8 @@ export function buildHeart({ reducedMotion = false } = {}) {
 
   // Great vessels.
   const vessel = (pts, r, mat, card, label) => heart.add(pick(tubeThrough(pts, r, mat, 48, 16), card, label));
-  const art = M(COLORS.artery, { roughness: 0.4 });
-  const vein = M(COLORS.vein, { roughness: 0.4 });
+  const art = M(COLORS.artery, { roughness: 0.4, tissue: 'vessel' });
+  const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein' });
   vessel([[0.7, 3.6, -1.0], [0.6, 6.3, -1.0], [-0.8, 7.8, -2.0], [-2.2, 7.0, -3.0], [-2.3, 3.5, -3.6]], 0.95, art, 'aorta', 'Aorta');
   vessel([[-0.4, 3.7, -0.4], [-0.2, 6.0, -0.2], [1.6, 7.0, -1.4], [3.4, 6.6, -2.0]], 0.9, vein, 'great-vessels', 'Pulmonary trunk (to the lungs)');
   vessel([[-2.6, 9.0, -1.8], [-2.6, 5.6, -1.8], [-2.3, 3.3, -1.6]], 0.72, vein, 'great-vessels', 'Superior vena cava');
@@ -115,7 +115,7 @@ export function buildHeart({ reducedMotion = false } = {}) {
   for (const dz of [-0.8, -2.2]) vessel([[2.9, 2.7, dz], [4.6, 3.1, dz - 0.3], [6.0, 3.4, dz - 0.4]], 0.42, art, 'great-vessels', 'Pulmonary vein (from the lungs)');
 
   // Coronary arteries feeding the heart muscle itself, on the back surface.
-  const coronary = M(0xe06470, { roughness: 0.4 });
+  const coronary = M(0xe06470, { roughness: 0.4, tissue: 'vessel' });
   const cor = (pts) => heart.add(pick(tubeThrough(pts, 0.16, coronary, 48, 6), 'coronary-arteries', 'Coronary artery'));
   cor([[0.9, 3.2, -3.2], [2.8, 1.6, -3.0], [3.6, -1.2, -2.2], [2.6, -4.2, -1.6]]);
   cor([[-0.6, 3.0, -3.3], [-2.9, 1.2, -2.9], [-3.4, -1.6, -2.1], [-1.8, -4.8, -1.5]]);

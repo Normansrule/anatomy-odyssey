@@ -1,75 +1,84 @@
+<div align="center">
+
 # Anatomy Odyssey
 
-**A guided journey through the human body, from whole body to molecule.**
+**Zoom from your whole body down to a single molecule, one guided dive at a time.**
 
-Anatomy Odyssey is an open-source web app for exploring the human body across scales. You start at a whole-body 3D model, then take a *guided dive*: a short, authored descent through the tiers that matter for one part of you, ending at the smallest building block that well-understood biology supports on that path. A depth gauge shows how big the view is at every moment, so size relationships stay honest across about nine orders of magnitude.
+[![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
+![Version](https://img.shields.io/badge/version-0.8.0-f08baf)
+![Tests](https://img.shields.io/badge/tests-280%20passing-4fb38a)
 
-![The skeletal dive: whole body → skeleton → femur → bone tissue → osteocyte → nucleus → DNA, with the depth gauge sweeping down](docs/media/hero-dive.gif)
+[**Open the app**](https://normansrule.github.io/anatomy-odyssey/) ·
+[Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases) ·
+[What's in it](#what-you-can-explore) ·
+[Run it yourself](#run-it-yourself) ·
+[How it works](#how-it-works)
 
-> Teaching model, not medical advice. Every scene is labeled for what it is: a generalized teaching model, drawn to scale except where a card says otherwise.
+<img src="docs/media/hero-dive.gif" alt="The skeletal dive: whole body → skeleton → femur → bone tissue → osteocyte → nucleus → DNA, with the depth gauge sweeping down" width="860" />
 
-## Six dives and five modules
+</div>
 
-| Dive | Path | Ends at (shared) | Interactive control |
-|---|---|---|---|
-| **Skeletal** | body → skeleton → femur → bone tissue → osteocyte → nucleus | DNA | — |
-| **Circulatory** | body → heart → blood → red blood cell | hemoglobin → heme | Oxygen pressure slider (Hill curve) |
-| **Muscular** | body → biceps → fascicle → muscle fiber → sarcomere | actin and myosin | Sarcomere length; cross-bridge cycle |
-| **Immune** | body → lymph node → follicle → plasma cell | antibody | — |
-| **Nervous** | body → brain → cortex (six layers) → neuron → synapse | glutamate | Axon diameter (conduction speed); release stages |
-| **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ | Breathing; capillary transit time |
-| **Inflammatory response** (module) | a splinter wound, from the first alarm to healing | — | Five-stage animation |
-| **From gene to protein** (module) | the start of the β-globin gene → mRNA → ribosome → protein | RNA → amino acids | Transcribe, export, translate, fold |
-| **Chemistry of life** (module) | your body as cubes sorted by element → carbonic anhydrase → the blood buffer | bicarbonate, carbonic acid, hydronium | Count by mass or atoms; how far the enzyme lowers the barrier; blood CO₂ (Henderson–Hasselbalch pH) |
-| **Immune response and memory** (module) | immune cells side by side at true size → a first and a second infection | — | Pick a cell; day 0–140 of an illustrative response model |
-| **T cells: presenting and killing** (module) | a dendritic cell presents to helper T cells → a killer T cell destroys an infected cell → a T-cell receptor reads a peptide on MHC | amino acids (side trip) | Six-stage presentation and clonal expansion; five-stage killing; self versus viral peptide |
+> [!NOTE]
+> A teaching model, not medical advice. Every scene says what it is (a generalized model, drawn to scale unless its card says otherwise) and cites its sources.
 
-Side trips branch off the main path into shared scenes: from a muscle fiber, a plasma cell or a neuron into the shared **nucleus → DNA**; from a red blood cell or a synapse into the **lipid bilayer → phospholipid**; from the nucleus into a **nucleosome**; from DNA into its **nucleotides**; from myosin into **ATP**; from an antibody, or the peptide a T-cell receptor reads, into its **amino acids**.
+## In one minute
 
-Every shared building block is built, and each one's card links **up** to what it is part of and **down** to what it is made of, so you can keep zooming from wherever you are.
+- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous or respiratory) and fall through the body one scale at a time: organ → tissue → cell → molecule.
+- **Click anything** to open a card: what it is, why it matters, its real size, and a source you can check.
+- **Watch the depth gauge**: it shows how big the view is, from 2.5 m down to a fraction of a nanometer, so sizes stay honest.
+- **Play with the science**: sliders run real, tested equations (oxygen binding, nerve speed, blood pH, enzyme speed-up and more).
 
-New in 0.6.0: the T cells module. New in 0.5.0: the Chemistry of life and Immune response and memory modules.
+Works in any current browser, on phones too, and as a desktop app for Windows, macOS and Linux. No accounts, no tracking.
+
+## What you can explore
+
+### Six dives
+
+| Dive | The path down | Ends at |
+|---|---|---|
+| 🦴 **Skeletal** | body → skeleton → femur → bone tissue → bone cell → nucleus | DNA |
+| ❤️ **Circulatory** | body → heart → blood → red blood cell → hemoglobin | the iron atom in heme |
+| 💪 **Muscular** | body → biceps → fascicle → muscle fiber → sarcomere | actin and myosin |
+| 🛡️ **Immune** | body → lymph node → follicle → plasma cell | an antibody |
+| 🧠 **Nervous** | body → brain → cortex → neuron → synapse | glutamate |
+| 🫁 **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ |
+
+### Five modules
+
+| Module | What happens |
+|---|---|
+| **Inflammatory response** | A splinter wound, from the first alarm to healing |
+| **From gene to protein** | The β-globin gene is transcribed, exported and translated into protein |
+| **Chemistry of life** | Your body sorted by element, an enzyme ten million times faster than chemistry alone, and the blood's pH buffer |
+| **Immune response and memory** | Immune cells side by side at true size, then a first and a second infection |
+| **T cells** | Antigen presentation, a killer T cell at work, and a receptor reading one peptide |
+
+Side trips branch into a **shared library** of building blocks (nucleus, nucleosome, DNA, RNA, nucleotides, amino acids, ATP, membranes and more). Each is built once and reused by every dive that reaches it, and each card links up to what it is part of and down to what it is made of.
+
+<details>
+<summary><b>Screenshots</b> (click to open)</summary>
 
 <table>
 <tr>
-<td><img src="docs/screenshots/body-elements.webp" alt="A human figure built from cubes, banded by element, halfway through switching from counting by mass (top) to counting atoms (bottom, mostly hydrogen)" /></td>
-<td><img src="docs/screenshots/carbonic-anhydrase.webp" alt="Carbonic anhydrase drawn as beads around a cleft, with the zinc ion and its three histidines at the bottom" /></td>
-<td><img src="docs/screenshots/bicarbonate-buffer.webp" alt="Carbon dioxide and water, carbonic acid, and bicarbonate with hydronium, linked by equilibrium arrows, with the blood CO₂ control" /></td>
+<td><img src="docs/screenshots/femur.webp" alt="A femur cut open: compact bone, yellow marrow and spongy bone at the ends, in natural colors" /></td>
+<td><img src="docs/screenshots/heart.webp" alt="The heart opened from the front, showing its four chambers, in natural colors" /></td>
+<td><img src="docs/screenshots/brain.webp" alt="The brain with one hemisphere cut open to show gray and white matter, in natural colors" /></td>
 </tr>
 <tr>
-<td><img src="docs/screenshots/immune-cells.webp" alt="Immune cells side by side at true size: neutrophil, eosinophil, basophil, monocyte, macrophage, and below a red blood cell, platelet, lymphocyte, natural killer cell, plasma cell, dendritic cell, a bacterium and a virus" /></td>
-<td><img src="docs/screenshots/immune-memory.webp" alt="A chart of germs, antibody and memory B cells over 140 days, above a tissue strip with neutrophils and bacteria" /></td>
-<td><img src="docs/screenshots/antigen-presentation.webp" alt="A dendritic cell showing germ peptides on MHC molecules beside a growing clone of sixteen helper T cells" /></td>
+<td><img src="docs/screenshots/cortex.webp" alt="A block of cerebral cortex with six layers and pyramidal neurons" /></td>
+<td><img src="docs/screenshots/neuron.webp" alt="A cortical pyramidal neuron with dendrites, spines and a myelinated axon" /></td>
+<td><img src="docs/screenshots/synapse.webp" alt="A synapse with vesicles, the 20 nm cleft and receptors" /></td>
 </tr>
 <tr>
-<td><img src="docs/screenshots/killer-t-cell.webp" alt="A killer T cell docked on a virus-infected cell, with its adhesion ring and perforin pores" /></td>
-<td><img src="docs/screenshots/tcr-mhc.webp" alt="A T-cell receptor docked diagonally on a peptide held by MHC class I, with CD8 and CD3, between two membranes 15 nm apart" /></td>
-</tr>
-</table>
-
-<table>
-<tr>
-<td><img src="docs/screenshots/cortex.webp" alt="A block of cerebral cortex with six layers, layer V highlighted, pyramidal neurons with dendrites reaching the surface, and white matter below" /></td>
+<td><img src="docs/screenshots/carbonic-anhydrase.webp" alt="Carbonic anhydrase as beads around a cleft, with its zinc ion" /></td>
+<td><img src="docs/screenshots/immune-cells.webp" alt="Immune cells side by side at true size, with a virus for scale" /></td>
+<td><img src="docs/screenshots/tcr-mhc.webp" alt="A T-cell receptor docked on a peptide held by MHC class I" /></td>
 </tr>
 <tr>
-<td><img src="docs/screenshots/neuron.webp" alt="A cortical pyramidal neuron with dendrites, spines, a myelinated axon and terminal boutons, with the axon diameter control" /></td>
-<td><img src="docs/screenshots/synapse.webp" alt="A synapse cut open: vesicles in the presynaptic terminal, the 20 nm cleft, and receptors on a dendritic spine" /></td>
-<td><img src="docs/screenshots/lungs.webp" alt="Translucent lungs with the trachea, bronchial tree and diaphragm, with the breathing control" /></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/gas-exchange.webp" alt="The air–blood barrier in section over a capillary, with a red blood cell loading oxygen" /></td>
-<td><img src="docs/screenshots/lipid-bilayer.webp" alt="A lipid bilayer patch with phospholipids, cholesterol, water and an ion channel" /></td>
-<td><img src="docs/screenshots/glutamate.webp" alt="Glutamate as a ball-and-stick model" /></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/heart.webp" alt="The heart opened from the front, showing four chambers" /></td>
-<td><img src="docs/screenshots/sarcomere.webp" alt="A sarcomere with thick and thin filaments and the contraction control" /></td>
-<td><img src="docs/screenshots/inflammation.webp" alt="The inflammatory response module: a splinter, a leaky venule and arriving neutrophils" /></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/femur.webp" alt="Femur cutaway showing compact bone, yellow marrow and spongy ends" /></td>
 <td><img src="docs/screenshots/hemoglobin.webp" alt="Hemoglobin's four chains with the oxygen pressure slider" /></td>
-<td><img src="docs/screenshots/dna.webp" alt="The shared DNA scene: a B-form double helix" /></td>
+<td><img src="docs/screenshots/nucleosome.webp" alt="A nucleosome: DNA wrapped around eight histones" /></td>
+<td><img src="docs/screenshots/atlas.webp" alt="The map: every dive laid out by scale" /></td>
 </tr>
 </table>
 
@@ -77,152 +86,143 @@ New in 0.6.0: the T cells module. New in 0.5.0: the Chemistry of life and Immune
 |---|---|
 | ![Nervous dive animation](docs/media/nervous-dive.gif) | ![Respiratory dive animation](docs/media/respiratory-dive.gif) |
 
-![From gene to protein: RNA polymerase transcribes the β-globin gene, the mRNA leaves through a nuclear pore, a ribosome translates it and the chain folds](docs/media/gene-to-protein.gif)
+</details>
 
-<table>
-<tr>
-<td><img src="docs/screenshots/nucleosome.webp" alt="A nucleosome: DNA wrapped 1.65 turns around eight histones" /></td>
-<td><img src="docs/screenshots/amino-acids.webp" alt="Leucine with its backbone and side chain highlighted, and a picker for all twenty amino acids" /></td>
-<td><img src="docs/screenshots/atp.webp" alt="ATP with the hydrolysis control" /></td>
-</tr>
-<tr>
-<td><img src="docs/screenshots/nucleotides.webp" alt="A DNA nucleotide with phosphate, sugar and base highlighted" /></td>
-<td><img src="docs/screenshots/phospholipid.webp" alt="One POPC phospholipid with head and tails" /></td>
-<td><img src="docs/screenshots/atlas.webp" alt="The map: every dive laid out by scale, with the shared library below" /></td>
-</tr>
-</table>
+## Highlights
 
-## Features
+**See it**
+- **Realistic tissue surfaces.** Organs and tissues have physically based materials: color, bumps and roughness generated in code for bone, muscle, heart, brain, lung, cartilage, marrow, vessels and more, with a wet sheen where tissue is wet and soft studio reflections. Switch between **natural colors** and **stain colors** in About.
+- **Real molecule shapes.** The 20 amino acids, nucleotides, ATP and lipids come from their chemical structures (RDKit), checked for formula, charge and handedness.
+- **A map by scale** (press M) of every dive and building block on one log scale.
 
-- **Tier-transition engine.** Each dive is a chain of scenes authored at their own scale (1 unit = 1 m for the body, 1 cm for organs, 1 µm for cells, 1 nm or 1 Å for molecules). The engine frames each by its real size and flies between them while the gauge sweeps on a log scale.
-- **Click-to-learn cards** for every part: what it does, why it matters, an *Expert detail* switch, size, honesty labels, cited sources, and "In this view" links for keyboard users.
-- **Shared library, complete.** Nucleus, nucleosome, DNA, RNA, nucleotides, hemoglobin, heme, actin and myosin, ATP, antibody, amino acids, glutamate, lipid bilayer, phospholipid, and O₂/CO₂ are each built once. Cards list every dive that reaches them and link up and down the "made of" chain; the app finds a route there from wherever you are.
-- **Real small-molecule geometry.** The 20 amino acids, 8 nucleotides, ATP, ADP and a phospholipid are generated from their chemical structures with RDKit (ETKDG v3 + MMFF94), charged as at body pH. The generator checks every formula, charge and handedness (L-amino acids, D-sugars) before writing (`npm run molecules`).
-- **Map by scale.** One view of every dive, side trip and shared building block, laid out by size on a log scale. Press M; choose any point to fly there.
-- **Desktop app.** The same app in a native window for Windows, macOS and Linux (Tauri 2), fully offline, with no system permissions granted to the page.
-- **Chemistry of life module.** What you are made of, counted by mass and by atoms; carbonic anhydrase speeding CO₂ hydration ten million times (a 41.6 kJ/mol drop in the barrier); and the bicarbonate buffer, where your breathing sets blood pH through the Henderson–Hasselbalch equation.
-- **T cells module.** A dendritic cell presents germ peptides on MHC class II and the one helper T cell that fits multiplies (2ⁿ cells after n divisions); a killer T cell finds a virus-infected cell, aims its perforin and granzymes, and triggers apoptosis; then the molecular contact itself, a T-cell receptor reading a nine-amino-acid peptide across a 15 nm gap, with a side trip into the amino acids.
-- **Immune response and memory module.** Thirteen immune cells and particles at true relative size, then a 140-day illustrative model of a first and second infection (solved with Runge–Kutta and tested for the textbook shape): slow first response, fast and five-fold bigger second one.
-- **Scene controls** that run real equations: the Hill curve on hemoglobin, sliding filaments in the sarcomere, Hursh's conduction rule on the axon, first-order oxygen loading in the lung capillary, and ball-and-stick versus space-filling molecules.
-- **Guided tour** with narration captions on every step, optionally read aloud.
-- **Check yourself** quizzes (four questions per dive) and a **glossary** of every term, with fly-to buttons.
-- **Search and jump** to any part, including planned building blocks.
-- **Settings**: reduced motion, picture quality, and read-aloud captions. On first launch the app times a few seconds of frames and tunes the "Balanced" picture setting to the device (About shows the result and can measure again).
-- **Local-first and private.** No accounts, analytics or network calls; progress stays in your browser.
-- **Accessible.** Keyboard navigation (→ deeper, ← out, / search, M map, G glossary, T tour, Esc close), screen-reader announcements, `prefers-reduced-motion`, and a phone layout. An axe-core audit (`npm run a11y`) checks 21 states, including every dialog and a phone view, against WCAG 2.2 A and AA rules, with no violations.
+<p align="center"><img src="docs/media/looks.webp" alt="The femur and the heart, each shown in natural colors and then in stain colors" width="820" /><br /><sub>Femur and heart: natural colors, then stain colors.</sub></p>
 
-## How the zoom works
+**Learn from it**
+- Cards with an *Expert detail* switch, cited sources and "made of / part of" links.
+- A guided tour with captions (optionally read aloud), four-question quizzes per dive, and a glossary.
+- Every equation has a worked example and a passing test: see [Equations](docs/EQUATIONS.md).
 
-A single continuous render from body to molecule is not feasible; the scale gap is about a billion-fold. Instead, each dive is a chain of discrete scenes, and the project grows by adding dives rather than re-modeling DNA for every cell.
+**Trust it**
+- Honesty labels on every scene; simplifications listed in [State of the model](docs/STATE_OF_THE_MODEL.md).
+- Private by design: no accounts, analytics or network calls; a strict Content Security Policy (CSP).
+- Accessible: full keyboard control, screen-reader announcements, reduced-motion support, and an automated WCAG 2.2 audit with zero violations.
+- Adapts to your device: a first-launch check tunes picture quality, and slow devices get lighter materials.
 
-![Powers of ten across the skeletal dive](docs/media/powers-of-ten.svg)
+## Run it yourself
 
-![Several dives converging on the same shared nucleus and DNA scenes](docs/media/shared-library.svg)
-
-## Run it
-
-You need Node.js 20 or newer.
+You need [Node.js](https://nodejs.org) 20 or newer.
 
 ```bash
 git clone https://github.com/Normansrule/anatomy-odyssey.git
 cd anatomy-odyssey
 npm ci
-npm run dev          # http://localhost:5173
+npm run dev          # then open http://localhost:5173
 ```
 
-Other scripts:
+<details>
+<summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 265 unit tests: scale math, every worked equation, the genetic code, the immune model, dive graph and routes, scenes, molecules, benchmark, security guards
+npm test               # 280 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
-npm run manifest       # rebuild assets/manifest.json after adding assets
-npm run molecules      # regenerate src/library/data/molecules.json (needs: pip install rdkit)
-npm run a11y           # axe-core accessibility audit against a running preview (needs Playwright, see below)
+npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
+npm run a11y           # accessibility audit against a running preview (needs Playwright)
 ```
 
-### Desktop app
-
-Needs Rust (via [rustup](https://rustup.rs)) and, on Linux, the WebKitGTK development packages (`sudo apt install libwebkit2gtk-4.1-dev build-essential libssl-dev libayatana-appindicator3-dev librsvg2-dev`). Windows 10/11 already include the WebView2 runtime it uses.
+**Desktop app** (needs [Rust](https://rustup.rs); on Linux also `sudo apt install libwebkit2gtk-4.1-dev build-essential libssl-dev libayatana-appindicator3-dev librsvg2-dev`):
 
 ```bash
 npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.5.0 && git push origin v0.5.0`) runs the `Desktop app` workflow, which builds Windows (.msi, .exe), macOS (.dmg) and Linux (.deb, .AppImage) installers and attaches them, with SHA-256 checksums, to a draft GitHub release. They are not code-signed yet, so your system may warn on first launch.
+Pushing a version tag (`git tag v0.8.0 && git push origin v0.8.0`) builds Windows, macOS and Linux installers into a draft GitHub release. They are not code-signed yet.
 
-![The desktop app on Linux](docs/screenshots/desktop-app.webp)
-
-Screenshot every tier headlessly (software WebGL, no GPU needed):
+**Headless checks** (software rendering, no GPU needed):
 
 ```bash
 npm run build && npx vite preview --port 4173 &
 pip install playwright pillow && python3 -m playwright install chromium
-python3 tools/screenshots.py --mobile            # fails on console errors or a blank tier
-python3 tools/screenshots.py --only nervous      # one dive
-python3 tools/record-hero.py --dive respiratory --out docs/media/respiratory-dive.gif
-python3 tools/a11y-audit.py                      # axe-core, WCAG 2.2 A and AA; fails on any violation
+python3 tools/screenshots.py --mobile    # every step; fails on console errors or a blank view
+python3 tools/a11y-audit.py              # axe-core, WCAG 2.2 A and AA
 ```
 
-URL parameters: `?dive=nervous&step=synapse` opens a step directly, `&trip=1` opens a side trip into a library step, and `?renderer=webgl` forces the WebGL 2 fallback.
+**URL options**: `?dive=nervous&step=synapse` opens a step, `&trip=1` opens a side trip, `?renderer=webgl` forces the WebGL 2 fallback, `?env=0` turns off studio reflections.
 
-### Deploy to GitHub Pages
+**Publishing**: [docs/PUBLISHING.md](docs/PUBLISHING.md) has the exact terminal commands to push to GitHub and turn on GitHub Pages.
 
-Push to `main`, then in the repository settings set **Pages → Source** to **GitHub Actions**. The `Deploy to GitHub Pages` workflow tests, builds and publishes `dist/`.
+</details>
 
-[docs/PUBLISHING.md](docs/PUBLISHING.md) has the exact terminal commands, from a fresh Ubuntu terminal, for the first push and for updating the repo from a newer zip.
+## How it works
 
-## Project layout
+The body-to-molecule gap is about a billion-fold, too big for one continuous model. So each dive is a **chain of scenes**, each built at its own scale (1 unit = 1 m for the body, 1 cm for organs, 1 µm for cells, 1 nm or 1 Å for molecules). The engine frames each scene by its real size and flies between them while the gauge sweeps on a log scale.
+
+<p align="center"><img src="docs/media/powers-of-ten.svg" alt="Powers of ten across the skeletal dive" width="720" /></p>
+
+<details>
+<summary><b>Project layout and adding a dive</b></summary>
 
 ```
 src/
-  engine/      renderer (WebGPU with WebGL 2 fallback), tier engine, fades, first-launch benchmark
-  scenes/      one builder per tier (body, femur, heart, neuron, lungs, …) + registry
-  library/     shared scenes (nucleus, nucleosome, DNA, RNA, nucleotides, hemoglobin, heme,
-               actin–myosin, ATP, antibody, amino acids, glutamate, lipid bilayer,
-               phospholipid, gases), molecule helpers, and data/molecules.json
+  engine/      renderer (WebGPU, WebGL 2 fallback), tier engine, lighting, device check
+    textures/  tissue surface framework: tileable noise, tissue recipes, materials
+  scenes/      one builder per step (body, femur, heart, neuron, lungs, …) + registry
+  library/     shared building blocks (nucleus, DNA, hemoglobin, ATP, …) and molecule data
   data/        dives, library graph, cards, quizzes, references (all content lives here)
-  science/     pure, tested math: scale, equations, chemistry, the immune model, dive-graph invariants
-  security/    asset integrity checks for the glTF pipeline
-  ui/          gauge, cards, search, scene controls, tour, quiz, glossary, map, about
-src-tauri/     desktop app shell (Tauri 2): config, capabilities, icons
+  science/     pure, tested math: scale, equations, chemistry, immune model, T cells
+  ui/          gauge, cards, search, controls, tour, quiz, glossary, map, about
+src-tauri/     desktop shell (Tauri 2)
 tests/         Vitest suites
-tools/         screenshots, accessibility audit, GIF recorder, molecule generator, Z-Anatomy export script, asset manifest
-docs/          state of the model, equations, security model, media
-assets/        anatomy/ (CC BY-SA) and molecular/ (per-file licenses), CREDITS.md
+tools/         screenshots, accessibility audit, GIF recorder, molecule generator
+docs/          state of the model, equations, security model, publishing
 ```
 
-## Adding a dive
+**Adding a dive:**
+1. Write scene builders in `src/scenes/` (return `root`, `metersPerUnit`, `view`, `focus`, `dispose`; optionally `controls`, `update`, `branchFocus`).
+2. Register them in `src/scenes/registry.js` and add the dive to `src/data/dives.js`.
+3. Tag tissue materials for realistic surfaces: `M(color, { tissue: 'muscle' })` (kinds are in `src/engine/textures/tissues.js`).
+4. Write cards with sources, narration for each step, and four quiz questions.
+5. `npm test` checks that frames shrink and tiers rise, every clickable part has a card, and shared steps reuse the library.
 
-1. Write scene builders in `src/scenes/` (return `root`, `metersPerUnit`, `view`, `focus`, `dispose`, and optionally `controls`, `update` and `branchFocus`).
-2. Register them in `src/scenes/registry.js`.
-3. Add the dive to `src/data/dives.js`. Use `libStep('dna')` to route into a shared scene, or a step's `branch` for a side trip.
-4. Write cards (with sources from `src/data/references.js`), narration for each step, and four quiz questions.
-5. `npm test` checks the invariants: frames shrink and tiers rise at every step (side trips too), scenes and cards exist, the focus part is clickable, and shared steps use the library's scene.
+</details>
 
 ## Documentation
 
-- [State of the model](docs/STATE_OF_THE_MODEL.md): what exists, where each dive honestly stops, and what is next
-- [Equations](docs/EQUATIONS.md): each worked example with symbols, units and its test
-- [Security model](docs/SECURITY_MODEL.md): trust boundaries, malicious assets, decompression bombs, supply chain
-- [Asset credits](assets/CREDITS.md): source, author and license for every asset
-- [Publishing](docs/PUBLISHING.md): commands to put the project on GitHub and update it
+| Document | What's inside |
+|---|---|
+| [State of the model](docs/STATE_OF_THE_MODEL.md) | Every step, where it honestly stops, and what is simplified |
+| [Equations](docs/EQUATIONS.md) | 28 worked examples, each with symbols, units and its test |
+| [Security model](docs/SECURITY_MODEL.md) | Trust boundaries, privacy, supply chain |
+| [Publishing](docs/PUBLISHING.md) | Commands to put the project on GitHub and keep it updated |
+| [Changelog](CHANGELOG.md) | What changed in each version |
+| [Asset credits](assets/CREDITS.md) | Sources and licenses |
 
 ## Roadmap
 
-1. ~~**MVP**: whole-body model, system toggles, cards, tier engine, the skeletal dive.~~
-2. ~~**More dives on the shared library**: circulatory, muscular, immune, nervous and respiratory dives; side trips.~~
-3. ~~**Modules and learning tools**: the inflammatory response, quizzes, glossary, guided tour.~~
-4. ~~**Complete the shared library and the gene-to-protein module**, with generated small-molecule geometry and a map by scale.~~
-5. ~~**Desktop app** (Tauri) with parity, a first-launch hardware benchmark and an accessibility audit.~~
-6. ~~**Chemistry of life, immune response and T-cell modules**, with tested equations and an illustrative immune model.~~
-7. **Real assets**: Z-Anatomy meshes for the organ tiers and Protein Data Bank structures via Mol* for the large molecules (the export script and integrity checks are ready).
-8. **Hardening**: reviewer accuracy pass against cited sources, full asset-license audit, code-signed releases.
+- [x] Six dives, five modules and a complete shared library
+- [x] Desktop app, device check, accessibility audit
+- [x] Realistic tissue surfaces with natural and stain looks
+- [ ] Real anatomical meshes (Z-Anatomy, CC BY-SA) for the organ tiers
+- [ ] Real atomic structures from the Protein Data Bank for the large molecules
+- [ ] A spinal-cord branch for the nervous dive
+- [ ] Code-signed desktop releases
+
+## Contributors
+
+<table>
+<tr>
+<td align="center"><a href="https://github.com/Normansrule"><img src="https://github.com/Normansrule.png?size=120" width="80" alt="" /><br /><b>Aleksander Norman</b></a><br />Creator: direction, content review, testing</td>
+<td align="center"><a href="https://github.com/claude"><img src="https://github.com/claude.png?size=120" width="80" alt="" /><br /><b>Claude</b></a><br />Anthropic's AI model: code, science, docs</td>
+</tr>
+</table>
+
+Commits are authored by Aleksander with Claude as co-author (or the other way round), so both appear in the repository's contributor list. Contributions are welcome: open an issue or a pull request.
 
 ## License
 
 - **Code**: [MIT](LICENSE).
-- **Anatomy assets** in `assets/anatomy/` (when added): CC BY-SA 4.0, as required by Z-Anatomy and BodyParts3D. ShareAlike applies to those assets only; they live in their own folder so it does not extend to the code.
-- **Molecular assets** in `assets/molecular/`: each file's own license, listed in `assets/CREDITS.md`.
+- **Anatomy assets** in `assets/anatomy/` (when added): CC BY-SA 4.0, as Z-Anatomy and BodyParts3D require. ShareAlike covers those files only.
+- **Molecular assets**: each file's own license, listed in [assets/CREDITS.md](assets/CREDITS.md).
 - **Fonts**: Atkinson Hyperlegible Next and Literata, SIL Open Font License 1.1.
+- Tissue textures are generated in code and covered by the MIT license.

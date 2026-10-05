@@ -1,8 +1,10 @@
 # State of the model
 
-Last updated for v0.7.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.8.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
+
+Surfaces (new in v0.8.0): organ and tissue steps use physically based materials whose color, bump and roughness patterns are generated in code to imitate each tissue at that scale (muscle fibers, bone pores, lung lobules, surface vessels on the brain). They are generalized patterns, not photographs of a specimen. In the Natural look, colors are those of fresh tissue; in the Stain look, the stained-slide palette. Cells and molecules always use stain colors, since real ones are nearly colorless.
 
 ## Dives
 

@@ -28,8 +28,8 @@ export function buildLungs({ reducedMotion = false } = {}) {
   const breathing = new THREE.Group(); // everything below the trachea expands together
   root.add(breathing);
   const rand = seeded(13);
-  const airway = M(0xf6d2dc, { roughness: 0.5 });
-  const cartilage = M(0xdfe9f2, { roughness: 0.45 });
+  const airway = M(0xf6d2dc, { roughness: 0.5, tissue: 'fascia' });
+  const cartilage = M(0xdfe9f2, { roughness: 0.45, tissue: 'cartilage' });
 
   // Trachea with C-shaped cartilage rings (open at the back).
   root.add(pick(cylinderBetween([0, 14, 0.3], [0, 3, 0.3], 1.0, 1.0, airway, 24), 'trachea', 'Trachea (windpipe)'));
@@ -79,7 +79,7 @@ export function buildLungs({ reducedMotion = false } = {}) {
 
   // The lungs themselves: a narrow apex at the top, a broad concave base
   // resting on the diaphragm. Translucent so the tree shows.
-  const lungMat = M(0xe9a0b4, { roughness: 0.75, transparent: true, opacity: 0.24, depthWrite: false });
+  const lungMat = M(0xe9a0b4, { roughness: 0.75, transparent: true, opacity: 0.24, depthWrite: false, tissue: 'lung', repeat: [3, 4] });
   const lungGeos = [];
   for (const [key, lung] of Object.entries(LUNG)) {
     const [rx, ry, rz] = lung.r;
@@ -94,7 +94,7 @@ export function buildLungs({ reducedMotion = false } = {}) {
   }
 
   // Diaphragm: a dome of muscle under the lungs.
-  const dome = new THREE.Mesh(new THREE.SphereGeometry(13, 48, 16, 0, Math.PI * 2, 0, 0.9), M(0xc4566a, { roughness: 0.55, side: THREE.DoubleSide }));
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(13, 48, 16, 0, Math.PI * 2, 0, 0.9), M(0xc4566a, { roughness: 0.55, side: THREE.DoubleSide, tissue: 'muscle', repeat: [4, 1] }));
   dome.scale.set(1, 0.42, 0.62);
   const DOME_Y = -19.4;
   dome.position.y = DOME_Y;

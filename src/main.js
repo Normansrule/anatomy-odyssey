@@ -25,6 +25,7 @@ import { renderAtlas } from './ui/atlas.js';
 import { el, clear } from './ui/dom.js';
 import { progress } from './storage/progress.js';
 import { FrameBenchmark, validMeasurement } from './engine/benchmark.js';
+import { setSurfaceOptions, detailFor } from './engine/textures/surfaces.js';
 
 const $ = (id) => document.getElementById(id);
 const app = $('app');
@@ -40,7 +41,10 @@ const settings = {
   quality: ['low', 'auto', 'high'].includes(progress.pref('quality')) ? progress.pref('quality') : 'auto',
   speak: Boolean(progress.pref('speak', false)),
   benchmark: validMeasurement(progress.pref('benchmark', null)) ? progress.pref('benchmark', null) : null,
+  look: ['natural', 'stain'].includes(progress.pref('look')) ? progress.pref('look') : 'natural',
 };
+let applySurfaces = () => setSurfaceOptions({ look: settings.look, detail: detailFor(settings.quality, settings.benchmark?.tier) });
+applySurfaces();
 const reducedMotion = () => (settings.motion === 'system' ? systemReduce.matches : settings.motion === 'reduce');
 
 const state = {
@@ -77,6 +81,14 @@ async function main() {
 
   const engine = new TierEngine({ renderer, canvas, scenes: SCENES, reducedMotion: reducedMotion() });
   engine.systems = state.systems;
+  // Textures and studio reflections follow the picture setting and the device measurement.
+  const setSurfaces = applySurfaces;
+  applySurfaces = () => {
+    const o = setSurfaces();
+    engine.setEnvironment(o.detail > 0);
+    return o;
+  };
+  applySurfaces();
   const resize = () => applySize(renderer, engine.camera, canvas, settings.quality, settings.benchmark?.tier);
   // First launch (or after "Measure again"): time a few seconds of frames to tune "Balanced".
   let bench = settings.benchmark ? null : new FrameBenchmark();
@@ -536,6 +548,11 @@ async function main() {
         progress.setPref(name, value);
         if (name === 'motion') engine.reducedMotion = reducedMotion();
         if (name === 'quality') resize();
+        if (name === 'look' || name === 'quality') {
+          applySurfaces();
+          engine.rebuild();
+          sceneControls.attach(engine.current?.built.controls);
+        }
       },
       onRemeasure: () => {
         settings.benchmark = null;
@@ -699,6 +716,7 @@ async function main() {
         settings.benchmark = { ...result, at: new Date().toISOString().slice(0, 10) };
         progress.setPref('benchmark', settings.benchmark);
         resize();
+        applySurfaces(); // texture detail follows the measurement from the next scene on
       }
     }
     engine.setViewShift(viewShift(), viewShiftY());

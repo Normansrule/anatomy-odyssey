@@ -22,9 +22,9 @@ export function buildMuscle() {
   const M = materialBank();
   const root = new THREE.Group();
   const rand = seeded(59);
-  const muscleMat = M(0xc9485d, { roughness: 0.55 });
-  const sheath = M(0xe8d7e4, { roughness: 0.4, transparent: true, opacity: 0.35, depthWrite: false });
-  const tendonMat = M(0xefe6d6, { roughness: 0.35 });
+  const muscleMat = M(0xc9485d, { roughness: 0.55, tissue: 'muscle', repeat: [1, 3] });
+  const sheath = M(0xe8d7e4, { roughness: 0.4, transparent: true, opacity: 0.35, depthWrite: false, tissue: 'fascia' });
+  const tendonMat = M(0xefe6d6, { roughness: 0.35, tissue: 'tendon' });
 
   const half = (y0, y1) => {
     const pts = [];
@@ -50,9 +50,9 @@ export function buildMuscle() {
   const R = radiusAt(CUT_Y);
   const face = new THREE.Group();
   face.position.y = CUT_Y + 0.01;
-  face.add(pick(new THREE.Mesh(new THREE.CircleGeometry(R, 64), M(0xe8d7e4, { roughness: 0.7 })).rotateX(-Math.PI / 2), 'perimysium', 'Perimysium'));
+  face.add(pick(new THREE.Mesh(new THREE.CircleGeometry(R, 64), M(0xe8d7e4, { roughness: 0.7, tissue: 'fascia', repeat: [0.3, 0.3] })).rotateX(-Math.PI / 2), 'perimysium', 'Perimysium'));
   const fascicleGeo = new THREE.CylinderGeometry(1, 1, 0.12, 20);
-  const fascMat = M(0xd65a6e, { roughness: 0.6 });
+  const fascMat = M(0xd65a6e, { roughness: 0.6, tissue: 'muscle', repeat: [0.25, 0.25] });
   const centers = [];
   for (let tries = 0; tries < 4000 && centers.length < 60; tries++) {
     const r = Math.sqrt(rand()) * (R - 0.35);
@@ -73,8 +73,8 @@ export function buildMuscle() {
   root.add(pick(capsuleBetween([0, -11.4, 0], [0.3, -17.5, 0.5], 0.5, tendonMat, 12), 'tendon', 'Distal tendon (to the radius)'));
 
   // Artery and nerve entering the muscle.
-  root.add(pick(tubeThrough([[-6, -3, 1.5], [-4, -2.5, 1.8], [-2.4, -2.2, 1.9], [-1.2, -2.4, 2.8]], 0.18, M(0xd9434f, { roughness: 0.4 }), 32, 8), 'biceps', 'Artery'));
-  root.add(pick(tubeThrough([[-6, -1.5, 0.6], [-4, -1.3, 1.4], [-2.6, -1, 2.3], [-1.6, -1.2, 2.8]], 0.12, M(0xe8c45a, { roughness: 0.4 }), 32, 8), 'biceps', 'Nerve (musculocutaneous)'));
+  root.add(pick(tubeThrough([[-6, -3, 1.5], [-4, -2.5, 1.8], [-2.4, -2.2, 1.9], [-1.2, -2.4, 2.8]], 0.18, M(0xd9434f, { roughness: 0.4, tissue: 'vessel' }), 32, 8), 'biceps', 'Artery'));
+  root.add(pick(tubeThrough([[-6, -1.5, 0.6], [-4, -1.3, 1.4], [-2.6, -1, 2.3], [-1.6, -1.2, 2.8]], 0.12, M(0xe8c45a, { roughness: 0.4, tissue: 'nerve' }), 32, 8), 'biceps', 'Nerve (musculocutaneous)'));
 
   const focus = [centers[0][0], CUT_Y, centers[0][1]];
   return {

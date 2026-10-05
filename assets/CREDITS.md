@@ -30,7 +30,7 @@ Every shipped asset gets one row in the table at the end of this file: file, wha
 
 ## Shipped assets
 
-The app ships no downloaded 3D assets. All geometry is generated in code (`src/scenes/`, `src/library/`) and is covered by the MIT license.
+The app ships no downloaded 3D assets or texture images. All geometry is generated in code (`src/scenes/`, `src/library/`), and tissue textures are generated in code from seeded noise (`src/engine/textures/`); both are covered by the MIT license.
 
 | File | Description | Source / author | License | Link |
 |---|---|---|---|---|
