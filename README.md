@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.9.1-f08baf)
-![Tests](https://img.shields.io/badge/tests-293%20passing-4fb38a)
+![Version](https://img.shields.io/badge/version-0.9.2-f08baf)
+![Tests](https://img.shields.io/badge/tests-296%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -25,7 +25,7 @@
 ## In one minute
 
 - **Pick a dive** (skeletal, circulatory, muscular, immune, nervous or respiratory) and fall through the body one scale at a time: organ → tissue → cell → molecule.
-- **Click anything** to open a card: what it is, why it matters, its real size, and a source you can check.
+- **Point at anything** to light it up and see its name; **click** to open a card: what it is, why it matters, its real size, and a source you can check.
 - **Watch the depth gauge**: it shows how big the view is, from about 2 m down to a fraction of a nanometer, so sizes stay honest.
 - **Play with the science**: sliders run real, tested equations (oxygen binding, nerve speed, blood pH, enzyme speed-up and more).
 
@@ -84,7 +84,7 @@ Side trips branch into a **shared library** of building blocks (nucleus, nucleos
 <tr>
 <td><img src="docs/screenshots/knee-jerk.webp" alt="A seated figure mid knee jerk: the quadriceps contracts and the shin swings forward, with the nerve paths to the spinal cord" /></td>
 <td><img src="docs/screenshots/spinal-cord.webp" alt="A slice of the spinal cord: the butterfly of gray matter, roots, a ganglion and the three neurons of the reflex" /></td>
-<td><img src="docs/screenshots/body.webp" alt="The whole-body figure with skeleton, organs and vessels" /></td>
+<td><img src="docs/screenshots/skeleton.webp" alt="The whole skeleton, head to feet: curved spine with discs, ribs with cartilage, pelvis, and every hand and foot bone, with the femur glowing" /></td>
 </tr>
 <tr>
 <td><img src="docs/screenshots/hemoglobin.webp" alt="Hemoglobin's four chains with the oxygen pressure slider" /></td>
@@ -134,7 +134,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 293 unit tests
+npm test               # 296 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -148,7 +148,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.9.1 && git push origin v0.9.1`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
+Pushing a version tag (`git tag v0.9.2 && git push origin v0.9.2`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
 
 **Headless checks** (software rendering, no GPU needed):
 

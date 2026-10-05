@@ -4,7 +4,7 @@
 // Milestone 2 replaces these primitives with Z-Anatomy meshes (see tools/).
 import * as THREE from 'three/webgpu';
 import {
-  COLORS, materialBank, pick, capsuleBetween, tubeThrough, ellipsoid, disposeTree, latheBetween, longBone, softShadowTexture,
+  COLORS, materialBank, pick, capsuleBetween, tubeThrough, ellipsoid, disposeTree, latheBetween, longBone, softShadowTexture, mergedMesh,
 } from './kit.js';
 
 export const SYSTEMS = [
@@ -21,83 +21,248 @@ export const DEFAULT_SYSTEMS = ['skin', 'skeletal', 'circulatory', 'nervous', 'r
 
 const SIDES = [-1, 1];
 
+/** The spine's centre line, skull base to sacrum: neck and lower back curve forward, the chest back. */
+export const SPINE_CURVE = new THREE.CatmullRomCurve3([
+  [0, 1.555, -0.022], [0, 1.49, -0.014], [0, 1.43, -0.03], [0, 1.3, -0.058], [0, 1.17, -0.05],
+  [0, 1.08, -0.03], [0, 0.995, -0.036],
+].map((p) => new THREE.Vector3(...p)));
+
+/** The 24 movable vertebrae, top to bottom: region, position along the curve, and body radius. */
+export function vertebraLayout() {
+  const regions = [['Cervical', 7, 0.0085, 0.011], ['Thoracic', 12, 0.012, 0.0165], ['Lumbar', 5, 0.019, 0.022]];
+  // Share of the column's length taken by each region (neck, chest, lower back).
+  const share = { Cervical: 0.22, Thoracic: 0.5, Lumbar: 0.28 };
+  const out = [];
+  let start = 0;
+  for (const [name, n, r0, r1] of regions) {
+    for (let i = 0; i < n; i++) {
+      const t = start + share[name] * ((i + 0.5) / n);
+      out.push({ region: name, index: i + 1, t, radius: r0 + (r1 - r0) * (n > 1 ? i / (n - 1) : 0), spacing: share[name] / n });
+    }
+    start += share[name];
+  }
+  return out;
+}
+
+/** Pelvic bowl profile, [radius, height] from the hip sockets up to the iliac crest (meters). */
+const PELVIS_PROFILE = [[0.052, 0.925], [0.06, 0.95], [0.078, 0.985], [0.104, 1.02], [0.124, 1.045]];
+const PELVIS_DEPTH = 0.62; // the bowl is shallower front to back than it is wide
+const PELVIS_BASE = 0.925;
+/** The iliac crest rises highest at the sides and dips toward the front and back points of the hip. */
+const pelvisLift = (y, phi) => PELVIS_BASE + (y - PELVIS_BASE) * (0.72 + 0.28 * Math.abs(Math.sin(phi)));
+
 function buildSkeleton(M, highlightFemur) {
   const g = new THREE.Group();
   const bone = M(COLORS.bone, { roughness: 0.55, tissue: 'bone', repeat: [1, 6] });
   const glow = M(COLORS.bone, { roughness: 0.45, emissive: COLORS.eosin, emissiveIntensity: 0.55, tissue: 'bone', repeat: [1, 6] });
-  const dim = highlightFemur ? M(COLORS.boneShade, { roughness: 0.7, transparent: true, opacity: 0.55, tissue: 'bone', repeat: [1, 6] }) : bone;
+  // In the skeleton step every bone but the femur is a shade darker, so the femur stands out.
+  const dim = highlightFemur ? M(COLORS.boneShade, { roughness: 0.68, tissue: 'bone', repeat: [1, 6] }) : bone;
+  // Thin curved plates (the iliac wings) are seen from both sides.
+  const dimTwoSided = M(highlightFemur ? COLORS.boneShade : COLORS.bone, { roughness: 0.6, tissue: 'bone', repeat: [2, 2], side: THREE.DoubleSide });
+  const cartilage = M(COLORS.cartilage, { roughness: 0.35, tissue: 'cartilage' });
+  const enamel = M(0xf6f1e6, { roughness: 0.22 });
+  const shadow = M(0x2e2630, { roughness: 1 }); // the dark of a hollow (eye socket, nose), not a structure
   const add = (mesh, card, label) => g.add(pick(mesh, card, label));
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
-  // Skull: cranium, face, lower jaw and the two eye sockets.
-  add(ellipsoid([0, 1.648, -0.008], [0.078, 0.09, 0.096], dim, 32), 'skull', 'Skull (cranium)');
-  add(ellipsoid([0, 1.588, 0.042], [0.052, 0.046, 0.042], dim, 24), 'skull', 'Skull (face)');
-  const jaw = new THREE.Mesh(new THREE.TorusGeometry(0.042, 0.009, 8, 24, Math.PI), dim);
-  jaw.rotation.set(Math.PI / 2 + 0.35, 0, Math.PI);
-  jaw.position.set(0, 1.548, 0.02);
-  add(jaw, 'skull', 'Lower jaw (mandible)');
-  const socket = M(0x5e5344, { roughness: 0.95 }); // shadowed bone, not an eye
-  for (const s of SIDES) add(ellipsoid([s * 0.026, 1.61, 0.072], [0.016, 0.014, 0.01], socket, 14), 'skull', 'Eye socket (orbit)');
-
-  // Vertebral column: 24 vertebrae along a gentle S-curve, then the sacrum.
-  for (let i = 0; i < 24; i++) {
-    const t = i / 23;
-    const y = 1.5 - t * 0.53;
-    const z = -0.035 + 0.02 * Math.sin(t * Math.PI * 2.2 + 0.4);
-    const r = 0.014 + t * 0.012;
-    const v = new THREE.Mesh(new THREE.CylinderGeometry(r, r, 0.016, 12), dim);
-    v.position.set(0, y, z);
-    add(v, 'vertebral-column', 'Vertebra');
-    const spine = capsuleBetween([0, y, z - r], [0, y - 0.006, z - r - 0.02], 0.004, dim, 6);
-    add(spine, 'vertebral-column', 'Vertebra');
+  // ── Skull: cranium, face, cheekbones, jaw and teeth ──────────────────
+  add(ellipsoid([0, 1.648, -0.008], [0.078, 0.09, 0.096], dim, 40), 'skull', 'Skull (cranium)');
+  add(ellipsoid([0, 1.597, 0.046], [0.05, 0.05, 0.04], dim, 28), 'skull', 'Skull (face)');
+  for (const s of SIDES) {
+    add(ellipsoid([s * 0.046, 1.596, 0.052], [0.016, 0.013, 0.014], dim, 14), 'skull', 'Cheekbone (zygomatic bone)');
+    add(capsuleBetween([s * 0.05, 1.594, 0.045], [s * 0.071, 1.598, -0.005], 0.0045, dim, 6), 'skull', 'Cheekbone arch (zygomatic arch)');
+    add(ellipsoid([s * 0.064, 1.585, -0.03], [0.008, 0.013, 0.009], dim, 10), 'skull', 'Mastoid process (behind the ear)');
+    add(ellipsoid([s * 0.026, 1.612, 0.074], [0.017, 0.015, 0.008], shadow, 16), 'skull', 'Eye socket (orbit)');
   }
-  add(ellipsoid([0, 0.955, -0.06], [0.042, 0.06, 0.022], dim), 'pelvis', 'Sacrum');
+  add(ellipsoid([0, 1.588, 0.084], [0.009, 0.013, 0.006], shadow, 12), 'skull', 'Nasal opening');
+  // Lower jaw: chin, body and the two rami that rise to the joint in front of each ear.
+  const jaw = [];
+  for (const s of SIDES) {
+    jaw.push(tubeThrough([[s * 0.05, 1.592, -0.004], [s * 0.049, 1.565, -0.002], [s * 0.046, 1.543, 0.01], [s * 0.032, 1.536, 0.048], [s * 0.012, 1.533, 0.064], [0, 1.533, 0.067]], 0.0062, dim, 24, 8));
+  }
+  jaw.push(ellipsoid([0, 1.532, 0.066], [0.016, 0.011, 0.008], dim, 14));
+  add(mergedMesh(jaw, dim), 'skull', 'Lower jaw (mandible)');
+  const teeth = [];
+  for (const [y, rr] of [[1.556, 1], [1.549, 0.96]]) {
+    for (let i = 0; i < 16; i++) {
+      const a = Math.PI * (0.06 + 0.88 * (i / 15)); // around the dental arch, side to side
+      const t = new THREE.Mesh(new THREE.BoxGeometry(i > 4 && i < 11 ? 0.0045 : 0.0055, 0.0072, 0.005), enamel);
+      t.position.set(-Math.cos(a) * 0.026 * rr, y, 0.036 + Math.sin(a) * 0.03 * rr);
+      t.rotation.y = -a + Math.PI / 2;
+      teeth.push(t);
+    }
+  }
+  add(mergedMesh(teeth, enamel), 'skull', 'Teeth (32 in an adult)');
 
-  // Rib cage: 12 pairs of arcs sloping down toward the front, plus the sternum.
+  // ── Vertebral column: 7 neck, 12 chest and 5 lower-back vertebrae with discs between ──
+  const vertebrae = [];
+  const discs = [];
+  const layout = vertebraLayout();
+  for (const v of layout) {
+    const p = SPINE_CURVE.getPointAt(v.t);
+    const tan = SPINE_CURVE.getTangentAt(v.t);
+    const len = 0.53 * v.spacing; // column length × this vertebra's share
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(v.radius, v.radius * 1.04, len * 0.72, 14), dim);
+    body.position.copy(p);
+    body.quaternion.setFromUnitVectors(V(0, 1, 0), tan);
+    vertebrae.push(body);
+    // The arch behind: a spinous process pointing back and down (steepest in the chest)
+    // and two transverse processes to the sides (where the ribs rest in the chest).
+    const back = p.clone().add(V(0, 0, -v.radius * 1.15));
+    const droop = v.region === 'Thoracic' ? 0.02 : 0.006;
+    const reach = v.region === 'Lumbar' ? 0.026 : v.region === 'Thoracic' ? 0.022 : 0.014;
+    vertebrae.push(capsuleBetween(back.toArray(), [0, back.y - droop, back.z - reach], v.region === 'Lumbar' ? 0.0055 : 0.0035, dim, 6));
+    for (const s of SIDES) {
+      const side = v.region === 'Lumbar' ? 0.03 : v.region === 'Thoracic' ? 0.026 : 0.02;
+      vertebrae.push(capsuleBetween(back.toArray(), [s * side, back.y + 0.002, back.z - 0.004], 0.003, dim, 6));
+    }
+    if (v.index < (v.region === 'Lumbar' ? 6 : 99)) {
+      const below = Math.min(1, v.t + v.spacing / 2);
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(v.radius * 1.02, v.radius * 1.02, len * 0.24, 14), cartilage);
+      d.position.copy(SPINE_CURVE.getPointAt(below));
+      d.quaternion.setFromUnitVectors(V(0, 1, 0), SPINE_CURVE.getTangentAt(below));
+      discs.push(d);
+    }
+  }
+  add(mergedMesh(vertebrae, dim), 'vertebral-column', 'Vertebrae (7 neck, 12 chest, 5 lower back)');
+  add(mergedMesh(discs, cartilage), 'intervertebral-disc', 'Intervertebral discs');
+  // Sacrum (five fused vertebrae) and the small tailbone below it.
+  const sacrum = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.1, 18), dim);
+  sacrum.scale.z = 0.42;
+  sacrum.rotation.set(Math.PI - 0.45, 0, 0);
+  sacrum.position.set(0, 0.945, -0.05);
+  add(sacrum, 'pelvis', 'Sacrum (five fused vertebrae)');
+  const coccyx = [];
+  for (let i = 0; i < 4; i++) coccyx.push(ellipsoid([0, 0.888 - i * 0.008, -0.03 + i * 0.006], [0.007 - i * 0.0012, 0.004, 0.004], dim, 8));
+  add(mergedMesh(coccyx, dim), 'pelvis', 'Tailbone (coccyx)');
+
+  // ── Rib cage: 12 pairs; 1–7 reach the breastbone through cartilage, 8–10 join the cartilage above, 11–12 float ──
+  const ribs = [];
+  const costal = [];
+  const sternumY = (k) => 1.38 - Math.min(k, 6) * 0.026; // where rib k+1's cartilage meets the breastbone
+  const lastCartilage = {}; // per side: the cartilage curve of the rib above
   for (let k = 0; k < 12; k++) {
-    const y = 1.39 - k * 0.029;
+    const v = layout[7 + k];
+    const back = SPINE_CURVE.getPointAt(v.t);
+    const y = back.y;
     const w = 0.085 + 0.055 * Math.sin((Math.PI * (k + 2)) / 15);
     const floating = k >= 10;
     for (const s of SIDES) {
       const pts = [
-        [s * 0.02, y, -0.05],
-        [s * (w * 0.8), y + 0.005, -0.055],
-        [s * w, y - 0.02, 0.0],
-        [s * (w * 0.85), y - 0.045, floating ? 0.04 : 0.07],
+        [s * 0.022, y, back.z - 0.012],
+        [s * (w * 0.72), y + 0.004, back.z - 0.02],
+        [s * w, y - 0.022, 0.0],
+        [s * (w * 0.86), y - 0.05, floating ? 0.035 : 0.068],
       ];
-      if (!floating) pts.push([s * 0.035, y - 0.07, 0.11]);
-      add(tubeThrough(pts, 0.0055, dim, 24, 6), 'rib-cage', 'Rib');
+      if (!floating) pts.push([s * (w * 0.55), y - 0.072, 0.098]);
+      ribs.push(tubeThrough(pts, k === 0 ? 0.0065 : 0.0052, dim, 28, 6));
+      const end = pts[pts.length - 1];
+      if (!floating) {
+        // Ribs 1–7 run to the breastbone; 8–10 join the cartilage of the rib above.
+        const target = k < 7 ? new THREE.Vector3(s * 0.016, sternumY(k), 0.114) : lastCartilage[s].getPointAt(0.35);
+        const a = new THREE.Vector3(...end);
+        const mid = a.clone().lerp(target, 0.5).add(V(0, k < 7 ? 0.004 : 0.006, 0.006));
+        const curve = new THREE.CatmullRomCurve3([a, mid, target]);
+        costal.push(new THREE.Mesh(new THREE.TubeGeometry(curve, 12, k < 7 ? 0.0045 : 0.004, 6, false), cartilage));
+        lastCartilage[s] = curve;
+      }
     }
   }
-  const sternum = capsuleBetween([0, 1.385, 0.105], [0, 1.2, 0.118], 0.012, dim);
-  sternum.scale.x = 1.6;
-  add(sternum, 'rib-cage', 'Sternum');
+  add(mergedMesh(ribs, dim), 'rib-cage', 'Ribs (12 pairs)');
+  add(mergedMesh(costal, cartilage), 'rib-cage', 'Rib cartilage (costal cartilage)');
+  // Breastbone: handle (manubrium), body and the small tip (xiphoid process).
+  const manubrium = ellipsoid([0, 1.378, 0.112], [0.024, 0.02, 0.007], dim, 16);
+  const sternumBody = capsuleBetween([0, 1.355, 0.115], [0, 1.215, 0.118], 0.01, dim, 10);
+  sternumBody.scale.x = 1.55;
+  const xiphoid = capsuleBetween([0, 1.205, 0.117], [0, 1.18, 0.112], 0.0045, dim, 8);
+  add(mergedMesh([manubrium, sternumBody, xiphoid], dim), 'rib-cage', 'Breastbone (sternum)');
 
   for (const s of SIDES) {
-    // Shoulder girdle and arm
-    add(capsuleBetween([s * 0.02, 1.43, 0.08], [s * 0.17, 1.45, 0.0], 0.008, dim), 'skeletal-system', 'Clavicle');
-    const scap = ellipsoid([s * 0.11, 1.33, -0.08], [0.055, 0.075, 0.01], dim);
-    scap.rotation.y = s * 0.35;
-    add(scap, 'skeletal-system', 'Scapula');
-    add(ellipsoid([s * 0.185, 1.42, 0], [0.024, 0.024, 0.024], dim), 'skeletal-system', 'Humerus');
+    // ── Shoulder girdle: collarbone and shoulder blade ──
+    add(tubeThrough([[s * 0.018, 1.432, 0.104], [s * 0.06, 1.44, 0.088], [s * 0.115, 1.447, 0.035], [s * 0.168, 1.455, -0.005]], 0.0065, dim, 24, 8), 'shoulder-girdle', 'Collarbone (clavicle)');
+    const blade = new THREE.Shape();
+    const bx = (x) => s * x;
+    blade.moveTo(bx(-0.038), 0.05);
+    blade.quadraticCurveTo(bx(0.01), 0.058, bx(0.05), 0.03); // top edge to the shoulder socket
+    blade.quadraticCurveTo(bx(0.02), -0.03, bx(-0.022), -0.095); // outer edge down to the lower tip
+    blade.quadraticCurveTo(bx(-0.045), -0.02, bx(-0.038), 0.05); // inner edge, along the spine
+    const scap = new THREE.Mesh(new THREE.ExtrudeGeometry(blade, { depth: 0.006, bevelEnabled: true, bevelThickness: 0.002, bevelSize: 0.002, bevelSegments: 2, curveSegments: 10 }), dim);
+    scap.position.set(s * 0.1, 1.355, -0.088);
+    scap.rotation.y = s * 0.42;
+    add(scap, 'shoulder-girdle', 'Shoulder blade (scapula)');
+    add(capsuleBetween([s * 0.07, 1.39, -0.1], [s * 0.165, 1.44, -0.03], 0.005, dim, 6), 'shoulder-girdle', 'Spine of the scapula');
+    add(ellipsoid([s * 0.172, 1.448, -0.012], [0.016, 0.006, 0.014], dim, 12), 'shoulder-girdle', 'Acromion (tip of the shoulder)');
+
+    // ── Arm ──
+    add(ellipsoid([s * 0.185, 1.42, 0], [0.024, 0.024, 0.024], dim), 'skeletal-system', 'Humerus (head)');
     add(longBone([s * 0.188, 1.435, 0], [s * 0.25, 1.11, -0.01], 0.0105, 0.022, dim), 'skeletal-system', 'Humerus');
     add(longBone([s * 0.25, 1.115, 0.012], [s * 0.29, 0.855, 0.012], 0.0065, 0.011, dim), 'skeletal-system', 'Radius');
     add(longBone([s * 0.255, 1.125, -0.012], [s * 0.295, 0.858, -0.008], 0.0062, 0.012, dim), 'skeletal-system', 'Ulna');
-    // Hand: wrist and palm bones, then four fingers and a thumb.
-    add(ellipsoid([s * 0.298, 0.82, 0.0], [0.019, 0.032, 0.008], dim), 'skeletal-system', 'Hand bones');
-    for (let f = 0; f < 4; f++) {
-      const fx = s * (0.287 + f * 0.0075);
-      add(capsuleBetween([fx, 0.79, 0.002], [fx + s * 0.002 * (f - 1.5), 0.735 + Math.abs(f - 1.4) * 0.008, 0.004], 0.0028, dim, 6), 'skeletal-system', 'Finger bones');
+
+    // ── Hand: 8 wrist bones, 5 palm bones, 14 finger bones ──
+    const carpals = [];
+    for (let r = 0; r < 2; r++) {
+      for (let i = 0; i < 4; i++) carpals.push(ellipsoid([s * (0.284 + i * 0.0085), 0.846 - r * 0.013, 0.002], [0.0048, 0.0058, 0.0055], dim, 10));
     }
-    add(capsuleBetween([s * 0.284, 0.815, 0.008], [s * 0.272, 0.775, 0.02], 0.003, dim, 6), 'skeletal-system', 'Thumb bones');
+    add(mergedMesh(carpals, dim), 'hand-bones', 'Wrist bones (8 carpals)');
+    const metacarpals = [];
+    const phalanges = [];
+    const fingerLen = [0.9, 1, 0.95, 0.78]; // index, middle, ring, little
+    for (let f = 0; f < 4; f++) {
+      const x0 = s * (0.285 + f * 0.0083);
+      const x1 = s * (0.284 + f * 0.0098);
+      const top = [x0, 0.832, 0.003];
+      const knuckle = [x1, 0.775, 0.004];
+      metacarpals.push(longBone(top, knuckle, 0.0022, 0.0038, dim, 8));
+      let at = knuckle;
+      for (const [seg, r] of [[0.026, 0.0026], [0.017, 0.0022], [0.012, 0.0019]]) {
+        const next = [at[0] + s * 0.0006 * (f - 1.5), at[1] - seg * fingerLen[f], at[2] + 0.0015];
+        phalanges.push(longBone(at, next, r * 0.75, r * 1.25, dim, 8));
+        at = next;
+      }
+    }
+    const thumbBase = [s * 0.279, 0.83, 0.008];
+    const thumbKnuckle = [s * 0.27, 0.8, 0.02];
+    metacarpals.push(longBone(thumbBase, thumbKnuckle, 0.0026, 0.004, dim, 8));
+    const thumbMid = [s * 0.264, 0.778, 0.027];
+    phalanges.push(longBone(thumbKnuckle, thumbMid, 0.0021, 0.0032, dim, 8));
+    phalanges.push(longBone(thumbMid, [s * 0.261, 0.762, 0.031], 0.0018, 0.0027, dim, 8));
+    add(mergedMesh(metacarpals, dim), 'hand-bones', 'Palm bones (5 metacarpals)');
+    add(mergedMesh(phalanges, dim), 'hand-bones', 'Finger bones (14 phalanges)');
 
-    // Pelvis: iliac wings and pubic ring
-    const ilium = ellipsoid([s * 0.095, 1.0, -0.015], [0.075, 0.065, 0.012], dim);
-    ilium.rotation.set(0, s * 0.95, s * -0.25);
-    add(ilium, 'pelvis', 'Hip bone');
-    add(capsuleBetween([s * 0.07, 0.94, 0.0], [s * 0.02, 0.9, 0.06], 0.012, dim), 'pelvis', 'Hip bone');
+    // ── Pelvis: each hip bone's wing (ilium) is part of a bowl open at the front;
+    // below it, the pubis and ischium ring the obturator foramen around the hip socket.
+    const wingStart = s === 1 ? 0.62 : Math.PI * 2 - 2.92;
+    const wingGeo = new THREE.LatheGeometry(PELVIS_PROFILE.map(([r, y]) => new THREE.Vector2(r, y)), 24, wingStart, 2.3);
+    const wp = wingGeo.attributes.position;
+    for (let i = 0; i < wp.count; i++) wp.setY(i, pelvisLift(wp.getY(i), Math.atan2(wp.getX(i), wp.getZ(i))));
+    wingGeo.computeVertexNormals();
+    const wing = new THREE.Mesh(wingGeo, dimTwoSided);
+    wing.scale.z = PELVIS_DEPTH;
+    wing.position.z = -0.012;
+    add(wing, 'pelvis', 'Hip bone (ilium, the wing)');
+    const [rTop, yTop] = PELVIS_PROFILE[PELVIS_PROFILE.length - 1];
+    const crest = [];
+    for (let i = 0; i <= 8; i++) {
+      const phi = wingStart + (2.3 * i) / 8;
+      crest.push([rTop * Math.sin(phi), pelvisLift(yTop, phi) + 0.003, rTop * Math.cos(phi) * PELVIS_DEPTH - 0.012]);
+    }
+    add(tubeThrough(crest, 0.0055, dim, 28, 8), 'pelvis', 'Iliac crest (the top of the hip)');
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.019, 0.0072, 10, 28), dim);
+    ring.position.set(s * 0.056, 0.892, 0.022);
+    ring.rotation.set(0.1, s * 0.85, 0);
+    ring.scale.set(1, 1.25, 1);
+    add(ring, 'pelvis', 'Pubis and ischium, around the obturator foramen');
+    add(capsuleBetween([s * 0.045, 0.905, 0.042], [s * 0.006, 0.9, 0.054], 0.0085, dim, 8), 'pelvis', 'Pubic bone (meets its partner at the pubic symphysis)');
+    add(capsuleBetween([s * 0.05, 0.94, -0.022], [s * 0.06, 0.872, -0.002], 0.009, dim, 8), 'pelvis', 'Ischium');
+    add(ellipsoid([s * 0.062, 0.866, -0.002], [0.014, 0.011, 0.016], dim, 12), 'pelvis', 'Sitting bone (ischial tuberosity)');
+    const socket = new THREE.Mesh(new THREE.TorusGeometry(0.023, 0.0055, 8, 24), dim);
+    socket.position.set(s * 0.083, 0.935, 0.002);
+    socket.rotation.y = s * Math.PI * 0.42;
+    add(socket, 'pelvis', 'Hip socket rim (acetabulum)');
 
-    // Femur (the dive's entry point): head, neck, trochanter, shaft, condyles
-    // In the skeleton tier only the femur the dive enters (viewer's right) glows.
+    // ── Femur (the dive's entry point): head, neck, trochanter, shaft, condyles ──
+    // In the skeleton step only the femur the dive enters (viewer's right) glows.
     const femurMat = highlightFemur ? (s === 1 ? glow : dim) : bone;
     const femur = new THREE.Group();
     femur.add(ellipsoid([s * 0.088, 0.935, 0], [0.022, 0.022, 0.022], femurMat));
@@ -109,10 +274,41 @@ function buildSkeleton(M, highlightFemur) {
     femur.traverse((o) => pick(o, 'femur', 'Femur'));
     g.add(femur);
 
-    add(ellipsoid([s * 0.1, 0.5, 0.035], [0.018, 0.022, 0.01], dim), 'skeletal-system', 'Patella');
-    add(longBone([s * 0.099, 0.49, 0], [s * 0.092, 0.07, 0], 0.012, 0.028, dim), 'skeletal-system', 'Tibia');
+    // ── Knee and lower leg ──
+    add(ellipsoid([s * 0.1, 0.5, 0.035], [0.018, 0.022, 0.01], dim), 'skeletal-system', 'Kneecap (patella)');
+    add(ellipsoid([s * 0.1, 0.478, 0.002], [0.034, 0.011, 0.028], dim, 18), 'skeletal-system', 'Tibia (top, the tibial plateau)');
+    add(longBone([s * 0.099, 0.49, 0], [s * 0.092, 0.07, 0], 0.012, 0.028, dim), 'skeletal-system', 'Tibia (shin bone)');
+    add(ellipsoid([s * 0.078, 0.068, 0.004], [0.008, 0.016, 0.01], dim, 10), 'skeletal-system', 'Inner ankle bone (medial malleolus)');
     add(longBone([s * 0.126, 0.47, -0.014], [s * 0.118, 0.07, -0.01], 0.0055, 0.01, dim), 'skeletal-system', 'Fibula');
-    add(ellipsoid([s * 0.095, 0.03, 0.055], [0.032, 0.022, 0.1], dim), 'skeletal-system', 'Foot');
+    add(ellipsoid([s * 0.12, 0.062, -0.008], [0.007, 0.017, 0.009], dim, 10), 'skeletal-system', 'Outer ankle bone (lateral malleolus)');
+
+    // ── Foot: 7 ankle bones, 5 long bones, 14 toe bones ──
+    const tarsals = [
+      ellipsoid([s * 0.099, 0.027, -0.022], [0.016, 0.019, 0.036], dim, 16), // heel (calcaneus)
+      ellipsoid([s * 0.095, 0.056, 0.004], [0.018, 0.013, 0.022], dim, 14), // talus
+      ellipsoid([s * 0.086, 0.045, 0.03], [0.012, 0.01, 0.009], dim, 10), // navicular
+      ellipsoid([s * 0.112, 0.03, 0.028], [0.011, 0.012, 0.014], dim, 10), // cuboid
+    ];
+    for (let i = 0; i < 3; i++) tarsals.push(ellipsoid([s * (0.08 + i * 0.011), 0.038 - i * 0.003, 0.046], [0.0055, 0.009, 0.009], dim, 8)); // cuneiforms
+    add(mergedMesh(tarsals, dim), 'foot-bones', 'Ankle and heel bones (7 tarsals)');
+    const metatarsals = [];
+    const toes = [];
+    for (let i = 0; i < 5; i++) {
+      const x0 = s * (0.079 + i * 0.0105);
+      const x1 = s * (0.074 + i * 0.0135);
+      const base = [x0, 0.032 - i * 0.002, 0.054];
+      const ball = [x1, 0.011, 0.118 - i * 0.008];
+      metatarsals.push(longBone(base, ball, i === 0 ? 0.0055 : 0.0034, i === 0 ? 0.0085 : 0.0052, dim, 8));
+      let at = ball;
+      const segs = i === 0 ? [[0.02, 0.0045], [0.015, 0.0038]] : [[0.014, 0.0025], [0.008, 0.0021], [0.006, 0.0019]];
+      for (const [len, r] of segs) {
+        const next = [at[0], Math.max(0.006, at[1] - 0.002), at[2] + len * (1 - i * 0.07)];
+        toes.push(longBone(at, next, r * 0.75, r * 1.2, dim, 8));
+        at = next;
+      }
+    }
+    add(mergedMesh(metatarsals, dim), 'foot-bones', 'Foot bones (5 metatarsals)');
+    add(mergedMesh(toes, dim), 'foot-bones', 'Toe bones (14 phalanges)');
   }
   return g;
 }
@@ -158,22 +354,58 @@ function buildSkin(M) {
   return g;
 }
 
+/** A spindle-shaped muscle belly from a to b: thin tendon ends, widest a little above the middle. */
+function belly(a, b, r, material, { squash = [1, 1], peak = 0.45 } = {}) {
+  const profile = [[0, 0.12], [0.1, 0.42], [peak, 1], [Math.min(0.9, peak + 0.33), 0.72], [0.93, 0.3], [1, 0.1]].map(([t, k]) => [t, k * r]);
+  return latheBetween(a, b, profile, material, { segments: 20, squash });
+}
+
 function buildMuscles(M) {
   const g = new THREE.Group();
   const m = M(COLORS.muscle, { roughness: 0.5, tissue: 'muscle', repeat: [1, 3] });
+  const deep = M(0xb8475c, { roughness: 0.55, tissue: 'muscle', repeat: [1, 3] }); // muscles seen from behind
+  const tendon = M(0xefe6d6, { roughness: 0.35, tissue: 'tendon' });
   const add = (mesh, label, card = 'muscular-system') => g.add(pick(mesh, card, label));
+  const flat = (at, radii, rot, mat = m) => {
+    const e = ellipsoid(at, radii, mat, 20);
+    e.rotation.set(...rot);
+    return e;
+  };
+
+  // Trunk, front: chest, the segmented "six-pack" and the obliques at the sides.
+  const abs = [];
+  for (let r = 0; r < 4; r++) for (const s of SIDES) abs.push(ellipsoid([s * 0.021, 1.18 - r * 0.052, 0.098 - r * 0.002], [0.019, 0.024, 0.0065], m, 14));
+  add(mergedMesh(abs, m), 'Abdominal muscles (rectus abdominis)');
   for (const s of SIDES) {
-    add(ellipsoid([s * 0.1, 0.72, 0.03], [0.058, 0.17, 0.055], m), 'Quadriceps');
-    add(ellipsoid([s * 0.1, 0.7, -0.035], [0.05, 0.16, 0.045], m), 'Hamstrings');
-    add(ellipsoid([s * 0.096, 0.31, -0.03], [0.042, 0.12, 0.042], m), 'Calf');
-    add(ellipsoid([s * 0.085, 0.93, -0.07], [0.07, 0.08, 0.05], m), 'Gluteal muscles');
-    add(ellipsoid([s * 0.195, 1.4, 0], [0.05, 0.06, 0.05], m), 'Deltoid');
-    add(ellipsoid([s * 0.225, 1.27, 0.02], [0.028, 0.09, 0.028], m), 'Biceps', 'biceps');
-    add(ellipsoid([s * 0.225, 1.27, -0.025], [0.03, 0.09, 0.03], m), 'Triceps');
-    add(ellipsoid([s * 0.27, 0.99, 0], [0.03, 0.1, 0.028], m), 'Forearm muscles');
-    add(ellipsoid([s * 0.08, 1.32, 0.085], [0.08, 0.06, 0.028], m), 'Pectoralis');
+    add(belly([s * 0.02, 1.33, 0.108], [s * 0.175, 1.38, 0.03], 0.05, m, { squash: [1, 0.32], peak: 0.35 }), 'Chest muscle (pectoralis major)');
+    add(flat([s * 0.105, 1.09, 0.055], [0.04, 0.085, 0.03], [0, s * 0.5, s * 0.15]), 'Side abdominal muscle (external oblique)');
+    add(belly([s * 0.048, 1.595, -0.012], [s * 0.012, 1.44, 0.08], 0.011, m), 'Neck muscle (sternocleidomastoid)');
   }
-  add(ellipsoid([0, 1.1, 0.09], [0.07, 0.13, 0.025], m), 'Abdominal muscles');
+  // Trunk, back: trapezius over the shoulders and latissimus dorsi down the sides.
+  add(flat([0, 1.4, -0.088], [0.12, 0.085, 0.018], [0.25, 0, 0], deep), 'Upper back muscle (trapezius)');
+  add(flat([0, 1.25, -0.085], [0.045, 0.11, 0.015], [-0.15, 0, 0], deep), 'Upper back muscle (trapezius)');
+  for (const s of SIDES) add(flat([s * 0.1, 1.16, -0.07], [0.055, 0.12, 0.018], [0, s * -0.5, s * -0.2], deep), 'Back muscle (latissimus dorsi)');
+
+  for (const s of SIDES) {
+    // Shoulder and arm.
+    add(belly([s * 0.17, 1.46, 0.0], [s * 0.225, 1.3, 0.005], 0.045, m, { peak: 0.35 }), 'Shoulder muscle (deltoid)');
+    add(belly([s * 0.205, 1.38, 0.025], [s * 0.252, 1.12, 0.02], 0.026, m, { peak: 0.55 }), 'Biceps', 'biceps');
+    add(belly([s * 0.2, 1.4, -0.03], [s * 0.252, 1.12, -0.025], 0.03, deep), 'Triceps');
+    add(belly([s * 0.255, 1.11, 0.014], [s * 0.288, 0.87, 0.01], 0.023, m, { peak: 0.3 }), 'Forearm muscles (flexors)');
+    add(belly([s * 0.262, 1.11, -0.012], [s * 0.293, 0.87, -0.008], 0.02, deep, { peak: 0.3 }), 'Forearm muscles (extensors)');
+    // Hip and thigh.
+    add(flat([s * 0.082, 0.925, -0.075], [0.07, 0.08, 0.045], [0.1, 0, 0], deep), 'Buttock muscle (gluteus maximus)');
+    add(flat([s * 0.125, 0.98, -0.03], [0.035, 0.045, 0.03], [0, 0, s * -0.2]), 'Hip muscle (gluteus medius)');
+    add(belly([s * 0.115, 0.92, 0.04], [s * 0.1, 0.515, 0.045], 0.05, m, { peak: 0.4 }), 'Quadriceps');
+    add(ellipsoid([s * 0.074, 0.58, 0.035], [0.024, 0.045, 0.025], m, 14), 'Quadriceps (vastus medialis, the teardrop above the knee)');
+    add(tubeThrough([[s * 0.118, 0.995, 0.055], [s * 0.1, 0.85, 0.06], [s * 0.065, 0.66, 0.045], [s * 0.068, 0.5, 0.005], [s * 0.085, 0.44, 0.02]], 0.0075, m, 32, 8), 'Sartorius (the body’s longest muscle)');
+    add(belly([s * 0.03, 0.89, 0.025], [s * 0.078, 0.56, 0.0], 0.036, m, { peak: 0.3 }), 'Inner thigh muscles (adductors)');
+    add(belly([s * 0.085, 0.88, -0.045], [s * 0.1, 0.52, -0.035], 0.042, deep), 'Hamstrings');
+    // Lower leg: the two-headed calf muscle and its Achilles tendon, and the shin muscle.
+    for (const dx of [-0.016, 0.014]) add(belly([s * (0.098 + dx), 0.47, -0.03], [s * (0.096 + dx * 0.4), 0.22, -0.035], 0.026, deep, { peak: 0.35 }), 'Calf muscle (gastrocnemius)');
+    add(tubeThrough([[s * 0.096, 0.24, -0.036], [s * 0.096, 0.12, -0.036], [s * 0.097, 0.04, -0.05]], 0.005, tendon, 16, 8), 'Achilles tendon (the strongest tendon)');
+    add(belly([s * 0.108, 0.46, 0.028], [s * 0.093, 0.1, 0.03], 0.016, m, { peak: 0.3 }), 'Shin muscle (tibialis anterior)');
+  }
   return g;
 }
 

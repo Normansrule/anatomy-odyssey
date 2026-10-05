@@ -655,6 +655,7 @@ async function main() {
   canvas.addEventListener('pointerleave', () => {
     hoverQueued = null;
     tooltip.hidden = true;
+    engine.setHover(null);
   });
   function updateHover() {
     if (!hoverQueued) return;
@@ -662,10 +663,12 @@ async function main() {
     hoverQueued = null;
     if (e.buttons) {
       tooltip.hidden = true;
+      engine.setHover(null);
       return;
     }
     const hit = engine.pickAt(ndcOf(e));
     canvas.style.cursor = hit ? 'pointer' : '';
+    engine.setHover(hit);
     if (!hit) {
       tooltip.hidden = true;
       return;

@@ -35,6 +35,13 @@ export class TierEngine {
     // The band of screen between the top bar and the step track (CSS pixels
     // covered at the top and bottom). Scenes are framed to fill this band, so a
     // step's frameMeters is the height of the part of the view you can see.
+    // Hover glow: a soft additive copy of the structure under the pointer.
+    this.hoverMaterial = new THREE.MeshBasicMaterial({
+      color: 0xfff0d8, transparent: true, opacity: 0.28, blending: THREE.AdditiveBlending,
+      depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2,
+    });
+    this.hoverShells = [];
+    this.hoverKey = null;
     this.inset = { top: 0, bottom: 0 };
     this.insetTarget = { top: 0, bottom: 0 };
 
@@ -121,6 +128,7 @@ export class TierEngine {
   }
 
   discard(built) {
+    this.clearHover();
     this.scene.remove(built.root);
     built.dispose();
   }
@@ -247,10 +255,45 @@ export class TierEngine {
       if (!o) continue;
       const priority = h.object.userData.pickPriority ?? o.userData.pickPriority ?? 0;
       if (!best || priority > best.priority) {
-        best = { cardId: o.userData.cardId, label: h.object.userData.label ?? o.userData.label, priority, point: h.point };
+        best = { cardId: o.userData.cardId, label: h.object.userData.label ?? o.userData.label, priority, point: h.point, object: h.object };
       }
     }
     return best;
+  }
+
+  /**
+   * Light up the structure a pick hit (or null to clear). Parts drawn as several
+   * meshes under one label (the femur's head, shaft and condyles) glow together.
+   * Skin and other see-through backgrounds (negative pick priority) do not glow.
+   */
+  setHover(hit) {
+    const obj = hit?.object ?? null;
+    const key = obj && (hit.priority ?? 0) >= 0 && obj.isMesh && !obj.isInstancedMesh ? obj.uuid : null;
+    if (key === this.hoverKey) return;
+    this.clearHover();
+    if (!key) return;
+    this.hoverKey = key;
+    let owner = obj;
+    while (owner && !owner.userData.cardId) owner = owner.parent;
+    const label = obj.userData.label ?? owner?.userData.label;
+    const siblings = (obj.parent?.children ?? []).filter(
+      (c) => c.isMesh && !c.isInstancedMesh && !c.userData.hoverShell && c.userData.cardId === owner?.userData.cardId && (c.userData.label ?? label) === label,
+    );
+    const targets = siblings.length > 1 && siblings.length <= 40 ? siblings : [obj];
+    for (const t of targets) {
+      const shell = new THREE.Mesh(t.geometry, this.hoverMaterial);
+      shell.userData.hoverShell = true;
+      shell.raycast = () => {};
+      shell.renderOrder = 5;
+      t.add(shell);
+      this.hoverShells.push(shell);
+    }
+  }
+
+  clearHover() {
+    for (const s of this.hoverShells) s.removeFromParent();
+    this.hoverShells = [];
+    this.hoverKey = null;
   }
 
   /** Unique clickable structures in the current view (for the keyboard list). */

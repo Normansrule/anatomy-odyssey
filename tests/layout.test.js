@@ -27,3 +27,33 @@ describe('web and desktop versions', () => {
     expect(RELEASES_URL).toMatch(/^https:\/\/github\.com\/Normansrule\/anatomy-odyssey\/releases\/latest$/);
   });
 });
+
+describe('skeleton detail', async () => {
+  const { vertebraLayout, SPINE_CURVE } = await import('../src/scenes/body.js');
+  const { buildSkeletonScene } = await import('../src/scenes/body.js');
+  it('has 7 neck, 12 chest and 5 lower-back vertebrae, top to bottom, with bodies widening downward', () => {
+    const v = vertebraLayout();
+    const count = (r) => v.filter((x) => x.region === r).length;
+    expect([count('Cervical'), count('Thoracic'), count('Lumbar')]).toEqual([7, 12, 5]);
+    for (let i = 1; i < v.length; i++) {
+      expect(v[i].t).toBeGreaterThan(v[i - 1].t);
+      expect(v[i].radius).toBeGreaterThanOrEqual(v[i - 1].radius);
+    }
+  });
+  it('the spine curves like an adult’s: neck and lower back forward, chest back', () => {
+    const v = vertebraLayout();
+    const z = (region) => {
+      const mid = v.filter((x) => x.region === region);
+      return SPINE_CURVE.getPointAt(mid[Math.floor(mid.length / 2)].t).z;
+    };
+    expect(z('Cervical')).toBeGreaterThan(z('Thoracic'));
+    expect(z('Lumbar')).toBeGreaterThan(z('Thoracic'));
+  });
+  it('labels the hand, foot, shoulder and disc parts so each opens its own card', () => {
+    const built = buildSkeletonScene({ reducedMotion: true });
+    const cards = new Set();
+    built.root.traverse((o) => o.userData.cardId && cards.add(o.userData.cardId));
+    for (const id of ['hand-bones', 'foot-bones', 'shoulder-girdle', 'intervertebral-disc', 'skull', 'rib-cage', 'pelvis', 'femur']) expect(cards.has(id), id).toBe(true);
+    built.dispose();
+  });
+});

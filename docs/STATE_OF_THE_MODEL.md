@@ -14,7 +14,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | Tier | Step | Frame | Honest stopping point and simplifications |
 |---|---|---|---|
 | 1 | Whole body | 2.1 m | Stylized adult figure with seven toggleable systems |
-| 2 | Skeleton | 1.9 m | The whole skeleton, head to feet; the femur the dive enters glows |
+| 2 | Skeleton | 1.9 m | The whole skeleton, head to feet; the femur the dive enters glows. Built from simple shapes: 24 vertebrae on an S-curve with discs, 12 rib pairs with costal cartilage, breastbone, shoulder blades and collarbones, a pelvic bowl, and every bone of the hands (27) and feet (26), simplified in shape |
 | 3 | Femur | 55 cm | Lathed cutaway; 125° neck angle |
 | 4 | Bone tissue | 1.6 mm | Osteons 0.2 mm, central canals 50 µm |
 | 5 | Osteocyte | 45 µm | Collagen fibrils drawn thicker than life |
@@ -140,6 +140,6 @@ Every entry is built. Main path means the dive passes through it; side trip mean
 
 ## Known simplifications
 
-- The whole-body figure is stylized; organ positions are approximate.
+- The whole-body figure is stylized; organ positions are approximate. Muscles are smooth spindle or plate shapes in roughly the right places, not their real attachments; the skull is three shapes plus jaw and teeth, not its 22 bones.
 - Arteries are red and veins blue by convention, including in the lungs, where it means oxygen-poor (blue) and oxygen-rich (red) rather than artery and vein.
 - Animations are slowed down, and each says by how much where it matters (the neuron's spike by hundreds of thousands of times; the capillary transit by 8 times).

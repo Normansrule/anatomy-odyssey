@@ -3,6 +3,7 @@
 // eosin (pink, cytoplasm and matrix), plus ivory bone and conventional
 // red/blue for arteries/veins.
 import * as THREE from 'three/webgpu';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { tissueMaterial } from '../engine/textures/surfaces.js';
 
 export const COLORS = {
@@ -197,4 +198,24 @@ export function softShadowTexture(size = 128) {
   shadowTex.minFilter = THREE.LinearFilter;
   shadowTex.needsUpdate = true;
   return shadowTex;
+}
+
+/**
+ * Merge many small meshes (already posed with position, rotation and scale)
+ * into one mesh with one material: one draw call and one pick target, for
+ * parts that share a card and label (vertebrae, hand bones, teeth).
+ */
+export function mergedMesh(parts, material) {
+  const geos = parts.map((m) => {
+    m.updateMatrix();
+    const g = m.geometry.clone().applyMatrix4(m.matrix);
+    for (const name of Object.keys(g.attributes)) if (!['position', 'normal', 'uv'].includes(name)) g.deleteAttribute(name);
+    m.geometry.dispose();
+    return g;
+  });
+  const indexed = geos.every((g) => g.index);
+  const ready = indexed ? geos : geos.map((g) => (g.index ? g.toNonIndexed() : g));
+  const merged = mergeGeometries(ready, false);
+  for (const g of geos) g.dispose();
+  return new THREE.Mesh(merged, material);
 }

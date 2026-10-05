@@ -8,6 +8,14 @@ export const REFERENCES = {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 6: Bone Tissue and the Skeletal System.',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/6-introduction',
   },
+  'openstax-axial': {
+    text: 'OpenStax Anatomy and Physiology 2e, chapter 7: Axial Skeleton (section 7.3, The Vertebral Column).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/7-3-the-vertebral-column',
+  },
+  'openstax-appendicular': {
+    text: 'OpenStax Anatomy and Physiology 2e, chapter 8: The Appendicular Skeleton (pectoral girdle, upper and lower limbs).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/8-introduction',
+  },
   'openstax-cell': {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 3: The Cellular Level of Organization.',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/3-introduction',

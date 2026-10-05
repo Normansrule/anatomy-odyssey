@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.2
+
+- **A detailed skeleton.** The spine now has 7 neck, 12 chest and 5 lower-back vertebrae on an adult S-curve, each with its spinous and transverse processes and a disc below it, then the sacrum and tailbone. The 12 rib pairs follow the vertebrae, with costal cartilage: ribs 1–7 run to the breastbone (now manubrium, body and xiphoid), 8–10 join the cartilage above and 11–12 float. The shoulder blades are triangular plates with their spine and acromion, the collarbones S-curved. The pelvis is a bowl of two iliac wings with a crest that rises at the sides, around the hip sockets, pubis and ischium. Every hand has 8 wrist bones, 5 palm bones and 14 finger bones; every foot has 7 ankle bones, 5 metatarsals and 14 toe bones. The skull gains cheekbones, a jaw with rami and 32 teeth.
+- **Shaped muscles.** The body's muscles are spindle-shaped bellies tapering to their tendons instead of eggs, and there are more of them: chest, the segmented rectus abdominis, obliques, neck, trapezius, latissimus dorsi, deltoid, biceps and triceps, forearm flexors and extensors, gluteals, quadriceps with vastus medialis, sartorius, adductors, hamstrings, the two heads of the calf with the Achilles tendon, and tibialis anterior.
+- **Hover glow.** Pointing at a structure lights it up (parts drawn in several pieces, like the femur, glow together) along with its name.
+- 4 new cards (shoulder girdle, hand bones, foot bones, intervertebral discs) and 2 references (OpenStax chapters 7 and 8).
+- Small parts that share a name (vertebrae, ribs, hand and foot bones, teeth) are merged into single meshes, so the whole figure is now 228 meshes, down from 245, despite the extra detail.
+- 296 tests (from 293).
+
 ## 0.9.1
 
 - **Taller views.** Every scene is now framed into the band of screen between the top bar and the step track, so nothing hides behind them. The whole body and the skeleton step show the entire figure, head to feet (the skeleton step used to crop to the hips and knees). On phones, the body-system buttons are one row that scrolls sideways instead of a column over the legs.
