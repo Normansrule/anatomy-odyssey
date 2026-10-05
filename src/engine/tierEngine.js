@@ -32,6 +32,11 @@ export class TierEngine {
     this.shiftTarget = 0;
     this.shiftY = 0; // vertical offset (keeps the subject above a bottom panel on phones)
     this.shiftYTarget = 0;
+    // The band of screen between the top bar and the step track (CSS pixels
+    // covered at the top and bottom). Scenes are framed to fill this band, so a
+    // step's frameMeters is the height of the part of the view you can see.
+    this.inset = { top: 0, bottom: 0 };
+    this.insetTarget = { top: 0, bottom: 0 };
 
     this.scene.add(new THREE.HemisphereLight(0xeae6ff, 0x2a2140, 1.35));
     const key = new THREE.DirectionalLight(0xffffff, 2.2);
@@ -79,7 +84,7 @@ export class TierEngine {
     const target = new THREE.Vector3(...built.view.target);
     const dir = new THREE.Vector3(...built.view.direction).normalize();
     // Tall subjects are framed by height; wide ones must also fit a narrow (portrait) screen.
-    const aspect = this.camera.aspect || 1;
+    const aspect = this.bandAspect();
     let portraitFactor = built.fit === 'both' && aspect < 1 ? Math.min(2.2, 0.95 / aspect) : 1;
     // Very wide scenes can also name the width that must stay in view (in meters).
     if (built.frameWidth) portraitFactor = Math.max(portraitFactor, built.frameWidth / aspect / step.frameMeters);
@@ -199,8 +204,19 @@ export class TierEngine {
     return visibleHeightMeters(d, FOV, this.current.built.metersPerUnit);
   }
 
-  metersPerPixel(canvasHeightPx) {
-    return this.viewMeters() / Math.max(1, canvasHeightPx);
+  metersPerPixel(bandHeightPx = this.bandHeight()) {
+    return this.viewMeters() / Math.max(1, bandHeightPx);
+  }
+
+  /** Height in CSS pixels of the uncovered band the scene is framed into. */
+  bandHeight() {
+    const size = this.renderer.getSize(new THREE.Vector2());
+    return Math.max(size.y * 0.5, size.y - this.inset.top - this.inset.bottom);
+  }
+
+  bandAspect() {
+    const size = this.renderer.getSize(new THREE.Vector2());
+    return size.x > 0 && size.y > 0 ? size.x / this.bandHeight() : this.camera.aspect || 1;
   }
 
   /** Swap which step the current scene represents (same scene, new focus), without a transition. */
@@ -253,16 +269,34 @@ export class TierEngine {
     this.shiftYTarget = py;
   }
 
+  /** Pixels covered by the top bar and by the step track (and anything above it) at the bottom. */
+  setViewInsets(top, bottom) {
+    this.insetTarget.top = Math.max(0, top);
+    this.insetTarget.bottom = Math.max(0, bottom);
+  }
+
   applyViewShift(dt) {
     const k = this.reducedMotion ? 1 : 1 - Math.exp(-dt * 8);
     this.shift += (this.shiftTarget - this.shift) * k;
     this.shiftY += (this.shiftYTarget - this.shiftY) * k;
+    this.inset.top += (this.insetTarget.top - this.inset.top) * k;
+    this.inset.bottom += (this.insetTarget.bottom - this.inset.bottom) * k;
     const size = this.renderer.getSize(new THREE.Vector2());
-    if ((Math.abs(this.shift) < 0.5 && Math.abs(this.shiftY) < 0.5) || size.x === 0) {
+    if (size.x === 0 || size.y === 0) return;
+    // Render the canvas as a window onto a virtual view the size of the band:
+    // the field of view spans the band, and the band's center is the view's center.
+    const band = this.bandHeight();
+    const plain = Math.abs(this.shift) < 0.5 && Math.abs(this.shiftY) < 0.5 && band === size.y;
+    if (plain) {
       if (this.camera.view?.enabled) this.camera.clearViewOffset();
+      if (Math.abs(this.camera.aspect - size.x / size.y) > 1e-6) {
+        this.camera.aspect = size.x / size.y;
+        this.camera.updateProjectionMatrix();
+      }
       return;
     }
-    this.camera.setViewOffset(size.x, size.y, this.shift, this.shiftY, size.x, size.y);
+    this.camera.aspect = size.x / band;
+    this.camera.setViewOffset(size.x, band, this.shift, this.shiftY - this.inset.top, size.x, size.y);
   }
 
   update(dt) {

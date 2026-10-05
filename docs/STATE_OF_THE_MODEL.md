@@ -13,8 +13,8 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 ### Skeletal dive
 | Tier | Step | Frame | Honest stopping point and simplifications |
 |---|---|---|---|
-| 1 | Whole body | 2.5 m | Stylized adult figure with seven toggleable systems |
-| 2 | Skeleton | 1.2 m | The femur the dive enters glows |
+| 1 | Whole body | 2.1 m | Stylized adult figure with seven toggleable systems |
+| 2 | Skeleton | 1.9 m | The whole skeleton, head to feet; the femur the dive enters glows |
 | 3 | Femur | 55 cm | Lathed cutaway; 125° neck angle |
 | 4 | Bone tissue | 1.6 mm | Osteons 0.2 mm, central canals 50 µm |
 | 5 | Osteocyte | 45 µm | Collagen fibrils drawn thicker than life |
@@ -24,7 +24,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 ### Circulatory dive
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
-| 1 | Whole body | 2.5 m | Circulatory system on |
+| 1 | Whole body | 2.1 m | Circulatory system on |
 | 3 | Heart | 20 cm | Frontal cutaway, beats at 70 per minute |
 | 4 | Blood | 60 µm | Cells in plasma inside a small vessel |
 | 5 | Red blood cell | 12.5 µm | Measured shape (Evans and Fung, 1972). Side trip into the shared lipid bilayer |
@@ -34,7 +34,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 ### Muscular dive
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
-| 1 | Whole body | 2.5 m | Muscular system on |
+| 1 | Whole body | 2.1 m | Muscular system on |
 | 3 | Biceps | 42 cm | Cross-section of bundles within bundles |
 | 4 | Fascicle | 2.2 mm | Fibers and capillaries |
 | 5 | Muscle fiber | 190 µm | Side trip into the shared nucleus and DNA |
@@ -44,7 +44,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 ### Immune dive
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
-| 1 | Whole body | 2.5 m | Immune system on |
+| 1 | Whole body | 2.1 m | Immune system on |
 | 3 | Lymph node | 2.6 cm | Cortex, paracortex, medulla |
 | 4 | Follicle | 300 µm | Germinal center |
 | 5 | Plasma cell | 24 µm | Side trip into the shared nucleus and DNA |
@@ -53,7 +53,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 ### Nervous dive (new in v0.3.0)
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
-| 1 | Whole body | 2.5 m | Nervous system on |
+| 1 | Whole body | 2.1 m | Nervous system on |
 | 3 | Brain | 21 cm | Folds are a generated pattern; left hemisphere cut open to show gray and white matter |
 | 4 | Cortex (new in v0.7.0) | 4.2 mm | A 2.5 mm thick block with six layers in typical proportions (real ones vary by region); roughly 1 neuron in 100 drawn, cell bodies to scale; dendrites as thin lines for some pyramidal cells |
 | 5 | Neuron | 390 µm | Cortical pyramidal neuron. Myelin segments drawn much shorter than life. Axon diameter control (Hursh's rule). Side trip into the shared nucleus and DNA |
@@ -63,7 +63,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 ### Respiratory dive (new in v0.3.0)
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
-| 1 | Whole body | 2.5 m | Respiratory system on |
+| 1 | Whole body | 2.1 m | Respiratory system on |
 | 3 | Lungs | 37 cm | Seven of about 23 airway generations shown; breathing control |
 | 4 | Alveoli | 1.15 mm | Alveoli translucent; capillary net simplified to arcs |
 | 5 | Gas exchange | 22 µm | Air–blood barrier in section; capillary transit control (first-order loading, Hill saturation) |

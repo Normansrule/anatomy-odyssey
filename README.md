@@ -6,11 +6,11 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.9.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-290%20passing-4fb38a)
+![Version](https://img.shields.io/badge/version-0.9.1-f08baf)
+![Tests](https://img.shields.io/badge/tests-293%20passing-4fb38a)
 
-[**Open the app**](https://normansrule.github.io/anatomy-odyssey/) ·
-[Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases) ·
+[**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
+[Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
 [What's in it](#what-you-can-explore) ·
 [Run it yourself](#run-it-yourself) ·
 [How it works](#how-it-works)
@@ -26,10 +26,15 @@
 
 - **Pick a dive** (skeletal, circulatory, muscular, immune, nervous or respiratory) and fall through the body one scale at a time: organ → tissue → cell → molecule.
 - **Click anything** to open a card: what it is, why it matters, its real size, and a source you can check.
-- **Watch the depth gauge**: it shows how big the view is, from 2.5 m down to a fraction of a nanometer, so sizes stay honest.
+- **Watch the depth gauge**: it shows how big the view is, from about 2 m down to a fraction of a nanometer, so sizes stay honest.
 - **Play with the science**: sliders run real, tested equations (oxygen binding, nerve speed, blood pH, enzyme speed-up and more).
 
-Works in any current browser, on phones too, and as a desktop app for Windows, macOS and Linux. No accounts, no tracking.
+No accounts, no tracking. Two ways to use it:
+
+| Version | Where | Notes |
+|---|---|---|
+| **Web** | [normansrule.github.io/anatomy-odyssey](https://normansrule.github.io/anatomy-odyssey/) | Any current browser, phones included. Nothing to install. |
+| **Desktop** | [Latest release](https://github.com/Normansrule/anatomy-odyssey/releases/latest) | Windows `.exe`/`.msi`, macOS `.dmg`, Linux `.AppImage`/`.deb`. Not code-signed yet, so the first launch shows a warning. |
 
 ## What you can explore
 
@@ -129,7 +134,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 290 unit tests
+npm test               # 293 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -143,7 +148,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.9.0 && git push origin v0.9.0`) builds Windows, macOS and Linux installers into a draft GitHub release. They are not code-signed yet.
+Pushing a version tag (`git tag v0.9.1 && git push origin v0.9.1`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
 
 **Headless checks** (software rendering, no GPU needed):
 
@@ -156,7 +161,7 @@ python3 tools/a11y-audit.py              # axe-core, WCAG 2.2 A and AA
 
 **URL options**: `?dive=nervous&step=synapse` opens a step, `&trip=1` opens a side trip, `?renderer=webgl` forces the WebGL 2 fallback, `?env=0` turns off studio reflections.
 
-**Publishing**: [docs/PUBLISHING.md](docs/PUBLISHING.md) has the exact terminal commands to push to GitHub and turn on GitHub Pages.
+**Publishing**: [docs/PUBLISHING.md](docs/PUBLISHING.md) has the exact terminal commands to apply a change, push it, turn on GitHub Pages and publish the desktop apps.
 
 </details>
 
@@ -200,7 +205,7 @@ docs/          state of the model, equations, security model, publishing
 | [State of the model](docs/STATE_OF_THE_MODEL.md) | Every step, where it honestly stops, and what is simplified |
 | [Equations](docs/EQUATIONS.md) | 29 worked examples, each with symbols, units and its test |
 | [Security model](docs/SECURITY_MODEL.md) | Trust boundaries, privacy, supply chain |
-| [Publishing](docs/PUBLISHING.md) | Commands to put the project on GitHub and keep it updated |
+| [Publishing](docs/PUBLISHING.md) | Apply a change, push it, turn on the website, publish the desktop apps |
 | [Changelog](CHANGELOG.md) | What changed in each version |
 | [Asset credits](assets/CREDITS.md) | Sources and licenses |
 
@@ -213,17 +218,6 @@ docs/          state of the model, equations, security model, publishing
 - [ ] Real anatomical meshes (Z-Anatomy, CC BY-SA) for the organ tiers
 - [ ] Real atomic structures from the Protein Data Bank for the large molecules
 - [ ] Code-signed desktop releases
-
-## Contributors
-
-<table>
-<tr>
-<td align="center"><a href="https://github.com/Normansrule"><img src="https://github.com/Normansrule.png?size=120" width="80" alt="" /><br /><b>Aleksander Norman</b></a><br />Creator: direction, content review, testing</td>
-<td align="center"><a href="https://github.com/claude"><img src="https://github.com/claude.png?size=120" width="80" alt="" /><br /><b>Claude</b></a><br />Anthropic's AI model: code, science, docs</td>
-</tr>
-</table>
-
-Commits are authored by Aleksander with Claude as co-author (or the other way round), so both appear in the repository's contributor list. Contributions are welcome: open an issue or a pull request.
 
 ## License
 

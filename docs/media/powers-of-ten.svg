@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 250" role="img" aria-labelledby="t d" font-family="Atkinson Hyperlegible Next, system-ui, sans-serif">
   <title id="t">Powers of ten across the skeletal dive</title>
-  <desc id="d">A logarithmic axis from 10 meters to 0.1 nanometers with the seven stops of the skeletal dive: whole body 2.5 m, skeleton 1.2 m, femur 55 cm, bone tissue 1.6 mm, osteocyte 45 micrometers, nucleus 9 micrometers, DNA 11 nanometers.</desc>
+  <desc id="d">A logarithmic axis from 10 meters to 0.1 nanometers with the seven stops of the skeletal dive: whole body 2.1 m, skeleton 1.9 m, femur 55 cm, bone tissue 1.6 mm, osteocyte 45 micrometers, nucleus 9 micrometers, DNA 11 nanometers.</desc>
   <style>
     .bg { fill: #1a1533; }
     .axis { stroke: #8a78e8; stroke-width: 2; }
@@ -26,14 +26,14 @@
     <text x="620" y="156">100 nm</text><text x="690" y="156">10 nm</text><text x="760" y="156">1 nm</text><text x="830" y="156">0.1 nm</text>
   </g>
   <!-- stops -->
-  <circle class="stop" cx="102" cy="130" r="6" /><circle class="stop" cx="124" cy="130" r="6" /><circle class="stop" cx="148" cy="130" r="6" />
+  <circle class="stop" cx="107" cy="130" r="6" /><circle class="stop" cx="111" cy="130" r="6" /><circle class="stop" cx="148" cy="130" r="6" />
   <circle class="stop" cx="326" cy="130" r="6" /><circle class="stop" cx="434" cy="130" r="6" /><circle class="stop" cx="483" cy="130" r="6" />
   <circle class="stop" cx="687" cy="130" r="6" />
   <g text-anchor="middle">
-    <text class="sl" x="96" y="70">Whole body</text><text class="sv" x="96" y="86">2.5 m</text>
-    <line class="tick" x1="102" y1="92" x2="102" y2="122" />
-    <text class="sl" x="165" y="40">Skeleton · Femur</text><text class="sv" x="165" y="56">1.2 m · 55 cm</text>
-    <line class="tick" x1="136" y1="62" x2="136" y2="122" />
+    <text class="sl" x="100" y="70">Whole body</text><text class="sv" x="100" y="86">2.1 m</text>
+    <line class="tick" x1="107" y1="92" x2="107" y2="122" />
+    <text class="sl" x="165" y="40">Skeleton · Femur</text><text class="sv" x="165" y="56">1.9 m · 55 cm</text>
+    <line class="tick" x1="130" y1="62" x2="130" y2="122" />
     <text class="sl" x="326" y="100">Bone tissue</text><text class="sv" x="326" y="116" dy="-2">1.6 mm</text>
     <text class="sl" x="434" y="200">Osteocyte</text><text class="sv" x="434" y="216">45 µm</text>
     <line class="tick" x1="434" y1="138" x2="434" y2="186" />

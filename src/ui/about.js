@@ -19,6 +19,27 @@ function radioGroup(name, legend, options, current, onChange) {
   );
 }
 
+export const WEB_URL = 'https://normansrule.github.io/anatomy-odyssey/';
+export const RELEASES_URL = 'https://github.com/Normansrule/anatomy-odyssey/releases/latest';
+export const SOURCE_URL = 'https://github.com/Normansrule/anatomy-odyssey';
+
+/** True inside the Tauri desktop app (its pages come from tauri://localhost or http://tauri.localhost). */
+export function isDesktopApp(w = typeof window === 'undefined' ? undefined : window) {
+  if (!w) return false;
+  return '__TAURI_INTERNALS__' in w || w.location?.protocol === 'tauri:' || w.location?.hostname === 'tauri.localhost';
+}
+
+/** The "web and desktop" section: links on the web; plain text in the desktop app, whose window must not navigate away. */
+function versionsSection(desktop) {
+  const link = (href, text) => el('a', { href, target: '_blank', rel: 'noopener noreferrer', text });
+  return [
+    el('h3', { text: 'Web and desktop versions' }),
+    desktop
+      ? el('p', { text: `You are using the desktop app. The same app runs in any current browser at ${WEB_URL.replace('https://', '').replace(/\/$/, '')}, and new versions are posted on the project’s GitHub Releases page.` })
+      : el('p', {}, 'You are using the web version. It is also available as a desktop app for Windows, macOS and Linux: ', link(RELEASES_URL, 'download the desktop app'), '. The source code is on ', link(SOURCE_URL, 'GitHub'), '.'),
+  ];
+}
+
 /** Lowercase a name for mid-sentence use, but keep acronyms such as DNA. */
 const lower = (t) => (/^[A-Z]{2,}/.test(t) ? t : t.toLowerCase());
 
@@ -60,6 +81,8 @@ export function renderAbout(container, { backend, settings, onSetting, onReset, 
       el('li', { text: 'Keyboard: → or Page Down dives deeper, ← or Page Up zooms out, / jumps to search, M opens the map, G opens the glossary, T plays the tour, Esc closes cards and stops the tour.' }),
     ),
 
+    ...versionsSection(isDesktopApp()),
+
     el('h3', { text: 'State of the model' }),
     el('p', { text: 'Built and playable:' }),
     el('ul', {},
@@ -76,7 +99,7 @@ export function renderAbout(container, { backend, settings, onSetting, onReset, 
 
     el('h3', { text: 'Privacy and safety' }),
     el('ul', {},
-      el('li', { text: 'No accounts, no analytics, no network calls. Your progress and settings stay in this browser.' }),
+      el('li', { text: 'No accounts, no analytics, no network calls. Your progress and settings stay in this browser. The only links out are the GitHub ones above, and they open only when you click them.' }),
       el('li', { text: 'This is an educational model, not medical advice, and it cannot diagnose anything.' }),
     ),
     el('button', { class: 'text-button', text: 'Clear my progress', onclick: onReset }),

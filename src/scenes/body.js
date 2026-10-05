@@ -283,8 +283,8 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS } = {}) {
     root,
     metersPerUnit: 1,
     view: skeletonOnly
-      ? { target: [0.1, 0.72, 0], direction: [0.42, 0.12, 1] }
-      : { target: [0, 0.78, 0], direction: [0.28, 0.08, 1] },
+      ? { target: [0.04, 0.875, 0], direction: [0.42, 0.12, 1] } // whole skeleton, head to feet
+      : { target: [0, 0.875, 0], direction: [0.28, 0.08, 1] },
     focus: femurCenter,
     setSystems(list) {
       if (skeletonOnly) return;

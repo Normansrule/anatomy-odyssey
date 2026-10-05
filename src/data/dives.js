@@ -25,7 +25,7 @@ export const TIERS = {
   7: 'Molecule',
 };
 
-const BODY = { id: 'body', tier: 1, scene: 'body', title: 'Whole body', card: 'body', frameMeters: 2.5 };
+const BODY = { id: 'body', tier: 1, scene: 'body', title: 'Whole body', card: 'body', frameMeters: 2.1 };
 
 export const DIVES = [
   {
@@ -37,7 +37,7 @@ export const DIVES = [
     summary: 'From your whole body down to the DNA inside a bone cell.',
     steps: [
       { ...BODY, focusCard: 'femur', systems: ['skeletal'], narration: 'This is you, drawn as a teaching model. We will follow the thigh bone all the way down to the molecule that tells its cells what to do.' },
-      { id: 'skeleton', tier: 2, scene: 'skeleton', title: 'Skeleton', card: 'skeletal-system', frameMeters: 1.2, focusCard: 'femur', narration: 'Strip away everything else and 206 bones remain. The glowing one is the femur, the longest bone in your body.' },
+      { id: 'skeleton', tier: 2, scene: 'skeleton', title: 'Skeleton', card: 'skeletal-system', frameMeters: 1.9, focusCard: 'femur', narration: 'Strip away everything else and 206 bones remain. The glowing one is the femur, the longest bone in your body.' },
       { id: 'femur', tier: 3, scene: 'femur', title: 'Femur', card: 'femur', frameMeters: 0.55, focusCard: 'compact-bone', narration: 'Cut open, the femur is a hard outer wall around yellow marrow, with spongy bone and red marrow at each end.' },
       { id: 'bone-tissue', tier: 4, scene: 'bone-tissue', title: 'Bone tissue', card: 'compact-bone', frameMeters: 1.6e-3, focusCard: 'lacuna', narration: 'Now at millimeter scale. The wall is built from osteons: rings of hard matrix around a canal carrying a blood vessel.' },
       { id: 'osteocyte', tier: 5, scene: 'osteocyte', title: 'Osteocyte', card: 'osteocyte', frameMeters: 4.5e-5, focusCard: 'osteocyte-nucleus', narration: 'Each tiny pocket holds a living bone cell. Its branches reach out to touch its neighbors and sense how the bone is loaded.' },

@@ -431,6 +431,7 @@ input {
   flex-wrap: wrap;
   justify-content: center;
   gap: 6px;
+  width: max-content;
   max-width: min(900px, calc(100vw - 2 * var(--gutter)));
 }
 
@@ -1567,8 +1568,22 @@ input {
     font-size: var(--step-0);
   }
 
+  /* One row of chips that scrolls sideways, so they never cover the figure. */
   .systems {
     bottom: calc(var(--track-h) + 40px);
+    left: var(--gutter);
+    right: var(--gutter);
+    transform: none;
+    width: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .systems::-webkit-scrollbar {
+    display: none;
   }
 
   .scene-controls {

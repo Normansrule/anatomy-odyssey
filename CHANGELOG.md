@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.1
+
+- **Taller views.** Every scene is now framed into the band of screen between the top bar and the step track, so nothing hides behind them. The whole body and the skeleton step show the entire figure, head to feet (the skeleton step used to crop to the hips and knees). On phones, the body-system buttons are one row that scrolls sideways instead of a column over the legs.
+- **Web and desktop versions.** The About dialog links to the desktop download from the web version, and names the web address in the desktop app. Version tags now publish the installers as a regular GitHub release (it was a draft), with notes on which file to pick and how to open an unsigned app.
+- **GitHub Pages.** The deploy workflow has the read permission it needs, and says how to switch Pages on; `docs/PUBLISHING.md` is rewritten around reviewing a patch, pushing it yourself, turning on the website and publishing the desktop apps.
+- README: the contributors section is gone; a short table shows where to get the web and desktop versions.
+- 293 tests (from 290).
+
 ## 0.9.0
 
 - **Reflex arc module (knee jerk).** Two steps. A seated figure with the spine, spinal cord, thigh muscles and a reflex hammer: the tap stretches the quadriceps, a signal runs up a sensory fiber to the cord, crosses one synapse, runs back down a motor fiber, and the leg kicks, with a clock that adds up to about 18 ms (the measured value) while the hamstrings are told to relax. Then a slice of the cord at L3, about a centimeter wide: the butterfly of gray matter, white matter, roots, the dorsal root ganglion and the three neurons of the reflex, on the same stage control.

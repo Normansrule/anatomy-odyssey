@@ -7,3 +7,4 @@ sbom.cdx.json
 # Large source atlases are downloaded locally, never committed (see tools/README.md)
 tools/sources/
 src-tauri/target/
+__pycache__/

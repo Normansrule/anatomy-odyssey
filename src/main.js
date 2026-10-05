@@ -759,7 +759,9 @@ async function main() {
         applySurfaces(); // texture detail follows the measurement from the next scene on
       }
     }
-    engine.setViewShift(viewShift(), viewShiftY());
+    const insets = viewInsets();
+    engine.setViewInsets(insets.top, insets.bottom);
+    engine.setViewShift(viewShift(), viewShiftY(insets.bottom));
     engine.update(dt);
     engine.render();
     updateHover();
@@ -768,7 +770,7 @@ async function main() {
     if (Math.abs(meters - lastMeters) / meters > 0.002) {
       lastMeters = meters;
       updateGauge(gauge, meters);
-      updateScaleBar(scaleBar, engine.metersPerPixel(canvas.clientHeight));
+      updateScaleBar(scaleBar, engine.metersPerPixel());
     }
   });
   app.dataset.ready = 'true';
@@ -786,14 +788,30 @@ function viewShift() {
   return (sidePanel - gaugeRight * 0.8) / 2;
 }
 
-/** On phones, lift the subject above the scene controls panel when it is showing. */
-function viewShiftY() {
+/**
+ * The screen band the scene is framed into: below the top bar and above the
+ * step track (and the body-system chips when they show). Returns the pixels
+ * covered at the top and at the bottom of the canvas.
+ */
+function viewInsets() {
+  const box = canvas.getBoundingClientRect();
+  const visible = (node) => node && !node.hidden && node.offsetParent !== null && node.getBoundingClientRect().height > 0;
+  const topbar = document.querySelector('.topbar');
+  const top = visible(topbar) ? topbar.getBoundingClientRect().bottom - box.top + 6 : 0;
+  let bottomEdge = box.bottom;
+  for (const node of [document.querySelector('.track'), document.getElementById('systems')]) {
+    if (visible(node) && node.childElementCount > 0) bottomEdge = Math.min(bottomEdge, node.getBoundingClientRect().top - 6);
+  }
+  return { top, bottom: box.bottom - bottomEdge };
+}
+
+/** On phones, lift the subject further when the scene controls panel covers the lower screen. */
+function viewShiftY(bottomInset) {
   if (wide.matches) return 0;
   const controlsEl = document.getElementById('scene-controls');
   if (!controlsEl || controlsEl.hidden) return 0;
-  const covered = window.innerHeight - controlsEl.getBoundingClientRect().top;
-  const top = document.querySelector('.topbar')?.getBoundingClientRect().bottom ?? 0;
-  return Math.max(0, (covered - top) / 2);
+  const covered = canvas.getBoundingClientRect().bottom - controlsEl.getBoundingClientRect().top;
+  return Math.max(0, (covered - bottomInset) / 2);
 }
 
 function announce(text) {

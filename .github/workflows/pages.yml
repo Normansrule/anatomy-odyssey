@@ -1,4 +1,7 @@
 # Build and publish the web app to GitHub Pages from main.
+# One-time setup: Settings → Pages → Source: GitHub Actions (or see
+# docs/PUBLISHING.md for the one-line command). Until then the
+# "configure-pages" step fails with "Get Pages site failed ... Not Found".
 name: Deploy to GitHub Pages
 
 on:
@@ -16,6 +19,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read # configure-pages reads the site settings
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
