@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.0
+
+- **Reflex arc module (knee jerk).** Two steps. A seated figure with the spine, spinal cord, thigh muscles and a reflex hammer: the tap stretches the quadriceps, a signal runs up a sensory fiber to the cord, crosses one synapse, runs back down a motor fiber, and the leg kicks, with a clock that adds up to about 18 ms (the measured value) while the hamstrings are told to relax. Then a slice of the cord at L3, about a centimeter wide: the butterfly of gray matter, white matter, roots, the dorsal root ganglion and the three neurons of the reflex, on the same stage control.
+- **Tested reflex timing.** Latency = path ÷ speed for each nerve plus the synapse and nerve–muscle delays (equation 29); the drawn nerve paths are checked against the half meter the model assumes.
+- **A more lifelike body.** The whole-body figure has a sculpted head with a jaw and eye sockets, a neck, shaped limbs, hands with fingers, feet, and bones that swell at the joints; a soft contact shadow replaces the floor ring.
+- **Redesigned dive menu.** Dives and modules in two columns, each with its color, its scale range (for example "2.5 m to 1.9 nm") and dots for the steps you have seen; the current one is marked.
+- **Friendlier first screen.** Start any dive straight from the intro, or look around the whole body first.
+- 16 new cards, 4 quiz questions and 4 references; 290 tests (from 280).
+
 ## 0.8.0
 
 - **Realistic tissue surfaces.** A new surface framework (`src/engine/textures/`) generates tileable color, normal and roughness maps in code for 17 tissues (skin, bone, muscle, heart muscle, organ, artery, vein, lung, gray and white matter, cartilage, red and yellow marrow, tendon, nerve, fascia) and builds physically based materials with a wet clearcoat where tissue is wet. The organ and tissue steps of every dive use them.

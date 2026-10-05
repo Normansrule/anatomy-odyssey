@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.8.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-280%20passing-4fb38a)
+![Version](https://img.shields.io/badge/version-0.9.0-f08baf)
+![Tests](https://img.shields.io/badge/tests-290%20passing-4fb38a)
 
 [**Open the app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases) ·
@@ -44,7 +44,7 @@ Works in any current browser, on phones too, and as a desktop app for Windows, m
 | 🧠 **Nervous** | body → brain → cortex → neuron → synapse | glutamate |
 | 🫁 **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ |
 
-### Five modules
+### Six modules
 
 | Module | What happens |
 |---|---|
@@ -53,6 +53,7 @@ Works in any current browser, on phones too, and as a desktop app for Windows, m
 | **Chemistry of life** | Your body sorted by element, an enzyme ten million times faster than chemistry alone, and the blood's pH buffer |
 | **Immune response and memory** | Immune cells side by side at true size, then a first and a second infection |
 | **T cells** | Antigen presentation, a killer T cell at work, and a receptor reading one peptide |
+| **Reflex arc** | The knee jerk: a tap, a signal to the spinal cord and back in about 18 ms, then the wiring inside a slice of the cord |
 
 Side trips branch into a **shared library** of building blocks (nucleus, nucleosome, DNA, RNA, nucleotides, amino acids, ATP, membranes and more). Each is built once and reused by every dive that reaches it, and each card links up to what it is part of and down to what it is made of.
 
@@ -74,6 +75,11 @@ Side trips branch into a **shared library** of building blocks (nucleus, nucleos
 <td><img src="docs/screenshots/carbonic-anhydrase.webp" alt="Carbonic anhydrase as beads around a cleft, with its zinc ion" /></td>
 <td><img src="docs/screenshots/immune-cells.webp" alt="Immune cells side by side at true size, with a virus for scale" /></td>
 <td><img src="docs/screenshots/tcr-mhc.webp" alt="A T-cell receptor docked on a peptide held by MHC class I" /></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/knee-jerk.webp" alt="A seated figure mid knee jerk: the quadriceps contracts and the shin swings forward, with the nerve paths to the spinal cord" /></td>
+<td><img src="docs/screenshots/spinal-cord.webp" alt="A slice of the spinal cord: the butterfly of gray matter, roots, a ganglion and the three neurons of the reflex" /></td>
+<td><img src="docs/screenshots/body.webp" alt="The whole-body figure with skeleton, organs and vessels" /></td>
 </tr>
 <tr>
 <td><img src="docs/screenshots/hemoglobin.webp" alt="Hemoglobin's four chains with the oxygen pressure slider" /></td>
@@ -123,7 +129,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 280 unit tests
+npm test               # 290 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -137,7 +143,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.8.0 && git push origin v0.8.0`) builds Windows, macOS and Linux installers into a draft GitHub release. They are not code-signed yet.
+Pushing a version tag (`git tag v0.9.0 && git push origin v0.9.0`) builds Windows, macOS and Linux installers into a draft GitHub release. They are not code-signed yet.
 
 **Headless checks** (software rendering, no GPU needed):
 
@@ -170,7 +176,7 @@ src/
   scenes/      one builder per step (body, femur, heart, neuron, lungs, …) + registry
   library/     shared building blocks (nucleus, DNA, hemoglobin, ATP, …) and molecule data
   data/        dives, library graph, cards, quizzes, references (all content lives here)
-  science/     pure, tested math: scale, equations, chemistry, immune model, T cells
+  science/     pure, tested math: scale, equations, chemistry, immune model, T cells, reflexes
   ui/          gauge, cards, search, controls, tour, quiz, glossary, map, about
 src-tauri/     desktop shell (Tauri 2)
 tests/         Vitest suites
@@ -192,7 +198,7 @@ docs/          state of the model, equations, security model, publishing
 | Document | What's inside |
 |---|---|
 | [State of the model](docs/STATE_OF_THE_MODEL.md) | Every step, where it honestly stops, and what is simplified |
-| [Equations](docs/EQUATIONS.md) | 28 worked examples, each with symbols, units and its test |
+| [Equations](docs/EQUATIONS.md) | 29 worked examples, each with symbols, units and its test |
 | [Security model](docs/SECURITY_MODEL.md) | Trust boundaries, privacy, supply chain |
 | [Publishing](docs/PUBLISHING.md) | Commands to put the project on GitHub and keep it updated |
 | [Changelog](CHANGELOG.md) | What changed in each version |
@@ -200,12 +206,12 @@ docs/          state of the model, equations, security model, publishing
 
 ## Roadmap
 
-- [x] Six dives, five modules and a complete shared library
+- [x] Six dives, six modules and a complete shared library
 - [x] Desktop app, device check, accessibility audit
 - [x] Realistic tissue surfaces with natural and stain looks
+- [x] The spinal cord, through the knee-jerk reflex
 - [ ] Real anatomical meshes (Z-Anatomy, CC BY-SA) for the organ tiers
 - [ ] Real atomic structures from the Protein Data Bank for the large molecules
-- [ ] A spinal-cord branch for the nervous dive
 - [ ] Code-signed desktop releases
 
 ## Contributors

@@ -150,3 +150,51 @@ export function disposeTree(root) {
     if (o.geometry) o.geometry.dispose();
   });
 }
+
+/**
+ * A lathe (surface of revolution) running from point a to point b.
+ * profile: [[t, r], …] with t from 0 (at a) to 1 (at b) and r the radius there;
+ * squash scales the cross-section ([sideways, front-to-back]) for oval limbs.
+ */
+export function latheBetween(a, b, profile, material, { segments = 24, squash = [1, 1], twist = 0 } = {}) {
+  const va = new THREE.Vector3(...a);
+  const vb = new THREE.Vector3(...b);
+  const len = va.distanceTo(vb);
+  const pts = profile.map(([t, r]) => new THREE.Vector2(Math.max(0.00001, r), t * len));
+  const geo = new THREE.LatheGeometry(pts, segments);
+  geo.scale(squash[0], 1, squash[1]);
+  if (twist) geo.rotateY(twist);
+  const mesh = new THREE.Mesh(geo, material);
+  mesh.position.copy(va);
+  mesh.quaternion.setFromUnitVectors(_up, vb.clone().sub(va).normalize());
+  return mesh;
+}
+
+/** A long bone: a slim shaft swelling to rounded ends (epiphyses). */
+export function longBone(a, b, shaftR, endR, material, segments = 16) {
+  return latheBetween(a, b, [
+    [0, 0], [0.012, endR * 0.75], [0.04, endR], [0.09, endR * 0.9], [0.18, shaftR * 1.15], [0.3, shaftR],
+    [0.7, shaftR], [0.82, shaftR * 1.15], [0.91, endR * 0.9], [0.96, endR], [0.988, endR * 0.75], [1, 0],
+  ], material, { segments });
+}
+
+let shadowTex = null;
+/** A soft round contact shadow (a radial alpha gradient), shared by all scenes. */
+export function softShadowTexture(size = 128) {
+  if (shadowTex) return shadowTex;
+  const data = new Uint8Array(size * size * 4);
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const d = Math.hypot((x + 0.5) / size - 0.5, (y + 0.5) / size - 0.5) * 2;
+      const a = Math.max(0, 1 - d) ** 1.8;
+      const i = (y * size + x) * 4;
+      data[i] = data[i + 1] = data[i + 2] = 255;
+      data[i + 3] = Math.round(255 * a);
+    }
+  }
+  shadowTex = new THREE.DataTexture(data, size, size, THREE.RGBAFormat);
+  shadowTex.magFilter = THREE.LinearFilter;
+  shadowTex.minFilter = THREE.LinearFilter;
+  shadowTex.needsUpdate = true;
+  return shadowTex;
+}

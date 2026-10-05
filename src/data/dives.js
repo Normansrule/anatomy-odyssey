@@ -30,6 +30,7 @@ const BODY = { id: 'body', tier: 1, scene: 'body', title: 'Whole body', card: 'b
 export const DIVES = [
   {
     id: 'skeletal',
+    swatch: '#e9dfc8', // menu and intro color
     kind: 'dive',
     title: 'Skeletal dive',
     status: 'built',
@@ -46,6 +47,7 @@ export const DIVES = [
   },
   {
     id: 'circulatory',
+    swatch: '#d9434f', // menu and intro color
     kind: 'dive',
     title: 'Circulatory dive',
     status: 'built',
@@ -61,6 +63,7 @@ export const DIVES = [
   },
   {
     id: 'muscular',
+    swatch: '#d65a6e', // menu and intro color
     kind: 'dive',
     title: 'Muscular dive',
     status: 'built',
@@ -76,6 +79,7 @@ export const DIVES = [
   },
   {
     id: 'immune',
+    swatch: '#7cc49a', // menu and intro color
     kind: 'dive',
     title: 'Immune dive',
     status: 'built',
@@ -90,6 +94,7 @@ export const DIVES = [
   },
   {
     id: 'inflammation',
+    swatch: '#f2a65a', // menu and intro color
     kind: 'module',
     title: 'Inflammatory response',
     status: 'built',
@@ -100,6 +105,7 @@ export const DIVES = [
   },
   {
     id: 'immune-response',
+    swatch: '#9fb4e8', // menu and intro color
     kind: 'module',
     title: 'Immune response and memory',
     status: 'built',
@@ -111,6 +117,7 @@ export const DIVES = [
   },
   {
     id: 't-cells',
+    swatch: '#f2a65a', // menu and intro color
     kind: 'module',
     title: 'T cells: presenting and killing',
     status: 'built',
@@ -122,7 +129,20 @@ export const DIVES = [
     ],
   },
   {
+    id: 'reflex',
+    swatch: '#f0dc96', // menu and intro color
+    kind: 'module',
+    title: 'Reflex arc (knee jerk)',
+    status: 'built',
+    summary: 'Tap the knee and the leg kicks in about 18 ms: follow the signal to the spinal cord and back, then see the wiring in a slice of the cord.',
+    steps: [
+      { id: 'reflex-arc', tier: 2, scene: 'reflex-arc', title: 'The knee jerk', card: 'reflex-arc', frameMeters: 1.45, focusCard: 'spinal-cord', narration: 'A tap below the kneecap, and the leg kicks out before you decide anything. Press play to follow the signal up to the spinal cord and back down, slowed about a thousand times.' },
+      { id: 'spinal-cord', tier: 3, scene: 'spinal-cord', title: 'Inside the spinal cord', card: 'spinal-cord-section', frameMeters: 1.6e-2, focusCard: 'ventral-horn', narration: 'A slice of the cord at the L3 segment, about a centimeter wide. The sensory fiber comes in at the back and synapses straight onto a motor neuron at the front. That single synapse is the whole decision.' },
+    ],
+  },
+  {
     id: 'gene-to-protein',
+    swatch: '#8f7ff0', // menu and intro color
     kind: 'module',
     title: 'From gene to protein',
     status: 'built',
@@ -135,6 +155,7 @@ export const DIVES = [
   },
   {
     id: 'chemistry',
+    swatch: '#8fb4f0', // menu and intro color
     kind: 'module',
     title: 'Chemistry of life',
     status: 'built',
@@ -147,6 +168,7 @@ export const DIVES = [
   },
   {
     id: 'nervous',
+    swatch: '#e8c45a', // menu and intro color
     kind: 'dive',
     title: 'Nervous dive',
     status: 'built',
@@ -162,6 +184,7 @@ export const DIVES = [
   },
   {
     id: 'respiratory',
+    swatch: '#e9a0b4', // menu and intro color
     kind: 'dive',
     title: 'Respiratory dive',
     status: 'built',

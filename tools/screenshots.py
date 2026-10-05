@@ -35,6 +35,7 @@ STEPS = [
     ("immune-response", "immune-cells", ""), ("immune-response", "immune-memory", ""),
     ("t-cells", "antigen-presentation", ""), ("t-cells", "killer-t-cell", ""), ("t-cells", "tcr-mhc", ""),
     ("t-cells", "amino-acids", "&trip=1"),
+    ("reflex", "reflex-arc", ""), ("reflex", "spinal-cord", ""),
 ]
 
 

@@ -32,6 +32,8 @@ import { buildImmuneMemory } from './immuneMemory.js';
 import { buildAntigenPresentation } from './antigenPresentation.js';
 import { buildKillerTCell } from './killerTCell.js';
 import { buildTcrMhc } from './tcrMhc.js';
+import { buildReflexArc } from './reflexArc.js';
+import { buildSpinalCord } from './spinalCord.js';
 import { buildNucleus } from '../library/nucleus.js';
 import { buildDna } from '../library/dna.js';
 import { buildHemoglobin } from '../library/hemoglobin.js';
@@ -81,6 +83,8 @@ export const SCENES = {
   'antigen-presentation': buildAntigenPresentation,
   'killer-t-cell': buildKillerTCell,
   'tcr-mhc': buildTcrMhc,
+  'reflex-arc': buildReflexArc,
+  'spinal-cord': buildSpinalCord,
   nucleus: buildNucleus,
   dna: buildDna,
   hemoglobin: buildHemoglobin,

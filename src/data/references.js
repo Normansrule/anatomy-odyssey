@@ -240,4 +240,20 @@ export const REFERENCES = {
     text: 'University of Tartu, Histology: "Cerebral cortex" (the six layers and their cells).',
     url: 'https://sisu.ut.ee/histology/cerebral-cortex/',
   },
+  'wiki-patellar-reflex': {
+    text: 'Wikipedia. "Patellar reflex" (segments L2–L4, monosynaptic arc, about 18 ms latency, reciprocal inhibition).',
+    url: 'https://en.wikipedia.org/wiki/Patellar_reflex',
+  },
+  'oregon-reflexes': {
+    text: 'Oregon State University, Anatomy & Physiology 2e, section 13.4: "Ventral Horn Output and Reflexes".',
+    url: 'https://open.oregonstate.education/anatomy2e/chapter/ventral-horn-output-reflexes/',
+  },
+  'wiki-reaction-time': {
+    text: 'Wikipedia. "Mental chronometry" (simple reaction times of about 160–220 ms).',
+    url: 'https://en.wikipedia.org/wiki/Mental_chronometry',
+  },
+  'wiki-spinal-cord': {
+    text: 'Wikipedia. "Spinal cord" (length, diameter, segments, enlargements, gray and white matter).',
+    url: 'https://en.wikipedia.org/wiki/Spinal_cord',
+  },
 };

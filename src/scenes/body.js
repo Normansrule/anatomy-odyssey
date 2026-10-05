@@ -4,7 +4,7 @@
 // Milestone 2 replaces these primitives with Z-Anatomy meshes (see tools/).
 import * as THREE from 'three/webgpu';
 import {
-  COLORS, materialBank, pick, capsuleBetween, tubeThrough, ellipsoid, disposeTree,
+  COLORS, materialBank, pick, capsuleBetween, tubeThrough, ellipsoid, disposeTree, latheBetween, longBone, softShadowTexture,
 } from './kit.js';
 
 export const SYSTEMS = [
@@ -28,9 +28,15 @@ function buildSkeleton(M, highlightFemur) {
   const dim = highlightFemur ? M(COLORS.boneShade, { roughness: 0.7, transparent: true, opacity: 0.55, tissue: 'bone', repeat: [1, 6] }) : bone;
   const add = (mesh, card, label) => g.add(pick(mesh, card, label));
 
-  // Skull and jaw
-  add(ellipsoid([0, 1.63, 0], [0.085, 0.105, 0.1], dim), 'skull', 'Skull');
-  add(ellipsoid([0, 1.545, 0.035], [0.058, 0.03, 0.05], dim), 'skull', 'Skull');
+  // Skull: cranium, face, lower jaw and the two eye sockets.
+  add(ellipsoid([0, 1.648, -0.008], [0.078, 0.09, 0.096], dim, 32), 'skull', 'Skull (cranium)');
+  add(ellipsoid([0, 1.588, 0.042], [0.052, 0.046, 0.042], dim, 24), 'skull', 'Skull (face)');
+  const jaw = new THREE.Mesh(new THREE.TorusGeometry(0.042, 0.009, 8, 24, Math.PI), dim);
+  jaw.rotation.set(Math.PI / 2 + 0.35, 0, Math.PI);
+  jaw.position.set(0, 1.548, 0.02);
+  add(jaw, 'skull', 'Lower jaw (mandible)');
+  const socket = M(0x5e5344, { roughness: 0.95 }); // shadowed bone, not an eye
+  for (const s of SIDES) add(ellipsoid([s * 0.026, 1.61, 0.072], [0.016, 0.014, 0.01], socket, 14), 'skull', 'Eye socket (orbit)');
 
   // Vertebral column: 24 vertebrae along a gentle S-curve, then the sacrum.
   for (let i = 0; i < 24; i++) {
@@ -73,10 +79,16 @@ function buildSkeleton(M, highlightFemur) {
     scap.rotation.y = s * 0.35;
     add(scap, 'skeletal-system', 'Scapula');
     add(ellipsoid([s * 0.185, 1.42, 0], [0.024, 0.024, 0.024], dim), 'skeletal-system', 'Humerus');
-    add(capsuleBetween([s * 0.19, 1.42, 0], [s * 0.25, 1.12, -0.01], 0.013, dim), 'skeletal-system', 'Humerus');
-    add(capsuleBetween([s * 0.25, 1.11, 0.012], [s * 0.29, 0.86, 0.012], 0.008, dim), 'skeletal-system', 'Radius');
-    add(capsuleBetween([s * 0.255, 1.12, -0.012], [s * 0.295, 0.86, -0.008], 0.008, dim), 'skeletal-system', 'Ulna');
-    add(ellipsoid([s * 0.3, 0.8, 0.0], [0.02, 0.045, 0.012], dim), 'skeletal-system', 'Hand');
+    add(longBone([s * 0.188, 1.435, 0], [s * 0.25, 1.11, -0.01], 0.0105, 0.022, dim), 'skeletal-system', 'Humerus');
+    add(longBone([s * 0.25, 1.115, 0.012], [s * 0.29, 0.855, 0.012], 0.0065, 0.011, dim), 'skeletal-system', 'Radius');
+    add(longBone([s * 0.255, 1.125, -0.012], [s * 0.295, 0.858, -0.008], 0.0062, 0.012, dim), 'skeletal-system', 'Ulna');
+    // Hand: wrist and palm bones, then four fingers and a thumb.
+    add(ellipsoid([s * 0.298, 0.82, 0.0], [0.019, 0.032, 0.008], dim), 'skeletal-system', 'Hand bones');
+    for (let f = 0; f < 4; f++) {
+      const fx = s * (0.287 + f * 0.0075);
+      add(capsuleBetween([fx, 0.79, 0.002], [fx + s * 0.002 * (f - 1.5), 0.735 + Math.abs(f - 1.4) * 0.008, 0.004], 0.0028, dim, 6), 'skeletal-system', 'Finger bones');
+    }
+    add(capsuleBetween([s * 0.284, 0.815, 0.008], [s * 0.272, 0.775, 0.02], 0.003, dim, 6), 'skeletal-system', 'Thumb bones');
 
     // Pelvis: iliac wings and pubic ring
     const ilium = ellipsoid([s * 0.095, 1.0, -0.015], [0.075, 0.065, 0.012], dim);
@@ -91,15 +103,15 @@ function buildSkeleton(M, highlightFemur) {
     femur.add(ellipsoid([s * 0.088, 0.935, 0], [0.022, 0.022, 0.022], femurMat));
     femur.add(capsuleBetween([s * 0.088, 0.935, 0], [s * 0.125, 0.905, 0], 0.012, femurMat));
     femur.add(ellipsoid([s * 0.138, 0.9, -0.005], [0.018, 0.022, 0.018], femurMat));
-    femur.add(capsuleBetween([s * 0.125, 0.9, 0], [s * 0.1, 0.52, 0.01], 0.014, femurMat));
+    femur.add(longBone([s * 0.126, 0.915, 0], [s * 0.1, 0.515, 0.008], 0.0125, 0.02, femurMat));
     femur.add(ellipsoid([s * 0.085, 0.505, 0.0], [0.02, 0.022, 0.024], femurMat));
     femur.add(ellipsoid([s * 0.118, 0.505, 0.0], [0.02, 0.022, 0.024], femurMat));
     femur.traverse((o) => pick(o, 'femur', 'Femur'));
     g.add(femur);
 
     add(ellipsoid([s * 0.1, 0.5, 0.035], [0.018, 0.022, 0.01], dim), 'skeletal-system', 'Patella');
-    add(capsuleBetween([s * 0.098, 0.485, 0], [s * 0.092, 0.08, 0], 0.015, dim), 'skeletal-system', 'Tibia');
-    add(capsuleBetween([s * 0.125, 0.465, -0.012], [s * 0.118, 0.08, -0.01], 0.007, dim), 'skeletal-system', 'Fibula');
+    add(longBone([s * 0.099, 0.49, 0], [s * 0.092, 0.07, 0], 0.012, 0.028, dim), 'skeletal-system', 'Tibia');
+    add(longBone([s * 0.126, 0.47, -0.014], [s * 0.118, 0.07, -0.01], 0.0055, 0.01, dim), 'skeletal-system', 'Fibula');
     add(ellipsoid([s * 0.095, 0.03, 0.055], [0.032, 0.022, 0.1], dim), 'skeletal-system', 'Foot');
   }
   return g;
@@ -107,28 +119,41 @@ function buildSkeleton(M, highlightFemur) {
 
 function buildSkin(M) {
   const g = new THREE.Group();
-  const skin = M(COLORS.skin, { transparent: true, opacity: 0.14, depthWrite: false, roughness: 0.4, tissue: 'skin', repeat: [8, 12] });
+  const skin = M(COLORS.skin, { transparent: true, opacity: 0.16, depthWrite: false, roughness: 0.4, tissue: 'skin', repeat: [6, 6] });
   const add = (m) => {
     pick(m, 'body', 'Body');
     m.userData.pickPriority = -1; // skin never blocks a click on what is inside
     g.add(m);
   };
-  add(ellipsoid([0, 1.625, 0.01], [0.098, 0.122, 0.112], skin, 32));
-  add(capsuleBetween([0, 1.44, 0], [0, 1.54, 0.005], 0.05, skin));
+  // Head and neck
+  add(ellipsoid([0, 1.64, -0.004], [0.09, 0.105, 0.104], skin, 40));
+  add(ellipsoid([0, 1.575, 0.03], [0.068, 0.07, 0.074], skin, 32));
+  add(ellipsoid([0, 1.604, 0.104], [0.011, 0.02, 0.014], skin, 12));
+  for (const s of SIDES) add(ellipsoid([s * 0.09, 1.615, -0.005], [0.012, 0.026, 0.018], skin, 12));
+  add(latheBetween([0, 1.43, -0.008], [0, 1.56, 0.0], [[0, 0.064], [0.4, 0.05], [1, 0.054]], skin, { segments: 28 }));
+  // Torso: shoulders, chest, waist and hips, flattened front to back.
   const profile = [
-    [0.0, 0.86], [0.13, 0.88], [0.175, 0.96], [0.15, 1.06], [0.14, 1.12],
-    [0.165, 1.26], [0.18, 1.36], [0.19, 1.42], [0.12, 1.47], [0.0, 1.49],
+    [0.0, 0.84], [0.1, 0.845], [0.15, 0.88], [0.172, 0.94], [0.165, 1.0], [0.14, 1.08], [0.136, 1.13],
+    [0.152, 1.22], [0.168, 1.3], [0.176, 1.36], [0.18, 1.41], [0.15, 1.45], [0.08, 1.47], [0.0, 1.475],
   ].map(([r, y]) => new THREE.Vector2(r, y));
-  const torso = new THREE.Mesh(new THREE.LatheGeometry(profile, 48), skin);
-  torso.scale.z = 0.62;
+  const torso = new THREE.Mesh(new THREE.LatheGeometry(profile, 56), skin);
+  torso.scale.z = 0.6;
   add(torso);
   for (const s of SIDES) {
-    add(capsuleBetween([s * 0.195, 1.41, 0], [s * 0.25, 1.12, -0.01], 0.045, skin));
-    add(capsuleBetween([s * 0.25, 1.12, 0], [s * 0.29, 0.86, 0.005], 0.036, skin));
-    add(ellipsoid([s * 0.3, 0.79, 0.0], [0.028, 0.06, 0.018], skin));
-    add(capsuleBetween([s * 0.1, 0.9, 0.0], [s * 0.1, 0.5, 0.01], 0.075, skin));
-    add(capsuleBetween([s * 0.1, 0.5, 0.0], [s * 0.094, 0.09, 0.0], 0.052, skin));
-    add(ellipsoid([s * 0.095, 0.035, 0.055], [0.042, 0.035, 0.11], skin));
+    add(ellipsoid([s * 0.185, 1.41, -0.005], [0.06, 0.055, 0.058], skin, 24)); // shoulder
+    add(latheBetween([s * 0.19, 1.425, 0], [s * 0.25, 1.115, -0.01], [[0, 0.046], [0.15, 0.05], [0.4, 0.047], [0.75, 0.038], [1, 0.034]], skin)); // upper arm
+    add(latheBetween([s * 0.25, 1.115, 0], [s * 0.29, 0.855, 0.004], [[0, 0.035], [0.22, 0.038], [0.55, 0.031], [0.9, 0.022], [1, 0.021]], skin, { squash: [1, 0.8] })); // forearm
+    // Hand: palm, four fingers and a thumb.
+    add(ellipsoid([s * 0.298, 0.81, 0.002], [0.026, 0.045, 0.013], skin, 20));
+    for (let f = 0; f < 4; f++) {
+      const fx = s * (0.285 + f * 0.0085);
+      add(capsuleBetween([fx, 0.785, 0.003], [fx + s * 0.002 * (f - 1.5), 0.73 + Math.abs(f - 1.4) * 0.009, 0.005], 0.0068, skin, 8));
+    }
+    add(capsuleBetween([s * 0.283, 0.812, 0.01], [s * 0.268, 0.772, 0.024], 0.0075, skin, 8));
+    add(ellipsoid([s * 0.078, 0.89, -0.055], [0.085, 0.085, 0.07], skin, 24)); // buttock
+    add(latheBetween([s * 0.1, 0.93, 0.0], [s * 0.1, 0.5, 0.01], [[0, 0.08], [0.18, 0.086], [0.5, 0.073], [0.85, 0.054], [1, 0.048]], skin, { segments: 28, squash: [1, 0.95] })); // thigh
+    add(latheBetween([s * 0.1, 0.5, 0.008], [s * 0.094, 0.075, 0.0], [[0, 0.048], [0.12, 0.05], [0.3, 0.054], [0.62, 0.039], [0.9, 0.027], [1, 0.026]], skin, { segments: 28 })); // lower leg
+    add(ellipsoid([s * 0.095, 0.035, 0.055], [0.042, 0.032, 0.115], skin, 24)); // foot
   }
   return g;
 }
@@ -245,11 +270,8 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS } = {}) {
     root.add(grp);
   }
 
-  // A faint stage disc so the figure reads as standing somewhere.
-  const floor = new THREE.Mesh(
-    new THREE.RingGeometry(0.0, 0.55, 64),
-    M.basic(COLORS.hematoxylin, { transparent: true, opacity: 0.12, depthWrite: false }),
-  );
+  // A soft contact shadow so the figure stands on something.
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.6), M.basic(0x07051a, { map: softShadowTexture(), transparent: true, opacity: 0.75, depthWrite: false }));
   floor.rotation.x = -Math.PI / 2;
   floor.position.y = 0.002;
   root.add(floor);

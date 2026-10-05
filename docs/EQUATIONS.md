@@ -356,3 +356,22 @@ Not biology, but tested the same way. Tissue textures are built from seeded nois
 **Normal map from height.** With central differences on the wrapped height field h, the surface normal is n = normalize(−s·∂h/∂u, −s·∂h/∂v, 1), stored as RGB = (n + 1) / 2. A flat field gives (128, 128, 255).
 
 **Tests.** `tests/textures.test.js` → "is deterministic and stays in [0, 1]", "tiles: the left edge matches the right and the top matches the bottom", "cellular noise: f1 ≤ f2, and f1 is zero at a feature point", "normal maps point outward with unit length; a flat field gives a flat normal".
+
+## 29. Reflex latency (knee jerk)
+
+**Intuition.** Most of the knee jerk's time is travel: about a meter of nerve, there and back. The single synapse in the spinal cord costs under a millisecond.
+
+**Equation.** t = L_s / v_s + t_syn + L_m / v_m + t_nmj
+
+| Symbol | Meaning | Value used | Unit |
+|---|---|---|---|
+| L_s, L_m | Sensory and motor path length, thigh to the L3 segment | 0.5 each | m |
+| v_s, v_m | Conduction speed of the Ia sensory and alpha motor fibers (Hursh's rule, about 6 m/s per µm, for 9–12 µm fibers) | 65 and 55 | m/s |
+| t_syn | One central synapse | 0.7 | ms |
+| t_nmj | Nerve–muscle junction | 1.0 | ms |
+
+**Worked example.** 0.5 / 65 = 7.7 ms up, 0.7 ms across the synapse, 0.5 / 55 = 9.1 ms down and 1.0 ms into the muscle: about 18.5 ms, close to the 18 ms measured for the patellar reflex. A simple voluntary reaction (about 160 ms) is more than 8 times slower.
+
+**Where you see it.** The clock in the knee-jerk step's stage readout.
+
+**Tests.** `tests/reflex.test.js` → "takes about 18 ms: 7.7 ms up, 0.7 ms across one synapse, 9.1 ms down, 1 ms into the muscle", "is nearly all travel time: the single synapse is under 5% of it", "a taller person (longer nerves) has a slower reflex", "the fiber speeds sit within what Hursh’s rule gives for 9–12 µm fibers", "is several times faster than reacting on purpose", "the drawn nerve paths are about as long as the model assumes".

@@ -263,6 +263,32 @@ export const QUIZZES = {
       explain: '2¹⁰ = 1,024. Twenty doublings would make about a million.',
     },
   ],
+  reflex: [
+    {
+      q: 'Why does the knee jerk not need the brain?',
+      choices: ['The brain is asleep during it', 'The sensory neuron connects to the motor neuron right in the spinal cord', 'The kneecap has its own nerve cells', 'The muscle contracts without any nerve'],
+      answer: 1,
+      explain: 'The whole loop runs through the spinal cord at L2 to L4. The brain is told afterwards, through the white matter.',
+    },
+    {
+      q: 'About how long does it take from the tap to the start of the kick?',
+      choices: ['About 2 ms', 'About 18 ms', 'About 200 ms', 'About 2 seconds'],
+      answer: 1,
+      explain: 'About 18 ms, mostly spent traveling a meter of nerve. A voluntary reaction takes ten times longer.',
+    },
+    {
+      q: 'What senses the stretch when the tendon is tapped?',
+      choices: ['Pain receptors in the skin', 'Muscle spindles inside the quadriceps', 'The kneecap bone', 'The motor neuron'],
+      answer: 1,
+      explain: 'Muscle spindles are stretch sensors wrapped by the endings of fast Ia sensory fibers.',
+    },
+    {
+      q: 'Why do the hamstrings relax during the kick?',
+      choices: ['They are too tired', 'An inhibitory interneuron in the cord quiets their motor neurons', 'The brain tells them to', 'They have no nerves'],
+      answer: 1,
+      explain: 'This is reciprocal inhibition: a branch of the sensory fiber switches on an inhibitory neuron, so the opposing muscle does not fight the kick.',
+    },
+  ],
   'gene-to-protein': [
     {
       q: 'Where in a human cell is a gene copied into messenger RNA?',

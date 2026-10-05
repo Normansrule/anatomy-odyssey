@@ -100,6 +100,12 @@ A single animated scene of a splinter wound at about 100 µm scale: injury, alar
 | 5 | A killer T cell at work | 28 µm | Infected cell 15 µm, killer T cell 8 µm; virus particles about 4× too big; perforin pores and MHC knobs enlarged; minutes compressed into seconds |
 | 6 | Receptor meets peptide | 24 nm | Domains as smooth shapes at roughly real size, not atomic coordinates; membranes 15 nm apart; diagonal docking as in Garboczi et al., 1996; 9-amino-acid peptide. Side trip into the shared amino acids |
 
+### Reflex arc: the knee jerk (module, new in v0.9.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 2 | The knee jerk | 1.45 m | Generalized seated figure: lower spine, cord ending near L1–L2 with the cauda equina, femur, simplified quadriceps and hamstrings, kneecap and patellar tendon. Muscle spindle drawn much larger than life. Nerve paths about 0.5 m each, as in the model; animation slowed about a thousand times |
+| 3 | Inside the spinal cord | 16 mm | L3 slice 9.6 × 7.6 mm with generalized gray-matter outline; roots, dorsal root ganglion and spinal nerve simplified; cell bodies drawn about 10 times larger; cut fiber ends shown as dots, far fewer than real |
+
 ## Shared library
 
 Every entry is built. Main path means the dive passes through it; side trip means a branch from a step; "made of" means you reach it by zooming in from a card.
@@ -128,7 +134,7 @@ Every entry is built. Main path means the dive passes through it; side trip mean
 
 - Real anatomical meshes (Milestone 4 swaps organ tiers for Z-Anatomy meshes through `tools/zanatomy_export_blender.py`).
 - Real atomic structures for the large molecules (hemoglobin, antibody, myosin, nucleosome) from the Protein Data Bank, loaded through Mol*. Small molecules already use generated 3D geometry.
-- A spinal-cord branch for the nervous dive.
+- A direct path from the nervous dive into the spinal cord (it is reached through the reflex arc module for now).
 - The real fold of carbonic anhydrase (PDB structures such as 3KS3) in place of the bead model.
 - Real atomic structures for the T-cell receptor and MHC (for example PDB 1AO7) in place of the smooth domains.
 

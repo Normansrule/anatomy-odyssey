@@ -358,12 +358,24 @@ async function main() {
   // ── Dive picker ───────────────────────────────────────────────────
   const diveButton = $('dive-button');
   const diveMenu = $('dive-menu');
+  // Each entry shows its color, the size range it covers and how many of its steps you have seen.
+  const scaleRange = (d) => {
+    const frames = d.steps.map((st) => st.frameMeters);
+    const top = formatLength(Math.max(...frames), 2).text;
+    const bottom = formatLength(Math.min(...frames), 2).text;
+    return top === bottom ? `About ${top} across` : `${top} to ${bottom}`;
+  };
+  const menuColumns = el('div', { class: 'menu__columns' });
+  diveMenu.append(menuColumns);
+  const menuEntries = [];
   const addMenuGroup = (heading, dives) => {
-    diveMenu.append(el('p', { class: 'menu__heading', text: heading }));
+    const col = el('div', { class: 'menu__group', role: 'group', 'aria-label': heading }, el('p', { class: 'menu__heading', text: heading }));
     for (const d of dives) {
-      diveMenu.append(el('button', {
+      const pips = el('span', { class: 'menu__pips', 'aria-hidden': 'true' }, d.steps.map(() => el('span', { class: 'menu__pip' })));
+      const item = el('button', {
         class: 'menu__item',
         role: 'menuitem',
+        style: `--swatch: ${d.swatch ?? 'var(--eosin)'}`,
         'aria-disabled': d.status === 'planned' ? 'true' : null,
         onclick: () => {
           if (d.status !== 'built') return;
@@ -371,15 +383,31 @@ async function main() {
           switchDive(d.id);
         },
       },
+      el('span', { class: 'menu__swatch', 'aria-hidden': 'true' }),
       el('span', { class: 'menu__title', text: d.title }),
       el('span', { class: 'menu__summary', text: d.summary }),
-      d.status === 'planned' ? el('span', { class: 'tag tag--planned', text: 'planned' }) : null,
-      ));
+      el('span', { class: 'menu__meta' }, el('span', { text: scaleRange(d) }), pips),
+      );
+      col.append(item);
+      menuEntries.push({ d, item, pips });
     }
+    menuColumns.append(col);
   };
   addMenuGroup('Dives', DIVES.filter((d) => d.kind === 'dive'));
   addMenuGroup('Modules', DIVES.filter((d) => d.kind === 'module'));
+  function refreshMenu() {
+    const visited = progress.visited();
+    for (const { d, item, pips } of menuEntries) {
+      const seen = d.steps.filter((st) => visited.has(`${d.id}:${st.id}`)).length;
+      [...pips.children].forEach((pip, i) => pip.classList.toggle('is-seen', i < seen));
+      item.setAttribute('aria-label', `${d.title}. ${d.summary} ${seen} of ${d.steps.length} steps visited.`);
+      item.classList.toggle('is-current', d.id === state.dive.id);
+      if (d.id === state.dive.id) item.setAttribute('aria-current', 'true');
+      else item.removeAttribute('aria-current');
+    }
+  }
   function toggleMenu(open = diveMenu.hidden) {
+    if (open) refreshMenu();
     diveMenu.hidden = !open;
     diveButton.setAttribute('aria-expanded', String(open));
     if (open) diveMenu.querySelector('button:not([aria-disabled])')?.focus();
@@ -589,6 +617,18 @@ async function main() {
     goTo(1);
   });
   $('intro-tour').addEventListener('click', () => startTour());
+  // "Or start somewhere else": one button per dive, in its color.
+  const introDives = $('intro-dives');
+  for (const d of DIVES.filter((x) => x.kind === 'dive' && x.id !== 'skeletal')) {
+    introDives.append(el('button', {
+      class: 'intro__dive',
+      style: `--swatch: ${d.swatch}`,
+      onclick: () => {
+        hideIntro();
+        switchDive(d.id);
+      },
+    }, el('span', { class: 'menu__swatch', 'aria-hidden': 'true' }), d.title.replace(' dive', '')));
+  }
   $('intro-explore').addEventListener('click', () => {
     hideIntro();
     openCard('body');

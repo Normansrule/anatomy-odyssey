@@ -37,6 +37,8 @@ STATES = [
     ("nervous: cortex layers", "?dive=nervous&step=cortex", None, DESKTOP),
     ("T cells: presentation", "?dive=t-cells&step=antigen-presentation", None, DESKTOP),
     ("T cells: receptor and peptide", "?dive=t-cells&step=tcr-mhc", None, DESKTOP),
+    ("reflex: knee jerk", "?dive=reflex&step=reflex-arc", None, DESKTOP),
+    ("reflex: spinal cord", "?dive=reflex&step=spinal-cord", None, DESKTOP),
     ("About dialog", "?dive=skeletal&step=femur", "#about-button", DESKTOP),
     ("Map dialog", "?dive=skeletal&step=femur", "#atlas-button", DESKTOP),
     ("Glossary dialog", "?dive=skeletal&step=femur", "#glossary-button", DESKTOP),

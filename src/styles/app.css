@@ -177,29 +177,48 @@ input {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  width: min(340px, calc(100vw - 2 * var(--gutter)));
-  padding: 6px;
+  width: min(720px, calc(100vw - 2 * var(--gutter)));
+  padding: 8px;
   background: var(--ink-raised);
   border: 1px solid var(--ink-line);
   border-radius: var(--radius-m);
+  box-shadow: 0 18px 48px rgba(8, 5, 26, 0.55);
   z-index: 20;
 }
 
-.menu__item {
+.menu__columns {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 2px 8px;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 10px;
+}
+
+.menu__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 1px 10px;
   width: 100%;
   text-align: left;
-  padding: 10px 12px;
+  padding: 9px 10px 10px;
   border: 0;
   border-radius: var(--radius-s);
   background: none;
   cursor: pointer;
 }
 
-.menu__item:hover:not([aria-disabled='true']) {
-  background: var(--ink-line);
+.menu__item:hover:not([aria-disabled='true']),
+.menu__item:focus-visible {
+  background: color-mix(in srgb, var(--swatch) 12%, var(--ink-line));
+}
+
+.menu__item.is-current {
+  background: color-mix(in srgb, var(--swatch) 12%, transparent);
+  box-shadow: inset 3px 0 0 var(--swatch);
+}
+
+/* Lighter text on the tinted row keeps 4.5:1 contrast for every swatch. */
+.menu__item.is-current .menu__summary {
+  color: color-mix(in srgb, var(--mordant) 70%, white);
 }
 
 .menu__item[aria-disabled='true'] {
@@ -207,20 +226,60 @@ input {
   color: var(--mordant);
 }
 
+.menu__swatch {
+  grid-row: 1 / span 3;
+  width: 10px;
+  height: 10px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--swatch) 25%, transparent);
+}
+
 .menu__title {
   font-weight: 700;
 }
 
 .menu__summary {
-  grid-column: 1;
+  grid-column: 2;
   font-size: var(--step--1);
+  line-height: 1.4;
   color: var(--mordant);
 }
 
-.menu__item .tag {
-  grid-row: 1 / span 2;
+.menu__meta {
   grid-column: 2;
-  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: var(--step--1);
+  color: var(--glass);
+  font-variant-numeric: tabular-nums;
+}
+
+.menu__pips {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.menu__pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--swatch) 70%, transparent);
+}
+
+.menu__pip.is-seen {
+  background: var(--swatch);
+  border-color: var(--swatch);
+}
+
+@media (max-width: 760px) {
+  .menu__columns {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── Search ──────────────────────────────────────────────────────── */
@@ -731,7 +790,52 @@ input {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 10px 18px;
+}
+
+.intro__or {
+  margin: 22px 0 8px;
+  font-size: var(--step--1);
+  color: var(--mordant);
+}
+
+.intro p.intro__or {
+  font-family: var(--ui);
+  font-size: var(--step--1);
+  margin: 22px 0 8px;
+}
+
+.intro__dives {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.intro__dive {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 5px 12px 5px 10px;
+  border: 1px solid color-mix(in srgb, var(--swatch) 45%, var(--ink-line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--swatch) 8%, transparent);
+  cursor: pointer;
+}
+
+.intro__dive:hover,
+.intro__dive:focus-visible {
+  background: color-mix(in srgb, var(--swatch) 22%, transparent);
+}
+
+.intro__dive .menu__swatch {
+  margin: 0;
+  box-shadow: none;
+}
+
+.intro__explore {
+  margin-top: 14px;
+  padding-left: 0;
 }
 
 /* ── Dive track ──────────────────────────────────────────────────── */
@@ -1422,6 +1526,15 @@ input {
 
   .intro h1 {
     font-size: var(--step-2);
+  }
+
+  /* On phones the intro keeps the headline and the choices; the long paragraph would cover the scene. */
+  .intro p:not(.intro__or) {
+    display: none;
+  }
+
+  .intro p.intro__or {
+    margin-top: 16px;
   }
 
   .track__title {
