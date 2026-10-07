@@ -70,6 +70,15 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 6 | Hemoglobin (shared) | 11 nm | The same scene the circulatory dive reaches |
 | 7 | O₂ and CO₂ (shared) | 1.05 nm | Stops here. Experimental bond lengths; ball-and-stick or space-filling |
 
+### Digestive dive (new in v0.10.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 1 | Whole body | 2.1 m | Digestive system on |
+| 3 | Small intestine | 6 cm | 7 cm of jejunum, 2.54 cm across, cut open; circular folds drawn about 4 mm deep; about 9,000 villi drawn (a real piece this size has far more); stepped wall layers; mesentery with arcades and fat |
+| 4 | Villi | 1.6 mm | Villi 0.52–0.76 mm tall on a block of wall; one cut open to show the lacteal and capillary net; crypts, goblet cells, muscularis mucosae, submucosa |
+| 5 | Absorbing cell | 42 µm | Five cells 8 × 26 µm with microvilli 1 µm long; tight junctions, nucleus, mitochondria; SGLT1, GLUT2 and the sodium–potassium pump drawn hundreds of times larger; glucose about 1,000 times too big; five-stage control |
+| 7 | Glucose (shared) | 1.3 nm | Stops here. RDKit-generated β-D-glucose (C₆H₁₂O₆), stereocenters checked |
+
 ### From gene to protein (module, new in v0.4.0)
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
@@ -105,6 +114,8 @@ A single animated scene of a splinter wound at about 100 µm scale: injury, alar
 |---|---|---|---|
 | 2 | The knee jerk | 1.45 m | Generalized seated figure: lower spine, cord ending near L1–L2 with the cauda equina, femur, simplified quadriceps and hamstrings, kneecap and patellar tendon. Muscle spindle drawn much larger than life. Nerve paths about 0.5 m each, as in the model; animation slowed about a thousand times |
 | 3 | Inside the spinal cord | 16 mm | L3 slice 9.6 × 7.6 mm with generalized gray-matter outline; roots, dorsal root ganglion and spinal nerve simplified; cell bodies drawn about 10 times larger; cut fiber ends shown as dots, far fewer than real |
+| 6 | Nerve meets muscle (new in v0.10.0) | 3.2 µm | Terminal over a folded end plate; gap drawn 50 nm; release sites over the fold mouths, receptors on the crests; vesicles 50 nm; receptors, enzyme and ions enlarged several times; five-stage control |
+| 7 | Acetylcholine (shared, new in v0.10.0) | 1.5 nm | Stops here. RDKit-generated geometry (C₇H₁₆NO₂⁺); a control shows the enzyme cutting the ester bond |
 
 ## Shared library
 

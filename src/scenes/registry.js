@@ -34,6 +34,11 @@ import { buildKillerTCell } from './killerTCell.js';
 import { buildTcrMhc } from './tcrMhc.js';
 import { buildReflexArc } from './reflexArc.js';
 import { buildSpinalCord } from './spinalCord.js';
+import { buildSmallIntestine } from './smallIntestine.js';
+import { buildVilli } from './villi.js';
+import { buildEnterocyte } from './enterocyte.js';
+import { buildNeuromuscularJunction } from './neuromuscularJunction.js';
+import { buildGlucose, buildAcetylcholine } from '../library/smallMolecules.js';
 import { buildNucleus } from '../library/nucleus.js';
 import { buildDna } from '../library/dna.js';
 import { buildHemoglobin } from '../library/hemoglobin.js';
@@ -85,6 +90,12 @@ export const SCENES = {
   'tcr-mhc': buildTcrMhc,
   'reflex-arc': buildReflexArc,
   'spinal-cord': buildSpinalCord,
+  'small-intestine': buildSmallIntestine,
+  villi: buildVilli,
+  enterocyte: buildEnterocyte,
+  'neuromuscular-junction': buildNeuromuscularJunction,
+  glucose: buildGlucose,
+  acetylcholine: buildAcetylcholine,
   nucleus: buildNucleus,
   dna: buildDna,
   hemoglobin: buildHemoglobin,

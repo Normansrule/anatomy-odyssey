@@ -116,6 +116,22 @@ export const REFERENCES = {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 23: The Digestive System (sections 23.3 to 23.6).',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/23-introduction',
   },
+  'openstax-intestines': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 23.5: The Small and Large Intestines (circular folds, villi, microvilli, intestinal glands).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/23-5-the-small-and-large-intestines',
+  },
+  'openstax-absorption': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 23.7: Chemical Digestion and Absorption: A Closer Look (sodium-coupled glucose uptake, facilitated diffusion into the blood).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/23-7-chemical-digestion-and-absorption-a-closer-look',
+  },
+  'statpearls-nmj': {
+    text: 'Cheng, et al. "Physiology, Neuromuscular Junction." StatPearls, NCBI Bookshelf.',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK470413/',
+  },
+  'wiki-nmj': {
+    text: 'Wikipedia. "Neuromuscular junction" (structure, junctional folds, acetylcholine release and breakdown).',
+    url: 'https://en.wikipedia.org/wiki/Neuromuscular_junction',
+  },
   'openstax-respiratory': {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 22: The Respiratory System.',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/22-introduction',

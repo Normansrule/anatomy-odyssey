@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.9.4-f08baf)
-![Tests](https://img.shields.io/badge/tests-298%20passing-4fb38a)
+![Version](https://img.shields.io/badge/version-0.10.0-f08baf)
+![Tests](https://img.shields.io/badge/tests-316%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -24,7 +24,7 @@
 
 ## In one minute
 
-- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous or respiratory) and fall through the body one scale at a time: organ → tissue → cell → molecule.
+- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous, respiratory or digestive) and fall through the body one scale at a time: organ → tissue → cell → molecule.
 - **Point at anything** to light it up and see its name; **click** to open a card: what it is, why it matters, its real size, and a source you can check.
 - **Watch the depth gauge**: it shows how big the view is, from about 2 m down to a fraction of a nanometer, so sizes stay honest.
 - **Play with the science**: sliders run real, tested equations (oxygen binding, nerve speed, blood pH, enzyme speed-up and more).
@@ -38,7 +38,7 @@ No accounts, no tracking. Two ways to use it:
 
 ## What you can explore
 
-### Six dives
+### Seven dives
 
 | Dive | The path down | Ends at |
 |---|---|---|
@@ -48,6 +48,7 @@ No accounts, no tracking. Two ways to use it:
 | 🛡️ **Immune** | body → lymph node → follicle → plasma cell | an antibody |
 | 🧠 **Nervous** | body → brain → cortex → neuron → synapse | glutamate |
 | 🫁 **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ |
+| 🍽️ **Digestive** | body → small intestine → villi → absorbing cell | glucose |
 
 ### Six modules
 
@@ -58,7 +59,7 @@ No accounts, no tracking. Two ways to use it:
 | **Chemistry of life** | Your body sorted by element, an enzyme ten million times faster than chemistry alone, and the blood's pH buffer |
 | **Immune response and memory** | Immune cells side by side at true size, then a first and a second infection |
 | **T cells** | Antigen presentation, a killer T cell at work, and a receptor reading one peptide |
-| **Reflex arc** | The knee jerk: a tap, a signal to the spinal cord and back in about 18 ms, then the wiring inside a slice of the cord |
+| **Reflex arc** | The knee jerk in about 18 ms, the wiring inside a slice of the spinal cord, the nerve–muscle junction, and acetylcholine |
 
 Side trips branch into a **shared library** of building blocks (nucleus, nucleosome, DNA, RNA, nucleotides, amino acids, ATP, membranes and more). Each is built once and reused by every dive that reaches it, and each card links up to what it is part of and down to what it is made of.
 
@@ -85,6 +86,11 @@ Side trips branch into a **shared library** of building blocks (nucleus, nucleos
 <td><img src="docs/screenshots/knee-jerk.webp" alt="A seated figure mid knee jerk: the quadriceps contracts and the shin swings forward, with the nerve paths to the spinal cord" /></td>
 <td><img src="docs/screenshots/spinal-cord.webp" alt="A slice of the spinal cord: the butterfly of gray matter, roots, a ganglion and the three neurons of the reflex" /></td>
 <td><img src="docs/screenshots/skeleton.webp" alt="The whole skeleton, head to feet: curved spine with discs, ribs with cartilage, pelvis, and every hand and foot bone, with the femur glowing" /></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/small-intestine.webp" alt="Seven centimeters of small intestine cut open: circular folds covered in villi, the wall layers and the mesentery" /></td>
+<td><img src="docs/screenshots/villi.webp" alt="Villi on the intestinal lining, one cut open to show its lacteal and capillaries" /></td>
+<td><img src="docs/screenshots/enterocyte.webp" alt="Absorbing cells with their brush border; the middle one see-through, with glucose on its way from the gut to the blood" /></td>
 </tr>
 <tr>
 <td><img src="docs/screenshots/hemoglobin.webp" alt="Hemoglobin's four chains with the oxygen pressure slider" /></td>
@@ -134,7 +140,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 298 unit tests
+npm test               # 316 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -148,7 +154,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.9.4 && git push origin v0.9.4`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
+Pushing a version tag (`git tag v0.10.0 && git push origin v0.10.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
 
 **Headless checks** (software rendering, no GPU needed):
 
@@ -211,7 +217,7 @@ docs/          state of the model, equations, security model, publishing
 
 ## Roadmap
 
-- [x] Six dives, six modules and a complete shared library
+- [x] Seven dives, six modules and a complete shared library; every dive and the reflex arc end at a molecule
 - [x] Desktop app, device check, accessibility audit
 - [x] Realistic tissue surfaces with natural and stain looks
 - [x] The spinal cord, through the knee-jerk reflex

@@ -79,6 +79,10 @@ OTHERS = [
     ("hco3", "Bicarbonate (HCO₃⁻)", "OC([O-])=O", "CHO3", -1),
     ("h3o", "Hydronium (H₃O⁺)", "[OH3+]", "H3O", 1),
     # POPC: 16:0 at sn-1, 18:1 cis-9 at sn-2, phosphocholine at sn-3 (glycerol C2 is R).
+    # beta-D-glucopyranose, (2R,3R,4S,5S,6R)-6-(hydroxymethyl)oxane-2,3,4,5-tetrol: the sugar the gut absorbs.
+    ("glucose", "Glucose (β-D-glucopyranose)", "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O", "C6H12O6", 0),
+    # Acetylcholine, the neurotransmitter at the nerve-muscle junction (a quaternary ammonium, always +1).
+    ("acetylcholine", "Acetylcholine", "CC(=O)OCC[N+](C)(C)C", "C7H16NO2", 1),
     ("popc", "POPC (a phosphatidylcholine)", "CCCCCCCCCCCCCCCC(=O)OC[C@H](COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC/C=C\\CCCCCCCC", "C42H82NO8P", 0),
 ]
 
@@ -200,6 +204,8 @@ def main():
         else:
             if mid in ("atp", "adp"):
                 assert sugar_labels(Chem.Mol(mol)) == ["R", "R", "R", "S"], f"{name} ribose"
+            if mid == "glucose":
+                assert sugar_labels(Chem.Mol(mol)) == ["R", "R", "R", "S", "S"], f"{name}: not beta-D (2R,3R,4S,5S,6R)"
             mol3, cid = embed(mol, 40, lowest_energy)
         atoms, bonds = export(mol3, cid)
         data["molecules"][mid] = {"name": name, "kind": "other", "formula": want_formula, "charge": charge, "smiles": smi, "atoms": atoms, "bonds": bonds}

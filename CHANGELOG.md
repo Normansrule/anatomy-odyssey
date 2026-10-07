@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0
+
+- **Digestive dive, down to the molecule.** A seventh dive follows a meal into you: the whole body with the digestive organs → 7 cm of small intestine cut open (circular folds, a velvet of villi, the four wall layers stepping back at the cut, the mesentery with its arching vessels and fat) → villi on a block of the lining, one cut open to show its lacteal and capillary net, with crypts and goblet cells → five absorbing cells with their brush border, tight junctions, nucleus and mitochondria → glucose. A five-stage control on the absorbing cell follows one glucose molecule: brush border, in with two sodium ions through SGLT1, across the cell, out through GLUT2 to the capillary, and the sodium–potassium pump that keeps it all going. Four quiz questions.
+- **The reflex arc reaches the molecule.** After the spinal cord, the module follows the motor command to the quadriceps: the neuromuscular junction (nerve terminal and Schwann cell, vesicles at release sites over the mouths of the junctional folds, receptors on the crests, acetylcholinesterase in a 50 nm gap) with a five-stage release control, then acetylcholine itself, which the enzyme can be shown cutting into acetate and choline. One quiz question now asks about acetylcholine.
+- **Two new shared molecules**, generated with RDKit by `tools/gen_molecules.py` with formula, charge and stereocenter checks: β-D-glucose and acetylcholine. Every other molecule's geometry is unchanged.
+- 20 new cards and 4 references (OpenStax sections 23.5 and 23.7, StatPearls and Wikipedia on the neuromuscular junction).
+- 316 tests (from 298).
+
 ## 0.9.4
 
 - **The biceps on a real arm.** The muscular dive's organ step now shows the biceps where it lives: the humerus with its head in the shoulder socket, the coracoid process and the top of the socket where its two heads attach, the long head tendon running up the front of the humerus and over its head, the distal tendon reaching the radius with its flat sheet (bicipital aponeurosis) to the forearm, the brachialis underneath, the triceps behind, and a faint outline of the arm. The arm runs corner to corner so it fills the screen, and the cut face with its fascicles still faces you.

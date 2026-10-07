@@ -55,13 +55,13 @@ export const ORGAN_CARDS = [
   {
     id: 'small-intestine',
     title: 'Small intestine',
-    aliases: ['duodenum', 'jejunum', 'ileum', 'bowel', 'villi'],
-    home: 'body',
+    aliases: ['duodenum', 'jejunum', 'ileum', 'bowel'],
+    home: 'small-intestine',
     system: 'digestive',
     size: 'About 3 m long in life and about 2.5 cm across',
     what: 'A long coiled tube where most digestion finishes and nearly all nutrients are absorbed: duodenum (about 25 cm), jejunum (about 0.9 m) and ileum (about 1.8 m).',
     why: 'This is where food actually gets into you.',
-    expert: 'Folds, finger-like villi and microvilli give it an absorbing surface of about 200 m², more than 100 times the area of your skin. After death it relaxes to about twice its living length. Drawn here as a few loops, far shorter than life.',
+    expert: 'Folds, finger-like villi and microvilli give it an absorbing surface of about 200 m², more than 100 times the area of your skin. After death it relaxes to about twice its living length. On the whole body it is drawn as a few loops, far shorter than life; the digestive dive opens up a piece of it.',
     refs: GUT,
   },
   {

@@ -134,10 +134,12 @@ export const DIVES = [
     kind: 'module',
     title: 'Reflex arc (knee jerk)',
     status: 'built',
-    summary: 'Tap the knee and the leg kicks in about 18 ms: follow the signal to the spinal cord and back, then see the wiring in a slice of the cord.',
+    summary: 'Tap the knee and the leg kicks in about 18 ms: follow the signal to the spinal cord, through its wiring, back to the muscle and down to the acetylcholine molecule.',
     steps: [
       { id: 'reflex-arc', tier: 2, scene: 'reflex-arc', title: 'The knee jerk', card: 'reflex-arc', frameMeters: 1.45, focusCard: 'spinal-cord', narration: 'A tap below the kneecap, and the leg kicks out before you decide anything. Press play to follow the signal up to the spinal cord and back down, slowed about a thousand times.' },
-      { id: 'spinal-cord', tier: 3, scene: 'spinal-cord', title: 'Inside the spinal cord', card: 'spinal-cord-section', frameMeters: 1.6e-2, focusCard: 'ventral-horn', narration: 'A slice of the cord at the L3 segment, about a centimeter wide. The sensory fiber comes in at the back and synapses straight onto a motor neuron at the front. That single synapse is the whole decision.' },
+      { id: 'spinal-cord', tier: 3, scene: 'spinal-cord', title: 'Inside the spinal cord', card: 'spinal-cord-section', frameMeters: 1.6e-2, focusCard: 'motor-neuron', narration: 'A slice of the cord at the L3 segment, about a centimeter wide. The sensory fiber comes in at the back and synapses straight onto a motor neuron at the front. That single synapse is the whole decision.' },
+      { id: 'neuromuscular-junction', tier: 6, scene: 'neuromuscular-junction', title: 'Nerve meets muscle', card: 'neuromuscular-junction', frameMeters: 3.2e-6, focusCard: 'acetylcholine', narration: 'Follow the motor neuron’s command half a meter down to the thigh. Where it ends on a quadriceps fiber, the signal has to cross a gap, carried by a chemical.' },
+      libStep('acetylcholine', { narration: 'That chemical: acetylcholine. Every voluntary movement you make, and every reflex, ends with this small molecule crossing to a muscle.' }),
     ],
   },
   {
@@ -196,6 +198,21 @@ export const DIVES = [
       { id: 'gas-exchange', tier: 5, scene: 'gas-exchange', title: 'Gas exchange', card: 'air-blood-barrier', frameMeters: 2.2e-5, focusCard: 'hemoglobin', narration: 'Here air and blood are less than a micrometer apart. Play the transit to watch a red blood cell load oxygen as it passes.' },
       libStep('hemoglobin', { focusCard: 'oxygen-binding', narration: 'Inside every red blood cell, hemoglobin grabs the oxygen. The same shared scene the circulatory dive reaches.' }),
       libStep('o2-co2', { narration: 'The two gases themselves: oxygen in, carbon dioxide out. Each is just two or three atoms.' }),
+    ],
+  },
+  {
+    id: 'digestive',
+    swatch: '#e6a46e', // menu and intro color
+    kind: 'dive',
+    title: 'Digestive dive',
+    status: 'built',
+    summary: 'Small intestine → villi → an absorbing cell → the glucose molecule it takes in.',
+    steps: [
+      { ...BODY, focusCard: 'small-intestine', focus: [0, 0.92, 0.04], systems: ['digestive'], narration: 'Everything you eat ends up as molecules small enough to cross into your blood. We will follow one sugar molecule from the gut into you.' },
+      { id: 'small-intestine', tier: 3, scene: 'small-intestine', title: 'Small intestine', card: 'small-intestine', frameMeters: 0.06, focusCard: 'intestinal-villus', narration: 'Cut open, the small intestine is not smooth: circular folds run around the inside, and every surface is velvet with villi.' },
+      { id: 'villi', tier: 4, scene: 'villi', title: 'Villi', card: 'intestinal-villus', frameMeters: 1.6e-3, focusCard: 'enterocyte', narration: 'Each villus is a finger of tissue under a millimeter tall, with a net of capillaries and a lymph vessel inside. One is cut open in front.' },
+      { id: 'enterocyte', tier: 5, scene: 'enterocyte', title: 'Absorbing cell', card: 'enterocyte', frameMeters: 4.2e-5, focusCard: 'glucose', narration: 'The villus is covered by a single layer of absorbing cells, each topped with a brush of microvilli. Step through how one glucose molecule gets from the gut into the blood.' },
+      libStep('glucose', { narration: 'The prize: glucose, six carbons, twelve hydrogens and six oxygens. It fuels almost every cell in your body.' }),
     ],
   },
 ];

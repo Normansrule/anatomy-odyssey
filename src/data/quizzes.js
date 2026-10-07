@@ -263,6 +263,32 @@ export const QUIZZES = {
       explain: '2¹⁰ = 1,024. Twenty doublings would make about a million.',
     },
   ],
+  digestive: [
+    {
+      q: 'Where are most nutrients absorbed?',
+      choices: ['The stomach', 'The small intestine', 'The large intestine', 'The esophagus'],
+      answer: 1,
+      explain: 'The small intestine finishes digestion and absorbs nearly all nutrients; the large intestine mostly absorbs water and salts.',
+    },
+    {
+      q: 'What do circular folds, villi and microvilli have in common?',
+      choices: ['They push food along', 'They all add surface area for absorption', 'They make stomach acid', 'They store fat'],
+      answer: 1,
+      explain: 'Folds within folds within folds give the small intestine an absorbing surface of about 200 m².',
+    },
+    {
+      q: 'How does glucose get into an absorbing cell from the gut?',
+      choices: ['It dissolves straight through the membrane', 'A carrier brings it in together with sodium ions', 'White blood cells carry it', 'It enters through the tight junctions'],
+      answer: 1,
+      explain: 'SGLT1 couples glucose to sodium flowing into the cell. The sodium–potassium pump keeps sodium low inside, so the carrier keeps working.',
+    },
+    {
+      q: 'Absorbed glucose enters the blood. Which organ does that blood reach first?',
+      choices: ['The brain', 'The liver', 'The kidneys', 'The heart muscle'],
+      answer: 1,
+      explain: 'Blood from the intestine drains into the hepatic portal vein, so the liver gets first pick of absorbed sugar.',
+    },
+  ],
   reflex: [
     {
       q: 'Why does the knee jerk not need the brain?',
@@ -277,10 +303,10 @@ export const QUIZZES = {
       explain: 'About 18 ms, mostly spent traveling a meter of nerve. A voluntary reaction takes ten times longer.',
     },
     {
-      q: 'What senses the stretch when the tendon is tapped?',
-      choices: ['Pain receptors in the skin', 'Muscle spindles inside the quadriceps', 'The kneecap bone', 'The motor neuron'],
+      q: 'Which molecule carries the command from the motor neuron to the muscle fiber?',
+      choices: ['Glucose', 'Acetylcholine', 'Hemoglobin', 'Glutamate'],
       answer: 1,
-      explain: 'Muscle spindles are stretch sensors wrapped by the endings of fast Ia sensory fibers.',
+      explain: 'At the neuromuscular junction, acetylcholine crosses the gap and opens receptors on the muscle fiber. An enzyme then cuts it up so the signal stays brief.',
     },
     {
       q: 'Why do the hamstrings relax during the kick?',
