@@ -70,7 +70,7 @@ export const DIVES = [
     summary: 'Biceps → fascicle → muscle fiber → sarcomere → the actin and myosin that pull.',
     steps: [
       { ...BODY, focusCard: 'biceps', focus: [0.229, 1.255, 0.022], systems: ['muscular'], narration: 'Bend your elbow and your biceps shortens. We will follow that pull down to the molecules that make it.' },
-      { id: 'muscle', tier: 3, scene: 'muscle', title: 'Biceps', card: 'biceps', frameMeters: 0.42, focusCard: 'fascicle', narration: 'Cut across, a muscle is bundles inside bundles. Each bundle is a fascicle, wrapped in its own connective tissue.' },
+      { id: 'muscle', tier: 3, scene: 'muscle', title: 'Biceps', card: 'biceps', frameMeters: 0.46, focusCard: 'fascicle', narration: 'Cut across, a muscle is bundles inside bundles. Each bundle is a fascicle, wrapped in its own connective tissue.' },
       { id: 'fascicle', tier: 4, scene: 'fascicle', title: 'Fascicle', card: 'fascicle', frameMeters: 2.2e-3, focusCard: 'muscle-fiber', narration: 'A fascicle holds dozens of muscle fibers, each one a single, very long cell, with capillaries threaded between them.' },
       { id: 'muscle-fiber', tier: 5, scene: 'muscle-fiber', title: 'Muscle fiber', card: 'muscle-fiber', frameMeters: 1.9e-4, focusCard: 'myofibril', branch: { label: 'Side trip into a muscle nucleus', card: 'muscle-nucleus', via: ['nucleus', 'dna'] }, narration: 'One fiber has many nuclei along its edge, and it is packed with striped rods called myofibrils.' },
       { id: 'sarcomere', tier: 6, scene: 'sarcomere', title: 'Sarcomere', card: 'sarcomere', frameMeters: 2.4e-6, focusCard: 'actin-myosin', narration: 'Each stripe repeats every few micrometers: that unit is a sarcomere. Slide the control to contract it and watch which bands shrink.' },

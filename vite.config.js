@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
       target: 'es2022',
       sourcemap: false,
       assetsInlineLimit: single ? 100_000_000 : 4096,
-      chunkSizeWarningLimit: 1600,
+      chunkSizeWarningLimit: 2000, // one bundle on purpose: the app works offline and in the desktop shell
     },
     plugins: single
       ? [

@@ -1,12 +1,17 @@
-// Tier 3: the biceps, cut across. 1 scene unit = 1 cm.
+// Tier 3: the biceps on the upper arm, cut across. 1 scene unit = 1 cm.
 // The muscle belly is split at mid-length and the halves pulled apart, so
 // the cut face shows bundles (fascicles) wrapped in connective tissue.
+// Around it, for context: the humerus and the shoulder blade it hangs from,
+// the two forearm bones it pulls on, the brachialis underneath and the
+// triceps behind, inside a faint outline of the arm. The arm hangs straight,
+// front (+z) toward the viewer, shoulder at the top.
 import * as THREE from 'three/webgpu';
-import { materialBank, pick, capsuleBetween, tubeThrough, seeded, disposeTree } from './kit.js';
+import { materialBank, pick, capsuleBetween, tubeThrough, seeded, disposeTree, ellipsoid, longBone, latheBetween } from './kit.js';
 
 // Belly profile [radius, height] along y, about 24 cm long.
 const PROFILE = [[0.0, -12], [0.9, -11], [1.9, -8], [2.9, -4], [3.2, 0], [3.0, 4], [2.2, 8], [1.1, 11], [0.0, 12]];
 const CUT_Y = 0.6;
+const TILT = 0.6; // radians: shoulder up and to the left, elbow down and to the right
 const GAP = 3.2;
 
 function radiusAt(y) {
@@ -67,21 +72,65 @@ export function buildMuscle() {
   face.add(pick(fascicles, 'fascicle', 'Fascicle'));
   root.add(face);
 
-  // Tendons: two heads at the shoulder end, one at the elbow end.
-  upperGroup.add(pick(capsuleBetween([-0.9, 11.2, 0], [-1.6, 19, -0.5], 0.35, tendonMat, 12), 'tendon', 'Long head tendon'));
-  upperGroup.add(pick(capsuleBetween([0.9, 11.2, 0], [1.8, 18, 0.6], 0.42, tendonMat, 12), 'tendon', 'Short head tendon'));
-  root.add(pick(capsuleBetween([0, -11.4, 0], [0.3, -17.5, 0.5], 0.5, tendonMat, 12), 'tendon', 'Distal tendon (to the radius)'));
+  // ── Bones: humerus with its head in the shoulder socket, the shoulder blade's
+  // socket and coracoid process, and the radius and ulna below the elbow. ──
+  const boneMat = M(0xe9dfc8, { roughness: 0.55, tissue: 'bone', repeat: [1, 4] });
+  const H = (y) => [0.2, y, -4.6]; // humerus axis, behind the biceps and brachialis
+  root.add(pick(ellipsoid([0.9, 24.6, -4.6], [2.4, 2.4, 2.4], boneMat, 32), 'skeletal-system', 'Humerus (head, in the shoulder joint)'));
+  root.add(pick(ellipsoid([2.3, 23.6, -2.9], [1.1, 1.3, 1.1], boneMat, 16), 'skeletal-system', 'Humerus (lesser tubercle)'));
+  root.add(pick(longBone(H(23.5), H(-17.4), 1.05, 1.9, boneMat, 20), 'skeletal-system', 'Humerus (upper arm bone)'));
+  const condyles = ellipsoid([0.2, -18.2, -4.4], [2.9, 1.3, 1.5], boneMat, 20);
+  root.add(pick(condyles, 'skeletal-system', 'Humerus (elbow end, with the epicondyles)'));
+  const scap = M(0xd9ceb5, { roughness: 0.6, tissue: 'bone', repeat: [2, 2] });
+  root.add(pick(ellipsoid([-0.6, 25.4, -7.8], [2.6, 3.6, 0.9], scap, 24), 'shoulder-girdle', 'Shoulder blade (around the shoulder socket)'));
+  const coracoid = [[-1.2, 27.4, -6.6], [0.8, 27.6, -4.4], [2.2, 26.4, -2.2]];
+  root.add(pick(tubeThrough(coracoid, 0.75, scap, 16, 10), 'shoulder-girdle', 'Coracoid process (where the short head attaches)'));
+  root.add(pick(ellipsoid([0.2, 27.6, -6.4], [1.0, 0.7, 0.8], scap, 12), 'shoulder-girdle', 'Supraglenoid tubercle (where the long head attaches)'));
+  root.add(pick(longBone([1.6, -19.4, -2.4], [2.6, -34, -1.4], 0.7, 1.2, boneMat, 16), 'skeletal-system', 'Radius (the forearm bone the biceps pulls)'));
+  root.add(pick(longBone([-1.6, -17.2, -5.2], [-1.0, -34, -3.2], 0.75, 1.5, boneMat, 16), 'skeletal-system', 'Ulna'));
+  root.add(pick(ellipsoid([1.5, -21.6, -1.9], [0.8, 0.9, 0.7], boneMat, 12), 'skeletal-system', 'Radial tuberosity (where the biceps tendon attaches)'));
+
+  // ── Tendons: the long head runs up the groove on the front of the humerus
+  // and over its head to the top of the socket; the short head goes to the
+  // coracoid; the distal tendon goes to the radius, with a flat sheet
+  // (bicipital aponeurosis) fanning toward the inner forearm. ──
+  upperGroup.add(pick(tubeThrough([[-0.9, 11.2, 0], [-0.5, 15.5, -0.9], [0.6, 18.6, -1.6], [1.2, 20.4, -2.2], [0.9, 23.8, -3.8], [0.2, 24.2, -6.2]], 0.32, tendonMat, 48, 10), 'tendon', 'Long head tendon (over the top of the humerus)'));
+  upperGroup.add(pick(tubeThrough([[0.9, 11.2, 0], [1.6, 15.5, -0.4], [2.2, 20.0, -1.4], [2.2, 23.1, -2.3]], 0.4, tendonMat, 32, 10), 'tendon', 'Short head tendon (to the coracoid process)'));
+  root.add(pick(tubeThrough([[0, -11.4, 0], [0.4, -15.5, -0.3], [1.0, -19, -1.1], [1.5, -21.3, -1.7]], 0.5, tendonMat, 32, 10), 'tendon', 'Distal tendon (to the radius)'));
+  const fan = new THREE.Shape();
+  fan.moveTo(0, 0);
+  fan.lineTo(-4.2, -3.6);
+  fan.quadraticCurveTo(-3.2, -5.0, -1.8, -5.2);
+  fan.lineTo(0.4, -0.6);
+  const aponeurosis = new THREE.Mesh(new THREE.ShapeGeometry(fan, 8), M(0xefe6d6, { roughness: 0.4, side: THREE.DoubleSide, transparent: true, opacity: 0.85 }));
+  aponeurosis.position.set(0.3, -16.2, 0.2);
+  aponeurosis.rotation.y = -0.35;
+  root.add(pick(aponeurosis, 'tendon', 'Bicipital aponeurosis (a flat tendon sheet to the forearm)'));
+
+  // ── Neighbouring muscles: brachialis under the lower biceps, triceps behind,
+  // and a faint outline of the arm. ──
+  const deepMat = M(0xa83e52, { roughness: 0.6, tissue: 'muscle', repeat: [1, 3] });
+  root.add(pick(latheBetween([0.4, 4.0, -2.0], [-0.6, -19.6, -3.0], [[0, 0.3], [0.2, 1.8], [0.55, 2.4], [0.85, 1.6], [1, 0.4]], deepMat, { segments: 28, squash: [1.2, 0.7] }), 'biceps', 'Brachialis (under the biceps, also bends the elbow)'));
+  root.add(pick(latheBetween([0.2, 24.0, -8.4], [-0.6, -18.6, -7.8], [[0, 0.5], [0.15, 2.1], [0.45, 2.9], [0.8, 2.2], [1, 0.7]], deepMat, { segments: 28, squash: [1.3, 0.75] }), 'biceps', 'Triceps (behind the humerus, straightens the elbow)'));
+  const skin = M(0xb9b1e6, { roughness: 0.4, transparent: true, opacity: 0.07, depthWrite: false, tissue: 'skin', repeat: [3, 6] });
+  const arm = latheBetween([0.4, 30, -3.8], [1.0, -34, -2.8], [[0, 5.2], [0.08, 6.6], [0.3, 6.0], [0.6, 5.4], [0.72, 4.6], [0.86, 4.0], [1, 3.3]], skin, { segments: 40, squash: [1, 1.25] });
+  arm.userData.pickPriority = -2;
+  root.add(pick(arm, 'biceps', 'Outline of the arm'));
 
   // Artery and nerve entering the muscle.
   root.add(pick(tubeThrough([[-6, -3, 1.5], [-4, -2.5, 1.8], [-2.4, -2.2, 1.9], [-1.2, -2.4, 2.8]], 0.18, M(0xd9434f, { roughness: 0.4, tissue: 'vessel' }), 32, 8), 'biceps', 'Artery'));
   root.add(pick(tubeThrough([[-6, -1.5, 0.6], [-4, -1.3, 1.4], [-2.6, -1, 2.3], [-1.6, -1.2, 2.8]], 0.12, M(0xe8c45a, { roughness: 0.4, tissue: 'nerve' }), 32, 8), 'biceps', 'Nerve (musculocutaneous)'));
 
-  const focus = [centers[0][0], CUT_Y, centers[0][1]];
+  // Tilt the whole arm so it runs corner to corner and fills a wide screen.
+  root.rotation.z = TILT;
+  root.updateMatrixWorld(true);
+  const world = (p) => new THREE.Vector3(...p).applyMatrix4(root.matrixWorld).toArray();
+  const focus = world([centers[0][0], CUT_Y, centers[0][1]]);
   return {
     root,
     fit: 'both',
     metersPerUnit: 0.01,
-    view: { target: [0, 1.5, 0], direction: [0.55, 0.55, 0.8] },
+    view: { target: world([0.6, 1.5, -2.5]), direction: [-0.02, 0.45, 0.9] }, // from the front and a little above, so the cut face shows
     focus,
     dispose() {
       fascicleGeo.dispose();

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.4
+
+- **The biceps on a real arm.** The muscular dive's organ step now shows the biceps where it lives: the humerus with its head in the shoulder socket, the coracoid process and the top of the socket where its two heads attach, the long head tendon running up the front of the humerus and over its head, the distal tendon reaching the radius with its flat sheet (bicipital aponeurosis) to the forearm, the brachialis underneath, the triceps behind, and a faint outline of the arm. The arm runs corner to corner so it fills the screen, and the cut face with its fascicles still faces you.
+- **A 3D lymph node.** The node is now bean-shaped, dented at the hilum, its back bulging where follicles lie under the capsule, with a solid cut edge, trabeculae between the follicles, high endothelial venules in the T cell zone, lymphocytes speckling the slice, valves along the incoming vessels and fat around the hilum.
+- **Lungs close-up.** The lungs flatten where they face the heart, the left one has its cardiac notch, both show the fissures between lobes, and the pulmonary arteries and veins enter at their roots, with the heart drawn faintly between them.
+- 298 tests (from 297).
+
 ## 0.9.3
 
 - **Digestive system on the body.** A new Digestive button shows the esophagus passing through the diaphragm, the J-shaped stomach, the liver (right and left lobes) with the gallbladder, the pancreas behind the stomach, the duodenum, loops of small intestine, and the large intestine framing them with its pouches (haustra), S-bend, rectum and appendix. Each organ has its own color in life and its own card.

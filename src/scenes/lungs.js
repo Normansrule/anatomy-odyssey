@@ -6,7 +6,7 @@
 // Real airways branch about 23 times; this tree shows the first seven.
 // The breath control expands the lungs and lowers the diaphragm.
 import * as THREE from 'three/webgpu';
-import { materialBank, pick, cylinderBetween, seeded, disposeTree } from './kit.js';
+import { materialBank, pick, cylinderBetween, seeded, disposeTree, tubeThrough, ellipsoid } from './kit.js';
 import { minuteVentilation } from '../science/equations.js';
 
 const LUNG = {
@@ -14,12 +14,34 @@ const LUNG = {
   left: { c: new THREE.Vector3(6.2, -4.6, 0), r: [5.0, 10.3, 6.9] },
 };
 const CARINA = new THREE.Vector3(0, 3, 0.3);
+const MEDIAL = 0.58; // each lung is flatter on the side facing the heart
+/** Lung outline as [radius share, height share] from the concave base to the apex. */
+const PROFILE = [[0, -0.7], [0.35, -0.82], [0.8, -1.0], [0.97, -0.72], [1.02, -0.3], [0.95, 0.15], [0.8, 0.48], [0.56, 0.74], [0.28, 0.93], [0, 1.0]];
+const medialSign = (key) => (key === 'right' ? 1 : -1); // toward the midline, in each lung's own frame
+
+function profileRadius(yShare) {
+  for (let i = 1; i < PROFILE.length; i++) {
+    const [r0, y0] = PROFILE[i - 1];
+    const [r1, y1] = PROFILE[i];
+    if (yShare >= Math.min(y0, y1) && yShare <= Math.max(y0, y1)) return r0 + ((yShare - y0) / (y1 - y0 || 1)) * (r1 - r0);
+  }
+  return 0;
+}
+
+/** A point on a lung's outer (rib) side: angle a from the front (0) round to the back (π). */
+function lungSurfacePoint(key, lung, yShare, a) {
+  const r = profileRadius(yShare) * 1.01;
+  const x = -medialSign(key) * r * Math.sin(a);
+  return new THREE.Vector3(x * lung.r[0], yShare * lung.r[1], r * Math.cos(a) * lung.r[2]).add(lung.c);
+}
 const GENERATIONS = 7;
 
 /** Is point p inside a lung's ellipsoid (with a small margin)? */
 function inside(lung, p, margin = 0.85) {
   const d = p.clone().sub(lung.c);
-  return (d.x / lung.r[0]) ** 2 + (d.y / lung.r[1]) ** 2 + (d.z / lung.r[2]) ** 2 < margin * margin;
+  const towardHeart = Math.sign(d.x) === Math.sign(-lung.c.x);
+  const sx = towardHeart ? lung.r[0] * MEDIAL : lung.r[0];
+  return (d.x / sx) ** 2 + (d.y / lung.r[1]) ** 2 + (d.z / lung.r[2]) ** 2 < margin * margin;
 }
 
 export function buildLungs({ reducedMotion = false } = {}) {
@@ -81,17 +103,55 @@ export function buildLungs({ reducedMotion = false } = {}) {
   // resting on the diaphragm. Translucent so the tree shows.
   const lungMat = M(0xe9a0b4, { roughness: 0.75, transparent: true, opacity: 0.24, depthWrite: false, tissue: 'lung', repeat: [3, 4] });
   const lungGeos = [];
+  const fissureMat = M(0x9c4f6b, { roughness: 0.7 });
   for (const [key, lung] of Object.entries(LUNG)) {
     const [rx, ry, rz] = lung.r;
-    const prof = [[0, -0.7], [0.35, -0.82], [0.8, -1.0], [0.97, -0.72], [1.02, -0.3], [0.95, 0.15], [0.8, 0.48], [0.56, 0.74], [0.28, 0.93], [0, 1.0]]
-      .map(([r, y]) => new THREE.Vector2(r, y * ry));
-    const geo = new THREE.LatheGeometry(prof, 48);
+    const prof = PROFILE.map(([r, y]) => new THREE.Vector2(r, y * ry));
+    const geo = new THREE.LatheGeometry(prof, 64);
+    // Flatten the side facing the heart; carve the left lung's cardiac notch.
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      let x = pos.getX(i);
+      const y = pos.getY(i) / ry;
+      const z = pos.getZ(i);
+      if (x * medialSign(key) > 0) x *= MEDIAL;
+      if (key === 'left' && x < 0 && z > 0 && y < 0.1) {
+        const notch = Math.max(0, 1 - Math.abs(y + 0.35) / 0.42) * Math.min(1, z / 0.35);
+        x += 0.42 * notch;
+      }
+      pos.setX(i, x);
+    }
+    geo.computeVertexNormals();
     lungGeos.push(geo);
+    // Fissures between lobes: oblique on both lungs, horizontal on the right only.
+    const oblique = [];
+    for (let i = 0; i <= 14; i++) oblique.push(lungSurfacePoint(key, lung, 0.5 - 1.2 * (i / 14), Math.PI * 0.96 * (1 - i / 14)));
+    breathing.add(pick(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(oblique), 48, 0.09, 6, false), fissureMat), 'lungs', 'Oblique fissure (between lobes)'));
+    if (key === 'right') {
+      const horiz = [];
+      for (let i = 0; i <= 8; i++) horiz.push(lungSurfacePoint(key, lung, 0.12, (Math.PI / 2) * 1.05 * (1 - i / 8)));
+      breathing.add(pick(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(horiz), 32, 0.09, 6, false), fissureMat), 'lungs', 'Horizontal fissure (the right lung’s third lobe)'));
+    }
     const mesh = new THREE.Mesh(geo, lungMat);
     mesh.position.copy(lung.c);
     mesh.scale.set(rx, 1, rz);
     breathing.add(pick(mesh, 'lungs', key === 'right' ? 'Right lung (three lobes)' : 'Left lung (two lobes)'));
   }
+
+  // Blood at the roots of the lungs: pulmonary arteries bring oxygen-poor blood
+  // from the heart (blue by convention), pulmonary veins return it oxygen-rich (red).
+  const pa = M(0x5c6bd6, { roughness: 0.4, tissue: 'vein' });
+  const pv = M(0xd9434f, { roughness: 0.4, tissue: 'vessel' });
+  breathing.add(pick(tubeThrough([[1.8, -2.5, 2.6], [1.6, 1.2, 2.0], [0.6, 2.4, 1.4]], 1.05, pa, 24, 12), 'lungs', 'Pulmonary trunk (from the heart)'));
+  breathing.add(pick(tubeThrough([[0.6, 2.4, 1.4], [-1.6, 1.8, 1.3], [-3.4, 0.6, 0.9], [-4.8, -0.4, 0.6]], 0.62, pa, 24, 10), 'lungs', 'Right pulmonary artery'));
+  breathing.add(pick(tubeThrough([[0.6, 2.4, 1.4], [2.4, 2.6, 0.9], [3.8, 1.4, 0.5], [4.8, 0.4, 0.2]], 0.6, pa, 24, 10), 'lungs', 'Left pulmonary artery'));
+  for (const [x0, y0, x1, y1] of [[-4.6, -2.2, -1.4, -4.6], [-4.4, -4.4, -1.2, -5.6], [4.4, -1.8, 1.8, -4.4], [4.2, -3.8, 1.9, -5.4]]) {
+    breathing.add(pick(tubeThrough([[x0, y0, -0.6], [(x0 + x1) / 2, (y0 + y1) / 2 + 0.3, -1.2], [x1, y1, -1.8]], 0.45, pv, 16, 8), 'lungs', 'Pulmonary vein (oxygen-rich blood back to the heart)'));
+  }
+  const heart = ellipsoid([1.6, -6.0, 1.4], [4.6, 5.4, 4.0], M(0xb83a4e, { roughness: 0.5, transparent: true, opacity: 0.22, depthWrite: false, tissue: 'myocardium' }), 32);
+  heart.rotation.z = -0.55;
+  heart.userData.pickPriority = -1;
+  breathing.add(pick(heart, 'heart', 'Heart (outline; it sits between the lungs)'));
 
   // Diaphragm: a dome of muscle under the lungs.
   const dome = new THREE.Mesh(new THREE.SphereGeometry(13, 48, 16, 0, Math.PI * 2, 0, 0.9), M(0xc4566a, { roughness: 0.55, side: THREE.DoubleSide, tissue: 'muscle', repeat: [4, 1] }));

@@ -35,7 +35,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
 | 1 | Whole body | 2.1 m | Muscular system on |
-| 3 | Biceps | 42 cm | Cross-section of bundles within bundles |
+| 3 | Biceps | 46 cm | Cross-section of bundles within bundles, on an upper arm tilted corner to corner: humerus in the shoulder socket, coracoid process, radius and ulna, brachialis and triceps, with the long head tendon running over the humeral head. Bone and muscle shapes are simplified |
 | 4 | Fascicle | 2.2 mm | Fibers and capillaries |
 | 5 | Muscle fiber | 190 µm | Side trip into the shared nucleus and DNA |
 | 6 | Sarcomere | 2.4 µm | Sliding-filament control; frog filament lengths |
@@ -45,7 +45,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
 | 1 | Whole body | 2.1 m | Immune system on |
-| 3 | Lymph node | 2.6 cm | Cortex, paracortex, medulla |
+| 3 | Lymph node | 2.6 cm | Bean-shaped, dented at the hilum; cortex, paracortex, medulla, trabeculae, high endothelial venules, fat at the hilum. Lymphocytes drawn about 10 times too big and far fewer than real |
 | 4 | Follicle | 300 µm | Germinal center |
 | 5 | Plasma cell | 24 µm | Side trip into the shared nucleus and DNA |
 | 6 | Antibody (shared) | 34 nm | Stops here. IgG domains as ellipsoids |
@@ -64,7 +64,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
 | 1 | Whole body | 2.1 m | Respiratory system on |
-| 3 | Lungs | 37 cm | Seven of about 23 airway generations shown; breathing control |
+| 3 | Lungs | 37 cm | Seven of about 23 airway generations shown; breathing control. Lungs flatter toward the heart, with lobe fissures and the cardiac notch; pulmonary arteries and veins at the roots; the heart as a faint outline |
 | 4 | Alveoli | 1.15 mm | Alveoli translucent; capillary net simplified to arcs |
 | 5 | Gas exchange | 22 µm | Air–blood barrier in section; capillary transit control (first-order loading, Hill saturation) |
 | 6 | Hemoglobin (shared) | 11 nm | The same scene the circulatory dive reaches |

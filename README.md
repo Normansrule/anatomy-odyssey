@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.9.3-f08baf)
-![Tests](https://img.shields.io/badge/tests-297%20passing-4fb38a)
+![Version](https://img.shields.io/badge/version-0.9.4-f08baf)
+![Tests](https://img.shields.io/badge/tests-298%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -134,7 +134,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 297 unit tests
+npm test               # 298 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -148,7 +148,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.9.3 && git push origin v0.9.3`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
+Pushing a version tag (`git tag v0.9.4 && git push origin v0.9.4`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
 
 **Headless checks** (software rendering, no GPU needed):
 

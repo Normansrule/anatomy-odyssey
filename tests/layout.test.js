@@ -57,3 +57,14 @@ describe('skeleton detail', async () => {
     built.dispose();
   });
 });
+
+describe('lymph node shape', async () => {
+  const { beanPoint } = await import('../src/scenes/lymphNode.js');
+  it('is bean-shaped: dented at the hilum (bottom middle), round elsewhere, about 15 mm long', () => {
+    const top = beanPoint(Math.PI / 2)[1];
+    const bottom = beanPoint(-Math.PI / 2)[1];
+    expect(top).toBeCloseTo(4.0, 5);
+    expect(-bottom).toBeLessThan(0.7 * top); // the dent
+    expect(beanPoint(0)[0] - beanPoint(Math.PI)[0]).toBeCloseTo(15, 5);
+  });
+});

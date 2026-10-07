@@ -1,6 +1,6 @@
 {
   "name": "anatomy-odyssey",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "A guided journey through the human body, from whole body to molecule.",
   "scripts": {
     "dev": "vite",
