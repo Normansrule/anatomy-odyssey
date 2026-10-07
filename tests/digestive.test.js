@@ -51,10 +51,9 @@ describe('the reflex reaches the molecule', () => {
     expect(endPlateHeight(23)).toBeLessThan(-40); // a fold mouth, where release sites face
     expect(endPlateHeight(0)).toBeCloseTo(0, 5); // a crest, where receptors sit
   });
-  it('both new paths end at tier 7 (a molecule)', () => {
-    for (const id of ['digestive', 'reflex']) {
-      const steps = DIVES.find((d) => d.id === id).steps;
-      expect(steps[steps.length - 1].tier, id).toBe(7);
+  it('every dive and every module ends at tier 7, a molecule', () => {
+    for (const d of DIVES.filter((x) => x.status === 'built')) {
+      expect(d.steps.at(-1).tier, d.id).toBe(7);
     }
   });
 });

@@ -152,6 +152,15 @@ export const LIBRARY = [
     step: { id: 'acetylcholine', tier: 7, scene: 'acetylcholine', title: 'Acetylcholine', card: 'acetylcholine', frameMeters: 1.5e-9 },
   },
   {
+    id: 'histamine',
+    title: 'Histamine',
+    status: 'built',
+    scene: 'histamine',
+    card: 'histamine',
+    madeOf: [],
+    step: { id: 'histamine', tier: 7, scene: 'histamine', title: 'Histamine', card: 'histamine', frameMeters: 1.3e-9 },
+  },
+  {
     id: 'phospholipids',
     title: 'Phospholipids',
     status: 'built',

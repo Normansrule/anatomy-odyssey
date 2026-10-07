@@ -51,7 +51,7 @@ describe('the receptor–peptide contact', () => {
   it('the module validates: tiers rise, frames shrink, and it ends with a side trip into the amino acids', () => {
     const dive = getDive('t-cells');
     expect(validateDive(dive, { sceneIds: SCENE_IDS, cardIds: CARDS.map((c) => c.id) })).toEqual([]);
-    expect(dive.steps.at(-1).branch.via).toEqual(['amino-acids']);
+    expect(dive.steps.at(-1).shared).toBe('amino-acids'); // ends at the molecule level
   });
 });
 

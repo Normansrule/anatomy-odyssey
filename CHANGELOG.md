@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.11.0
+
+- **Every path now ends at a molecule.** All seven dives and all six modules finish at tier 7, and a test keeps it that way.
+- **Inflammatory response, deeper.** After the wound, the module zooms into a mast cell beside a small vein: hundreds of histamine granules, IgE antibodies in its surface, and a four-stage control (resting, triggered by damage or by an allergen linking two IgE, granules released, the vein widening and leaking). Then histamine itself, generated with RDKit as it is at body pH (C₅H₁₀N₃⁺).
+- **Immune response and memory** continues from the second infection to the antibody and on to its amino acids.
+- **Immune dive and T cells module:** the amino acids, until now a side trip, are the final main step.
+- 2 new cards (mast cell granules, IgE); the mast cell and histamine cards move to their new steps and say more.
+- 320 tests (from 316).
+
 ## 0.10.0
 
 - **Digestive dive, down to the molecule.** A seventh dive follows a meal into you: the whole body with the digestive organs → 7 cm of small intestine cut open (circular folds, a velvet of villi, the four wall layers stepping back at the cut, the mesentery with its arching vessels and fat) → villi on a block of the lining, one cut open to show its lacteal and capillary net, with crypts and goblet cells → five absorbing cells with their brush border, tight junctions, nucleus and mitochondria → glucose. A five-stage control on the absorbing cell follows one glucose molecule: brush border, in with two sodium ions through SGLT1, across the cell, out through GLUT2 to the capillary, and the sodium–potassium pump that keeps it all going. Four quiz questions.

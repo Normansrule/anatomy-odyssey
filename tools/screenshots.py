@@ -23,7 +23,7 @@ STEPS = [
     ("muscular", "muscle", ""), ("muscular", "fascicle", ""), ("muscular", "muscle-fiber", ""),
     ("muscular", "sarcomere", ""), ("muscular", "actin-myosin", ""), ("muscular", "nucleus", "&trip=1"),
     ("immune", "lymph-node", ""), ("immune", "follicle", ""), ("immune", "plasma-cell", ""),
-    ("immune", "antibody", ""), ("inflammation", "inflammation", ""),
+    ("immune", "antibody", ""), ("inflammation", "inflammation", ""), ("inflammation", "mast-cell", ""), ("inflammation", "histamine", ""),
     ("nervous", "body", ""), ("nervous", "brain", ""), ("nervous", "cortex", ""), ("nervous", "neuron", ""), ("nervous", "synapse", ""),
     ("nervous", "neurotransmitter", ""), ("nervous", "lipid-bilayer", "&trip=1"),
     ("respiratory", "body", ""), ("respiratory", "lungs", ""), ("respiratory", "alveoli", ""),

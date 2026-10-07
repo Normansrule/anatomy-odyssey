@@ -48,7 +48,8 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 3 | Lymph node | 2.6 cm | Bean-shaped, dented at the hilum; cortex, paracortex, medulla, trabeculae, high endothelial venules, fat at the hilum. Lymphocytes drawn about 10 times too big and far fewer than real |
 | 4 | Follicle | 300 µm | Germinal center |
 | 5 | Plasma cell | 24 µm | Side trip into the shared nucleus and DNA |
-| 6 | Antibody (shared) | 34 nm | Stops here. IgG domains as ellipsoids |
+| 6 | Antibody (shared) | 34 nm | IgG domains as ellipsoids |
+| 7 | Amino acids (shared, main step since v0.11.0) | 1.4 nm | Stops here. The same RDKit-generated scene the gene-to-protein module reaches |
 
 ### Nervous dive (new in v0.3.0)
 | Tier | Step | Frame | Notes |
@@ -87,7 +88,11 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 7 | Amino acids (shared) | 1.4 nm | Stops here. All 20, generated with RDKit, charged as at body pH |
 
 ### Inflammatory response (module)
-A single animated scene of a splinter wound at about 100 µm scale: injury, alarm, leaky vessel, neutrophils arriving, resolution.
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 4 | Inflammation | 105 µm | A splinter wound, animated: injury, alarm, leaky vessel, neutrophils arriving, resolution |
+| 5 | Mast cell (new in v0.11.0) | 32 µm | Mast cell 14 µm, cut open, about 240 granules; venule 16 µm with red blood cells to scale; IgE and histamine drawn far larger and fewer; four-stage control |
+| 7 | Histamine (shared, new in v0.11.0) | 1.3 nm | Stops here. RDKit-generated, charged as at body pH (C₅H₁₀N₃⁺), N-tau tautomer |
 
 ### Chemistry of life (module, new in v0.5.0)
 | Tier | Step | Frame | Notes |
@@ -101,13 +106,16 @@ A single animated scene of a splinter wound at about 100 µm scale: injury, alar
 |---|---|---|---|
 | 5 | Immune cells to scale | 55 µm | Thirteen cells and particles at mid-range textbook diameters (OpenStax; macrophage from Krombach et al., 1997). Nuclei and granules simplified; granules larger and fewer than life. The virus is to scale, so a marker ring shows where it is |
 | 5 | First and second exposure | 50 µm | A chart of an illustrative model (not fitted to data) over 140 days on log scales, above a tissue strip whose contents follow the model. Cells and bacteria to scale; antibodies drawn as dots about 40× too big |
+| 6 | Antibody (shared, new in v0.11.0) | 34 nm | The immune dive's scene |
+| 7 | Amino acids (shared, new in v0.11.0) | 1.4 nm | Stops here |
 
 ### T cells: presenting and killing (module, new in v0.6.0)
 | Tier | Step | Frame | Notes |
 |---|---|---|---|
 | 5 | Antigen presentation | 36 µm | Dendritic cell and T cells to scale; MHC class II knobs more than 100× too big; the clone stops at 16 cells (four divisions) |
 | 5 | A killer T cell at work | 28 µm | Infected cell 15 µm, killer T cell 8 µm; virus particles about 4× too big; perforin pores and MHC knobs enlarged; minutes compressed into seconds |
-| 6 | Receptor meets peptide | 24 nm | Domains as smooth shapes at roughly real size, not atomic coordinates; membranes 15 nm apart; diagonal docking as in Garboczi et al., 1996; 9-amino-acid peptide. Side trip into the shared amino acids |
+| 6 | Receptor meets peptide | 24 nm | Domains as smooth shapes at roughly real size, not atomic coordinates; membranes 15 nm apart; diagonal docking as in Garboczi et al., 1996; 9-amino-acid peptide |
+| 7 | Amino acids (shared, main step since v0.11.0) | 1.4 nm | Stops here |
 
 ### Reflex arc: the knee jerk (module, new in v0.9.0)
 | Tier | Step | Frame | Notes |

@@ -38,7 +38,8 @@ import { buildSmallIntestine } from './smallIntestine.js';
 import { buildVilli } from './villi.js';
 import { buildEnterocyte } from './enterocyte.js';
 import { buildNeuromuscularJunction } from './neuromuscularJunction.js';
-import { buildGlucose, buildAcetylcholine } from '../library/smallMolecules.js';
+import { buildGlucose, buildAcetylcholine, buildHistamine } from '../library/smallMolecules.js';
+import { buildMastCell } from './mastCell.js';
 import { buildNucleus } from '../library/nucleus.js';
 import { buildDna } from '../library/dna.js';
 import { buildHemoglobin } from '../library/hemoglobin.js';
@@ -96,6 +97,8 @@ export const SCENES = {
   'neuromuscular-junction': buildNeuromuscularJunction,
   glucose: buildGlucose,
   acetylcholine: buildAcetylcholine,
+  histamine: buildHistamine,
+  'mast-cell': buildMastCell,
   nucleus: buildNucleus,
   dna: buildDna,
   hemoglobin: buildHemoglobin,

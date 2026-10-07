@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.10.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-316%20passing-4fb38a)
+![Version](https://img.shields.io/badge/version-0.11.0-f08baf)
+![Tests](https://img.shields.io/badge/tests-320%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -45,7 +45,7 @@ No accounts, no tracking. Two ways to use it:
 | 🦴 **Skeletal** | body → skeleton → femur → bone tissue → bone cell → nucleus | DNA |
 | ❤️ **Circulatory** | body → heart → blood → red blood cell → hemoglobin | the iron atom in heme |
 | 💪 **Muscular** | body → biceps → fascicle → muscle fiber → sarcomere | actin and myosin |
-| 🛡️ **Immune** | body → lymph node → follicle → plasma cell | an antibody |
+| 🛡️ **Immune** | body → lymph node → follicle → plasma cell → antibody | amino acids |
 | 🧠 **Nervous** | body → brain → cortex → neuron → synapse | glutamate |
 | 🫁 **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ |
 | 🍽️ **Digestive** | body → small intestine → villi → absorbing cell | glucose |
@@ -54,11 +54,11 @@ No accounts, no tracking. Two ways to use it:
 
 | Module | What happens |
 |---|---|
-| **Inflammatory response** | A splinter wound, from the first alarm to healing |
+| **Inflammatory response** | A splinter wound from the first alarm to healing, the mast cell that sounds it, and histamine |
 | **From gene to protein** | The β-globin gene is transcribed, exported and translated into protein |
 | **Chemistry of life** | Your body sorted by element, an enzyme ten million times faster than chemistry alone, and the blood's pH buffer |
-| **Immune response and memory** | Immune cells side by side at true size, then a first and a second infection |
-| **T cells** | Antigen presentation, a killer T cell at work, and a receptor reading one peptide |
+| **Immune response and memory** | Immune cells side by side at true size, a first and a second infection, then the antibody and its amino acids |
+| **T cells** | Antigen presentation, a killer T cell at work, a receptor reading one peptide, and its amino acids |
 | **Reflex arc** | The knee jerk in about 18 ms, the wiring inside a slice of the spinal cord, the nerve–muscle junction, and acetylcholine |
 
 Side trips branch into a **shared library** of building blocks (nucleus, nucleosome, DNA, RNA, nucleotides, amino acids, ATP, membranes and more). Each is built once and reused by every dive that reaches it, and each card links up to what it is part of and down to what it is made of.
@@ -140,7 +140,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 316 unit tests
+npm test               # 320 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -154,7 +154,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.10.0 && git push origin v0.10.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
+Pushing a version tag (`git tag v0.11.0 && git push origin v0.11.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
 
 **Headless checks** (software rendering, no GPU needed):
 
@@ -217,7 +217,7 @@ docs/          state of the model, equations, security model, publishing
 
 ## Roadmap
 
-- [x] Seven dives, six modules and a complete shared library; every dive and the reflex arc end at a molecule
+- [x] Seven dives, six modules and a complete shared library; every dive and every module ends at a molecule
 - [x] Desktop app, device check, accessibility audit
 - [x] Realistic tissue surfaces with natural and stain looks
 - [x] The spinal cord, through the knee-jerk reflex

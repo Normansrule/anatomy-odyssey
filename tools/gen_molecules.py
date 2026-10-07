@@ -83,6 +83,9 @@ OTHERS = [
     ("glucose", "Glucose (β-D-glucopyranose)", "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O", "C6H12O6", 0),
     # Acetylcholine, the neurotransmitter at the nerve-muscle junction (a quaternary ammonium, always +1).
     ("acetylcholine", "Acetylcholine", "CC(=O)OCC[N+](C)(C)C", "C7H16NO2", 1),
+    # Histamine at body pH: the side-chain amine is protonated (+1); the imidazole ring is neutral,
+    # with its hydrogen on the nitrogen far from the side chain (the N-tau tautomer, the common one).
+    ("histamine", "Histamine", "[NH3+]CCc1c[nH]cn1", "C5H10N3", 1),
     ("popc", "POPC (a phosphatidylcholine)", "CCCCCCCCCCCCCCCC(=O)OC[C@H](COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC/C=C\\CCCCCCCC", "C42H82NO8P", 0),
 ]
 

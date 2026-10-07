@@ -89,7 +89,8 @@ export const DIVES = [
       { id: 'lymph-node', tier: 3, scene: 'lymph-node', title: 'Lymph node', card: 'lymph-node', frameMeters: 0.026, focusCard: 'lymph-follicle', narration: 'A lymph node is a filter about the size of a bean. Fluid flows in, past crowds of immune cells, and out again.' },
       { id: 'follicle', tier: 4, scene: 'follicle', title: 'Follicle', card: 'lymph-follicle', frameMeters: 3e-4, focusCard: 'plasma-cell', narration: 'In the outer layer, B cells gather in follicles. In the pale center they compete to make better and better antibodies.' },
       { id: 'plasma-cell', tier: 5, scene: 'plasma-cell', title: 'Plasma cell', card: 'plasma-cell', frameMeters: 2.4e-5, focusCard: 'antibody', branch: { label: 'Side trip into its nucleus', card: 'plasma-nucleus', via: ['nucleus', 'dna'] }, narration: 'A winning B cell becomes a plasma cell: an antibody factory, full of protein-building membranes.' },
-      libStep('antibody', { branch: { label: 'Side trip into its amino acids', card: 'antibody', via: ['amino-acids'] }, narration: 'The product: a Y-shaped antibody. The tips of the Y grip one specific target; the stem signals other immune cells.' }),
+      libStep('antibody', { focusCard: 'antigen-binding-site', narration: 'The product: a Y-shaped antibody. The tips of the Y grip one specific target; the stem signals other immune cells.' }),
+      libStep('amino-acids', { narration: 'An antibody is a chain of about 1,300 amino acids folded into shape. Its grip comes from the side chains at its tips: these twenty building blocks.' }),
     ],
   },
   {
@@ -100,7 +101,9 @@ export const DIVES = [
     status: 'built',
     summary: 'An animated splinter wound, from the first alarm to healing.',
     steps: [
-      { id: 'inflammation', tier: 4, scene: 'inflammation', title: 'Inflammation', card: 'inflammation', frameMeters: 1.05e-4, narration: 'Step through a splinter wound: the alarm, the leaky vessel, the arrival of neutrophils, and the cleanup. Use the stage control.' },
+      { id: 'inflammation', tier: 4, scene: 'inflammation', title: 'Inflammation', card: 'inflammation', frameMeters: 1.05e-4, focusCard: 'mast-cell', narration: 'Step through a splinter wound: the alarm, the leaky vessel, the arrival of neutrophils, and the cleanup. Use the stage control.' },
+      { id: 'mast-cell', tier: 5, scene: 'mast-cell', title: 'Mast cell', card: 'mast-cell', frameMeters: 3.2e-5, focusCard: 'histamine', narration: 'Much of that first alarm comes from one cell type. A mast cell sits beside a small vein, loaded with granules. Step through what happens when it is triggered.' },
+      libStep('histamine', { narration: 'The alarm itself: histamine, eighteen atoms. It is why a bite or a sting turns red, hot and swollen, and why allergy tablets are called antihistamines.' }),
     ],
   },
   {
@@ -112,7 +115,9 @@ export const DIVES = [
     summary: 'Meet the immune cells at their true sizes, then watch a first and a second infection with the same germ.',
     steps: [
       { id: 'immune-cells', tier: 5, scene: 'immune-cells', title: 'Immune cells to scale', card: 'immune-cell-lineup', frameMeters: 5.5e-5, focusCard: 'lymphocyte', narration: 'The immune system’s cells side by side, at their true sizes, with a red blood cell, a bacterium and a virus for scale. Step through them with the control.' },
-      { id: 'immune-memory', tier: 5, scene: 'immune-memory', title: 'First and second exposure', card: 'immune-memory', frameMeters: 5e-5, narration: 'Day 0: a germ you have never met. Watch how long the specific response takes, and then what happens when the same germ returns on day 90.' },
+      { id: 'immune-memory', tier: 5, scene: 'immune-memory', title: 'First and second exposure', card: 'immune-memory', frameMeters: 5e-5, focusCard: 'antibody', narration: 'Day 0: a germ you have never met. Watch how long the specific response takes, and then what happens when the same germ returns on day 90.' },
+      libStep('antibody', { focusCard: 'antigen-binding-site', narration: 'What memory buys you: antibodies, sooner and in far greater numbers. Each one is this Y-shaped protein, the same shared scene the immune dive reaches.' }),
+      libStep('amino-acids', { narration: 'And an antibody is a folded chain of amino acids. Second-response antibodies grip better because a few of the amino acids at their tips have changed.' }),
     ],
   },
   {
@@ -125,7 +130,8 @@ export const DIVES = [
     steps: [
       { id: 'antigen-presentation', tier: 5, scene: 'antigen-presentation', title: 'Antigen presentation', card: 'antigen-presentation', frameMeters: 3.6e-5, focusCard: 'helper-t-cell', narration: 'In a lymph node, a dendritic cell shows pieces of a germ. Thousands of T cells check them; the rare one that fits switches on and multiplies.' },
       { id: 'killer-t-cell', tier: 5, scene: 'killer-t-cell', title: 'A killer T cell at work', card: 'killer-t-cell', frameMeters: 2.8e-5, focusCard: 'immunological-synapse', narration: 'A killer T cell finds a virus-infected cell by the viral peptides on its surface, grips it, and makes it destroy itself.' },
-      { id: 'tcr-mhc', tier: 6, scene: 'tcr-mhc', title: 'Receptor meets peptide', card: 'tcr-mhc', frameMeters: 2.4e-8, branch: { label: 'Side trip into the peptide’s amino acids', card: 'mhc-peptide', via: ['amino-acids'] }, narration: 'Zoom into the contact: a T-cell receptor reads a nine-amino-acid peptide held in the groove of an MHC molecule, across a 15 nanometer gap.' },
+      { id: 'tcr-mhc', tier: 6, scene: 'tcr-mhc', title: 'Receptor meets peptide', card: 'tcr-mhc', frameMeters: 2.4e-8, focusCard: 'mhc-peptide', narration: 'Zoom into the contact: a T-cell receptor reads a nine-amino-acid peptide held in the groove of an MHC molecule, across a 15 nanometer gap.' },
+      libStep('amino-acids', { narration: 'The peptide is nine of these twenty building blocks in a row. Change one, and the receptor may no longer recognize it.' }),
     ],
   },
   {
