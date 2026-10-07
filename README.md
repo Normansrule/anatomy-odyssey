@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.11.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-320%20passing-4fb38a)
+![Version](https://img.shields.io/badge/version-0.12.0-f08baf)
+![Tests](https://img.shields.io/badge/tests-334%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -24,7 +24,7 @@
 
 ## In one minute
 
-- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous, respiratory or digestive) and fall through the body one scale at a time: organ → tissue → cell → molecule.
+- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous, respiratory, digestive or urinary) and fall through the body one scale at a time: organ → tissue → cell → molecule.
 - **Point at anything** to light it up and see its name; **click** to open a card: what it is, why it matters, its real size, and a source you can check.
 - **Watch the depth gauge**: it shows how big the view is, from about 2 m down to a fraction of a nanometer, so sizes stay honest.
 - **Play with the science**: sliders run real, tested equations (oxygen binding, nerve speed, blood pH, enzyme speed-up and more).
@@ -38,7 +38,7 @@ No accounts, no tracking. Two ways to use it:
 
 ## What you can explore
 
-### Seven dives
+### Eight dives
 
 | Dive | The path down | Ends at |
 |---|---|---|
@@ -49,6 +49,7 @@ No accounts, no tracking. Two ways to use it:
 | 🧠 **Nervous** | body → brain → cortex → neuron → synapse | glutamate |
 | 🫁 **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ |
 | 🍽️ **Digestive** | body → small intestine → villi → absorbing cell | glucose |
+| 💧 **Urinary** | body → kidney → nephron → the filtration barrier | urea |
 
 ### Six modules
 
@@ -91,6 +92,11 @@ Side trips branch into a **shared library** of building blocks (nucleus, nucleos
 <td><img src="docs/screenshots/small-intestine.webp" alt="Seven centimeters of small intestine cut open: circular folds covered in villi, the wall layers and the mesentery" /></td>
 <td><img src="docs/screenshots/villi.webp" alt="Villi on the intestinal lining, one cut open to show its lacteal and capillaries" /></td>
 <td><img src="docs/screenshots/enterocyte.webp" alt="Absorbing cells with their brush border; the middle one see-through, with glucose on its way from the gut to the blood" /></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/kidney.webp" alt="A kidney cut in half: pale cortex, striped pyramids, calyces gathering into the renal pelvis and ureter, arteries arching between them, the adrenal gland on top" /></td>
+<td><img src="docs/screenshots/nephron.webp" alt="One nephron: the glomerulus in its capsule, the winding proximal tubule, the loop of Henle dipping into the medulla, and the collecting duct, with filtrate dots thinning out as it is reclaimed" /></td>
+<td><img src="docs/screenshots/filtration-barrier.webp" alt="The kidney's filter in section: a capillary lining full of pores, the basement membrane, and interlocking podocyte feet, with small molecules passing and albumin held back" /></td>
 </tr>
 <tr>
 <td><img src="docs/screenshots/hemoglobin.webp" alt="Hemoglobin's four chains with the oxygen pressure slider" /></td>
@@ -140,7 +146,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 320 unit tests
+npm test               # 334 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -154,7 +160,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.11.0 && git push origin v0.11.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
+Pushing a version tag (`git tag v0.12.0 && git push origin v0.12.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
 
 **Headless checks** (software rendering, no GPU needed):
 
@@ -217,7 +223,7 @@ docs/          state of the model, equations, security model, publishing
 
 ## Roadmap
 
-- [x] Seven dives, six modules and a complete shared library; every dive and every module ends at a molecule
+- [x] Eight dives, six modules and a complete shared library; every dive and every module ends at a molecule
 - [x] Desktop app, device check, accessibility audit
 - [x] Realistic tissue surfaces with natural and stain looks
 - [x] The spinal cord, through the knee-jerk reflex

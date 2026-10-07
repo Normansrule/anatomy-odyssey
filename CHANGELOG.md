@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.0
+
+- **Urinary dive, down to the molecule.** An eighth dive follows blood through the kidney: the whole body with a new Urinary button (kidneys, the right a little lower, adrenal glands, renal vessels, ureters, bladder and urethra) → a kidney cut in half, 12 × 6 × 4 cm, with its pale cortex, eight striped pyramids, calyces cupping each papilla, the renal pelvis and ureter, and arteries arching along the pyramid bases → one nephron, see-through, from the glomerulus in Bowman's capsule through the proximal tubule, the loop of Henle dipping into the medulla, the distal tubule touching its own corpuscle (the juxtaglomerular apparatus), to a collecting duct shared with other nephrons, wrapped in capillaries and vasa recta → the filtration barrier in section, its pored capillary lining, basement membrane and interlocking podocyte feet with 40 nm slits → urea.
+- **Two stage controls.** On the nephron, follow the filtrate: about 180 liters filtered a day, two thirds reclaimed in the proximal tubule, salt pumped out in the loop, hormone fine tuning, and ADH deciding the last of the water, leaving 1 to 2 liters of urine. On the filter, watch water, glucose and urea pass while albumin is held back.
+- **A new shared molecule**, urea (CH₄N₂O), generated with RDKit like the others; every other molecule's geometry is unchanged.
+- 23 new cards, 5 references (OpenStax chapter 25 and sections 25.3 to 25.6) and four quiz questions.
+- 334 tests (from 320).
+
 ## 0.11.0
 
 - **Every path now ends at a molecule.** All seven dives and all six modules finish at tier 7, and a test keeps it that way.

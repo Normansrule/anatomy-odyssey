@@ -284,4 +284,24 @@ export const REFERENCES = {
     text: 'Wikipedia. "Spinal cord" (length, diameter, segments, enlargements, gray and white matter).',
     url: 'https://en.wikipedia.org/wiki/Spinal_cord',
   },
+  'openstax-urinary': {
+    text: 'OpenStax Anatomy and Physiology 2e, chapter 25: The Urinary System.',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-introduction',
+  },
+  'openstax-kidney-gross': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 25.3: Gross Anatomy of the Kidney (size, cortex, pyramids, calyces, pelvis, adrenal gland).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-3-gross-anatomy-of-the-kidney',
+  },
+  'openstax-kidney-micro': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 25.4: Microscopic Anatomy of the Kidney (renal corpuscle, filtration barrier, tubules, juxtaglomerular apparatus).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-4-microscopic-anatomy-of-the-kidney',
+  },
+  'openstax-urine-formation': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 25.5: Physiology of Urine Formation (filtration rate, 99 percent reabsorbed, 1–2 liters of urine a day).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-5-physiology-of-urine-formation',
+  },
+  'openstax-reabsorption': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 25.6: Tubular Reabsorption (proximal tubule, loop of Henle, aldosterone, ADH, urea recycling).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-6-tubular-reabsorption',
+  },
 };

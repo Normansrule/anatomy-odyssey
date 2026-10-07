@@ -40,6 +40,8 @@ STATES = [
     ("reflex: knee jerk", "?dive=reflex&step=reflex-arc", None, DESKTOP),
     ("reflex: spinal cord", "?dive=reflex&step=spinal-cord", None, DESKTOP),
     ("digestive: absorbing cell", "?dive=digestive&step=enterocyte", None, DESKTOP),
+    ("urinary: nephron", "?dive=urinary&step=nephron", None, DESKTOP),
+    ("urinary: the filter", "?dive=urinary&step=filtration-barrier", None, DESKTOP),
     ("reflex: nerve meets muscle", "?dive=reflex&step=neuromuscular-junction", None, DESKTOP),
     ("About dialog", "?dive=skeletal&step=femur", "#about-button", DESKTOP),
     ("Map dialog", "?dive=skeletal&step=femur", "#atlas-button", DESKTOP),

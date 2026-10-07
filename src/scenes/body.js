@@ -16,6 +16,7 @@ export const SYSTEMS = [
   { id: 'respiratory', label: 'Respiratory', card: 'respiratory-system' },
   { id: 'immune', label: 'Immune', card: 'immune-system' },
   { id: 'digestive', label: 'Digestive', card: 'digestive-system' },
+  { id: 'urinary', label: 'Urinary', card: 'urinary-system' },
 ];
 
 export const DEFAULT_SYSTEMS = ['skin', 'skeletal', 'circulatory', 'nervous', 'respiratory', 'immune'];
@@ -650,6 +651,54 @@ function buildDigestive(M) {
   return g;
 }
 
+/** Kidney centers (meters): beside the spine at about T12 to L3, the right one a little lower (the liver is above it). */
+export const KIDNEYS = { left: [0.066, 1.1, -0.045], right: [-0.066, 1.085, -0.045] };
+
+/** A bean: an ellipsoid dented on the side that faces `medial` (+1 or −1 in x). */
+export function beanGeometry(rx, ry, rz, medial, seg = 32) {
+  const geo = new THREE.SphereGeometry(1, seg, Math.round(seg * 0.75));
+  const p = geo.attributes.position;
+  for (let i = 0; i < p.count; i++) {
+    let x = p.getX(i);
+    const y = p.getY(i);
+    const z = p.getZ(i);
+    const toward = x * medial; // 1 at the medial edge
+    if (toward > 0) x -= medial * 0.38 * toward * Math.exp(-((y / 0.38) ** 2)); // the hilum dent
+    p.setXYZ(i, x * rx, y * ry, z * rz);
+  }
+  geo.computeVertexNormals();
+  return geo;
+}
+
+function buildUrinary(M) {
+  const g = new THREE.Group();
+  const kidneyMat = M(0x9c4a4a, { roughness: 0.4, tissue: 'organ', natural: 0x8e3f3a });
+  const adrenalMat = M(0xe0b25a, { roughness: 0.5, tissue: 'organ', natural: 0xd9a64e });
+  const tubeMat = M(0xf0d2a8, { roughness: 0.4, tissue: 'organ', natural: 0xe9c79a });
+  const art = M(COLORS.artery, { roughness: 0.4, tissue: 'vessel' });
+  const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein' });
+  const add = (mesh, card, label) => g.add(pick(mesh, card, label));
+  for (const [side, c] of Object.entries(KIDNEYS)) {
+    const s = side === 'left' ? 1 : -1;
+    const kidney = new THREE.Mesh(beanGeometry(0.03, 0.06, 0.02, -s), kidneyMat);
+    kidney.position.set(...c);
+    kidney.rotation.z = s * 0.18; // upper poles lean toward the spine
+    add(kidney, 'kidney', side === 'left' ? 'Left kidney' : 'Right kidney (a little lower)');
+    const adrenal = new THREE.Mesh(new THREE.ConeGeometry(0.016, 0.022, 3), adrenalMat);
+    adrenal.position.set(c[0] - s * 0.006, c[1] + 0.066, c[2]);
+    adrenal.scale.z = 0.5;
+    add(adrenal, 'adrenal-gland', 'Adrenal gland (sits on the kidney, makes adrenaline)');
+    const hilum = [c[0] - s * 0.024, c[1], c[2] + 0.004];
+    add(tubeThrough([[s * 0.006, c[1] + 0.004, -0.03], [s * 0.02, c[1] + 0.003, -0.035], hilum], 0.0034, art, 16, 8), 'kidney', 'Renal artery (a quarter of the heart’s output at rest)');
+    add(tubeThrough([[-0.012 + s * 0.004, c[1] - 0.004, -0.02], [s * 0.022 - 0.004, c[1] - 0.005, -0.03], [hilum[0], hilum[1] - 0.006, hilum[2] + 0.004]], 0.0038, vein, 16, 8), 'kidney', 'Renal vein');
+    add(tubeThrough([[hilum[0], hilum[1] - 0.012, hilum[2]], [s * 0.04, c[1] - 0.07, -0.035], [s * 0.045, 0.95, -0.02], [s * 0.03, 0.9, 0.025], [s * 0.016, 0.888, 0.045]], 0.0022, tubeMat, 40, 6), 'urinary-system', 'Ureter (carries urine to the bladder)');
+  }
+  const bladder = ellipsoid([0, 0.885, 0.05], [0.032, 0.026, 0.028], M(0xe6b8a0, { roughness: 0.4, tissue: 'organ', natural: 0xdcae96 }), 24);
+  add(bladder, 'urinary-system', 'Bladder');
+  add(tubeThrough([[0, 0.862, 0.056], [0, 0.845, 0.06], [0, 0.83, 0.064]], 0.003, tubeMat, 8, 6), 'urinary-system', 'Urethra');
+  return g;
+}
+
 function build({ mode = 'body', systems = DEFAULT_SYSTEMS } = {}) {
   const M = materialBank();
   const root = new THREE.Group();
@@ -663,6 +712,7 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS } = {}) {
     respiratory: buildRespiratory(M),
     immune: buildImmune(M),
     digestive: buildDigestive(M),
+    urinary: buildUrinary(M),
   };
   for (const [id, grp] of Object.entries(groups)) {
     grp.name = id;

@@ -221,6 +221,21 @@ export const DIVES = [
       libStep('glucose', { narration: 'The prize: glucose, six carbons, twelve hydrogens and six oxygens. It fuels almost every cell in your body.' }),
     ],
   },
+  {
+    id: 'urinary',
+    swatch: '#e8d27a', // menu and intro color
+    kind: 'dive',
+    title: 'Urinary dive',
+    status: 'built',
+    summary: 'Kidney → a nephron → the filter where blood becomes urine → urea, the waste it removes.',
+    steps: [
+      { ...BODY, focusCard: 'kidney', focus: [0.066, 1.1, -0.045], systems: ['urinary'], narration: 'Your kidneys filter all your blood plasma dozens of times a day. We will follow it into a kidney and down to the waste molecule it is there to remove.' },
+      { id: 'kidney', tier: 3, scene: 'kidney', title: 'Kidney', card: 'kidney', frameMeters: 0.14, focusCard: 'renal-cortex', narration: 'Cut in half, a kidney has a pale outer cortex, striped pyramids inside, and a funnel that gathers urine into the ureter. Arteries arch along the pyramid bases and climb into the cortex.' },
+      { id: 'nephron', tier: 4, scene: 'nephron', title: 'Nephron', card: 'nephron', frameMeters: 3e-3, focusCard: 'glomerulus', narration: 'In the cortex sit about a million of these: a filter, the glomerulus, and a long folded tube. Step through to follow the filtrate and watch the tube take most of it back.' },
+      { id: 'filtration-barrier', tier: 6, scene: 'filtration-barrier', title: 'The filter', card: 'filtration-barrier', frameMeters: 1.9e-6, focusCard: 'urea', narration: 'The wall between blood and filtrate has three layers: a lining full of pores, a protein mesh, and interlocking podocyte feet. Step through to see what gets through and what is held back.' },
+      libStep('urea', { narration: 'Urea: one carbon, one oxygen and two NH₂ groups. It is how your body gets rid of the nitrogen from the proteins you break down.' }),
+    ],
+  },
 ];
 
 export function builtDives() {

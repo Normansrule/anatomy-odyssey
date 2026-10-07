@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.8.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.12.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -13,7 +13,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 ### Skeletal dive
 | Tier | Step | Frame | Honest stopping point and simplifications |
 |---|---|---|---|
-| 1 | Whole body | 2.1 m | Stylized adult figure with eight toggleable systems (Digestive is off until you switch it on). Heart: a rounded cone with both atria, the coronary arteries and the pulmonary trunk. Lungs: tapered, flatter toward the heart, with lobe fissures and the left lung's cardiac notch, on a diaphragm dome. Digestive organs: esophagus, stomach, liver and gallbladder, pancreas, duodenum, small-intestine loops (far shorter than the real 3 m) and the large intestine with its pouches and appendix |
+| 1 | Whole body | 2.1 m | Stylized adult figure with nine toggleable systems (Digestive and Urinary are off until you switch them on). Heart: a rounded cone with both atria, the coronary arteries and the pulmonary trunk. Lungs: tapered, flatter toward the heart, with lobe fissures and the left lung's cardiac notch, on a diaphragm dome. Digestive organs: esophagus, stomach, liver and gallbladder, pancreas, duodenum, small-intestine loops (far shorter than the real 3 m) and the large intestine with its pouches and appendix. Urinary organs: bean-shaped kidneys (the right a little lower), adrenal glands, renal vessels, ureters, bladder and urethra |
 | 2 | Skeleton | 1.9 m | The whole skeleton, head to feet; the femur the dive enters glows. Built from simple shapes: 24 vertebrae on an S-curve with discs, 12 rib pairs with costal cartilage, breastbone, shoulder blades and collarbones, a pelvic bowl, and every bone of the hands (27) and feet (26), simplified in shape |
 | 3 | Femur | 55 cm | Lathed cutaway; 125° neck angle |
 | 4 | Bone tissue | 1.6 mm | Osteons 0.2 mm, central canals 50 µm |
@@ -79,6 +79,15 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 4 | Villi | 1.6 mm | Villi 0.52–0.76 mm tall on a block of wall; one cut open to show the lacteal and capillary net; crypts, goblet cells, muscularis mucosae, submucosa |
 | 5 | Absorbing cell | 42 µm | Five cells 8 × 26 µm with microvilli 1 µm long; tight junctions, nucleus, mitochondria; SGLT1, GLUT2 and the sodium–potassium pump drawn hundreds of times larger; glucose about 1,000 times too big; five-stage control |
 | 7 | Glucose (shared) | 1.3 nm | Stops here. RDKit-generated β-D-glucose (C₆H₁₂O₆), stereocenters checked |
+
+### Urinary dive (new in v0.12.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 1 | Whole body | 2.1 m | Urinary system on |
+| 3 | Kidney | 14 cm | Cut lengthwise, 12 × 6 × 4 cm (OpenStax: 11–14 × 6 × 4 cm); cortex, renal columns, eight pyramids with collecting-duct striations, minor and major calyces, pelvis and ureter; renal artery and vein, interlobar and arcuate arteries; adrenal gland on top. A real kidney has several to more than a dozen pyramids |
+| 4 | Nephron | 3 mm | One nephron, see-through: corpuscle 0.2 mm, proximal and distal tubules, loop of Henle (drawn shorter than long real loops), collecting duct shared with other nephrons, afferent and efferent arterioles, juxtaglomerular apparatus, capillaries and vasa recta. Five-stage filtrate control: 180 L a day filtered, two thirds reclaimed in the proximal tubule (OpenStax 25.6), 1–2 L of urine; the dots thin out schematically after the proximal tubule |
+| 6 | The filter | 1.9 µm | Fenestrated endothelium, a basement membrane of protein fibers, podocyte foot processes with 40 nm slits and slit diaphragms; layer thicknesses approximate. Water, glucose, urea and albumin drawn far larger than life, and far fewer; a red blood cell drawn at about half its real width. Four-stage control: pores, slits, albumin held back |
+| 7 | Urea (shared, new) | 1 nm | Stops here. RDKit-generated (CH₄N₂O) |
 
 ### From gene to protein (module, new in v0.4.0)
 | Tier | Step | Frame | Notes |

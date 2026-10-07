@@ -480,6 +480,7 @@ input {
 .system-chip--respiratory { --swatch: #e9a0b4; }
 .system-chip--immune { --swatch: #7cc49a; }
 .system-chip--digestive { --swatch: #e6a46e; }
+.system-chip--urinary { --swatch: #e8d27a; }
 
 /* ── Scale bar ───────────────────────────────────────────────────── */
 .scalebar {

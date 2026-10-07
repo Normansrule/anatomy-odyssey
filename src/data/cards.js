@@ -14,6 +14,7 @@ import { CORTEX_CARDS } from './cards-cortex.js';
 import { REFLEX_CARDS } from './cards-reflex.js';
 import { ORGAN_CARDS } from './cards-organs.js';
 import { DIGESTIVE_CARDS } from './cards-digestive.js';
+import { URINARY_CARDS } from './cards-urinary.js';
 
 const humanDiploidBp = 6.4e9;
 const dnaPerCell = formatLength(dnaLength(humanDiploidBp)).text; // ≈ 2.2 m
@@ -468,6 +469,7 @@ export const CARDS = [
   ...REFLEX_CARDS,
   ...ORGAN_CARDS,
   ...DIGESTIVE_CARDS,
+  ...URINARY_CARDS,
 ];
 
 // Short cards for planned library entries, so search and cross-links can explain them.

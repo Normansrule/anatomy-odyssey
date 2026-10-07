@@ -289,6 +289,32 @@ export const QUIZZES = {
       explain: 'Blood from the intestine drains into the hepatic portal vein, so the liver gets first pick of absorbed sugar.',
     },
   ],
+  urinary: [
+    {
+      q: 'About how much fluid do the kidneys filter out of the blood each day?',
+      choices: ['About 2 liters', 'About 20 liters', 'About 180 liters', 'About 1,000 liters'],
+      answer: 2,
+      explain: 'About 180 liters a day in men and 150 in women. About 99 percent is taken back, leaving 1 to 2 liters of urine.',
+    },
+    {
+      q: 'Which part of the nephron reclaims the most water, salt, glucose and amino acids?',
+      choices: ['The proximal convoluted tubule', 'The collecting duct', 'Bowman’s capsule', 'The renal pelvis'],
+      answer: 0,
+      explain: 'The proximal tubule takes back about two thirds of the water, sodium and potassium, and almost all the glucose and amino acids.',
+    },
+    {
+      q: 'Why does albumin normally stay in the blood?',
+      choices: ['It is too heavy to move', 'The filter holds back medium and large proteins', 'The liver keeps it', 'The tubule always reabsorbs all of it'],
+      answer: 1,
+      explain: 'The basement membrane stops medium-to-large proteins. Water, salts, glucose and urea, all under a nanometer, pass easily.',
+    },
+    {
+      q: 'Where does urea come from?',
+      choices: ['Burning fat', 'Nitrogen from broken-down amino acids, made safe by the liver', 'Old red blood cells', 'Sugar the kidneys could not reabsorb'],
+      answer: 1,
+      explain: 'Breaking down amino acids releases ammonia, which is toxic. The liver turns it into urea, which the kidneys filter out.',
+    },
+  ],
   reflex: [
     {
       q: 'Why does the knee jerk not need the brain?',

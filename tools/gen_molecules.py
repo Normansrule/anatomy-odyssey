@@ -86,6 +86,8 @@ OTHERS = [
     # Histamine at body pH: the side-chain amine is protonated (+1); the imidazole ring is neutral,
     # with its hydrogen on the nitrogen far from the side chain (the N-tau tautomer, the common one).
     ("histamine", "Histamine", "[NH3+]CCc1c[nH]cn1", "C5H10N3", 1),
+    # Urea, the form in which the body excretes the nitrogen from broken-down proteins.
+    ("urea", "Urea", "NC(N)=O", "CH4N2O", 0),
     ("popc", "POPC (a phosphatidylcholine)", "CCCCCCCCCCCCCCCC(=O)OC[C@H](COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC/C=C\\CCCCCCCC", "C42H82NO8P", 0),
 ]
 

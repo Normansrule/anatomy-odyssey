@@ -38,7 +38,10 @@ import { buildSmallIntestine } from './smallIntestine.js';
 import { buildVilli } from './villi.js';
 import { buildEnterocyte } from './enterocyte.js';
 import { buildNeuromuscularJunction } from './neuromuscularJunction.js';
-import { buildGlucose, buildAcetylcholine, buildHistamine } from '../library/smallMolecules.js';
+import { buildGlucose, buildAcetylcholine, buildHistamine, buildUrea } from '../library/smallMolecules.js';
+import { buildKidney } from './kidney.js';
+import { buildNephron } from './nephron.js';
+import { buildFiltrationBarrier } from './filtrationBarrier.js';
 import { buildMastCell } from './mastCell.js';
 import { buildNucleus } from '../library/nucleus.js';
 import { buildDna } from '../library/dna.js';
@@ -98,6 +101,10 @@ export const SCENES = {
   glucose: buildGlucose,
   acetylcholine: buildAcetylcholine,
   histamine: buildHistamine,
+  urea: buildUrea,
+  kidney: buildKidney,
+  nephron: buildNephron,
+  'filtration-barrier': buildFiltrationBarrier,
   'mast-cell': buildMastCell,
   nucleus: buildNucleus,
   dna: buildDna,

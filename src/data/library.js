@@ -161,6 +161,15 @@ export const LIBRARY = [
     step: { id: 'histamine', tier: 7, scene: 'histamine', title: 'Histamine', card: 'histamine', frameMeters: 1.3e-9 },
   },
   {
+    id: 'urea',
+    title: 'Urea',
+    status: 'built',
+    scene: 'urea',
+    card: 'urea',
+    madeOf: [],
+    step: { id: 'urea', tier: 7, scene: 'urea', title: 'Urea', card: 'urea', frameMeters: 1e-9 },
+  },
+  {
     id: 'phospholipids',
     title: 'Phospholipids',
     status: 'built',
