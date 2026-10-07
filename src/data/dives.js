@@ -236,6 +236,21 @@ export const DIVES = [
       libStep('urea', { narration: 'Urea: one carbon, one oxygen and two NH₂ groups. It is how your body gets rid of the nitrogen from the proteins you break down.' }),
     ],
   },
+  {
+    id: 'endocrine',
+    swatch: '#d98ad0', // menu and intro color
+    kind: 'dive',
+    title: 'Endocrine dive',
+    status: 'built',
+    summary: 'Thyroid gland → its follicles → a hormone-making cell → thyroxine, the hormone that sets your metabolic rate.',
+    steps: [
+      { ...BODY, focusCard: 'thyroid-gland', focus: [0, 1.468, 0.04], systems: ['endocrine'], narration: 'Hormones are messages carried in the blood. We will follow one from the gland in your neck that makes it down to the molecule itself.' },
+      { id: 'thyroid', tier: 3, scene: 'thyroid', title: 'Thyroid gland', card: 'thyroid-gland', frameMeters: 0.13, focusCard: 'thyroid-follicle', narration: 'The thyroid wraps the front of the windpipe just below the Adam’s apple. One lobe is cut open: it is packed with tiny follicles.' },
+      { id: 'thyroid-follicles', tier: 4, scene: 'thyroid-follicles', title: 'Follicles', card: 'thyroid-follicle', frameMeters: 8e-4, focusCard: 'follicular-cell', narration: 'Each follicle is a hollow ball of cells around a store of colloid, wrapped in capillaries. Turn up TSH, the pituitary’s signal, and watch the cells get to work.' },
+      { id: 'follicle-cell', tier: 5, scene: 'follicle-cell', title: 'Follicle cell', card: 'follicular-cell', frameMeters: 4.4e-5, focusCard: 'thyroxine', narration: 'One follicle cell between the blood and the colloid. Step through how it turns iodine from your food into hormone.' },
+      libStep('thyroxine', { narration: 'Thyroxine, T4: two rings, four iodine atoms and the end of an amino acid. Switch to T3 to see the more potent form, one iodine lighter.' }),
+    ],
+  },
 ];
 
 export function builtDives() {

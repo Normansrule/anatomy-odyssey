@@ -315,6 +315,32 @@ export const QUIZZES = {
       explain: 'Breaking down amino acids releases ammonia, which is toxic. The liver turns it into urea, which the kidneys filter out.',
     },
   ],
+  endocrine: [
+    {
+      q: 'Where is the thyroid gland?',
+      choices: ['Behind the stomach', 'In front of the windpipe, just below the larynx', 'On top of each kidney', 'At the base of the brain'],
+      answer: 1,
+      explain: 'Its two lobes hug the windpipe below the Adam’s apple, joined by an isthmus across the 2nd and 3rd tracheal rings.',
+    },
+    {
+      q: 'Where is thyroid hormone stored before it is released?',
+      choices: ['In the colloid, still part of thyroglobulin', 'In the pituitary', 'In fat cells', 'It is never stored'],
+      answer: 0,
+      explain: 'Hormone is built on thyroglobulin in the colloid inside each follicle, and freed only when the cells take colloid back in.',
+    },
+    {
+      q: 'What does T4 have that T3 does not?',
+      choices: ['A sugar ring', 'One more iodine atom', 'A phosphate group', 'A metal ion'],
+      answer: 1,
+      explain: 'T4 carries four iodines, T3 three. Many cells remove one iodine from T4 to make T3, the more potent form.',
+    },
+    {
+      q: 'Why can a lack of iodine in the diet make the thyroid swell (a goiter)?',
+      choices: ['Iodine is a toxin', 'Without iodine little hormone is made, so TSH keeps stimulating the gland', 'The gland stores excess salt', 'Iodine shrinks cells'],
+      answer: 1,
+      explain: 'Low T3 and T4 keep TSH high; the overstimulated gland accumulates colloid and enlarges.',
+    },
+  ],
   reflex: [
     {
       q: 'Why does the knee jerk not need the brain?',

@@ -17,6 +17,7 @@ export const SYSTEMS = [
   { id: 'immune', label: 'Immune', card: 'immune-system' },
   { id: 'digestive', label: 'Digestive', card: 'digestive-system' },
   { id: 'urinary', label: 'Urinary', card: 'urinary-system' },
+  { id: 'endocrine', label: 'Endocrine', card: 'endocrine-system' },
 ];
 
 export const DEFAULT_SYSTEMS = ['skin', 'skeletal', 'circulatory', 'nervous', 'respiratory', 'immune'];
@@ -673,7 +674,6 @@ export function beanGeometry(rx, ry, rz, medial, seg = 32) {
 function buildUrinary(M) {
   const g = new THREE.Group();
   const kidneyMat = M(0x9c4a4a, { roughness: 0.4, tissue: 'organ', natural: 0x8e3f3a });
-  const adrenalMat = M(0xe0b25a, { roughness: 0.5, tissue: 'organ', natural: 0xd9a64e });
   const tubeMat = M(0xf0d2a8, { roughness: 0.4, tissue: 'organ', natural: 0xe9c79a });
   const art = M(COLORS.artery, { roughness: 0.4, tissue: 'vessel' });
   const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein' });
@@ -684,10 +684,6 @@ function buildUrinary(M) {
     kidney.position.set(...c);
     kidney.rotation.z = s * 0.18; // upper poles lean toward the spine
     add(kidney, 'kidney', side === 'left' ? 'Left kidney' : 'Right kidney (a little lower)');
-    const adrenal = new THREE.Mesh(new THREE.ConeGeometry(0.016, 0.022, 3), adrenalMat);
-    adrenal.position.set(c[0] - s * 0.006, c[1] + 0.066, c[2]);
-    adrenal.scale.z = 0.5;
-    add(adrenal, 'adrenal-gland', 'Adrenal gland (sits on the kidney, makes adrenaline)');
     const hilum = [c[0] - s * 0.024, c[1], c[2] + 0.004];
     add(tubeThrough([[s * 0.006, c[1] + 0.004, -0.03], [s * 0.02, c[1] + 0.003, -0.035], hilum], 0.0034, art, 16, 8), 'kidney', 'Renal artery (a quarter of the heart’s output at rest)');
     add(tubeThrough([[-0.012 + s * 0.004, c[1] - 0.004, -0.02], [s * 0.022 - 0.004, c[1] - 0.005, -0.03], [hilum[0], hilum[1] - 0.006, hilum[2] + 0.004]], 0.0038, vein, 16, 8), 'kidney', 'Renal vein');
@@ -696,6 +692,33 @@ function buildUrinary(M) {
   const bladder = ellipsoid([0, 0.885, 0.05], [0.032, 0.026, 0.028], M(0xe6b8a0, { roughness: 0.4, tissue: 'organ', natural: 0xdcae96 }), 24);
   add(bladder, 'urinary-system', 'Bladder');
   add(tubeThrough([[0, 0.862, 0.056], [0, 0.845, 0.06], [0, 0.83, 0.064]], 0.003, tubeMat, 8, 6), 'urinary-system', 'Urethra');
+  return g;
+}
+
+/** Thyroid lobes on either side of the windpipe, below the larynx. */
+export const THYROID = { center: [0, 1.468, 0.04], lobeX: 0.018 };
+
+function buildEndocrine(M) {
+  const g = new THREE.Group();
+  const add = (mesh, card, label) => g.add(pick(mesh, card, label));
+  const thyroidMat = M(0xb8534e, { roughness: 0.45, tissue: 'organ', natural: 0xa94a46 });
+  const [cx, cy, cz] = THYROID.center;
+  for (const s of SIDES) {
+    const lobe = ellipsoid([cx + s * THYROID.lobeX, cy, cz], [0.008, 0.024, 0.009], thyroidMat, 24);
+    lobe.rotation.z = -s * 0.12; // lower poles splay slightly outward
+    add(lobe, 'thyroid-gland', 'Thyroid gland (one lobe)');
+    for (const dy of [0.011, -0.012]) {
+      add(ellipsoid([cx + s * (THYROID.lobeX + 0.002), cy + dy, cz - 0.009], [0.0028, 0.0034, 0.0022], M(0xd9a35a, { roughness: 0.5 }), 10), 'parathyroid-gland', 'Parathyroid gland (on the back of the thyroid)');
+    }
+    // Adrenal glands: caps on the upper poles of the kidneys.
+    const k = s === 1 ? KIDNEYS.left : KIDNEYS.right;
+    const adrenal = new THREE.Mesh(new THREE.ConeGeometry(0.016, 0.022, 3), M(0xe0b25a, { roughness: 0.5, tissue: 'organ', natural: 0xd9a64e }));
+    adrenal.position.set(k[0] - s * 0.006, k[1] + 0.066, k[2]);
+    adrenal.scale.z = 0.5;
+    add(adrenal, 'adrenal-gland', 'Adrenal gland (on top of the kidney)');
+  }
+  add(capsuleBetween([cx - 0.012, cy - 0.011, cz + 0.007], [cx + 0.012, cy - 0.011, cz + 0.007], 0.0045, thyroidMat, 12), 'thyroid-gland', 'Isthmus of the thyroid (crosses the windpipe)');
+  add(ellipsoid([0, 1.592, 0.012], [0.006, 0.006, 0.006], M(0xe8a0b4, { roughness: 0.45 }), 16), 'endocrine-system', 'Pituitary gland (under the brain)');
   return g;
 }
 
@@ -713,6 +736,7 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS } = {}) {
     immune: buildImmune(M),
     digestive: buildDigestive(M),
     urinary: buildUrinary(M),
+    endocrine: buildEndocrine(M),
   };
   for (const [id, grp] of Object.entries(groups)) {
     grp.name = id;

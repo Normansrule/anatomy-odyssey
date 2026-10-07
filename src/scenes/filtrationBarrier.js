@@ -100,7 +100,7 @@ export function buildFiltrationBarrier({ reducedMotion = false } = {}) {
 
   // Molecules, drawn far larger than life.
   const kinds = [
-    { card: 'water', label: 'Water (drawn far larger)', color: 0x9fd4ff, r: 0.9, n: 70, passes: true },
+    { card: 'water-molecule', label: 'Water (drawn far larger)', color: 0x9fd4ff, r: 0.9, n: 70, passes: true },
     { card: 'glucose', label: 'Glucose (drawn far larger)', color: 0xffd36a, r: 1.2, n: 22, passes: true },
     { card: 'urea', label: 'Urea (drawn far larger): waste the kidney exists to remove', color: 0x9be37c, r: 1.15, n: 26, passes: true },
     { card: 'albumin', label: 'Albumin, the main blood protein (held back)', color: 0xf2a65a, r: 2.6, n: 12, passes: false },

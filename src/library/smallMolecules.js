@@ -4,6 +4,7 @@
 //   acetylcholine  the messenger at the nerve–muscle junction (reflex arc module)
 //   histamine      the alarm signal mast cells release (inflammatory response module)
 //   urea           the nitrogen waste the kidney filters out (urinary dive)
+//   thyroxine      the thyroid hormone, with T3 beside it (endocrine dive)
 import * as THREE from 'three/webgpu';
 import { materialBank, disposeTree } from '../scenes/kit.js';
 import { buildMolecule, styleControls } from './molecule.js';
@@ -256,6 +257,110 @@ export function buildUrea({ reducedMotion = false } = {}) {
     update,
     dispose() {
       mol.sphere.dispose();
+      disposeTree(root);
+      M.dispose();
+    },
+  };
+}
+
+/**
+ * A thyroid hormone (T4 or T3) split at its ether oxygen: the inner ring
+ * carries the amino-acid end, the outer ring the –OH. Iodines are sorted by ring.
+ */
+export function thyroidHormoneParts(id = 'thyroxine') {
+  const { atoms, bonds } = moleculeGraph(id);
+  const etherO = atoms.findIndex((a, i) => a.el === 'O' && neighbors(bonds, i).length === 2 && neighbors(bonds, i).every((k) => atoms[k].el === 'C'));
+  const nitrogen = atoms.findIndex((a) => a.el === 'N');
+  const inner = new Set([nitrogen]);
+  const stack = [nitrogen];
+  while (stack.length) {
+    for (const k of neighbors(bonds, stack.pop())) {
+      if (k === etherO || inner.has(k)) continue;
+      inner.add(k);
+      stack.push(k);
+    }
+  }
+  const iodines = atoms.map((a, i) => (a.el === 'I' ? i : -1)).filter((i) => i >= 0);
+  // The amino-acid end: the nitrogen, the alpha carbon, the carboxylate and their hydrogens.
+  const alpha = neighbors(bonds, nitrogen).find((k) => atoms[k].el === 'C');
+  const carboxyl = neighbors(bonds, alpha).find((k) => atoms[k].el === 'C' && neighbors(bonds, k).filter((o) => atoms[o].el === 'O').length === 2);
+  const aminoEnd = new Set([nitrogen, alpha, carboxyl, ...neighbors(bonds, carboxyl).filter((k) => atoms[k].el === 'O')]);
+  atoms.forEach((a, i) => a.el === 'H' && aminoEnd.has(neighbors(bonds, i)[0]) && aminoEnd.add(i));
+  return {
+    atoms,
+    bonds,
+    etherO,
+    nitrogen,
+    aminoEnd,
+    innerIodines: iodines.filter((i) => inner.has(i)),
+    outerIodines: iodines.filter((i) => !inner.has(i)),
+  };
+}
+
+export const THYROID_HORMONE_VIEWS = [
+  { label: 'T4 (thyroxine)', text: 'Thyroxine (T4), C₁₅H₁₁I₄NO₄: two rings joined by an oxygen, four iodine atoms (purple), and an amino-acid end (glowing green). It is built from two tyrosines. Most of what the thyroid releases is T4.' },
+  { label: 'T3', text: 'T3 (triiodothyronine): the same molecule with one iodine removed from the outer ring. Cells all over the body make it from T4, and it is the more potent of the two.' },
+  { label: 'Space filling', text: 'Space filling: about 1.5 nm long. The iodines are by far its biggest atoms, which is why the body needs iodine in the diet to make it.' },
+];
+
+export function buildThyroxine({ reducedMotion = false } = {}) {
+  const M = materialBank();
+  const { root, spin, update } = spinRoot(reducedMotion);
+  const build = (id) => {
+    const parts = thyroidHormoneParts(id);
+    parts.atoms.forEach((a, i) => {
+      a.card = 'thyroxine';
+      if (parts.aminoEnd.has(i)) a.tint = 0x7cc49a;
+      a.label =
+        a.el === 'I'
+          ? parts.innerIodines.includes(i)
+            ? 'Iodine on the inner ring'
+            : 'Iodine on the outer ring (T3 has one fewer here)'
+          : i === parts.etherO
+            ? 'Oxygen joining the two rings'
+            : parts.aminoEnd.has(i)
+              ? 'Amino-acid end (from tyrosine)'
+              : a.el === 'O'
+                ? 'Oxygen of the –OH on the outer ring'
+                : a.el === 'C'
+                  ? 'Ring carbon'
+                  : 'Hydrogen';
+    });
+    return buildMolecule(parts.atoms, parts.bonds, M, { defaultCard: 'thyroxine' });
+  };
+  const t4 = build('thyroxine');
+  const t3 = build('t3');
+  spin.add(t4.group, t3.group);
+  const controls = {
+    label: 'Form',
+    unit: '',
+    min: 0,
+    max: 2,
+    step: 1,
+    value: 0,
+    format: (v) => THYROID_HORMONE_VIEWS[Math.round(v)].label,
+    presets: THYROID_HORMONE_VIEWS.map((s, i) => ({ label: s.label, value: i })),
+    set(v) {
+      const k = Math.max(0, Math.min(2, Math.round(v)));
+      controls.value = v;
+      t4.group.visible = k !== 1;
+      t3.group.visible = k === 1;
+      t4.setStyle(k === 2 ? 1 : 0);
+      return THYROID_HORMONE_VIEWS[k].text;
+    },
+  };
+  controls.set(0);
+  return {
+    root,
+    fit: 'both',
+    metersPerUnit: 1e-10,
+    view: { target: [0, 0, 0], direction: [0.15, 0.5, 1] },
+    focus: [0, 0, 0],
+    controls,
+    update,
+    dispose() {
+      t4.sphere.dispose();
+      t3.sphere.dispose();
       disposeTree(root);
       M.dispose();
     },

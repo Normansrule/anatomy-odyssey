@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.13.0
+
+- **Endocrine dive, down to the hormone.** A ninth dive: the whole body with a new Endocrine button (pituitary, thyroid, parathyroids, adrenal glands, which moved here from Urinary) → the thyroid gland on the windpipe, its isthmus across tracheal rings 2 and 3, one lobe cut open to show its follicles, with the larynx, parathyroids and the arteries and veins of the neck → thyroid follicles wrapped in capillaries, the front one cut across like a slide, with a TSH control that makes the cells grow tall and take colloid back in → a follicle cell with a five-stage control: iodide pumped in, thyroglobulin made, iodine attached by peroxidase, colloid taken back, and T4 and T3 released into the blood → thyroxine.
+- **Two new shared molecules**, T4 (thyroxine) and T3, generated with RDKit and checked for formula, charge and the natural L form. A control switches between them: T3 is T4 with one outer-ring iodine removed. Iodine joins the element table.
+- 14 new cards, 4 references (OpenStax 17, 17.4 and 17.5, StatPearls on the thyroid) and four quiz questions.
+- The kidney filter's water molecules now open the existing water card, and the duplicate card is gone.
+- 349 tests (from 334).
+
 ## 0.12.0
 
 - **Urinary dive, down to the molecule.** An eighth dive follows blood through the kidney: the whole body with a new Urinary button (kidneys, the right a little lower, adrenal glands, renal vessels, ureters, bladder and urethra) → a kidney cut in half, 12 × 6 × 4 cm, with its pale cortex, eight striped pyramids, calyces cupping each papilla, the renal pelvis and ureter, and arteries arching along the pyramid bases → one nephron, see-through, from the glomerulus in Bowman's capsule through the proximal tubule, the loop of Henle dipping into the medulla, the distal tubule touching its own corpuscle (the juxtaglomerular apparatus), to a collecting duct shared with other nephrons, wrapped in capillaries and vasa recta → the filtration barrier in section, its pored capillary lining, basement membrane and interlocking podocyte feet with 40 nm slits → urea.

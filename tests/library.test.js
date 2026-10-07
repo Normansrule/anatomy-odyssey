@@ -54,8 +54,8 @@ describe('generated molecules (RDKit)', () => {
     for (const [i, j] of bonds) {
       const d = atoms[i].p.distanceTo(atoms[j].p);
       const pair = [atoms[i].el, atoms[j].el].sort().join('');
-      // Ranges from typical bond lengths: X–H 0.96–1.11 Å (S–H 1.34), C–C/C–N/C–O 1.20–1.58, P–O and C–S 1.48–1.84.
-      const [lo, hi] = pair === 'HS' ? [1.3, 1.38] : pair.includes('H') ? [0.95, 1.12] : pair.includes('P') || pair.includes('S') ? [1.45, 1.86] : [1.19, 1.58];
+      // Ranges from typical bond lengths: X–H 0.96–1.11 Å (S–H 1.34), C–C/C–N/C–O 1.20–1.58, P–O and C–S 1.48–1.84, aryl C–I about 2.10.
+      const [lo, hi] = pair === 'HS' ? [1.3, 1.38] : pair === 'CI' ? [2.04, 2.16] : pair.includes('H') ? [0.95, 1.12] : pair.includes('P') || pair.includes('S') ? [1.45, 1.86] : [1.19, 1.58];
       expect(d, `${id} ${pair}`).toBeGreaterThan(lo);
       expect(d, `${id} ${pair}`).toBeLessThan(hi);
     }

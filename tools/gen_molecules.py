@@ -88,6 +88,10 @@ OTHERS = [
     ("histamine", "Histamine", "[NH3+]CCc1c[nH]cn1", "C5H10N3", 1),
     # Urea, the form in which the body excretes the nitrogen from broken-down proteins.
     ("urea", "Urea", "NC(N)=O", "CH4N2O", 0),
+    # Thyroid hormones, L form, with the amino-acid end charged as in water (NH3+ and COO-; net 0).
+    # T4 carries four iodines (3,5,3',5'); T3 lacks the 5' iodine on the outer ring.
+    ("thyroxine", "Thyroxine (T4)", "[NH3+][C@@H](Cc1cc(I)c(Oc2cc(I)c(O)c(I)c2)c(I)c1)C(=O)[O-]", "C15H11I4NO4", 0),
+    ("t3", "Triiodothyronine (T3)", "[NH3+][C@@H](Cc1cc(I)c(Oc2ccc(O)c(I)c2)c(I)c1)C(=O)[O-]", "C15H12I3NO4", 0),
     ("popc", "POPC (a phosphatidylcholine)", "CCCCCCCCCCCCCCCC(=O)OC[C@H](COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC/C=C\\CCCCCCCC", "C42H82NO8P", 0),
 ]
 
@@ -211,6 +215,8 @@ def main():
                 assert sugar_labels(Chem.Mol(mol)) == ["R", "R", "R", "S"], f"{name} ribose"
             if mid == "glucose":
                 assert sugar_labels(Chem.Mol(mol)) == ["R", "R", "R", "S", "S"], f"{name}: not beta-D (2R,3R,4S,5S,6R)"
+            if mid in ("thyroxine", "t3"):
+                assert alpha_and_beta(Chem.Mol(mol)).get("CA") == "S", f"{name}: not the L form"
             mol3, cid = embed(mol, 40, lowest_energy)
         atoms, bonds = export(mol3, cid)
         data["molecules"][mid] = {"name": name, "kind": "other", "formula": want_formula, "charge": charge, "smiles": smi, "atoms": atoms, "bonds": bonds}

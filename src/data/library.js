@@ -170,6 +170,15 @@ export const LIBRARY = [
     step: { id: 'urea', tier: 7, scene: 'urea', title: 'Urea', card: 'urea', frameMeters: 1e-9 },
   },
   {
+    id: 'thyroxine',
+    title: 'Thyroxine (T4) and T3',
+    status: 'built',
+    scene: 'thyroxine',
+    card: 'thyroxine',
+    madeOf: [],
+    step: { id: 'thyroxine', tier: 7, scene: 'thyroxine', title: 'Thyroxine', card: 'thyroxine', frameMeters: 2e-9 },
+  },
+  {
     id: 'phospholipids',
     title: 'Phospholipids',
     status: 'built',

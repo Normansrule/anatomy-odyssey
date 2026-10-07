@@ -481,6 +481,7 @@ input {
 .system-chip--immune { --swatch: #7cc49a; }
 .system-chip--digestive { --swatch: #e6a46e; }
 .system-chip--urinary { --swatch: #e8d27a; }
+.system-chip--endocrine { --swatch: #d98ad0; }
 
 /* ── Scale bar ───────────────────────────────────────────────────── */
 .scalebar {

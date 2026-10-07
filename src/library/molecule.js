@@ -11,6 +11,7 @@ export const ELEMENTS = {
   O: { color: 0xff5a5a, ball: 0.38, vdw: 1.52 },
   P: { color: 0xf2a65a, ball: 0.44, vdw: 1.8 },
   S: { color: 0xe8c45a, ball: 0.44, vdw: 1.8 },
+  I: { color: 0x9a5ac8, ball: 0.52, vdw: 1.98 },
 };
 
 const TETRA = Math.acos(-1 / 3); // 109.47°

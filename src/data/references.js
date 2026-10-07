@@ -304,4 +304,20 @@ export const REFERENCES = {
     text: 'OpenStax Anatomy and Physiology 2e, section 25.6: Tubular Reabsorption (proximal tubule, loop of Henle, aldosterone, ADH, urea recycling).',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/25-6-tubular-reabsorption',
   },
+  'openstax-endocrine': {
+    text: 'OpenStax Anatomy and Physiology 2e, chapter 17: The Endocrine System.',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/17-introduction',
+  },
+  'openstax-thyroid': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 17.4: The Thyroid Gland (follicles, colloid, thyroglobulin, iodide uptake, T3 and T4, TSH, calcitonin, goiter).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/17-4-the-thyroid-gland',
+  },
+  'openstax-parathyroid': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 17.5: The Parathyroid Glands.',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/17-5-the-parathyroid-glands',
+  },
+  'statpearls-thyroid': {
+    text: 'Allen E, Fingeret A. "Anatomy, Head and Neck, Thyroid". StatPearls, NCBI Bookshelf (mass, position, blood supply).',
+    url: 'https://www.ncbi.nlm.nih.gov/books/NBK470452/',
+  },
 };

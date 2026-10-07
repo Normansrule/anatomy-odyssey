@@ -38,6 +38,7 @@ STEPS = [
     ("reflex", "reflex-arc", ""), ("reflex", "spinal-cord", ""), ("reflex", "neuromuscular-junction", ""), ("reflex", "acetylcholine", ""),
     ("digestive", "body", ""), ("digestive", "small-intestine", ""), ("digestive", "villi", ""), ("digestive", "enterocyte", ""), ("digestive", "glucose", ""),
     ("urinary", "body", ""), ("urinary", "kidney", ""), ("urinary", "nephron", ""), ("urinary", "filtration-barrier", ""), ("urinary", "urea", ""),
+    ("endocrine", "body", ""), ("endocrine", "thyroid", ""), ("endocrine", "thyroid-follicles", ""), ("endocrine", "follicle-cell", ""), ("endocrine", "thyroxine", ""),
 ]
 
 

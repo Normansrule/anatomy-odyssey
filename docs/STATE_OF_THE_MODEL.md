@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.12.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.13.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -13,7 +13,7 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 ### Skeletal dive
 | Tier | Step | Frame | Honest stopping point and simplifications |
 |---|---|---|---|
-| 1 | Whole body | 2.1 m | Stylized adult figure with nine toggleable systems (Digestive and Urinary are off until you switch them on). Heart: a rounded cone with both atria, the coronary arteries and the pulmonary trunk. Lungs: tapered, flatter toward the heart, with lobe fissures and the left lung's cardiac notch, on a diaphragm dome. Digestive organs: esophagus, stomach, liver and gallbladder, pancreas, duodenum, small-intestine loops (far shorter than the real 3 m) and the large intestine with its pouches and appendix. Urinary organs: bean-shaped kidneys (the right a little lower), adrenal glands, renal vessels, ureters, bladder and urethra |
+| 1 | Whole body | 2.1 m | Stylized adult figure with ten toggleable systems (Digestive, Urinary and Endocrine are off until you switch them on). Heart: a rounded cone with both atria, the coronary arteries and the pulmonary trunk. Lungs: tapered, flatter toward the heart, with lobe fissures and the left lung's cardiac notch, on a diaphragm dome. Digestive organs: esophagus, stomach, liver and gallbladder, pancreas, duodenum, small-intestine loops (far shorter than the real 3 m) and the large intestine with its pouches and appendix. Urinary organs: bean-shaped kidneys (the right a little lower), renal vessels, ureters, bladder and urethra. Endocrine glands: pituitary, thyroid with its isthmus, four parathyroids, and the adrenal glands on the kidneys |
 | 2 | Skeleton | 1.9 m | The whole skeleton, head to feet; the femur the dive enters glows. Built from simple shapes: 24 vertebrae on an S-curve with discs, 12 rib pairs with costal cartilage, breastbone, shoulder blades and collarbones, a pelvic bowl, and every bone of the hands (27) and feet (26), simplified in shape |
 | 3 | Femur | 55 cm | Lathed cutaway; 125° neck angle |
 | 4 | Bone tissue | 1.6 mm | Osteons 0.2 mm, central canals 50 µm |
@@ -88,6 +88,15 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 4 | Nephron | 3 mm | One nephron, see-through: corpuscle 0.2 mm, proximal and distal tubules, loop of Henle (drawn shorter than long real loops), collecting duct shared with other nephrons, afferent and efferent arterioles, juxtaglomerular apparatus, capillaries and vasa recta. Five-stage filtrate control: 180 L a day filtered, two thirds reclaimed in the proximal tubule (OpenStax 25.6), 1–2 L of urine; the dots thin out schematically after the proximal tubule |
 | 6 | The filter | 1.9 µm | Fenestrated endothelium, a basement membrane of protein fibers, podocyte foot processes with 40 nm slits and slit diaphragms; layer thicknesses approximate. Water, glucose, urea and albumin drawn far larger than life, and far fewer; a red blood cell drawn at about half its real width. Four-stage control: pores, slits, albumin held back |
 | 7 | Urea (shared, new) | 1 nm | Stops here. RDKit-generated (CH₄N₂O) |
+
+### Endocrine dive (new in v0.13.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 1 | Whole body | 2.1 m | Endocrine system on |
+| 3 | Thyroid gland | 13 cm | Lobes 5 cm tall hugging the windpipe, isthmus across tracheal rings 2 and 3 (StatPearls), upper poles beside the thyroid cartilage; four parathyroids on the back; superior and inferior thyroid arteries, thyroid veins, common carotid arteries and internal jugular veins. One lobe cut open, with about 300 follicles drawn larger than life. Lobe size is typical, not from a cited source |
+| 4 | Follicles | 0.8 mm | Twenty follicles 0.1–0.28 mm across, each a ball of 12 µm cells around colloid, wrapped in capillaries; C cells between them; the front follicle cut across like a slide. TSH control: cells 6 µm tall at rest, 16 µm when active, colloid droplets taken back in |
+| 5 | Follicle cell | 44 µm | Four cells 12 µm wide between colloid and a capillary, one see-through (nucleus, rough endoplasmic reticulum, Golgi, mitochondria, microvilli). Iodide carriers, peroxidase, thyroglobulin, lysosomes and hormone drawn far larger than life and far fewer. Five-stage control following OpenStax 17.4 |
+| 7 | Thyroxine (shared, new) | 2 nm | Stops here. RDKit-generated T4 (C₁₅H₁₁I₄NO₄) and T3, L form checked, amino-acid end charged as in water; a control switches between T4, T3 and space filling |
 
 ### From gene to protein (module, new in v0.4.0)
 | Tier | Step | Frame | Notes |
