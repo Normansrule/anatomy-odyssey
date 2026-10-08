@@ -336,4 +336,16 @@ export const REFERENCES = {
     text: 'OpenStax Anatomy and Physiology 2e, section 5.3: Functions of the Integumentary System (touch receptors, sweating, temperature control, vitamin D).',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/5-3-functions-of-the-integumentary-system',
   },
+  'openstax-vision': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 14.1: Sensory Perception (vision: the eye, retina, rods and cones, retinal, wavelengths).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/14-1-sensory-perception',
+  },
+  'openstax-bio-vision': {
+    text: 'OpenStax Biology 2e, section 36.5: Vision (transducin, phosphodiesterase, cGMP, hyperpolarization).',
+    url: 'https://openstax.org/books/biology-2e/pages/36-5-vision',
+  },
+  'eyewiki-numbers': {
+    text: 'EyeWiki (American Academy of Ophthalmology). "Eye in Numbers" (axial length, cornea, lens, pupil, fovea, optic nerve).',
+    url: 'https://eyewiki.org/Eye_in_Numbers',
+  },
 };

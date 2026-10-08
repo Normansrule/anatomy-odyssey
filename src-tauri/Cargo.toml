@@ -1,6 +1,6 @@
 [package]
 name = "anatomy-odyssey"
-version = "0.14.0"
+version = "0.15.0"
 description = "A guided journey through the human body, from whole body to molecule."
 authors = ["Aleksander Norman", "Claude (Anthropic)"]
 license = "MIT"

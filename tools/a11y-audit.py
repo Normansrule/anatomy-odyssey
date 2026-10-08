@@ -44,6 +44,7 @@ STATES = [
     ("urinary: the filter", "?dive=urinary&step=filtration-barrier", None, DESKTOP),
     ("endocrine: follicle cell", "?dive=endocrine&step=follicle-cell", None, DESKTOP),
     ("skin: block of skin", "?dive=skin&step=skin-block", None, DESKTOP),
+    ("eye: the eye", "?dive=eye&step=eye", None, DESKTOP),
     ("reflex: nerve meets muscle", "?dive=reflex&step=neuromuscular-junction", None, DESKTOP),
     ("About dialog", "?dive=skeletal&step=femur", "#about-button", DESKTOP),
     ("Map dialog", "?dive=skeletal&step=femur", "#atlas-button", DESKTOP),

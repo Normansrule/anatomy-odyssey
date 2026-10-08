@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.15.0
+
+- **Eye dive, down to the molecule a photon flips.** An eleventh dive: the whole body, now with eyes and optic nerves → the eye cut in half and seen from above (EyeWiki sizes: 24 mm long, 12 mm cornea, 3 mm front chamber), with light rays focused on the fovea and a light control that opens and closes the pupil → a slice of retina, from the ganglion cells light must pass first to the rods, cones and pigment epithelium at the back, following one signal from a rod to the optic nerve → inside a rod's outer segment, where rhodopsin, transducin and phosphodiesterase turn one photon into closed sodium channels → retinal.
+- **Two new shared molecules**, 11-cis and all-trans retinal, generated with RDKit with their double-bond geometry checked; the molecule view switches between them.
+- 20 new cards, 3 references (OpenStax A&P 14.1, OpenStax Biology 36.5, EyeWiki "Eye in Numbers") and four quiz questions.
+- 379 tests (from 362), including one that keeps every scene's root at the origin.
+
 ## 0.14.0
 
 - **Skin dive, down to vitamin D.** A tenth dive: a block of forearm skin cut on two faces, with its epidermis, dermis and fatty hypodermis, hair follicles with sebaceous glands and arrector pili, coiled sweat glands, two networks of blood vessels and touch receptors, and a temperature control (cold: vessels narrow and hairs stand up; hot: vessels widen and sweat beads on the surface) → the epidermis layer by layer, following one keratinocyte from the basal layer to being shed → a basal cell in sunlight, where melanin shields the nucleus and ultraviolet light turns a cholesterol derivative in the membrane into vitamin D3 → vitamin D3 itself.

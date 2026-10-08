@@ -40,6 +40,7 @@ STEPS = [
     ("urinary", "body", ""), ("urinary", "kidney", ""), ("urinary", "nephron", ""), ("urinary", "filtration-barrier", ""), ("urinary", "urea", ""),
     ("endocrine", "body", ""), ("endocrine", "thyroid", ""), ("endocrine", "thyroid-follicles", ""), ("endocrine", "follicle-cell", ""), ("endocrine", "thyroxine", ""),
     ("skin", "body", ""), ("skin", "skin-block", ""), ("skin", "epidermis", ""), ("skin", "sun-and-skin", ""), ("skin", "vitamin-d3", ""),
+    ("eye", "body", ""), ("eye", "eye", ""), ("eye", "retina", ""), ("eye", "phototransduction", ""), ("eye", "retinal", ""),
 ]
 
 

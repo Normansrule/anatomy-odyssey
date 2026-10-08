@@ -95,6 +95,10 @@ OTHERS = [
     # Vitamin D3 (cholecalciferol), made in the skin from 7-dehydrocholesterol by UVB light:
     # (3S, 13R, 14S, 17R, 20R), with its broken B ring giving 5Z,7E double bonds.
     ("vitamin-d3", "Vitamin D3 (cholecalciferol)", "C[C@H](CCCC(C)C)[C@H]1CC[C@@H]\\2[C@@]1(CCC/C2=C\\C=C/3\\C[C@H](CCC3=C)O)C", "C27H44O", 0),
+    # Retinal, the light-absorbing part of rhodopsin: 11-cis (7E,9E,11Z,13E) before light,
+    # all-trans after; a photon flips the C11=C12 double bond.
+    ("retinal-11-cis", "11-cis-Retinal", "CC1=C(C(CCC1)(C)C)/C=C/C(/C)=C/C=C\\C(\\C)=C\\C=O", "C20H28O", 0),
+    ("retinal-all-trans", "all-trans-Retinal", "CC1=C(C(CCC1)(C)C)/C=C/C(/C)=C/C=C/C(/C)=C/C=O", "C20H28O", 0),
     ("popc", "POPC (a phosphatidylcholine)", "CCCCCCCCCCCCCCCC(=O)OC[C@H](COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC/C=C\\CCCCCCCC", "C42H82NO8P", 0),
 ]
 
@@ -226,6 +230,9 @@ def main():
                 assert sugar_labels(Chem.Mol(mol)) == ["R", "R", "R", "S", "S"], f"{name}: not beta-D (2R,3R,4S,5S,6R)"
             if mid in ("thyroxine", "t3"):
                 assert alpha_and_beta(Chem.Mol(mol)).get("CA") == "S", f"{name}: not the L form"
+            if mid in ("retinal-11-cis", "retinal-all-trans"):
+                want = ["E", "E", "E", "Z"] if mid == "retinal-11-cis" else ["E", "E", "E", "E"]
+                assert double_bond_labels(Chem.Mol(mol)) == want, f"{name}: double bonds"
             if mid == "vitamin-d3":
                 assert sugar_labels(Chem.Mol(mol)) == ["R", "R", "R", "S", "S"], f"{name}: stereocenters"
                 assert double_bond_labels(Chem.Mol(mol)) == ["E", "Z"], f"{name}: not 5Z,7E"

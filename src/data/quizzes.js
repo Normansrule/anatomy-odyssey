@@ -367,6 +367,32 @@ export const QUIZZES = {
       explain: 'UV light converts a cholesterol derivative in skin cell membranes into vitamin D3. The liver and kidneys then activate it.',
     },
   ],
+  eye: [
+    {
+      q: 'What does most of the eye’s focusing?',
+      choices: ['The cornea', 'The iris', 'The retina', 'The optic nerve'],
+      answer: 0,
+      explain: 'Light bends most where it passes from air into the cornea; the lens fine-tunes the focus.',
+    },
+    {
+      q: 'Why do you have a blind spot?',
+      choices: ['The lens is cloudy there', 'The optic disc, where the optic nerve leaves, has no photoreceptors', 'The iris blocks that part', 'Cones are missing in the fovea'],
+      answer: 1,
+      explain: 'Ganglion cell axons gather at the optic disc to leave the eye, so there is no room for rods or cones there.',
+    },
+    {
+      q: 'What happens to retinal when it absorbs a photon?',
+      choices: ['It splits in two', 'It flips from 11-cis to all-trans', 'It leaves the eye', 'It turns into vitamin D'],
+      answer: 1,
+      explain: 'The bent 11-cis form straightens to all-trans, changing rhodopsin’s shape and starting the signal.',
+    },
+    {
+      q: 'In light, what does a rod do?',
+      choices: ['Fires more action potentials', 'Hyperpolarizes and releases less neurotransmitter', 'Opens more sodium channels', 'Makes more cGMP'],
+      answer: 1,
+      explain: 'Light lowers cGMP, closing sodium channels; the rod hyperpolarizes and releases less neurotransmitter.',
+    },
+  ],
   reflex: [
     {
       q: 'Why does the knee jerk not need the brain?',

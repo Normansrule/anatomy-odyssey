@@ -266,6 +266,21 @@ export const DIVES = [
       libStep('vitamin-d3', { narration: 'Vitamin D3: the cholesterol skeleton with one ring broken open by ultraviolet light. Your liver and kidneys turn it into the hormone that lets you absorb calcium.' }),
     ],
   },
+  {
+    id: 'eye',
+    swatch: '#6aa8d8', // menu and intro color
+    kind: 'dive',
+    title: 'Eye dive',
+    status: 'built',
+    summary: 'The eye → the retina → inside a rod, where light becomes a signal → retinal, the molecule a photon flips.',
+    steps: [
+      { ...BODY, focusCard: 'eye', focus: [0.032, 1.632, 0.077], systems: ['nervous'], narration: 'Everything you see starts as light hitting a molecule at the back of your eye. We will follow it there.' },
+      { id: 'eye', tier: 3, scene: 'eye', title: 'Eye', card: 'eye', frameMeters: 0.046, focusCard: 'fovea', narration: 'The eye, cut in half and seen from above. The cornea and lens focus light onto the retina; change the light level and watch the pupil respond.' },
+      { id: 'retina', tier: 4, scene: 'retina', title: 'Retina', card: 'retina', frameMeters: 3e-4, focusCard: 'rod-cell', narration: 'A slice of retina. Light comes in from the top and must cross every layer before it reaches the rods and cones at the back. Step through one signal on its way out.' },
+      { id: 'phototransduction', tier: 6, scene: 'phototransduction', title: 'Light to signal', card: 'rhodopsin', frameMeters: 1.1e-7, focusCard: 'retinal', narration: 'Inside a rod’s outer segment: stacked discs full of rhodopsin. Step through how one photon closes sodium channels in the rod’s membrane.' },
+      libStep('retinal', { narration: 'Retinal, the switch itself. Flip between its two shapes: the bend at carbons 11 and 12 is what a photon straightens.' }),
+    ],
+  },
 ];
 
 export function builtDives() {

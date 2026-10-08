@@ -38,7 +38,10 @@ import { buildSmallIntestine } from './smallIntestine.js';
 import { buildVilli } from './villi.js';
 import { buildEnterocyte } from './enterocyte.js';
 import { buildNeuromuscularJunction } from './neuromuscularJunction.js';
-import { buildGlucose, buildAcetylcholine, buildHistamine, buildUrea, buildThyroxine, buildVitaminD3 } from '../library/smallMolecules.js';
+import { buildGlucose, buildAcetylcholine, buildHistamine, buildUrea, buildThyroxine, buildVitaminD3, buildRetinal } from '../library/smallMolecules.js';
+import { buildEye } from './eye.js';
+import { buildRetina } from './retina.js';
+import { buildPhototransduction } from './phototransduction.js';
 import { buildSkinBlock } from './skinBlock.js';
 import { buildEpidermis } from './epidermis.js';
 import { buildSunAndSkin } from './sunAndSkin.js';
@@ -119,6 +122,10 @@ export const SCENES = {
   'skin-block': buildSkinBlock,
   epidermis: buildEpidermis,
   'sun-and-skin': buildSunAndSkin,
+  retinal: buildRetinal,
+  eye: buildEye,
+  retina: buildRetina,
+  phototransduction: buildPhototransduction,
   'mast-cell': buildMastCell,
   nucleus: buildNucleus,
   dna: buildDna,

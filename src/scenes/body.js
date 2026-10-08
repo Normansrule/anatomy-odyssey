@@ -497,6 +497,13 @@ function buildNervous(M) {
   g.add(pick(ellipsoid([0, 1.655, -0.005], [0.072, 0.058, 0.088], M(0xf0d68a, { roughness: 0.6, tissue: 'brain' })), 'brain', 'Brain'));
   const nerve = (pts, r, label) => g.add(pick(tubeThrough(pts, r, n, 64, 6), 'nervous-system', label));
   nerve([[0, 1.6, -0.02], [0, 1.5, -0.035], [0, 1.3, -0.055], [0, 1.1, -0.04], [0, 1.02, -0.035]], 0.006, 'Spinal cord');
+  // Eyes (24 mm across) in their sockets, each sending an optic nerve back toward the brain.
+  for (const x of EYES.x) {
+    const eye = ellipsoid([x, EYES.y, EYES.z], [0.012, 0.012, 0.012], M(0xf2eee6, { roughness: 0.25 }), 24);
+    g.add(pick(eye, 'eye', 'Eye'));
+    g.add(pick(ellipsoid([x, EYES.y, EYES.z + 0.0105], [0.0055, 0.0055, 0.0022], M(0x4a6a8a, { roughness: 0.2 }), 16), 'eye', 'Iris and pupil'));
+    g.add(pick(tubeThrough([[x, EYES.y, EYES.z - 0.011], [x * 0.6, EYES.y - 0.004, EYES.z - 0.035], [0, EYES.y - 0.012, 0.02]], 0.0018, n, 16, 6), 'optic-nerve', 'Optic nerve'));
+  }
   for (const s of SIDES) {
     nerve([[0, 1.02, -0.045], [s * 0.06, 0.93, -0.065], [s * 0.1, 0.75, -0.05], [s * 0.1, 0.5, -0.035], [s * 0.1, 0.3, -0.03], [s * 0.095, 0.07, -0.01]], 0.0045, 'Sciatic nerve');
     nerve([[0, 1.45, -0.04], [s * 0.1, 1.4, -0.02], [s * 0.21, 1.27, 0.0], [s * 0.26, 1.02, 0.005], [s * 0.3, 0.8, 0.005]], 0.0035, 'Arm nerves');
@@ -694,6 +701,9 @@ function buildUrinary(M) {
   add(tubeThrough([[0, 0.862, 0.056], [0, 0.845, 0.06], [0, 0.83, 0.064]], 0.003, tubeMat, 8, 6), 'urinary-system', 'Urethra');
   return g;
 }
+
+/** Eye centres: in the sockets of the skull, below the brow. */
+export const EYES = { x: [-0.032, 0.032], y: 1.632, z: 0.077 };
 
 /** Thyroid lobes on either side of the windpipe, below the larynx. */
 export const THYROID = { center: [0, 1.468, 0.04], lobeX: 0.018 };

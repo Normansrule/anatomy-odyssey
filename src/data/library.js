@@ -188,6 +188,15 @@ export const LIBRARY = [
     step: { id: 'vitamin-d3', tier: 7, scene: 'vitamin-d3', title: 'Vitamin D3', card: 'vitamin-d3', frameMeters: 2.4e-9 },
   },
   {
+    id: 'retinal',
+    title: 'Retinal',
+    status: 'built',
+    scene: 'retinal',
+    card: 'retinal',
+    madeOf: [],
+    step: { id: 'retinal', tier: 7, scene: 'retinal', title: 'Retinal', card: 'retinal', frameMeters: 2e-9 },
+  },
+  {
     id: 'phospholipids',
     title: 'Phospholipids',
     status: 'built',

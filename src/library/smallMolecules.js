@@ -6,6 +6,7 @@
 //   urea           the nitrogen waste the kidney filters out (urinary dive)
 //   thyroxine      the thyroid hormone, with T3 beside it (endocrine dive)
 //   vitamin-d3     cholecalciferol, made in sunlit skin (skin dive)
+//   retinal        11-cis and all-trans, the switch light flips (eye dive)
 import * as THREE from 'three/webgpu';
 import { materialBank, disposeTree } from '../scenes/kit.js';
 import { buildMolecule, styleControls } from './molecule.js';
@@ -412,6 +413,103 @@ export function buildVitaminD3({ reducedMotion = false } = {}) {
     update,
     dispose() {
       mol.sphere.dispose();
+      disposeTree(root);
+      M.dispose();
+    },
+  };
+}
+
+/** Retinal: its aldehyde oxygen, the ring, and the C11=C12 bond that light flips. */
+export function retinalParts(id = 'retinal-11-cis') {
+  const { atoms, bonds } = moleculeGraph(id);
+  const heavyN = (i) => neighbors(bonds, i).filter((k) => atoms[k].el !== 'H');
+  const oxygen = atoms.findIndex((a) => a.el === 'O');
+  // Walk the chain from the aldehyde: O, C15, C14, C13, C12, C11 (skip the methyl branch on C13).
+  const chain = [oxygen];
+  while (chain.length < 6) {
+    const last = chain.at(-1);
+    const next = heavyN(last).find((k) => !chain.includes(k) && atoms[k].el === 'C' && heavyN(k).length >= 2);
+    chain.push(next);
+  }
+  const [, c15, c14, c13, c12, c11] = chain;
+  // Ring atoms: carbons in a six-membered cycle (each has two ring neighbors that are also connected through four more atoms).
+  const ring = new Set();
+  const inCycle = (start) => {
+    const stack = [[start, -1, 0]];
+    while (stack.length) {
+      const [at, from, depth] = stack.pop();
+      for (const k of heavyN(at)) {
+        if (k === from) continue;
+        if (k === start && depth === 5) return true;
+        if (depth < 5 && k !== start) stack.push([k, at, depth + 1]);
+      }
+    }
+    return false;
+  };
+  atoms.forEach((a, i) => a.el === 'C' && inCycle(i) && ring.add(i));
+  return { atoms, bonds, oxygen, c11, c12, c13, c14, c15, ring };
+}
+
+export const RETINAL_VIEWS = [
+  { label: '11-cis (before light)', text: '11-cis-retinal, C₂₀H₂₈O: a ring and a chain of alternating single and double bonds, bent at carbons 11 and 12 (glowing). This is the shape that sits inside rhodopsin in the dark.' },
+  { label: 'all-trans (after light)', text: 'all-trans-retinal: absorbing one photon flips the double bond between carbons 11 and 12, and the chain straightens. Rhodopsin changes shape around it and the signal begins. The cell must later return it to 11-cis.' },
+  { label: 'Space filling', text: 'Space filling: about 1.5 nm long. Retinal is made from vitamin A, which is why too little vitamin A causes night blindness.' },
+];
+
+export function buildRetinal({ reducedMotion = false } = {}) {
+  const M = materialBank();
+  const { root, spin, update } = spinRoot(reducedMotion);
+  const build = (id) => {
+    const p = retinalParts(id);
+    p.atoms.forEach((a, i) => {
+      a.card = 'retinal';
+      if (i === p.c11 || i === p.c12) a.tint = 0xffd36a;
+      a.label =
+        i === p.c11 || i === p.c12
+          ? `Carbon ${i === p.c11 ? 11 : 12}: the double bond light flips`
+          : i === p.oxygen
+            ? 'Oxygen of the aldehyde end (binds to the opsin protein)'
+            : p.ring.has(i)
+              ? 'Ring carbon'
+              : a.el === 'C'
+                ? 'Chain carbon'
+                : 'Hydrogen';
+    });
+    return buildMolecule(p.atoms, p.bonds, M, { defaultCard: 'retinal' });
+  };
+  const cis = build('retinal-11-cis');
+  const trans = build('retinal-all-trans');
+  spin.add(cis.group, trans.group);
+  const controls = {
+    label: 'Form',
+    unit: '',
+    min: 0,
+    max: 2,
+    step: 1,
+    value: 0,
+    format: (v) => RETINAL_VIEWS[Math.round(v)].label,
+    presets: RETINAL_VIEWS.map((s, i) => ({ label: s.label, value: i })),
+    set(v) {
+      const k = Math.max(0, Math.min(2, Math.round(v)));
+      controls.value = v;
+      cis.group.visible = k !== 1;
+      trans.group.visible = k === 1;
+      cis.setStyle(k === 2 ? 1 : 0);
+      return RETINAL_VIEWS[k].text;
+    },
+  };
+  controls.set(0);
+  return {
+    root,
+    fit: 'both',
+    metersPerUnit: 1e-10,
+    view: { target: [0, 0, 0], direction: [0.15, 0.5, 1] },
+    focus: [0, 0, 0],
+    controls,
+    update,
+    dispose() {
+      cis.sphere.dispose();
+      trans.sphere.dispose();
       disposeTree(root);
       M.dispose();
     },

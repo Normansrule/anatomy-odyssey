@@ -17,6 +17,7 @@ import { DIGESTIVE_CARDS } from './cards-digestive.js';
 import { URINARY_CARDS } from './cards-urinary.js';
 import { ENDOCRINE_CARDS } from './cards-endocrine.js';
 import { SKIN_CARDS } from './cards-skin.js';
+import { EYE_CARDS } from './cards-eye.js';
 
 const humanDiploidBp = 6.4e9;
 const dnaPerCell = formatLength(dnaLength(humanDiploidBp)).text; // ≈ 2.2 m
@@ -474,6 +475,7 @@ export const CARDS = [
   ...URINARY_CARDS,
   ...ENDOCRINE_CARDS,
   ...SKIN_CARDS,
+  ...EYE_CARDS,
 ];
 
 // Short cards for planned library entries, so search and cross-links can explain them.

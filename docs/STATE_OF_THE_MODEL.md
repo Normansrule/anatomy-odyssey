@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.14.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.15.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -105,7 +105,16 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 3 | Skin | 6 mm | A 5 × 2.8 mm block of thin skin cut on two faces: epidermis 0.1 mm, papillary and reticular dermis, hypodermis with fat cells; three slanted hair follicles reaching the hypodermis with sebaceous glands and arrector pili, two coiled sweat glands with ducts to pores, deep and superficial vessel networks with capillary loops in the papillae, tactile and lamellated corpuscles. Layer thicknesses are typical for a forearm, not from a cited source. Temperature control: vessels narrow or widen, hairs stand up in the cold, sweat beads in the heat |
 | 4 | Epidermis | 0.22 mm | Layer counts within OpenStax's ranges: 1 basal, 8 spinosum, 4 granulosum, 18 corneum; wavy junction with dermal papillae and capillary loops; melanocytes, Langerhans cells, a Merkel cell on a nerve ending. Cells are simplified shapes. Five-stage control following one keratinocyte from birth to being shed |
 | 5 | Sunlight | 66 µm | A basal keratinocyte 11 µm wide, see-through, with its nucleus capped by melanin; a melanocyte handing over melanosomes; a dermal capillary below. UV rays, melanin granules and molecules drawn far larger than life. Four-stage control: UV arrives, melanin shields, vitamin D3 made in the membrane, vitamin D3 to the blood |
-| 7 | Vitamin D3 (shared, new) | 2.4 nm | Stops here. RDKit-generated cholecalciferol (C₂₇H₄₄O), five stereocentres and the 5Z,7E double bonds checked; the three double bonds glow |
+| 7 | Vitamin D3 (shared, new in v0.14.0) | 2.4 nm | Stops here. RDKit-generated cholecalciferol (C₂₇H₄₄O), five stereocentres and the 5Z,7E double bonds checked; the three double bonds glow |
+
+### Eye dive (new in v0.15.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 1 | Whole body | 2.1 m | Nervous system on; the eyes and optic nerves are new |
+| 3 | Eye | 4.6 cm | Cut horizontally, seen from above. Sizes from EyeWiki: 24 mm long, cornea 12 mm across and 0.54 mm thick, anterior chamber 3 mm, lens about 9.5 mm, fovea 1.5 mm, optic disc 1.8 mm. Coat thicknesses exaggerated a little. Light rays bent onto the fovea; light control sets the pupil from 7 mm (dark) to 3 mm (bright) |
+| 4 | Retina | 0.3 mm | All layers from the nerve fibers to the pigment epithelium and choroid capillaries; one cone per 25 photoreceptors (in life rods outnumber cones even more away from the fovea); layer thicknesses approximate. Five-stage control following one signal from a rod to the optic nerve |
+| 6 | Light to signal | 110 nm | Three discs and the outer membrane of a rod; rhodopsin as seven-helix bundles, transducin, phosphodiesterase, cGMP and sodium channels as simplified shapes. Five-stage control following OpenStax: retinal flips, transducin, phosphodiesterase, cGMP falls, channels close |
+| 7 | Retinal (shared, new) | 2 nm | Stops here. RDKit-generated 11-cis and all-trans retinal (C₂₀H₂₈O), double-bond geometry checked; a control switches between them |
 
 ### From gene to protein (module, new in v0.4.0)
 | Tier | Step | Frame | Notes |
