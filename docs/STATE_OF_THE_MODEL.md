@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.13.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.14.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -96,7 +96,16 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 3 | Thyroid gland | 13 cm | Lobes 5 cm tall hugging the windpipe, isthmus across tracheal rings 2 and 3 (StatPearls), upper poles beside the thyroid cartilage; four parathyroids on the back; superior and inferior thyroid arteries, thyroid veins, common carotid arteries and internal jugular veins. One lobe cut open, with about 300 follicles drawn larger than life. Lobe size is typical, not from a cited source |
 | 4 | Follicles | 0.8 mm | Twenty follicles 0.1–0.28 mm across, each a ball of 12 µm cells around colloid, wrapped in capillaries; C cells between them; the front follicle cut across like a slide. TSH control: cells 6 µm tall at rest, 16 µm when active, colloid droplets taken back in |
 | 5 | Follicle cell | 44 µm | Four cells 12 µm wide between colloid and a capillary, one see-through (nucleus, rough endoplasmic reticulum, Golgi, mitochondria, microvilli). Iodide carriers, peroxidase, thyroglobulin, lysosomes and hormone drawn far larger than life and far fewer. Five-stage control following OpenStax 17.4 |
-| 7 | Thyroxine (shared, new) | 2 nm | Stops here. RDKit-generated T4 (C₁₅H₁₁I₄NO₄) and T3, L form checked, amino-acid end charged as in water; a control switches between T4, T3 and space filling |
+| 7 | Thyroxine (shared, new in v0.13.0) | 2 nm | Stops here. RDKit-generated T4 (C₁₅H₁₁I₄NO₄) and T3, L form checked, amino-acid end charged as in water; a control switches between T4, T3 and space filling |
+
+### Skin dive (new in v0.14.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 1 | Whole body | 2.1 m | Skin on; clicking the skin now opens its own card |
+| 3 | Skin | 6 mm | A 5 × 2.8 mm block of thin skin cut on two faces: epidermis 0.1 mm, papillary and reticular dermis, hypodermis with fat cells; three slanted hair follicles reaching the hypodermis with sebaceous glands and arrector pili, two coiled sweat glands with ducts to pores, deep and superficial vessel networks with capillary loops in the papillae, tactile and lamellated corpuscles. Layer thicknesses are typical for a forearm, not from a cited source. Temperature control: vessels narrow or widen, hairs stand up in the cold, sweat beads in the heat |
+| 4 | Epidermis | 0.22 mm | Layer counts within OpenStax's ranges: 1 basal, 8 spinosum, 4 granulosum, 18 corneum; wavy junction with dermal papillae and capillary loops; melanocytes, Langerhans cells, a Merkel cell on a nerve ending. Cells are simplified shapes. Five-stage control following one keratinocyte from birth to being shed |
+| 5 | Sunlight | 66 µm | A basal keratinocyte 11 µm wide, see-through, with its nucleus capped by melanin; a melanocyte handing over melanosomes; a dermal capillary below. UV rays, melanin granules and molecules drawn far larger than life. Four-stage control: UV arrives, melanin shields, vitamin D3 made in the membrane, vitamin D3 to the blood |
+| 7 | Vitamin D3 (shared, new) | 2.4 nm | Stops here. RDKit-generated cholecalciferol (C₂₇H₄₄O), five stereocentres and the 5Z,7E double bonds checked; the three double bonds glow |
 
 ### From gene to protein (module, new in v0.4.0)
 | Tier | Step | Frame | Notes |

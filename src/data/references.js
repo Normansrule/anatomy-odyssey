@@ -320,4 +320,20 @@ export const REFERENCES = {
     text: 'Allen E, Fingeret A. "Anatomy, Head and Neck, Thyroid". StatPearls, NCBI Bookshelf (mass, position, blood supply).',
     url: 'https://www.ncbi.nlm.nih.gov/books/NBK470452/',
   },
+  'openstax-integumentary': {
+    text: 'OpenStax Anatomy and Physiology 2e, chapter 5: The Integumentary System.',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/5-introduction',
+  },
+  'openstax-skin-layers': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 5.1: Layers of the Skin (the five strata, melanocytes, Merkel and Langerhans cells, dermis, hypodermis).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/5-1-layers-of-the-skin',
+  },
+  'openstax-skin-accessory': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 5.2: Accessory Structures of the Skin (hair follicles, arrector pili, sebaceous and sweat glands).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/5-2-accessory-structures-of-the-skin',
+  },
+  'openstax-skin-functions': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 5.3: Functions of the Integumentary System (touch receptors, sweating, temperature control, vitamin D).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/5-3-functions-of-the-integumentary-system',
+  },
 };

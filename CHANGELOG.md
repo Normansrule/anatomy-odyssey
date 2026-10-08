@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.0
+
+- **Skin dive, down to vitamin D.** A tenth dive: a block of forearm skin cut on two faces, with its epidermis, dermis and fatty hypodermis, hair follicles with sebaceous glands and arrector pili, coiled sweat glands, two networks of blood vessels and touch receptors, and a temperature control (cold: vessels narrow and hairs stand up; hot: vessels widen and sweat beads on the surface) → the epidermis layer by layer, following one keratinocyte from the basal layer to being shed → a basal cell in sunlight, where melanin shields the nucleus and ultraviolet light turns a cholesterol derivative in the membrane into vitamin D3 → vitamin D3 itself.
+- **A new shared molecule**, vitamin D3 (cholecalciferol), generated with RDKit with its five stereocentres and 5Z,7E double bonds checked.
+- The skin on the whole body now opens its own card.
+- 20 new cards, 4 references (OpenStax chapter 5 and sections 5.1 to 5.3) and four quiz questions.
+- 362 tests (from 349).
+
 ## 0.13.0
 
 - **Endocrine dive, down to the hormone.** A ninth dive: the whole body with a new Endocrine button (pituitary, thyroid, parathyroids, adrenal glands, which moved here from Urinary) → the thyroid gland on the windpipe, its isthmus across tracheal rings 2 and 3, one lobe cut open to show its follicles, with the larynx, parathyroids and the arteries and veins of the neck → thyroid follicles wrapped in capillaries, the front one cut across like a slide, with a TSH control that makes the cells grow tall and take colloid back in → a follicle cell with a five-stage control: iodide pumped in, thyroglobulin made, iodine attached by peroxidase, colloid taken back, and T4 and T3 released into the blood → thyroxine.

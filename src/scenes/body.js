@@ -8,7 +8,7 @@ import {
 } from './kit.js';
 
 export const SYSTEMS = [
-  { id: 'skin', label: 'Skin', card: 'body' },
+  { id: 'skin', label: 'Skin', card: 'skin' },
   { id: 'skeletal', label: 'Skeletal', card: 'skeletal-system' },
   { id: 'muscular', label: 'Muscular', card: 'muscular-system' },
   { id: 'circulatory', label: 'Circulatory', card: 'circulatory-system' },
@@ -320,7 +320,7 @@ function buildSkin(M) {
   const g = new THREE.Group();
   const skin = M(COLORS.skin, { transparent: true, opacity: 0.16, depthWrite: false, roughness: 0.4, tissue: 'skin', repeat: [6, 6] });
   const add = (m) => {
-    pick(m, 'body', 'Body');
+    pick(m, 'skin', 'Skin');
     m.userData.pickPriority = -1; // skin never blocks a click on what is inside
     g.add(m);
   };

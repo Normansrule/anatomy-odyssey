@@ -251,6 +251,21 @@ export const DIVES = [
       libStep('thyroxine', { narration: 'Thyroxine, T4: two rings, four iodine atoms and the end of an amino acid. Switch to T3 to see the more potent form, one iodine lighter.' }),
     ],
   },
+  {
+    id: 'skin',
+    swatch: '#e0b49a', // menu and intro color
+    kind: 'dive',
+    title: 'Skin dive',
+    status: 'built',
+    summary: 'A block of skin → the layers of the epidermis → sunlight on a skin cell → vitamin D3, which the skin makes in the sun.',
+    steps: [
+      { ...BODY, focusCard: 'skin', focus: [0.272, 0.99, 0.036], systems: ['skin', 'skeletal'], narration: 'Your skin is the organ you see. We will zoom into a patch of forearm, through its layers, down to a molecule it makes from sunlight.' },
+      { id: 'skin-block', tier: 3, scene: 'skin-block', title: 'Skin', card: 'skin', frameMeters: 6e-3, focusCard: 'epidermis', narration: 'A block of skin a few millimeters across: the thin epidermis on top, the dermis with its hairs, glands, vessels and nerves, and fat below. Change the temperature and watch the skin respond.' },
+      { id: 'epidermis', tier: 4, scene: 'epidermis', title: 'Epidermis', card: 'epidermis', frameMeters: 2.2e-4, focusCard: 'keratinocyte', narration: 'The epidermis is a stack of cells, born at the bottom and dead by the time they reach the top. Follow one cell on its journey.' },
+      { id: 'sun-and-skin', tier: 5, scene: 'sun-and-skin', title: 'Sunlight', card: 'keratinocyte', frameMeters: 6.6e-5, focusCard: 'vitamin-d3', narration: 'One basal cell in the sun. Step through how melanin shields its DNA, and how ultraviolet light turns part of its membrane into vitamin D.' },
+      libStep('vitamin-d3', { narration: 'Vitamin D3: the cholesterol skeleton with one ring broken open by ultraviolet light. Your liver and kidneys turn it into the hormone that lets you absorb calcium.' }),
+    ],
+  },
 ];
 
 export function builtDives() {

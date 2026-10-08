@@ -5,6 +5,7 @@
 //   histamine      the alarm signal mast cells release (inflammatory response module)
 //   urea           the nitrogen waste the kidney filters out (urinary dive)
 //   thyroxine      the thyroid hormone, with T3 beside it (endocrine dive)
+//   vitamin-d3     cholecalciferol, made in sunlit skin (skin dive)
 import * as THREE from 'three/webgpu';
 import { materialBank, disposeTree } from '../scenes/kit.js';
 import { buildMolecule, styleControls } from './molecule.js';
@@ -361,6 +362,56 @@ export function buildThyroxine({ reducedMotion = false } = {}) {
     dispose() {
       t4.sphere.dispose();
       t3.sphere.dispose();
+      disposeTree(root);
+      M.dispose();
+    },
+  };
+}
+
+/** Vitamin D3: its hydroxyl oxygen and the carbons of its three double bonds. */
+export function vitaminD3Parts() {
+  const { atoms, bonds } = moleculeGraph('vitamin-d3');
+  const hydroxylO = atoms.findIndex((a) => a.el === 'O');
+  const doubleBonds = bonds.filter(([, , o]) => o === 2);
+  const triene = new Set(doubleBonds.flatMap(([i, j]) => [i, j]));
+  return { atoms, bonds, hydroxylO, doubleBonds, triene };
+}
+
+export function buildVitaminD3({ reducedMotion = false } = {}) {
+  const M = materialBank();
+  const { root, spin, update } = spinRoot(reducedMotion);
+  const { atoms, bonds, hydroxylO, triene } = vitaminD3Parts();
+  atoms.forEach((a, i) => {
+    a.card = 'vitamin-d3';
+    if (triene.has(i)) a.tint = 0xffd36a;
+    a.label =
+      i === hydroxylO
+        ? 'Oxygen of the –OH group (the liver and kidneys add two more –OH to make calcitriol)'
+        : triene.has(i)
+          ? 'Carbon of the three double bonds left where UV light broke open the ring'
+          : a.el === 'C'
+            ? 'Carbon'
+            : a.el === 'H' && neighbors(bonds, i)[0] === hydroxylO
+              ? 'Hydrogen of the –OH group'
+              : 'Hydrogen';
+  });
+  const mol = buildMolecule(atoms, bonds, M, { defaultCard: 'vitamin-d3' });
+  spin.add(mol.group);
+  const controls = styleControls([mol], [
+    'Ball and stick: vitamin D3 (cholecalciferol), C₂₇H₄₄O, 72 atoms. Built on the cholesterol skeleton, but one ring is broken open: the carbons glowing yellow carry the three double bonds left behind.',
+    'Space filling: about 2 nm long and almost all carbon and hydrogen, so it dissolves in fat rather than water and travels in the blood on a carrier protein.',
+  ]);
+  controls.set(0);
+  return {
+    root,
+    fit: 'both',
+    metersPerUnit: 1e-10,
+    view: { target: [0, 0, 0], direction: [0.15, 0.5, 1] },
+    focus: [0, 0, 0],
+    controls,
+    update,
+    dispose() {
+      mol.sphere.dispose();
       disposeTree(root);
       M.dispose();
     },

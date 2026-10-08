@@ -92,6 +92,9 @@ OTHERS = [
     # T4 carries four iodines (3,5,3',5'); T3 lacks the 5' iodine on the outer ring.
     ("thyroxine", "Thyroxine (T4)", "[NH3+][C@@H](Cc1cc(I)c(Oc2cc(I)c(O)c(I)c2)c(I)c1)C(=O)[O-]", "C15H11I4NO4", 0),
     ("t3", "Triiodothyronine (T3)", "[NH3+][C@@H](Cc1cc(I)c(Oc2ccc(O)c(I)c2)c(I)c1)C(=O)[O-]", "C15H12I3NO4", 0),
+    # Vitamin D3 (cholecalciferol), made in the skin from 7-dehydrocholesterol by UVB light:
+    # (3S, 13R, 14S, 17R, 20R), with its broken B ring giving 5Z,7E double bonds.
+    ("vitamin-d3", "Vitamin D3 (cholecalciferol)", "C[C@H](CCCC(C)C)[C@H]1CC[C@@H]\\2[C@@]1(CCC/C2=C\\C=C/3\\C[C@H](CCC3=C)O)C", "C27H44O", 0),
     ("popc", "POPC (a phosphatidylcholine)", "CCCCCCCCCCCCCCCC(=O)OC[C@H](COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC/C=C\\CCCCCCCC", "C42H82NO8P", 0),
 ]
 
@@ -173,6 +176,12 @@ def alpha_and_beta(mol):
     return {}
 
 
+def double_bond_labels(mol):
+    from rdkit.Chem import rdCIPLabeler
+    rdCIPLabeler.AssignCIPLabels(mol)
+    return sorted(b.GetProp("_CIPCode") for b in mol.GetBonds() if b.HasProp("_CIPCode"))
+
+
 def sugar_labels(mol):
     from rdkit.Chem import rdCIPLabeler
     rdCIPLabeler.AssignCIPLabels(mol)
@@ -217,6 +226,9 @@ def main():
                 assert sugar_labels(Chem.Mol(mol)) == ["R", "R", "R", "S", "S"], f"{name}: not beta-D (2R,3R,4S,5S,6R)"
             if mid in ("thyroxine", "t3"):
                 assert alpha_and_beta(Chem.Mol(mol)).get("CA") == "S", f"{name}: not the L form"
+            if mid == "vitamin-d3":
+                assert sugar_labels(Chem.Mol(mol)) == ["R", "R", "R", "S", "S"], f"{name}: stereocenters"
+                assert double_bond_labels(Chem.Mol(mol)) == ["E", "Z"], f"{name}: not 5Z,7E"
             mol3, cid = embed(mol, 40, lowest_energy)
         atoms, bonds = export(mol3, cid)
         data["molecules"][mid] = {"name": name, "kind": "other", "formula": want_formula, "charge": charge, "smiles": smi, "atoms": atoms, "bonds": bonds}

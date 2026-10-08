@@ -179,6 +179,15 @@ export const LIBRARY = [
     step: { id: 'thyroxine', tier: 7, scene: 'thyroxine', title: 'Thyroxine', card: 'thyroxine', frameMeters: 2e-9 },
   },
   {
+    id: 'vitamin-d3',
+    title: 'Vitamin D3',
+    status: 'built',
+    scene: 'vitamin-d3',
+    card: 'vitamin-d3',
+    madeOf: [],
+    step: { id: 'vitamin-d3', tier: 7, scene: 'vitamin-d3', title: 'Vitamin D3', card: 'vitamin-d3', frameMeters: 2.4e-9 },
+  },
+  {
     id: 'phospholipids',
     title: 'Phospholipids',
     status: 'built',

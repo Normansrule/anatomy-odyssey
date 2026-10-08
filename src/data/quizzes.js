@@ -341,6 +341,32 @@ export const QUIZZES = {
       explain: 'Low T3 and T4 keep TSH high; the overstimulated gland accumulates colloid and enlarges.',
     },
   ],
+  skin: [
+    {
+      q: 'Which layer of the skin has no blood vessels?',
+      choices: ['The epidermis', 'The papillary dermis', 'The reticular dermis', 'The hypodermis'],
+      answer: 0,
+      explain: 'The epidermis is fed by capillary loops in the dermal papillae just below it.',
+    },
+    {
+      q: 'Where are new epidermal cells made?',
+      choices: ['In the stratum corneum', 'In the stratum basale', 'In the hypodermis', 'In sweat glands'],
+      answer: 1,
+      explain: 'Basal cells divide; their daughters move up, fill with keratin, flatten and die. The whole stratum corneum is replaced about every 4 weeks.',
+    },
+    {
+      q: 'What does melanin do?',
+      choices: ['Makes sweat', 'Absorbs UV light before it can damage DNA', 'Stores fat', 'Senses touch'],
+      answer: 1,
+      explain: 'Melanocytes pass melanin to keratinocytes, where it gathers over the nucleus and shields the DNA.',
+    },
+    {
+      q: 'What do you need for your skin to make vitamin D3?',
+      choices: ['Ultraviolet light', 'Cold temperatures', 'Sweating', 'Iodine'],
+      answer: 0,
+      explain: 'UV light converts a cholesterol derivative in skin cell membranes into vitamin D3. The liver and kidneys then activate it.',
+    },
+  ],
   reflex: [
     {
       q: 'Why does the knee jerk not need the brain?',
