@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.0
+
+- **Pancreas dive, from a meal to the insulin signal.** A thirteenth dive: the whole body with the digestive and endocrine systems → the pancreas, see-through, with its ducts, the duodenum and spleen, and islets drawn larger, and a meal control that sends pancreatic juice to the duodenum → an islet of Langerhans cut in half, its cells in OpenStax's proportions, with a blood glucose control (glucagon from alpha cells when low, insulin from beta cells when high) → a beta cell stepping through glucose-stimulated insulin secretion: GLUT2, ATP, ATP-sensitive potassium channels closing, calcium in, insulin out → ATP, the shared molecule.
+- 11 new cards (duodenum, spleen, ducts, acinar, islet, alpha, beta, delta and PP cells, insulin, potassium and calcium channels), 3 references (OpenStax 17.9 and 23.6, Demirbilek and others 2019) and four quiz questions. The pancreas card now opens the new dive.
+- 397 tests (from 389).
+
 ## 0.16.0
 
 - **Ear dive, from a sound wave to glutamate.** A twelfth dive: the whole body, now with inner ears and their nerves → the ear cut open from the front, with the ossicles, the semicircular canals and a cochlea of two and a half turns, and a pitch control from 20 Hz to 20 kHz that lights where each note is sensed (high at the base, low at the apex) → one turn of the cochlea cut across, its three fluid channels and the organ of Corti with one row of inner and three of outer hair cells, stepping from pressure wave to nerve signal → an inner hair cell, its stereocilia tied by tip links, stepping from a bent bundle to open channels, glutamate release and a nerve impulse → glutamate, the shared molecule the nervous dive also reaches.

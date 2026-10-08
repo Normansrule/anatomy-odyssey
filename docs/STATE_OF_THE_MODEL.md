@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.16.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.17.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -124,6 +124,15 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 4 | Inside the cochlea | 1.5 mm | One turn cut across and drawn straight: scala vestibuli and scala tympani (perilymph), cochlear duct (endolymph), Reissner's membrane, stria vascularis, basilar membrane, organ of Corti with one row of inner and three rows of outer hair cells (OpenStax Biology 36.4), tectorial membrane, spiral ganglion. Four-stage control with the basilar membrane's motion exaggerated |
 | 5 | Hair cell | 42 µm | An inner hair cell between supporting cells, stereocilia in three graded rows with tip links and channels, a synaptic ribbon with glutamate vesicles, and a nerve ending. Proportions drawn, not measured; ions and vesicles far larger than life. Five-stage control |
 | 7 | Glutamate (shared) | 1.5 nm | Stops here. The same scene the nervous dive ends at |
+
+### Pancreas dive (new in v0.17.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 1 | Whole body | 2.1 m | Digestive and endocrine systems on |
+| 3 | Pancreas | 24 cm | Drawn see-through and 15 cm long (OpenStax 23.6), head in the duodenum's curve, tail at the spleen; main and accessory ducts, common bile duct and ampulla, splenic artery and vein. About 90 islets drawn far larger than life (real ones are a fraction of a millimeter). Meal control: pancreatic juice flows to the duodenum and the islets light up |
+| 4 | Islet | 0.34 mm | An islet cut in half with cells in OpenStax 17.9's shares (75% beta, 20% alpha, 4% delta, 1% PP), mixed as in human islets; capillaries; a ring of acini and a small duct. Islet and cell sizes typical, not from a cited source. Glucose control: alpha cells and glucagon when low, beta cells and insulin when high |
+| 5 | Beta cell | 34 µm | Cut open beside a capillary: nucleus, mitochondria, insulin granules (drawn larger); GLUT2, ATP-sensitive potassium channels and voltage-gated calcium channels drawn far larger. Five-stage control following Demirbilek and others (2019) |
+| 7 | ATP (shared) | 1.9 nm | Stops here. The same RDKit-generated scene the muscular dive's side trip reaches |
 
 ### From gene to protein (module, new in v0.4.0)
 | Tier | Step | Frame | Notes |

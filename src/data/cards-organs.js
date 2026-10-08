@@ -43,8 +43,8 @@ export const ORGAN_CARDS = [
   {
     id: 'pancreas',
     title: 'Pancreas',
-    aliases: ['pancreatic', 'insulin', 'pancreatic juice'],
-    home: 'body',
+    aliases: ['pancreatic', 'pancreas head', 'pancreas tail'],
+    home: 'pancreas',
     system: 'digestive',
     size: 'About 15 cm long, behind the stomach',
     what: 'A long gland lying across the back of the belly, its head in the curve of the duodenum and its tail near the spleen.',

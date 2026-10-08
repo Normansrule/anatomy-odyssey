@@ -45,6 +45,9 @@ import { buildPhototransduction } from './phototransduction.js';
 import { buildEar } from './ear.js';
 import { buildCochlearDuct } from './cochlearDuct.js';
 import { buildHairCell } from './hairCell.js';
+import { buildPancreas } from './pancreas.js';
+import { buildIslet } from './islet.js';
+import { buildBetaCell } from './betaCell.js';
 import { buildSkinBlock } from './skinBlock.js';
 import { buildEpidermis } from './epidermis.js';
 import { buildSunAndSkin } from './sunAndSkin.js';
@@ -132,6 +135,9 @@ export const SCENES = {
   ear: buildEar,
   'cochlear-duct': buildCochlearDuct,
   'hair-cell': buildHairCell,
+  pancreas: buildPancreas,
+  islet: buildIslet,
+  'beta-cell': buildBetaCell,
   'mast-cell': buildMastCell,
   nucleus: buildNucleus,
   dna: buildDna,

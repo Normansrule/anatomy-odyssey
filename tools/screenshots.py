@@ -42,6 +42,7 @@ STEPS = [
     ("skin", "body", ""), ("skin", "skin-block", ""), ("skin", "epidermis", ""), ("skin", "sun-and-skin", ""), ("skin", "vitamin-d3", ""),
     ("eye", "body", ""), ("eye", "eye", ""), ("eye", "retina", ""), ("eye", "phototransduction", ""), ("eye", "retinal", ""),
     ("ear", "body", ""), ("ear", "ear", ""), ("ear", "cochlear-duct", ""), ("ear", "hair-cell", ""), ("ear", "neurotransmitter", ""),
+    ("pancreas", "body", ""), ("pancreas", "pancreas", ""), ("pancreas", "islet", ""), ("pancreas", "beta-cell", ""), ("pancreas", "atp", ""),
 ]
 
 

@@ -419,6 +419,32 @@ export const QUIZZES = {
       explain: 'About 3,500 inner hair cells in one row carry most of what you hear; about 12,000 outer hair cells fine-tune the response.',
     },
   ],
+  pancreas: [
+    {
+      q: 'What makes up most of the pancreas?',
+      choices: ['Islets of hormone cells', 'Acini that make digestive enzymes', 'Fat', 'Blood vessels'],
+      answer: 1,
+      explain: 'The pancreas is mainly an exocrine gland; the hormone-making islets are small islands among the acini.',
+    },
+    {
+      q: 'Which islet cells are the most common, and what do they make?',
+      choices: ['Alpha cells, glucagon', 'Beta cells, insulin', 'Delta cells, somatostatin', 'PP cells, pancreatic polypeptide'],
+      answer: 1,
+      explain: 'Beta cells are about 75 percent of an islet; alpha cells, which make glucagon, about 20 percent.',
+    },
+    {
+      q: 'In a beta cell, what does a rise in ATP do?',
+      choices: ['Opens potassium channels', 'Closes ATP-sensitive potassium channels', 'Blocks glucose entry', 'Destroys insulin'],
+      answer: 1,
+      explain: 'Closing them depolarizes the membrane, which opens calcium channels; calcium triggers insulin release.',
+    },
+    {
+      q: 'What does glucagon do?',
+      choices: ['Lowers blood glucose', 'Raises blood glucose, mainly by making the liver release glucose', 'Digests fat in the gut', 'Makes insulin'],
+      answer: 1,
+      explain: 'Released when blood glucose is low, glucagon tells the liver to break down glycogen and make new glucose.',
+    },
+  ],
   reflex: [
     {
       q: 'Why does the knee jerk not need the brain?',

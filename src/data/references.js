@@ -360,4 +360,16 @@ export const REFERENCES = {
     text: 'Encyclopaedia Britannica. "Ear: Cochlea" (two and a half turns, 9 mm by 5 mm, about 30 mm uncoiled, basilar membrane 30 to 35 mm).',
     url: 'https://www.britannica.com/science/ear/Cochlea',
   },
+  'openstax-endocrine-pancreas': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 17.9: The Endocrine Pancreas (islet cell types and shares, insulin, glucagon, diabetes).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/17-9-the-endocrine-pancreas',
+  },
+  'openstax-pancreas-liver': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 23.6: Accessory Organs in Digestion (the pancreas: position, ducts, acini, pancreatic juice).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/23-6-accessory-organs-in-digestion-the-liver-pancreas-and-gallbladder',
+  },
+  demirbilek2019: {
+    text: 'Demirbilek H, Galcheva S, Vuralli D, Al-Khawaga S, Hussain K (2019). "Ion Transporters, Channelopathies, and Glucose Disorders." International Journal of Molecular Sciences 20(10):2590 (glucose-stimulated insulin secretion).',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6566632/',
+  },
 };

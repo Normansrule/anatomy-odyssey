@@ -296,6 +296,21 @@ export const DIVES = [
       libStep('neurotransmitter', { narration: 'Glutamate, the same messenger the nervous dive ends at. Here it carries sound from a hair cell to the nerve.' }),
     ],
   },
+  {
+    id: 'pancreas',
+    swatch: '#e6bf86', // menu and intro color
+    kind: 'dive',
+    title: 'Pancreas dive',
+    status: 'built',
+    summary: 'The pancreas → an islet of Langerhans → a beta cell sensing glucose → ATP, the signal that releases insulin.',
+    steps: [
+      { ...BODY, focusCard: 'pancreas', focus: [0.03, 1.0, -0.005], systems: ['digestive', 'endocrine'], narration: 'After every meal your blood sugar rises, and within minutes a gland behind your stomach answers. We will follow how.' },
+      { id: 'pancreas', tier: 3, scene: 'pancreas', title: 'Pancreas', card: 'pancreas', frameMeters: 0.24, focusCard: 'islet', narration: 'The pancreas lies behind the stomach, its head in the curve of the duodenum. Most of it makes digestive juice; scattered through it are islets of hormone cells, drawn far larger here.' },
+      { id: 'islet', tier: 4, scene: 'islet', title: 'Islet', card: 'islet', frameMeters: 3.4e-4, focusCard: 'beta-cell', narration: 'One islet, cut in half, among the enzyme-making acini. Change the blood glucose and watch which cells answer.' },
+      { id: 'beta-cell', tier: 5, scene: 'beta-cell', title: 'Beta cell', card: 'beta-cell', frameMeters: 3.4e-5, focusCard: 'atp', narration: 'A beta cell beside a capillary. Step through how it turns a rise in glucose into a burst of insulin, with ATP as the go-between.' },
+      libStep('atp', { narration: 'ATP, the cell’s energy currency. Here it is also a signal: when glucose makes more of it, the beta cell releases insulin.' }),
+    ],
+  },
 ];
 
 export function builtDives() {
