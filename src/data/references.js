@@ -348,4 +348,16 @@ export const REFERENCES = {
     text: 'EyeWiki (American Academy of Ophthalmology). "Eye in Numbers" (axial length, cornea, lens, pupil, fovea, optic nerve).',
     url: 'https://eyewiki.org/Eye_in_Numbers',
   },
+  'openstax-hearing': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 14.1: Sensory Perception (audition: outer, middle and inner ear, cochlea, hair cells, 20 to 20,000 Hz).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/14-1-sensory-perception',
+  },
+  'openstax-bio-hearing': {
+    text: 'OpenStax Biology 2e, section 36.4: Hearing and Vestibular Sensation (inner and outer hair cell numbers, transduction).',
+    url: 'https://openstax.org/books/biology-2e/pages/36-4-hearing-and-vestibular-sensation',
+  },
+  'britannica-cochlea': {
+    text: 'Encyclopaedia Britannica. "Ear: Cochlea" (two and a half turns, 9 mm by 5 mm, about 30 mm uncoiled, basilar membrane 30 to 35 mm).',
+    url: 'https://www.britannica.com/science/ear/Cochlea',
+  },
 };

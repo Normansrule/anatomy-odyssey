@@ -281,6 +281,21 @@ export const DIVES = [
       libStep('retinal', { narration: 'Retinal, the switch itself. Flip between its two shapes: the bend at carbons 11 and 12 is what a photon straightens.' }),
     ],
   },
+  {
+    id: 'ear',
+    swatch: '#9fc8a8', // menu and intro color
+    kind: 'dive',
+    title: 'Ear dive',
+    status: 'built',
+    summary: 'The ear → a turn of the cochlea → a hair cell → glutamate, the messenger it releases onto the nerve.',
+    steps: [
+      { ...BODY, focusCard: 'ear', focus: [0.062, 1.612, -0.004], systems: ['nervous'], narration: 'Every sound you hear is a pressure wave in the air. We will follow one into your ear, down to the molecule a single hair cell releases.' },
+      { id: 'ear', tier: 3, scene: 'ear', title: 'Ear', card: 'ear', frameMeters: 0.07, focusCard: 'cochlea', narration: 'The ear cut open from the front. Sound passes the ear canal, the eardrum and three tiny bones into the snail-shaped cochlea. Change the pitch and see where along the cochlea it is sensed.' },
+      { id: 'cochlear-duct', tier: 4, scene: 'cochlear-duct', title: 'Inside the cochlea', card: 'cochlear-duct', frameMeters: 1.5e-3, focusCard: 'inner-hair-cell', narration: 'One turn of the cochlea cut across: three fluid-filled channels and, on the basilar membrane, the organ of Corti with its rows of hair cells. Step through how a sound wave bends them.' },
+      { id: 'hair-cell', tier: 5, scene: 'hair-cell', title: 'Hair cell', card: 'inner-hair-cell', frameMeters: 4.2e-5, focusCard: 'neurotransmitter', narration: 'One inner hair cell. Its stereocilia are tied tip to side; step through how bending them opens channels and makes the cell release glutamate onto a nerve fiber.' },
+      libStep('neurotransmitter', { narration: 'Glutamate, the same messenger the nervous dive ends at. Here it carries sound from a hair cell to the nerve.' }),
+    ],
+  },
 ];
 
 export function builtDives() {

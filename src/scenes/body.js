@@ -504,6 +504,14 @@ function buildNervous(M) {
     g.add(pick(ellipsoid([x, EYES.y, EYES.z + 0.0105], [0.0055, 0.0055, 0.0022], M(0x4a6a8a, { roughness: 0.2 }), 16), 'eye', 'Iris and pupil'));
     g.add(pick(tubeThrough([[x, EYES.y, EYES.z - 0.011], [x * 0.6, EYES.y - 0.004, EYES.z - 0.035], [0, EYES.y - 0.012, 0.02]], 0.0018, n, 16, 6), 'optic-nerve', 'Optic nerve'));
   }
+  // Inner ears, deep in the skull beside the brainstem.
+  for (const x of INNER_EARS.x) {
+    const coil = new THREE.Mesh(new THREE.TorusGeometry(0.0035, 0.0014, 8, 20), M(0xf2e4c0, { roughness: 0.4 }));
+    coil.position.set(x, INNER_EARS.y, INNER_EARS.z);
+    coil.rotation.y = Math.PI / 2;
+    g.add(pick(coil, 'ear', 'Inner ear (cochlea)'));
+    g.add(pick(tubeThrough([[x, INNER_EARS.y, INNER_EARS.z], [x * 0.5, INNER_EARS.y - 0.004, INNER_EARS.z - 0.004], [0, INNER_EARS.y - 0.012, -0.01]], 0.0012, n, 12, 5), 'vestibulocochlear-nerve', 'Vestibulocochlear nerve'));
+  }
   for (const s of SIDES) {
     nerve([[0, 1.02, -0.045], [s * 0.06, 0.93, -0.065], [s * 0.1, 0.75, -0.05], [s * 0.1, 0.5, -0.035], [s * 0.1, 0.3, -0.03], [s * 0.095, 0.07, -0.01]], 0.0045, 'Sciatic nerve');
     nerve([[0, 1.45, -0.04], [s * 0.1, 1.4, -0.02], [s * 0.21, 1.27, 0.0], [s * 0.26, 1.02, 0.005], [s * 0.3, 0.8, 0.005]], 0.0035, 'Arm nerves');
@@ -704,6 +712,8 @@ function buildUrinary(M) {
 
 /** Eye centres: in the sockets of the skull, below the brow. */
 export const EYES = { x: [-0.032, 0.032], y: 1.632, z: 0.077 };
+/** Inner ears: in the temporal bones, level with the ear canals. */
+export const INNER_EARS = { x: [-0.062, 0.062], y: 1.612, z: -0.004 };
 
 /** Thyroid lobes on either side of the windpipe, below the larynx. */
 export const THYROID = { center: [0, 1.468, 0.04], lobeX: 0.018 };

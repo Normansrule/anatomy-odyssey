@@ -42,6 +42,9 @@ import { buildGlucose, buildAcetylcholine, buildHistamine, buildUrea, buildThyro
 import { buildEye } from './eye.js';
 import { buildRetina } from './retina.js';
 import { buildPhototransduction } from './phototransduction.js';
+import { buildEar } from './ear.js';
+import { buildCochlearDuct } from './cochlearDuct.js';
+import { buildHairCell } from './hairCell.js';
 import { buildSkinBlock } from './skinBlock.js';
 import { buildEpidermis } from './epidermis.js';
 import { buildSunAndSkin } from './sunAndSkin.js';
@@ -126,6 +129,9 @@ export const SCENES = {
   eye: buildEye,
   retina: buildRetina,
   phototransduction: buildPhototransduction,
+  ear: buildEar,
+  'cochlear-duct': buildCochlearDuct,
+  'hair-cell': buildHairCell,
   'mast-cell': buildMastCell,
   nucleus: buildNucleus,
   dna: buildDna,

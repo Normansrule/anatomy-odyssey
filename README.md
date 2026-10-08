@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.15.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-379%20passing-4fb38a)
+![Version](https://img.shields.io/badge/version-0.16.0-f08baf)
+![Tests](https://img.shields.io/badge/tests-389%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -24,7 +24,7 @@
 
 ## In one minute
 
-- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous, respiratory, digestive, urinary, endocrine, skin or eye) and fall through the body one scale at a time: organ → tissue → cell → molecule.
+- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous, respiratory, digestive, urinary, endocrine, skin, eye or ear) and fall through the body one scale at a time: organ → tissue → cell → molecule.
 - **Point at anything** to light it up and see its name; **click** to open a card: what it is, why it matters, its real size, and a source you can check.
 - **Watch the depth gauge**: it shows how big the view is, from about 2 m down to a fraction of a nanometer, so sizes stay honest.
 - **Play with the science**: sliders run real, tested equations (oxygen binding, nerve speed, blood pH, enzyme speed-up and more).
@@ -38,7 +38,7 @@ No accounts, no tracking. Two ways to use it:
 
 ## What you can explore
 
-### Eleven dives
+### Twelve dives
 
 | Dive | The path down | Ends at |
 |---|---|---|
@@ -53,6 +53,7 @@ No accounts, no tracking. Two ways to use it:
 | 🦋 **Endocrine** | body → thyroid gland → follicles → hormone-making cell | thyroxine (T4) and T3 |
 | ☀️ **Skin** | body → a block of skin → the epidermis → a skin cell in sunlight | vitamin D3 |
 | 👁️ **Eye** | body → eye → retina → light becoming a signal in a rod | retinal (11-cis and all-trans) |
+| 👂 **Ear** | body → ear → a turn of the cochlea → a hair cell | glutamate |
 
 ### Six modules
 
@@ -117,6 +118,11 @@ Side trips branch into a **shared library** of building blocks (nucleus, nucleos
 <td><img src="docs/screenshots/phototransduction.webp" alt="Inside a rod: stacked disc membranes with rhodopsin, transducin and phosphodiesterase, cGMP in the cytoplasm and sodium channels in the outer membrane" /></td>
 </tr>
 <tr>
+<td><img src="docs/screenshots/ear.webp" alt="The ear cut open from the front: auricle, ear canal, eardrum, the three ossicles, the cochlea with the place a 20 kHz tone is sensed glowing at its base, the semicircular canals and the Eustachian tube" /></td>
+<td><img src="docs/screenshots/cochlear-duct.webp" alt="One turn of the cochlea cut across: scala vestibuli, cochlear duct and scala tympani, with the organ of Corti on the basilar membrane under the tectorial membrane" /></td>
+<td><img src="docs/screenshots/hair-cell.webp" alt="An inner hair cell between supporting cells, its stereocilia in three graded rows tied by tip links, potassium entering, and a nerve ending at its base" /></td>
+</tr>
+<tr>
 <td><img src="docs/screenshots/hemoglobin.webp" alt="Hemoglobin's four chains with the oxygen pressure slider" /></td>
 <td><img src="docs/screenshots/nucleosome.webp" alt="A nucleosome: DNA wrapped around eight histones" /></td>
 <td><img src="docs/screenshots/atlas.webp" alt="The map: every dive laid out by scale" /></td>
@@ -164,7 +170,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 379 unit tests
+npm test               # 389 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -178,7 +184,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.15.0 && git push origin v0.15.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
+Pushing a version tag (`git tag v0.16.0 && git push origin v0.16.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
 
 **Headless checks** (software rendering, no GPU needed):
 
@@ -241,7 +247,7 @@ docs/          state of the model, equations, security model, publishing
 
 ## Roadmap
 
-- [x] Eleven dives, six modules and a complete shared library; every dive and every module ends at a molecule
+- [x] Twelve dives, six modules and a complete shared library; every dive and every module ends at a molecule
 - [x] Desktop app, device check, accessibility audit
 - [x] Realistic tissue surfaces with natural and stain looks
 - [x] The spinal cord, through the knee-jerk reflex

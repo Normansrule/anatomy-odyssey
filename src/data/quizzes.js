@@ -393,6 +393,32 @@ export const QUIZZES = {
       explain: 'Light lowers cGMP, closing sodium channels; the rod hyperpolarizes and releases less neurotransmitter.',
     },
   ],
+  ear: [
+    {
+      q: 'What do the three ossicles of the middle ear do?',
+      choices: ['Sense balance', 'Pass on and amplify the eardrum’s vibration', 'Make earwax', 'Drain fluid to the throat'],
+      answer: 1,
+      explain: 'The malleus, incus and stapes concentrate the eardrum’s vibration onto the small oval window of the inner ear.',
+    },
+    {
+      q: 'Where along the cochlea are high-pitched sounds sensed?',
+      choices: ['At the base, near the oval window', 'At the apex (tip)', 'In the semicircular canals', 'Evenly along its length'],
+      answer: 0,
+      explain: 'High frequencies move the narrow, stiff base of the basilar membrane; low frequencies travel to the apex.',
+    },
+    {
+      q: 'What bends a hair cell’s stereocilia?',
+      choices: ['Light', 'The basilar membrane moving under the still tectorial membrane', 'Blood pressure', 'Air in the middle ear'],
+      answer: 1,
+      explain: 'The organ of Corti rocks with the basilar membrane while the tectorial membrane above stays put, so the stereocilia between them bend.',
+    },
+    {
+      q: 'Which cells are the main receptors for hearing?',
+      choices: ['Outer hair cells', 'Inner hair cells, in a single row', 'Spiral ganglion cells', 'Pillar cells'],
+      answer: 1,
+      explain: 'About 3,500 inner hair cells in one row carry most of what you hear; about 12,000 outer hair cells fine-tune the response.',
+    },
+  ],
   reflex: [
     {
       q: 'Why does the knee jerk not need the brain?',

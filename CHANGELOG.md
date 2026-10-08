@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.0
+
+- **Ear dive, from a sound wave to glutamate.** A twelfth dive: the whole body, now with inner ears and their nerves → the ear cut open from the front, with the ossicles, the semicircular canals and a cochlea of two and a half turns, and a pitch control from 20 Hz to 20 kHz that lights where each note is sensed (high at the base, low at the apex) → one turn of the cochlea cut across, its three fluid channels and the organ of Corti with one row of inner and three of outer hair cells, stepping from pressure wave to nerve signal → an inner hair cell, its stereocilia tied by tip links, stepping from a bent bundle to open channels, glutamate release and a nerve impulse → glutamate, the shared molecule the nervous dive also reaches.
+- 16 new cards, 3 references (OpenStax A&P 14.1 on hearing, OpenStax Biology 36.4, Britannica on the cochlea) and four quiz questions.
+- 389 tests (from 379).
+
 ## 0.15.0
 
 - **Eye dive, down to the molecule a photon flips.** An eleventh dive: the whole body, now with eyes and optic nerves → the eye cut in half and seen from above (EyeWiki sizes: 24 mm long, 12 mm cornea, 3 mm front chamber), with light rays focused on the fovea and a light control that opens and closes the pupil → a slice of retina, from the ganglion cells light must pass first to the rods, cones and pigment epithelium at the back, following one signal from a rod to the optic nerve → inside a rod's outer segment, where rhodopsin, transducin and phosphodiesterase turn one photon into closed sodium channels → retinal.

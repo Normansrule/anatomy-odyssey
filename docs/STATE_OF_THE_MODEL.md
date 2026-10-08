@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.15.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.16.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -114,7 +114,16 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 3 | Eye | 4.6 cm | Cut horizontally, seen from above. Sizes from EyeWiki: 24 mm long, cornea 12 mm across and 0.54 mm thick, anterior chamber 3 mm, lens about 9.5 mm, fovea 1.5 mm, optic disc 1.8 mm. Coat thicknesses exaggerated a little. Light rays bent onto the fovea; light control sets the pupil from 7 mm (dark) to 3 mm (bright) |
 | 4 | Retina | 0.3 mm | All layers from the nerve fibers to the pigment epithelium and choroid capillaries; one cone per 25 photoreceptors (in life rods outnumber cones even more away from the fovea); layer thicknesses approximate. Five-stage control following one signal from a rod to the optic nerve |
 | 6 | Light to signal | 110 nm | Three discs and the outer membrane of a rod; rhodopsin as seven-helix bundles, transducin, phosphodiesterase, cGMP and sodium channels as simplified shapes. Five-stage control following OpenStax: retinal flips, transducin, phosphodiesterase, cGMP falls, channels close |
-| 7 | Retinal (shared, new) | 2 nm | Stops here. RDKit-generated 11-cis and all-trans retinal (C₂₀H₂₈O), double-bond geometry checked; a control switches between them |
+| 7 | Retinal (shared, new in v0.15.0) | 2 nm | Stops here. RDKit-generated 11-cis and all-trans retinal (C₂₀H₂₈O), double-bond geometry checked; a control switches between them |
+
+### Ear dive (new in v0.16.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 1 | Whole body | 2.1 m | Nervous system on; the inner ears and vestibulocochlear nerves are new |
+| 3 | Ear | 7 cm | Coronal section from the front: auricle, ear canal, eardrum, malleus, incus and stapes in an air-filled middle ear, Eustachian tube, vestibule and three semicircular canals, and the cochlea drawn 9 mm across, 5 mm tall, two and a half turns (Britannica); temporal bone see-through. Pitch control from 20 Hz to 20 kHz lights the place on the cochlea, base for high notes, apex for low (OpenStax 14.1; position placed on a logarithmic scale). Ossicle motion hugely exaggerated |
+| 4 | Inside the cochlea | 1.5 mm | One turn cut across and drawn straight: scala vestibuli and scala tympani (perilymph), cochlear duct (endolymph), Reissner's membrane, stria vascularis, basilar membrane, organ of Corti with one row of inner and three rows of outer hair cells (OpenStax Biology 36.4), tectorial membrane, spiral ganglion. Four-stage control with the basilar membrane's motion exaggerated |
+| 5 | Hair cell | 42 µm | An inner hair cell between supporting cells, stereocilia in three graded rows with tip links and channels, a synaptic ribbon with glutamate vesicles, and a nerve ending. Proportions drawn, not measured; ions and vesicles far larger than life. Five-stage control |
+| 7 | Glutamate (shared) | 1.5 nm | Stops here. The same scene the nervous dive ends at |
 
 ### From gene to protein (module, new in v0.4.0)
 | Tier | Step | Frame | Notes |
