@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.18.0
+
+- **Liver dive, from an old red blood cell to bilirubin.** A fourteenth dive: the liver from the front, its right lobe cut open to show lobules, with the gallbladder, bile ducts and the vessels at its gate, stepping through blood in, blood out and bile out → a hepatic lobule, its plates of liver cells radiating from the central vein, blood flowing in from the portal triads and bile flowing out → two liver cells beside a sinusoid, following bilirubin from a Kupffer cell breaking down a worn-out red cell, on albumin through the blood, into the liver cell and out into bile → bilirubin itself, folded by its own hydrogen bonds.
+- **A new shared molecule**, bilirubin IXα, generated with RDKit with both double bonds checked as Z.
+- 11 new cards (gallbladder and bile ducts, liver blood supply, lobule, central vein, portal triad, hepatocyte, sinusoid, Kupffer cell, bile canaliculus, glycogen, bilirubin), 1 reference (OpenStax 18.3) and four quiz questions. The liver and gallbladder on the body now open their own cards.
+- 409 tests (from 397).
+
 ## 0.17.0
 
 - **Pancreas dive, from a meal to the insulin signal.** A thirteenth dive: the whole body with the digestive and endocrine systems → the pancreas, see-through, with its ducts, the duodenum and spleen, and islets drawn larger, and a meal control that sends pancreatic juice to the duodenum → an islet of Langerhans cut in half, its cells in OpenStax's proportions, with a blood glucose control (glucagon from alpha cells when low, insulin from beta cells when high) → a beta cell stepping through glucose-stimulated insulin secretion: GLUT2, ATP, ATP-sensitive potassium channels closing, calcium in, insulin out → ATP, the shared molecule.

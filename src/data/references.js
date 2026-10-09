@@ -372,4 +372,8 @@ export const REFERENCES = {
     text: 'Demirbilek H, Galcheva S, Vuralli D, Al-Khawaga S, Hussain K (2019). "Ion Transporters, Channelopathies, and Glucose Disorders." International Journal of Molecular Sciences 20(10):2590 (glucose-stimulated insulin secretion).',
     url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6566632/',
   },
+  'openstax-erythrocytes': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 18.3: Erythrocytes (lifespan, breakdown by macrophages, biliverdin, bilirubin, jaundice, iron recycling).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/18-3-erythrocytes',
+  },
 };

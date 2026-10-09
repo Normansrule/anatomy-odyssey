@@ -655,7 +655,7 @@ function buildDigestive(M) {
   const left = ellipsoid([0.035, 1.115, 0.052], [0.055, 0.026, 0.04], liverMat, 24);
   left.rotation.z = -0.15;
   add(mergedMesh([right, left], liverMat), 'liver', 'Liver');
-  add(ellipsoid([-0.045, 1.055, 0.085], [0.011, 0.022, 0.011], M(0x6f9a3f, { roughness: 0.3 }), 14), 'liver', 'Gallbladder (stores bile)');
+  add(ellipsoid([-0.045, 1.055, 0.085], [0.011, 0.022, 0.011], M(0x6f9a3f, { roughness: 0.3 }), 14), 'gallbladder', 'Gallbladder (stores bile)');
   // Duodenum curving around the head of the pancreas, which runs left toward the spleen.
   add(tubeThrough([[-0.025, 1.01, 0.045], [-0.045, 0.99, 0.025], [-0.042, 0.958, 0.012], [-0.005, 0.952, 0.004], [0.02, 0.965, 0.0]], 0.0085, gut, 32, 8), 'small-intestine', 'Duodenum (first part of the small intestine)');
   add(taperedTube([[-0.025, 0.98, 0.012], [0.01, 0.995, 0.0], [0.05, 1.01, -0.012], [0.078, 1.03, -0.03]], (t) => 0.012 - 0.006 * t, M(0xe6bf86, { roughness: 0.55, tissue: 'organ', natural: 0xdcb377 }), 32, 10), 'pancreas', 'Pancreas');

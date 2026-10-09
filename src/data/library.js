@@ -197,6 +197,15 @@ export const LIBRARY = [
     step: { id: 'retinal', tier: 7, scene: 'retinal', title: 'Retinal', card: 'retinal', frameMeters: 2e-9 },
   },
   {
+    id: 'bilirubin',
+    title: 'Bilirubin',
+    status: 'built',
+    scene: 'bilirubin',
+    card: 'bilirubin',
+    madeOf: [],
+    step: { id: 'bilirubin', tier: 7, scene: 'bilirubin', title: 'Bilirubin', card: 'bilirubin', frameMeters: 2.4e-9 },
+  },
+  {
     id: 'phospholipids',
     title: 'Phospholipids',
     status: 'built',

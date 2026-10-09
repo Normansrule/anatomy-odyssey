@@ -7,6 +7,7 @@
 //   thyroxine      the thyroid hormone, with T3 beside it (endocrine dive)
 //   vitamin-d3     cholecalciferol, made in sunlit skin (skin dive)
 //   retinal        11-cis and all-trans, the switch light flips (eye dive)
+//   bilirubin      the yellow pigment made from heme (liver dive)
 import * as THREE from 'three/webgpu';
 import { materialBank, disposeTree } from '../scenes/kit.js';
 import { buildMolecule, styleControls } from './molecule.js';
@@ -510,6 +511,88 @@ export function buildRetinal({ reducedMotion = false } = {}) {
     dispose() {
       cis.sphere.dispose();
       trans.sphere.dispose();
+      disposeTree(root);
+      M.dispose();
+    },
+  };
+}
+
+/** Bilirubin: its two acid (–COOH) groups and the internal hydrogen bonds that fold it. */
+export function bilirubinParts() {
+  const { atoms, bonds } = moleculeGraph('bilirubin');
+  const acidC = atoms
+    .map((a, i) => i)
+    .filter((i) => atoms[i].el === 'C' && neighbors(bonds, i).filter((k) => atoms[k].el === 'O').length === 2 && neighbors(bonds, i).some((k) => atoms[k].el === 'O' && neighbors(bonds, k).length === 2));
+  const acid = new Set(acidC.flatMap((c) => [c, ...neighbors(bonds, c).filter((k) => atoms[k].el === 'O')]));
+  atoms.forEach((a, i) => a.el === 'H' && acid.has(neighbors(bonds, i)[0]) && acid.add(i));
+  // Hydrogen bonds: an H on N or O within 1.6–2.3 Å of an O it is not bonded to.
+  const hbonds = [];
+  atoms.forEach((h, i) => {
+    if (h.el !== 'H') return;
+    const donor = neighbors(bonds, i)[0];
+    if (!['N', 'O'].includes(atoms[donor].el)) return;
+    atoms.forEach((o, j) => {
+      if (o.el !== 'O' || j === donor) return;
+      // Skip the oxygen next door in the same –COOH group.
+      if (neighbors(bonds, j).some((k) => neighbors(bonds, donor).includes(k))) return;
+      const d = h.p.distanceTo(o.p);
+      if (d > 1.6 && d < 2.3) hbonds.push([i, j, d]);
+    });
+  });
+  return { atoms, bonds, acidCarbons: acidC, acid, hbonds };
+}
+
+export function buildBilirubin({ reducedMotion = false } = {}) {
+  const M = materialBank();
+  const { root, spin, update } = spinRoot(reducedMotion);
+  const { atoms, bonds, acid, hbonds } = bilirubinParts();
+  atoms.forEach((a, i) => {
+    a.card = 'bilirubin';
+    if (acid.has(i)) a.tint = 0x7cc49a;
+    a.label = acid.has(i) ? 'Propionic acid group (–COOH); glucuronic acid is attached here' : a.el === 'N' ? 'Nitrogen of one of the four rings' : a.el === 'O' ? 'Oxygen' : a.el === 'C' ? 'Carbon' : 'Hydrogen';
+  });
+  const mol = buildMolecule(atoms, bonds, M, { defaultCard: 'bilirubin' });
+  spin.add(mol.group);
+  // Internal hydrogen bonds, drawn as thin dashed lines.
+  const hb = new THREE.Group();
+  const hbMat = M(0x9fd4ff, { roughness: 0.3, emissive: 0x9fd4ff, emissiveIntensity: 0.6 });
+  const dash = new THREE.CylinderGeometry(0.04, 0.04, 1, 6);
+  for (const [i, j] of hbonds) {
+    const a = atoms[i].p;
+    const b = atoms[j].p;
+    for (let k = 0; k < 4; k++) {
+      const p0 = a.clone().lerp(b, k / 4 + 0.03);
+      const p1 = a.clone().lerp(b, k / 4 + 0.16);
+      const m = new THREE.Mesh(dash, hbMat);
+      m.position.copy(p0).add(p1).multiplyScalar(0.5);
+      m.scale.y = p0.distanceTo(p1);
+      m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), p1.clone().sub(p0).normalize());
+      m.userData = { cardId: 'bilirubin', label: 'Internal hydrogen bond (folds the molecule and hides its acid groups)' };
+      hb.add(m);
+    }
+  }
+  spin.add(hb);
+  const controls = styleControls([mol], [
+    `Ball and stick: bilirubin, C₃₃H₃₆N₄O₆, 79 atoms: four rings in a chain, with two acid groups (glowing green). Its own hydrogen bonds (dashed, ${hbonds.length} here) fold it shut, which is why it barely dissolves in water until the liver attaches glucuronic acid.`,
+    'Space filling: about 2 nm long. Its yellow color is what makes a bruise turn yellow as it heals, and what tints the skin in jaundice.',
+  ]);
+  const baseSet = controls.set;
+  controls.set = (v) => {
+    hb.visible = v < 0.5;
+    return baseSet(v);
+  };
+  controls.set(0);
+  return {
+    root,
+    fit: 'both',
+    metersPerUnit: 1e-10,
+    view: { target: [0, 0, 0], direction: [0.15, 0.45, 1] },
+    focus: [0, 0, 0],
+    controls,
+    update,
+    dispose() {
+      mol.sphere.dispose();
+      dash.dispose();
       disposeTree(root);
       M.dispose();
     },

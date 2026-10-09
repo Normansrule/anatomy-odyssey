@@ -445,6 +445,32 @@ export const QUIZZES = {
       explain: 'Released when blood glucose is low, glucagon tells the liver to break down glycogen and make new glucose.',
     },
   ],
+  liver: [
+    {
+      q: 'Which vessel brings blood from the intestines to the liver?',
+      choices: ['The hepatic artery', 'The hepatic portal vein', 'The inferior vena cava', 'The hepatic vein'],
+      answer: 1,
+      explain: 'The hepatic portal vein carries nutrient-rich blood from the gut, so the liver processes it before the rest of the body.',
+    },
+    {
+      q: 'In a hepatic lobule, which way does bile flow?',
+      choices: ['Inward, toward the central vein', 'Outward, toward the bile ducts at the corners', 'It does not move', 'Into the sinusoids'],
+      answer: 1,
+      explain: 'Blood flows inward to the central vein; bile flows outward in canaliculi to the bile ducts of the portal triads.',
+    },
+    {
+      q: 'Where does bilirubin come from?',
+      choices: ['Digested fat', 'The heme of old red blood cells', 'Bile salts', 'Glycogen'],
+      answer: 1,
+      explain: 'Macrophages break heme down to biliverdin and then bilirubin; the iron is recycled.',
+    },
+    {
+      q: 'Why does the skin turn yellow in jaundice?',
+      choices: ['Too much glycogen', 'Bilirubin builds up because the liver cannot clear it', 'Too much bile in the gut', 'Low blood sugar'],
+      answer: 1,
+      explain: 'If the liver cannot take up, conjugate or secrete bilirubin, the yellow pigment accumulates in the blood and tissues.',
+    },
+  ],
   reflex: [
     {
       q: 'Why does the knee jerk not need the brain?',

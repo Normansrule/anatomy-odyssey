@@ -31,8 +31,8 @@ export const ORGAN_CARDS = [
   {
     id: 'liver',
     title: 'Liver and gallbladder',
-    aliases: ['hepatic', 'gallbladder', 'bile', 'hepatocyte'],
-    home: 'body',
+    aliases: ['hepatic', 'right lobe', 'left lobe', 'falciform ligament'],
+    home: 'liver',
     system: 'digestive',
     size: 'About 1.4 kg (three pounds); the gallbladder is 8 to 10 cm long',
     what: 'The liver, the body’s largest gland, sits under the right side of the diaphragm. It makes bile, which the gallbladder beneath it stores and squeezes into the small intestine.',

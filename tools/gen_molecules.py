@@ -99,6 +99,8 @@ OTHERS = [
     # all-trans after; a photon flips the C11=C12 double bond.
     ("retinal-11-cis", "11-cis-Retinal", "CC1=C(C(CCC1)(C)C)/C=C/C(/C)=C/C=C\\C(\\C)=C\\C=O", "C20H28O", 0),
     ("retinal-all-trans", "all-trans-Retinal", "CC1=C(C(CCC1)(C)C)/C=C/C(/C)=C/C=C/C(/C)=C/C=O", "C20H28O", 0),
+    # Bilirubin IXalpha (4Z,15Z), the yellow pigment made from heme; drawn in its uncharged acid form.
+    ("bilirubin", "Bilirubin", "C=CC1=C(C)/C(=C/c2[nH]c(Cc3[nH]c(/C=C4\\NC(=O)C(C)=C4C=C)c(C)c3CCC(=O)O)c(CCC(=O)O)c2C)NC1=O", "C33H36N4O6", 0),
     ("popc", "POPC (a phosphatidylcholine)", "CCCCCCCCCCCCCCCC(=O)OC[C@H](COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC/C=C\\CCCCCCCC", "C42H82NO8P", 0),
 ]
 
@@ -233,6 +235,8 @@ def main():
             if mid in ("retinal-11-cis", "retinal-all-trans"):
                 want = ["E", "E", "E", "Z"] if mid == "retinal-11-cis" else ["E", "E", "E", "E"]
                 assert double_bond_labels(Chem.Mol(mol)) == want, f"{name}: double bonds"
+            if mid == "bilirubin":
+                assert double_bond_labels(Chem.Mol(mol)) == ["Z", "Z"], f"{name}: not 4Z,15Z"
             if mid == "vitamin-d3":
                 assert sugar_labels(Chem.Mol(mol)) == ["R", "R", "R", "S", "S"], f"{name}: stereocenters"
                 assert double_bond_labels(Chem.Mol(mol)) == ["E", "Z"], f"{name}: not 5Z,7E"

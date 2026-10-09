@@ -311,6 +311,21 @@ export const DIVES = [
       libStep('atp', { narration: 'ATP, the cell’s energy currency. Here it is also a signal: when glucose makes more of it, the beta cell releases insulin.' }),
     ],
   },
+  {
+    id: 'liver',
+    swatch: '#a8584a', // menu and intro color
+    kind: 'dive',
+    title: 'Liver dive',
+    status: 'built',
+    summary: 'The liver → a lobule → two liver cells clearing an old red cell’s pigment → bilirubin.',
+    steps: [
+      { ...BODY, focusCard: 'liver', focus: [-0.06, 1.095, 0.035], systems: ['digestive'], narration: 'Every day you replace billions of red blood cells. We will follow what happens to the old ones, through your largest gland, down to a yellow pigment.' },
+      { id: 'liver', tier: 3, scene: 'liver', title: 'Liver', card: 'liver', frameMeters: 0.3, focusCard: 'hepatic-lobule', narration: 'The liver from the front, with the gallbladder beneath and the vessels at its gate. The right lobe is cut open to show its lobules. Step through how blood flows in and out, and bile flows away.' },
+      { id: 'lobule', tier: 4, scene: 'lobule', title: 'Lobule', card: 'hepatic-lobule', frameMeters: 1.9e-3, focusCard: 'hepatocyte', narration: 'One lobule: plates of liver cells radiating from a central vein, with portal triads at its corners. Blood flows in; bile flows out.' },
+      { id: 'hepatocyte', tier: 5, scene: 'hepatocyte', title: 'Liver cells', card: 'hepatocyte', frameMeters: 5.6e-5, focusCard: 'bilirubin', narration: 'Two liver cells beside a sinusoid, with a Kupffer cell on its wall. Step through the journey of bilirubin from an old red blood cell into bile.' },
+      libStep('bilirubin', { narration: 'Bilirubin: four rings in a chain, folded on itself by its own hydrogen bonds. Its yellow is the yellow of a healing bruise.' }),
+    ],
+  },
 ];
 
 export function builtDives() {

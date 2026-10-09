@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.17.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.18.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -133,6 +133,15 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 4 | Islet | 0.34 mm | An islet cut in half with cells in OpenStax 17.9's shares (75% beta, 20% alpha, 4% delta, 1% PP), mixed as in human islets; capillaries; a ring of acini and a small duct. Islet and cell sizes typical, not from a cited source. Glucose control: alpha cells and glucagon when low, beta cells and insulin when high |
 | 5 | Beta cell | 34 µm | Cut open beside a capillary: nucleus, mitochondria, insulin granules (drawn larger); GLUT2, ATP-sensitive potassium channels and voltage-gated calcium channels drawn far larger. Five-stage control following Demirbilek and others (2019) |
 | 7 | ATP (shared) | 1.9 nm | Stops here. The same RDKit-generated scene the muscular dive's side trip reaches |
+
+### Liver dive (new in v0.18.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 1 | Whole body | 2.1 m | Digestive system on; the gallbladder now opens its own card |
+| 3 | Liver | 30 cm | Right and left lobes with the falciform ligament, gallbladder 9 cm, bile ducts, hepatic portal vein, hepatic artery, hepatic veins and inferior vena cava (OpenStax 23.6). The right lobe is cut to show hexagonal lobules drawn about six times larger than life. Lobe shapes simplified. Four-stage control: blood in, through the lobules, blood out, bile out |
+| 4 | Lobule | 1.9 mm | A hexagonal lobule 1.1 mm across: plates of hepatocytes one cell thick radiating from the central vein, sinusoids, Kupffer cells, and portal triads at the corners; neighbors as outlines. Hexagonal shape is the textbook idealization. Four-stage control with blood flowing inward and bile outward |
+| 5 | Liver cells | 56 µm | Two hepatocytes 24 µm across (one with two nuclei) beside a sinusoid with a Kupffer cell; glycogen, mitochondria, microvilli, a bile canaliculus. Five-stage control following bilirubin from an old red cell to bile (OpenStax 18.3); molecules and albumin drawn far larger |
+| 7 | Bilirubin (shared, new) | 2.4 nm | Stops here. RDKit-generated bilirubin IXα (C₃₃H₃₆N₄O₆), both double bonds checked as Z, uncharged; its internal hydrogen bonds drawn dashed |
 
 ### From gene to protein (module, new in v0.4.0)
 | Tier | Step | Frame | Notes |

@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.17.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-397%20passing-4fb38a)
+![Version](https://img.shields.io/badge/version-0.18.0-f08baf)
+![Tests](https://img.shields.io/badge/tests-409%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -24,7 +24,7 @@
 
 ## In one minute
 
-- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous, respiratory, digestive, urinary, endocrine, skin, eye, ear or pancreas) and fall through the body one scale at a time: organ → tissue → cell → molecule.
+- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous, respiratory, digestive, urinary, endocrine, skin, eye, ear, pancreas or liver) and fall through the body one scale at a time: organ → tissue → cell → molecule.
 - **Point at anything** to light it up and see its name; **click** to open a card: what it is, why it matters, its real size, and a source you can check.
 - **Watch the depth gauge**: it shows how big the view is, from about 2 m down to a fraction of a nanometer, so sizes stay honest.
 - **Play with the science**: sliders run real, tested equations (oxygen binding, nerve speed, blood pH, enzyme speed-up and more).
@@ -38,7 +38,7 @@ No accounts, no tracking. Two ways to use it:
 
 ## What you can explore
 
-### Thirteen dives
+### Fourteen dives
 
 | Dive | The path down | Ends at |
 |---|---|---|
@@ -55,6 +55,7 @@ No accounts, no tracking. Two ways to use it:
 | 👁️ **Eye** | body → eye → retina → light becoming a signal in a rod | retinal (11-cis and all-trans) |
 | 👂 **Ear** | body → ear → a turn of the cochlea → a hair cell | glutamate |
 | 🍬 **Pancreas** | body → pancreas → an islet of Langerhans → a beta cell | ATP |
+| 🟤 **Liver** | body → liver → a lobule → liver cells clearing an old red cell | bilirubin |
 
 ### Six modules
 
@@ -129,6 +130,11 @@ Side trips branch into a **shared library** of building blocks (nucleus, nucleos
 <td><img src="docs/screenshots/beta-cell.webp" alt="A beta cell beside a capillary, cut open: nucleus, mitochondria and insulin granules, with glucose transporters, potassium and calcium channels in its membrane" /></td>
 </tr>
 <tr>
+<td><img src="docs/screenshots/liver.webp" alt="The liver from the front, its right lobe cut to show hexagonal lobules, with the gallbladder, bile ducts, portal vein, hepatic artery and inferior vena cava" /></td>
+<td><img src="docs/screenshots/lobule.webp" alt="A hepatic lobule: plates of liver cells radiating from the central vein, with portal triads at the corners and blood flowing inward" /></td>
+<td><img src="docs/screenshots/hepatocyte.webp" alt="Two liver cells beside a sinusoid with a Kupffer cell, bilirubin riding on albumin, and a bile canaliculus between the cells" /></td>
+</tr>
+<tr>
 <td><img src="docs/screenshots/hemoglobin.webp" alt="Hemoglobin's four chains with the oxygen pressure slider" /></td>
 <td><img src="docs/screenshots/nucleosome.webp" alt="A nucleosome: DNA wrapped around eight histones" /></td>
 <td><img src="docs/screenshots/atlas.webp" alt="The map: every dive laid out by scale" /></td>
@@ -176,7 +182,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 397 unit tests
+npm test               # 409 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -190,7 +196,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.17.0 && git push origin v0.17.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
+Pushing a version tag (`git tag v0.18.0 && git push origin v0.18.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
 
 **Headless checks** (software rendering, no GPU needed):
 
@@ -253,7 +259,7 @@ docs/          state of the model, equations, security model, publishing
 
 ## Roadmap
 
-- [x] Thirteen dives, six modules and a complete shared library; every dive and every module ends at a molecule
+- [x] Fourteen dives, six modules and a complete shared library; every dive and every module ends at a molecule
 - [x] Desktop app, device check, accessibility audit
 - [x] Realistic tissue surfaces with natural and stain looks
 - [x] The spinal cord, through the knee-jerk reflex
