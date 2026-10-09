@@ -21,6 +21,7 @@ import { EYE_CARDS } from './cards-eye.js';
 import { EAR_CARDS } from './cards-ear.js';
 import { PANCREAS_CARDS } from './cards-pancreas.js';
 import { LIVER_CARDS } from './cards-liver.js';
+import { SMELL_CARDS } from './cards-smell.js';
 
 const humanDiploidBp = 6.4e9;
 const dnaPerCell = formatLength(dnaLength(humanDiploidBp)).text; // ≈ 2.2 m
@@ -482,6 +483,7 @@ export const CARDS = [
   ...EAR_CARDS,
   ...PANCREAS_CARDS,
   ...LIVER_CARDS,
+  ...SMELL_CARDS,
 ];
 
 // Short cards for planned library entries, so search and cross-links can explain them.

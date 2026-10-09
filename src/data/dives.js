@@ -326,6 +326,21 @@ export const DIVES = [
       libStep('bilirubin', { narration: 'Bilirubin: four rings in a chain, folded on itself by its own hydrogen bonds. Its yellow is the yellow of a healing bruise.' }),
     ],
   },
+  {
+    id: 'smell',
+    swatch: '#e8c45a', // menu and intro color
+    kind: 'dive',
+    title: 'Smell dive',
+    status: 'built',
+    summary: 'The nose → the olfactory epithelium → a neuron’s cilia, where a receptor catches a scent → vanillin.',
+    steps: [
+      { ...BODY, focusCard: 'nasal-cavity', focus: [0, 1.626, 0.086], systems: ['nervous'], narration: 'Take a sniff of vanilla. We will follow the scent up your nose to the molecule that carries it.' },
+      { id: 'nasal-cavity', tier: 3, scene: 'nasal-cavity', title: 'Nasal cavity', card: 'nasal-cavity', frameMeters: 0.12, focusCard: 'olfactory-epithelium', narration: 'The nose cut down the middle. Most air flows low, to the throat; a sniff sends it up to a small patch in the roof, right under the brain.' },
+      { id: 'olfactory-epithelium', tier: 4, scene: 'olfactory-epithelium', title: 'Olfactory epithelium', card: 'olfactory-epithelium', frameMeters: 1.5e-4, focusCard: 'olfactory-neuron', narration: 'The smell patch up close: neurons reach the surface and spread cilia into the mucus. Step through how a scent becomes a nerve signal.' },
+      { id: 'olfactory-cilium', tier: 5, scene: 'olfactory-cilium', title: 'Cilia and receptors', card: 'odor-receptor', frameMeters: 1e-5, focusCard: 'vanillin', narration: 'One neuron’s knob and its cilia, studded with receptors. Watch a carrier protein hand an odor molecule to a receptor.' },
+      libStep('vanillin', { narration: 'Vanillin, the scent of vanilla: a ring with three small groups. Change them slightly and the smell changes.' }),
+    ],
+  },
 ];
 
 export function builtDives() {

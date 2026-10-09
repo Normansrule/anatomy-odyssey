@@ -1,6 +1,6 @@
 # State of the model
 
-Last updated for v0.18.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
+Last updated for v0.19.0. The About dialog in the app shows the same information, generated from `src/data/dives.js` and `src/data/library.js`.
 
 All geometry is procedural (built from simple shapes in code) and labeled as a generalized teaching model. Where a view is not to scale, its card says so.
 
@@ -141,7 +141,16 @@ Frame is the height of the view on arrival, which the depth gauge shows.
 | 3 | Liver | 30 cm | Right and left lobes with the falciform ligament, gallbladder 9 cm, bile ducts, hepatic portal vein, hepatic artery, hepatic veins and inferior vena cava (OpenStax 23.6). The right lobe is cut to show hexagonal lobules drawn about six times larger than life. Lobe shapes simplified. Four-stage control: blood in, through the lobules, blood out, bile out |
 | 4 | Lobule | 1.9 mm | A hexagonal lobule 1.1 mm across: plates of hepatocytes one cell thick radiating from the central vein, sinusoids, Kupffer cells, and portal triads at the corners; neighbors as outlines. Hexagonal shape is the textbook idealization. Four-stage control with blood flowing inward and bile outward |
 | 5 | Liver cells | 56 µm | Two hepatocytes 24 µm across (one with two nuclei) beside a sinusoid with a Kupffer cell; glycogen, mitochondria, microvilli, a bile canaliculus. Five-stage control following bilirubin from an old red cell to bile (OpenStax 18.3); molecules and albumin drawn far larger |
-| 7 | Bilirubin (shared, new) | 2.4 nm | Stops here. RDKit-generated bilirubin IXα (C₃₃H₃₆N₄O₆), both double bonds checked as Z, uncharged; its internal hydrogen bonds drawn dashed |
+| 7 | Bilirubin (shared, new in v0.18.0) | 2.4 nm | Stops here. RDKit-generated bilirubin IXα (C₃₃H₃₆N₄O₆), both double bonds checked as Z, uncharged; its internal hydrogen bonds drawn dashed |
+
+### Smell dive (new in v0.19.0)
+| Tier | Step | Frame | Notes |
+|---|---|---|---|
+| 1 | Whole body | 2.1 m | Nervous system on; the body now has an olfactory patch in the roof of the nose and two olfactory bulbs |
+| 3 | Nasal cavity | 12 cm | A midline cut seen from the septum's side: three conchae, the olfactory epithelium as a small patch in the roof (about 5 cm² in all; OpenStax Biology 36.3), the cribriform plate with nerve fibers passing through, the olfactory bulb and tract under the frontal lobe (OpenStax A&P 14.1). Shapes simplified. Breath control: quiet breathing sends air along the lower passages, a sniff swirls it up to the olfactory patch |
+| 4 | Olfactory epithelium | 150 µm | Supporting cells, bipolar olfactory neurons with dendritic knobs and cilia in the mucus, basal cells, a mucus gland, and thin unmyelinated axons gathering into a bundle. Thicknesses approximate; odor molecules and carrier proteins drawn far larger. Five-stage control from a sniff to the olfactory bulb |
+| 5 | A neuron's cilia | 10 µm | The dendritic knob (about 2 µm) and nine cilia in mucus, with seven-helix odor receptors, a G protein and ion channels, all drawn far larger. Five-stage control: an odorant-binding protein carries vanillin to a receptor, the G protein relay opens channels, ions flow in, the neuron fires. About 350 receptor types, one per neuron |
+| 7 | Vanillin (shared, new) | 1.2 nm | Stops here. RDKit-generated (C₈H₈O₃), uncharged; aldehyde, methoxy and hydroxyl groups can be highlighted |
 
 ### From gene to protein (module, new in v0.4.0)
 | Tier | Step | Frame | Notes |

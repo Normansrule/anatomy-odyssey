@@ -48,6 +48,7 @@ STATES = [
     ("ear: hair cell", "?dive=ear&step=hair-cell", None, DESKTOP),
     ("pancreas: islet", "?dive=pancreas&step=islet", None, DESKTOP),
     ("liver: lobule", "?dive=liver&step=lobule", None, DESKTOP),
+    ("smell: epithelium", "?dive=smell&step=olfactory-epithelium", None, DESKTOP),
     ("reflex: nerve meets muscle", "?dive=reflex&step=neuromuscular-junction", None, DESKTOP),
     ("About dialog", "?dive=skeletal&step=femur", "#about-button", DESKTOP),
     ("Map dialog", "?dive=skeletal&step=femur", "#atlas-button", DESKTOP),

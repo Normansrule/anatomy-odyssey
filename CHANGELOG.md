@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.19.0
+
+- **Smell dive, from a sniff to vanillin.** A fifteenth dive: the whole body, now with an olfactory patch and olfactory bulbs → the nasal cavity cut down the middle, with the conchae, the olfactory patch in its roof, the cribriform plate and the olfactory bulb under the frontal lobe, and a breath control that compares quiet breathing with a sniff → the olfactory epithelium, its neurons reaching cilia into the mucus, following odor molecules from the air to an action potential headed for the bulb → the knob and cilia of one olfactory neuron, following one odor molecule from its carrier protein to a seven-helix receptor, the G protein relay, open channels and a signal → vanillin.
+- **A new shared molecule**, vanillin, generated with RDKit; the molecule view can highlight its aldehyde, methoxy and hydroxyl groups.
+- 7 new cards (nasal cavity, olfactory epithelium, cribriform plate, olfactory bulb, olfactory neuron, odor receptor, vanillin), 2 references (OpenStax A&P 14.1 on smell, OpenStax Biology 36.3) and four quiz questions.
+- 421 tests (from 409).
+
 ## 0.18.0
 
 - **Liver dive, from an old red blood cell to bilirubin.** A fourteenth dive: the liver from the front, its right lobe cut open to show lobules, with the gallbladder, bile ducts and the vessels at its gate, stepping through blood in, blood out and bile out → a hepatic lobule, its plates of liver cells radiating from the central vein, blood flowing in from the portal triads and bile flowing out → two liver cells beside a sinusoid, following bilirubin from a Kupffer cell breaking down a worn-out red cell, on albumin through the blood, into the liver cell and out into bile → bilirubin itself, folded by its own hydrogen bonds.

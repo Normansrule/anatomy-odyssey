@@ -376,4 +376,12 @@ export const REFERENCES = {
     text: 'OpenStax Anatomy and Physiology 2e, section 18.3: Erythrocytes (lifespan, breakdown by macrophages, biliverdin, bilirubin, jaundice, iron recycling).',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/18-3-erythrocytes',
   },
+  'openstax-smell': {
+    text: 'OpenStax Anatomy and Physiology 2e, section 14.1: Sensory Perception (olfaction: the olfactory epithelium, cribriform plate, olfactory bulb, replacement of olfactory neurons).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/14-1-sensory-perception',
+  },
+  'openstax-bio-smell': {
+    text: 'OpenStax Biology 2e, section 36.3: Taste and Smell (12 million receptors, about 350 receptor types, 10,000 odors, 5 cm² epithelium).',
+    url: 'https://openstax.org/books/biology-2e/pages/36-3-taste-and-smell',
+  },
 };

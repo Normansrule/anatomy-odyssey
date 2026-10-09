@@ -504,6 +504,9 @@ function buildNervous(M) {
     g.add(pick(ellipsoid([x, EYES.y, EYES.z + 0.0105], [0.0055, 0.0055, 0.0022], M(0x4a6a8a, { roughness: 0.2 }), 16), 'eye', 'Iris and pupil'));
     g.add(pick(tubeThrough([[x, EYES.y, EYES.z - 0.011], [x * 0.6, EYES.y - 0.004, EYES.z - 0.035], [0, EYES.y - 0.012, 0.02]], 0.0018, n, 16, 6), 'optic-nerve', 'Optic nerve'));
   }
+  // Smell: the olfactory patch in the roof of the nasal cavity, and the olfactory bulbs above it.
+  g.add(pick(ellipsoid([0, NOSE.y, NOSE.z], [0.009, 0.004, 0.01], M(0xe8c45a, { roughness: 0.45 }), 14), 'nasal-cavity', 'Roof of the nasal cavity (olfactory epithelium)'));
+  for (const x of [-0.006, 0.006]) g.add(pick(ellipsoid([x, NOSE.y + 0.008, NOSE.z - 0.016], [0.0025, 0.0018, 0.008], M(0xf0d050, { roughness: 0.45 }), 10), 'olfactory-bulb', 'Olfactory bulb'));
   // Inner ears, deep in the skull beside the brainstem.
   for (const x of INNER_EARS.x) {
     const coil = new THREE.Mesh(new THREE.TorusGeometry(0.0035, 0.0014, 8, 20), M(0xf2e4c0, { roughness: 0.4 }));
@@ -712,6 +715,8 @@ function buildUrinary(M) {
 
 /** Eye centres: in the sockets of the skull, below the brow. */
 export const EYES = { x: [-0.032, 0.032], y: 1.632, z: 0.077 };
+/** The olfactory patch, high in the nasal cavity between the eyes. */
+export const NOSE = { y: 1.626, z: 0.086 };
 /** Inner ears: in the temporal bones, level with the ear canals. */
 export const INNER_EARS = { x: [-0.062, 0.062], y: 1.612, z: -0.004 };
 

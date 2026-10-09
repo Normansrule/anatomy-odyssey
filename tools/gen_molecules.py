@@ -101,6 +101,8 @@ OTHERS = [
     ("retinal-all-trans", "all-trans-Retinal", "CC1=C(C(CCC1)(C)C)/C=C/C(/C)=C/C=C/C(/C)=C/C=O", "C20H28O", 0),
     # Bilirubin IXalpha (4Z,15Z), the yellow pigment made from heme; drawn in its uncharged acid form.
     ("bilirubin", "Bilirubin", "C=CC1=C(C)/C(=C/c2[nH]c(Cc3[nH]c(/C=C4\\NC(=O)C(C)=C4C=C)c(C)c3CCC(=O)O)c(CCC(=O)O)c2C)NC1=O", "C33H36N4O6", 0),
+    # Vanillin (4-hydroxy-3-methoxybenzaldehyde), the main scent of vanilla.
+    ("vanillin", "Vanillin", "COc1cc(C=O)ccc1O", "C8H8O3", 0),
     ("popc", "POPC (a phosphatidylcholine)", "CCCCCCCCCCCCCCCC(=O)OC[C@H](COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC/C=C\\CCCCCCCC", "C42H82NO8P", 0),
 ]
 

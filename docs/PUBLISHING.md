@@ -71,8 +71,8 @@ cd ~/projects/anatomy-odyssey
 git switch main
 git pull --ff-only
 grep '"version"' package.json         # the tag must match this version
-git tag v0.18.0
-git push origin v0.18.0
+git tag v0.19.0
+git push origin v0.19.0
 ```
 
 The build takes about 15 to 25 minutes (Actions → Desktop app). When it is green, the installers are at <https://github.com/Normansrule/anatomy-odyssey/releases/latest>. They are not code-signed yet, so Windows and macOS warn on first launch; the release notes say how to open them.

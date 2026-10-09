@@ -44,6 +44,7 @@ STEPS = [
     ("ear", "body", ""), ("ear", "ear", ""), ("ear", "cochlear-duct", ""), ("ear", "hair-cell", ""), ("ear", "neurotransmitter", ""),
     ("pancreas", "body", ""), ("pancreas", "pancreas", ""), ("pancreas", "islet", ""), ("pancreas", "beta-cell", ""), ("pancreas", "atp", ""),
     ("liver", "body", ""), ("liver", "liver", ""), ("liver", "lobule", ""), ("liver", "hepatocyte", ""), ("liver", "bilirubin", ""),
+    ("smell", "body", ""), ("smell", "nasal-cavity", ""), ("smell", "olfactory-epithelium", ""), ("smell", "olfactory-cilium", ""), ("smell", "vanillin", ""),
 ]
 
 

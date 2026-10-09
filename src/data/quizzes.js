@@ -471,6 +471,32 @@ export const QUIZZES = {
       explain: 'If the liver cannot take up, conjugate or secrete bilirubin, the yellow pigment accumulates in the blood and tissues.',
     },
   ],
+  smell: [
+    {
+      q: 'Where in the nose is the olfactory epithelium?',
+      choices: ['Just inside the nostrils', 'High in the roof of the nasal cavity', 'On the inferior concha', 'In the throat'],
+      answer: 1,
+      explain: 'It is a small patch, about 5 cm², in the roof, under the cribriform plate.',
+    },
+    {
+      q: 'What must an odor molecule do before a receptor can detect it?',
+      choices: ['Freeze', 'Dissolve in the mucus', 'Enter the bloodstream', 'Reach the stomach'],
+      answer: 1,
+      explain: 'Odor molecules dissolve in the mucus, where carrier proteins bring them to the cilia.',
+    },
+    {
+      q: 'How do about 350 receptor types let us tell apart thousands of smells?',
+      choices: ['Each receptor detects one smell only', 'Each smell activates a combination of receptor types', 'The tongue does most of the work', 'Smells are sorted by temperature'],
+      answer: 1,
+      explain: 'The brain reads the pattern of receptor types that respond; humans can distinguish about 10,000 odors.',
+    },
+    {
+      q: 'Why do smells trigger memories and emotions so strongly?',
+      choices: ['Smell signals reach the limbic system quite directly', 'The nose stores memories', 'Odors enter the blood', 'Smell neurons never die'],
+      answer: 0,
+      explain: 'From the olfactory bulb, signals go to the limbic system and hypothalamus as well as the cortex.',
+    },
+  ],
   reflex: [
     {
       q: 'Why does the knee jerk not need the brain?',

@@ -38,7 +38,10 @@ import { buildSmallIntestine } from './smallIntestine.js';
 import { buildVilli } from './villi.js';
 import { buildEnterocyte } from './enterocyte.js';
 import { buildNeuromuscularJunction } from './neuromuscularJunction.js';
-import { buildGlucose, buildAcetylcholine, buildHistamine, buildUrea, buildThyroxine, buildVitaminD3, buildRetinal, buildBilirubin } from '../library/smallMolecules.js';
+import { buildGlucose, buildAcetylcholine, buildHistamine, buildUrea, buildThyroxine, buildVitaminD3, buildRetinal, buildBilirubin, buildVanillin } from '../library/smallMolecules.js';
+import { buildNasalCavity } from './nasalCavity.js';
+import { buildOlfactoryEpithelium } from './olfactoryEpithelium.js';
+import { buildOlfactoryCilium } from './olfactoryCilium.js';
 import { buildLiver } from './liver.js';
 import { buildLobule } from './lobule.js';
 import { buildHepatocyte } from './hepatocyte.js';
@@ -145,6 +148,10 @@ export const SCENES = {
   liver: buildLiver,
   lobule: buildLobule,
   hepatocyte: buildHepatocyte,
+  vanillin: buildVanillin,
+  'nasal-cavity': buildNasalCavity,
+  'olfactory-epithelium': buildOlfactoryEpithelium,
+  'olfactory-cilium': buildOlfactoryCilium,
   'mast-cell': buildMastCell,
   nucleus: buildNucleus,
   dna: buildDna,

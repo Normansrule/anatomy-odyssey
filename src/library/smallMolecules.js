@@ -8,6 +8,7 @@
 //   vitamin-d3     cholecalciferol, made in sunlit skin (skin dive)
 //   retinal        11-cis and all-trans, the switch light flips (eye dive)
 //   bilirubin      the yellow pigment made from heme (liver dive)
+//   vanillin       the scent of vanilla (smell dive)
 import * as THREE from 'three/webgpu';
 import { materialBank, disposeTree } from '../scenes/kit.js';
 import { buildMolecule, styleControls } from './molecule.js';
@@ -593,6 +594,60 @@ export function buildBilirubin({ reducedMotion = false } = {}) {
     dispose() {
       mol.sphere.dispose();
       dash.dispose();
+      disposeTree(root);
+      M.dispose();
+    },
+  };
+}
+
+/** Vanillin: a benzene ring carrying an aldehyde (–CHO), a methoxy (–OCH₃) and a hydroxyl (–OH). */
+export function vanillinParts() {
+  const { atoms, bonds } = moleculeGraph('vanillin');
+  const heavy = (i) => neighbors(bonds, i).filter((k) => atoms[k].el !== 'H');
+  const aldehydeO = atoms.findIndex((a, i) => a.el === 'O' && heavy(i).length === 1 && bonds.some(([x, y, o]) => o === 2 && (x === i || y === i)));
+  const methoxyO = atoms.findIndex((a, i) => a.el === 'O' && heavy(i).length === 2);
+  const hydroxylO = atoms.findIndex((a, i) => a.el === 'O' && i !== aldehydeO && heavy(i).length === 1);
+  const groups = { aldehyde: new Set([aldehydeO, heavy(aldehydeO)[0]]), methoxy: new Set([methoxyO]), hydroxyl: new Set([hydroxylO]) };
+  groups.methoxy.add(heavy(methoxyO).find((k) => neighbors(bonds, k).filter((j) => atoms[j].el === 'H').length === 3));
+  atoms.forEach((a, i) => {
+    if (a.el !== 'H') return;
+    const h = neighbors(bonds, i)[0];
+    for (const g of Object.values(groups)) if (g.has(h)) g.add(i);
+  });
+  return { atoms, bonds, groups };
+}
+
+export function buildVanillin({ reducedMotion = false } = {}) {
+  const M = materialBank();
+  const { root, spin, update } = spinRoot(reducedMotion);
+  const { atoms, bonds, groups } = vanillinParts();
+  const TINT = { aldehyde: 0xf2a65a, methoxy: 0x8f7ff0, hydroxyl: 0x5a8deb };
+  const LABEL = { aldehyde: 'Aldehyde group (–CHO)', methoxy: 'Methoxy group (–OCH₃)', hydroxyl: 'Hydroxyl group (–OH)' };
+  atoms.forEach((a, i) => {
+    a.card = 'vanillin';
+    const g = Object.keys(groups).find((k) => groups[k].has(i));
+    if (g) {
+      a.tint = TINT[g];
+      a.label = LABEL[g];
+    } else a.label = a.el === 'C' ? 'Ring carbon' : 'Hydrogen';
+  });
+  const mol = buildMolecule(atoms, bonds, M, { defaultCard: 'vanillin' });
+  spin.add(mol.group);
+  const controls = styleControls([mol], [
+    'Ball and stick: vanillin, C₈H₈O₃, 19 atoms. A flat six-carbon ring with three groups: an aldehyde (orange), a methoxy (violet) and a hydroxyl (blue). Change them slightly and the smell changes.',
+    'Space filling: under 1 nm across, small and light enough to drift out of a vanilla pod as a vapor and reach your nose.',
+  ]);
+  controls.set(0);
+  return {
+    root,
+    fit: 'both',
+    metersPerUnit: 1e-10,
+    view: { target: [0, 0, 0], direction: [0.1, 0.4, 1] },
+    focus: [0, 0, 0],
+    controls,
+    update,
+    dispose() {
+      mol.sphere.dispose();
       disposeTree(root);
       M.dispose();
     },

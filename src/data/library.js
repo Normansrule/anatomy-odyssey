@@ -206,6 +206,15 @@ export const LIBRARY = [
     step: { id: 'bilirubin', tier: 7, scene: 'bilirubin', title: 'Bilirubin', card: 'bilirubin', frameMeters: 2.4e-9 },
   },
   {
+    id: 'vanillin',
+    title: 'Vanillin',
+    status: 'built',
+    scene: 'vanillin',
+    card: 'vanillin',
+    madeOf: [],
+    step: { id: 'vanillin', tier: 7, scene: 'vanillin', title: 'Vanillin', card: 'vanillin', frameMeters: 1.2e-9 },
+  },
+  {
     id: 'phospholipids',
     title: 'Phospholipids',
     status: 'built',
