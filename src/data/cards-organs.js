@@ -13,7 +13,7 @@ export const ORGAN_CARDS = [
     size: 'One long tube from mouth to anus (the small intestine alone is about 3 m), plus the liver, gallbladder and pancreas',
     what: 'A long tube that breaks food down and absorbs it: mouth, esophagus, stomach, small intestine and large intestine, helped by the liver, gallbladder and pancreas, which pour their juices into it.',
     why: 'Every molecule your body is built from, apart from the oxygen you breathe, came in this way.',
-    expert: 'The esophagus is about 25 cm long and passes through the diaphragm at the esophageal hiatus; swallowing solid food takes about 4 to 8 seconds. Organs here are simplified shapes in roughly the right places; turn the Digestive button on to see them.',
+    expert: 'The esophagus is about 25 cm long and passes through the diaphragm at the esophageal hiatus; swallowing solid food takes about 4 to 8 seconds. Turn the Digestive button on to see the organs, measured from a real body.',
     refs: GUT,
   },
   {

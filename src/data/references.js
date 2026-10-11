@@ -1,5 +1,9 @@
 // Reading list. Every card cites one or more of these by id.
 export const REFERENCES = {
+  bodyparts3d: {
+    text: 'Mitsuhashi, N., et al. "BodyParts3D: 3D structure database for anatomical concepts." Nucleic Acids Research 37:D782–D785, 2009. Meshes © The Database Center for Life Science, CC BY-SA 2.1 Japan.',
+    url: 'https://doi.org/10.1093/nar/gkn613',
+  },
   openstax: {
     text: 'Betts, J. G., et al. Anatomy and Physiology 2e. OpenStax, 2022 (CC BY 4.0).',
     url: 'https://openstax.org/details/books/anatomy-and-physiology-2e',

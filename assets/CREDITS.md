@@ -4,7 +4,7 @@ Every shipped asset gets one row in the table at the end of this file: file, wha
 
 ## Rules
 
-- **Anatomy** (`assets/anatomy/`): derived from Z-Anatomy (CC BY-SA 4.0), which derives from BodyParts3D (CC BY-SA 2.1 Japan). Derivatives stay CC BY-SA and credit both projects. ShareAlike applies to these files, not to the code.
+- **Anatomy** (`assets/anatomy/`): derived from BodyParts3D (CC BY-SA 2.1 Japan), directly or through Z-Anatomy (CC BY-SA 4.0). Derivatives stay CC BY-SA and credit every project they come through. ShareAlike applies to these files, not to the code.
 - **Molecular** (`assets/molecular/`): prefer CC0 or public-domain files from NIH 3D, RCSB PDB and PubChem. Record each file's license individually, and cite every PDB ID.
 - **Never** add a NonCommercial (NC) asset, such as many AnatomyTOOL models or the CC BY-NC-SA copies of BodyParts3D.
 
@@ -30,7 +30,8 @@ Every shipped asset gets one row in the table at the end of this file: file, wha
 
 ## Shipped assets
 
-The app ships no downloaded 3D assets or texture images. All geometry is generated in code (`src/scenes/`, `src/library/`), and tissue textures are generated in code from seeded noise (`src/engine/textures/`); both are covered by the MIT license.
+The whole-body anatomy is the one downloaded 3D asset. Every other scene's geometry is generated in code (`src/scenes/`, `src/library/`), and tissue textures are generated in code from seeded noise (`src/engine/textures/`); both are covered by the MIT license.
 
 | File | Description | Source / author | License | Link |
 |---|---|---|---|---|
+| `anatomy/body.glb` | 841 BodyParts3D parts (skin, bones, muscles, heart, vessels, lungs, brain, gut, kidneys, glands) merged into 408 labeled meshes: smoothed, simplified, moved into the app's frame and quantized by `tools/build_body_meshes.py`. `src/data/bodyLandmarks.json` holds positions measured from the same meshes. | BodyParts3D release 3.0, © The Database Center for Life Science (DBCLS), Japan; Mitsuhashi et al., Nucleic Acids Research 2009; via the mirror by Kevin Mattheus Moerman | CC BY-SA 2.1 Japan | https://lifesciencedb.jp/bp3d/ , https://github.com/Kevin-Mattheus-Moerman/BodyParts3D |

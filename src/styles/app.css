@@ -506,6 +506,51 @@ input {
   font-variant-numeric: tabular-nums;
 }
 
+/* ── Zoom guide ──────────────────────────────────────────────────── */
+.zoom-guide {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 84px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 2 * var(--gutter));
+  padding: 6px 6px 6px 16px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--eosin) 45%, var(--ink-line));
+  background: color-mix(in oklab, var(--ink) 82%, transparent);
+  backdrop-filter: blur(6px);
+  font-size: var(--step--1);
+  z-index: 20;
+  animation: zoom-guide-in 0.25s ease-out;
+}
+
+.zoom-guide__go {
+  cursor: pointer;
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--eosin);
+  color: var(--eosin-ink);
+  font: inherit;
+  font-weight: 700;
+}
+
+@keyframes zoom-guide-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zoom-guide {
+    animation: none;
+  }
+}
+
 /* ── Tooltip ─────────────────────────────────────────────────────── */
 .tooltip {
   position: fixed;

@@ -3,7 +3,7 @@ import { vanillinParts } from '../src/library/smallMolecules.js';
 import { OLFACTORY_CM2 } from '../src/scenes/nasalCavity.js';
 import { SMELL_STAGES, EPITHELIUM } from '../src/scenes/olfactoryEpithelium.js';
 import { RECEPTOR_STAGES, RECEPTOR_TYPES, KNOB_UM } from '../src/scenes/olfactoryCilium.js';
-import { NOSE } from '../src/scenes/body.js';
+import { NOSE, EYES, LANDMARKS } from '../src/scenes/body.js';
 import { getDive } from '../src/data/dives.js';
 
 const count = (atoms, el) => atoms.filter((a) => a.el === el).length;
@@ -28,8 +28,8 @@ describe('the smell dive', () => {
     expect(RECEPTOR_STAGES.map((s) => s.label)).toEqual(['Carried', 'Binds', 'G protein', 'Channels open', 'Signal']);
   });
   it('puts the olfactory patch between the eyes, in front of the brain', () => {
-    expect(NOSE.y).toBeGreaterThan(1.6);
-    expect(NOSE.z).toBeGreaterThan(0.08);
+    expect(Math.abs(NOSE.y - EYES.y)).toBeLessThan(0.015);
+    expect(NOSE.z).toBeGreaterThan(LANDMARKS.brain[2] + 0.04);
   });
   it('runs body → nasal cavity → epithelium → cilia → vanillin', () => {
     expect(getDive('smell').steps.map((s) => s.id)).toEqual(['body', 'nasal-cavity', 'olfactory-epithelium', 'olfactory-cilium', 'vanillin']);

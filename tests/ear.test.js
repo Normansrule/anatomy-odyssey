@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { COCHLEA_MM, HEARING_HZ, pitchHz, placeOf, cochleaPoint } from '../src/scenes/ear.js';
 import { OUTER_HAIR_CELL_ROWS, INNER_HAIR_CELL_ROWS, DUCT_STAGES } from '../src/scenes/cochlearDuct.js';
 import { BUNDLE_ROWS, HAIR_CELL_STAGES } from '../src/scenes/hairCell.js';
-import { INNER_EARS } from '../src/scenes/body.js';
+import { INNER_EARS, EYES } from '../src/scenes/body.js';
 import { getDive } from '../src/data/dives.js';
 
 describe('the ear', () => {
@@ -33,9 +33,12 @@ describe('the ear', () => {
     expect(HAIR_CELL_STAGES.map((s) => s.label)).toEqual(['At rest', 'Bundle bends', 'Channels open', 'Glutamate out', 'Nerve fires']);
   });
   it('the inner ears sit deep in the head, level with the eyes’ lower edge', () => {
-    expect(INNER_EARS.x).toEqual([-0.062, 0.062]);
-    expect(INNER_EARS.y).toBeGreaterThan(1.58);
-    expect(INNER_EARS.y).toBeLessThan(1.64);
+    expect(INNER_EARS.x[0]).toBeCloseTo(-INNER_EARS.x[1], 6);
+    expect(INNER_EARS.x[1]).toBeGreaterThan(0.03); // inside the skull, 3 to 6 cm from the midline
+    expect(INNER_EARS.x[1]).toBeLessThan(0.06);
+    expect(INNER_EARS.y).toBeLessThan(EYES.y);
+    expect(INNER_EARS.y).toBeGreaterThan(EYES.y - 0.03);
+    expect(INNER_EARS.z).toBeLessThan(EYES.z - 0.04); // well behind the eyes
   });
   it('the ear dive runs body → ear → cochlea → hair cell → glutamate, reusing the shared molecule', () => {
     const d = getDive('ear');

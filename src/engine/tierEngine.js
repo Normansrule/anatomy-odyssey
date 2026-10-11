@@ -23,6 +23,9 @@ export class TierEngine {
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.08;
     this.controls.screenSpacePanning = true;
+    // Zooming keeps the point under the pointer fixed on screen (see zoomAt), so you
+    // can zoom in anywhere, not only at the middle of the view.
+    this.cursorZoom = null; // { point, ndc, until }
     this.current = null; // { step, built }
     this.busy = false;
     this.tweens = [];
@@ -109,7 +112,9 @@ export class TierEngine {
     this.camera.near = d / 200;
     this.camera.far = d * 60;
     this.camera.updateProjectionMatrix();
-    this.controls.minDistance = d * 0.2;
+    // Zoom in to a tenth of the framed view and out to about three times it; past the
+    // guide's thresholds (src/ui/zoomGuide.js) zooming carries on to the next or previous step.
+    this.controls.minDistance = d * 0.1;
     this.controls.maxDistance = d * 3.2;
     // Keep the lights framed around the subject at every scale.
     this.key.position.copy(target).add(new THREE.Vector3(2, 3, 4).multiplyScalar(d * 0.5));
@@ -204,6 +209,59 @@ export class TierEngine {
     return true;
   }
 
+  /**
+   * Begin (or continue) a zoom toward the screen point `ndc`: the surface under
+   * it, or the point at the orbit target's depth, stays under the pointer while
+   * the orbit controls change the distance. Works with the view shifted beside
+   * the side panels, which the controls' own zoom-to-cursor does not allow for.
+   */
+  zoomAt(ndc) {
+    if (!this.current || this.busy) return null;
+    const now = performance.now();
+    const same = this.cursorZoom && Math.abs(this.cursorZoom.ndc.x - ndc.x) < 1e-3 && Math.abs(this.cursorZoom.ndc.y - ndc.y) < 1e-3;
+    if (!same) {
+      const hit = this.pickAt(ndc, { any: true });
+      let point = hit?.point.clone();
+      if (!point) {
+        const ray = new THREE.Raycaster();
+        ray.setFromCamera(ndc, this.camera);
+        const facing = this.camera.getWorldDirection(new THREE.Vector3());
+        point = ray.ray.intersectPlane(new THREE.Plane().setFromNormalAndCoplanarPoint(facing, this.controls.target), new THREE.Vector3());
+      }
+      if (!point) return null;
+      this.cursorZoom = { point, ndc: { x: ndc.x, y: ndc.y } };
+    }
+    this.cursorZoom.until = now + 400;
+    return this.cursorZoom.point;
+  }
+
+  /** Draw the cursor-zoom point a share k of the way toward `toward`, so that point slides under the pointer. */
+  nudgeCursorZoom(toward, k) {
+    this.cursorZoom?.point.lerp(toward, k);
+  }
+
+  /** Slide camera and target together so the cursor-zoom point is back under the pointer. */
+  holdCursorZoom() {
+    const z = this.cursorZoom;
+    if (!z) return;
+    if (performance.now() > z.until || this.busy) {
+      this.cursorZoom = null;
+      return;
+    }
+    this.camera.updateMatrixWorld();
+    const depth = z.point.clone().project(this.camera).z;
+    const want = new THREE.Vector3(z.ndc.x, z.ndc.y, depth).unproject(this.camera);
+    const shift = z.point.clone().sub(want);
+    this.camera.position.add(shift);
+    this.controls.target.add(shift);
+  }
+
+  /** How far the user has zoomed: camera distance ÷ the distance the step was framed at (1 on arrival). */
+  zoomRatio() {
+    if (!this.current?.built.pose) return 1;
+    return this.camera.position.distanceTo(this.controls.target) / this.current.built.pose.dist;
+  }
+
   /** Height of the view at the orbit target, in meters. */
   viewMeters() {
     if (this.transitionMeters !== null) return this.transitionMeters;
@@ -242,7 +300,7 @@ export class TierEngine {
   }
 
   /** Return the clickable structure under a normalized device coordinate, if any. */
-  pickAt(ndc) {
+  pickAt(ndc, { any = false } = {}) {
     if (!this.current || this.busy) return null;
     const ray = new THREE.Raycaster();
     ray.setFromCamera(ndc, this.camera);
@@ -250,7 +308,12 @@ export class TierEngine {
     let best = null;
     for (const h of hits) {
       let o = h.object;
-      if (!isVisible(o)) continue;
+      if (!isVisible(o) || o.userData.hoverShell) continue;
+      // any: the nearest solid surface, for aiming a zoom (see-through skin is looked past).
+      if (any) {
+        if ((o.userData.pickPriority ?? 0) < 0 || o.material?.transparent) continue;
+        return { point: h.point, object: o };
+      }
       while (o && !o.userData.cardId) o = o.parent;
       if (!o) continue;
       const priority = h.object.userData.pickPriority ?? o.userData.pickPriority ?? 0;
@@ -353,7 +416,10 @@ export class TierEngine {
       }
     }
     this.current?.built.update?.(dt, { reducedMotion: this.reducedMotion });
-    if (this.controls.enabled) this.controls.update();
+    if (this.controls.enabled) {
+      this.controls.update();
+      this.holdCursorZoom();
+    }
   }
 
   render() {

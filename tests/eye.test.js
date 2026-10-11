@@ -5,7 +5,7 @@ import { MOLECULES } from '../src/library/molecules.js';
 import { EYE_MM, PUPIL_MM, pupilDiameter, buildEye } from '../src/scenes/eye.js';
 import { RETINA_LAYERS, CONE_EVERY, SIGNAL_STAGES } from '../src/scenes/retina.js';
 import { CASCADE_STAGES } from '../src/scenes/phototransduction.js';
-import { EYES } from '../src/scenes/body.js';
+import { EYES, LANDMARKS } from '../src/scenes/body.js';
 import { getDive } from '../src/data/dives.js';
 import { SCENES, SCENE_IDS } from '../src/scenes/registry.js';
 
@@ -74,9 +74,12 @@ describe('the eye', () => {
     b.dispose();
   });
   it('the body’s eyes sit in front of the brain at eye level', () => {
-    expect(EYES.x).toEqual([-0.032, 0.032]);
-    expect(EYES.y).toBeGreaterThan(1.6);
-    expect(EYES.z).toBeGreaterThan(0.06);
+    expect(EYES.x[0]).toBeCloseTo(-EYES.x[1], 6);
+    expect(EYES.x[1]).toBeGreaterThan(0.025); // pupils about 6 cm apart
+    expect(EYES.x[1]).toBeLessThan(0.04);
+    expect(EYES.y).toBeGreaterThan(LANDMARKS.height - 0.16); // about 11 cm below the top of the head
+    expect(EYES.y).toBeLessThan(LANDMARKS.height - 0.08);
+    expect(EYES.z).toBeGreaterThan(LANDMARKS.brain[2] + 0.05);
   });
 });
 

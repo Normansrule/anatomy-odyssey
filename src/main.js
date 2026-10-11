@@ -8,6 +8,7 @@ import { createRenderer, applySize } from './engine/renderer.js';
 import { TierEngine } from './engine/tierEngine.js';
 import { SCENES } from './scenes/registry.js';
 import { SYSTEMS, DEFAULT_SYSTEMS } from './scenes/body.js';
+import { loadBodyParts } from './scenes/bodyMeshes.js';
 import { DIVES, TIERS, getDive, locateStep } from './data/dives.js';
 import { getCard } from './data/cards.js';
 import { getLibraryEntry } from './data/library.js';
@@ -19,6 +20,9 @@ import { renderAbout } from './ui/about.js';
 import { buildIndex, search, normalizeQuery } from './ui/search.js';
 import { createSceneControls } from './ui/sceneControls.js';
 import { createTour } from './ui/tour.js';
+import { ZOOM, zoomAnchors, nearestToRay, zoomIntent } from './ui/zoomGuide.js';
+import { Raycaster, Vector2, Vector3 } from 'three/webgpu';
+import { AT } from './data/dives.js';
 import { openQuiz, hasQuiz } from './ui/quiz.js';
 import { openGlossary } from './ui/glossary.js';
 import { renderAtlas } from './ui/atlas.js';
@@ -69,6 +73,9 @@ function tierOf(stepId) {
 }
 
 async function main() {
+  // The detailed body anatomy downloads while the renderer starts.
+  const anatomy = loadBodyParts();
+  anatomy.catch((err) => console.warn('Detailed anatomy unavailable; showing the simplified figure.', err));
   let renderer;
   let backend;
   try {
@@ -634,6 +641,122 @@ async function main() {
     openCard('body');
   });
 
+  // ── Free zoom with a guide (src/ui/zoomGuide.js) ──────────────────
+  const anchors = zoomAnchors(DIVES, [{ diveId: 'reflex', point: AT.knee, title: 'Knee-jerk reflex' }]);
+  const guideEl = $('zoom-guide');
+  const guideText = $('zoom-guide-text');
+  const guideGo = $('zoom-guide-go');
+  let guide = null; // { intent, act, text } currently shown
+  let guideArmed = true; // re-armed once the view zooms back out of the trigger range
+  let aimNdc = new Vector2(0, 0); // where the zoom is aimed: the pointer, or the middle of a pinch
+  let locked = null; // the dive the zoom is heading for, kept until the view zooms back out
+  const aimRay = new Raycaster();
+  /** The dive under the aim point: nearest to the line of sight through it. */
+  function aimedAnchor() {
+    aimRay.setFromCamera(aimNdc, engine.camera);
+    const { origin, direction } = aimRay.ray;
+    return nearestToRay(anchors, origin.toArray(), direction.toArray());
+  }
+  function headingFor() {
+    if (engine.zoomRatio() > 0.85) locked = null;
+    else if (!locked) locked = aimedAnchor();
+    return locked;
+  }
+
+  /** Fly from the whole body into the dive at an anchor, aiming at the anchor's point. */
+  async function diveAt(anchor) {
+    const dive = getDive(anchor.diveId);
+    const index = dive?.steps.findIndex((s) => s.id === anchor.stepId) ?? -1;
+    if (index < 0 || engine.busy) return;
+    tour.stop();
+    state.dive = dive;
+    setPath(dive.steps);
+    state.stepIndex = index;
+    progress.setPref('dive', dive.id);
+    beginMove();
+    await engine.transition(dive.steps[index], true, { fromFocus: anchor.point });
+    arrive();
+  }
+
+  function zoomTarget() {
+    const s = currentStep();
+    const r = engine.zoomRatio();
+    const i = state.stepIndex;
+    const onBody = s.scene === 'body';
+    const next = state.path[i + 1];
+    const prev = state.path[i - 1];
+    const intent = zoomIntent(r, { canIn: onBody ? anchors.length > 0 : !!next, canOut: !!prev });
+    if (!intent) return null;
+    if (intent.endsWith('in')) {
+      if (onBody) {
+        const a = headingFor();
+        if (!a) return null;
+        return { intent, key: `a:${a.diveId}`, label: a.title, anchor: a, act: () => diveAt(a) };
+      }
+      return { intent, key: `n:${next.id}`, label: next.title, act: () => goTo(i + 1) };
+    }
+    return { intent, key: `p:${prev.id}`, label: prev.title, act: () => goTo(i - 1) };
+  }
+
+  function updateZoomGuide() {
+    const t = !engine.busy && !tour.active && engine.current ? zoomTarget() : null;
+    if (!t) {
+      if (guide) {
+        guideEl.hidden = true;
+        guide = null;
+      }
+      guideArmed = true;
+      return;
+    }
+    const inward = t.intent.endsWith('in');
+    const text = inward ? `Keep zooming in to reach: ${t.label}` : `Keep zooming out to go back to: ${t.label}`;
+    if (!guide || guide.key !== t.key || guide.text !== text) {
+      guideText.textContent = text;
+      guideGo.textContent = inward ? `Go to ${t.label}` : 'Zoom out';
+      guideEl.hidden = false;
+    }
+    guide = { ...t, text };
+    if (t.intent.startsWith('go') && guideArmed && pressed.size === 0) {
+      guideArmed = false;
+      guideEl.hidden = true;
+      guide = null;
+      t.act();
+    }
+  }
+  guideGo.addEventListener('click', () => guide?.act());
+  // A pinch or drag in progress never triggers a move; it waits for the fingers to lift.
+  const pressed = new Map(); // pointer id → [x, y]
+  const ndcVector = (x, y) => {
+    const r = canvas.getBoundingClientRect();
+    return new Vector2(((x - r.left) / r.width) * 2 - 1, -((y - r.top) / r.height) * 2 + 1);
+  };
+  canvas.addEventListener('pointerdown', (e) => pressed.set(e.pointerId, [e.clientX, e.clientY]));
+  canvas.addEventListener('pointermove', (e) => {
+    if (!pressed.has(e.pointerId)) return;
+    pressed.set(e.pointerId, [e.clientX, e.clientY]);
+    if (pressed.size === 2) {
+      // A pinch zooms toward the point between the fingers.
+      const [[ax, ay], [bx, by]] = [...pressed.values()];
+      aimNdc = ndcVector((ax + bx) / 2, (ay + by) / 2);
+      engine.zoomAt(aimNdc);
+    }
+  });
+  for (const type of ['pointerup', 'pointercancel', 'pointerleave']) canvas.addEventListener(type, (e) => pressed.delete(e.pointerId));
+  // Each wheel step zooms toward the point under the pointer. On the whole body,
+  // zooming in also draws the view toward the nearest dive, so a zoom anywhere
+  // ends somewhere there is more to see.
+  canvas.addEventListener(
+    'wheel',
+    (e) => {
+      aimNdc = ndcVector(e.clientX, e.clientY);
+      engine.zoomAt(aimNdc);
+      if (e.deltaY >= 0 || engine.busy || currentStep().scene !== 'body') return;
+      const a = headingFor();
+      if (a && engine.zoomRatio() < 0.8) engine.nudgeCursorZoom(new Vector3(...a.point), ZOOM.magnet);
+    },
+    { passive: true, capture: true },
+  );
+
   // ── Picking and hover labels ──────────────────────────────────────
   const tooltip = $('tooltip');
   let down = null;
@@ -737,7 +860,13 @@ async function main() {
     ensureSystems(first.systems);
     engine.systems = state.systems;
   }
+  const BODY_SCENES = new Set(['body', 'skeleton']);
+  if (BODY_SCENES.has(first.scene)) await anatomy.catch(() => null);
   engine.show(first);
+  // If the anatomy arrives while the simplified figure is on screen, swap it in place.
+  anatomy.then(() => {
+    if (BODY_SCENES.has(engine.current?.step.scene) && !engine.current.built.detailed) engine.rebuild();
+  }, () => {});
   progress.markVisited(`${state.dive.id}:${first.id}`);
   refreshTrack();
   sceneControls.attach(engine.current?.built.controls);
@@ -768,6 +897,7 @@ async function main() {
     engine.update(dt);
     engine.render();
     updateHover();
+    updateZoomGuide();
     sceneControls.sync();
     const meters = engine.viewMeters();
     if (Math.abs(meters - lastMeters) / meters > 0.002) {
@@ -778,7 +908,7 @@ async function main() {
   });
   app.dataset.ready = 'true';
   // For automated screenshot tests.
-  window.__anatomyOdyssey = { engine, goTo, openCard, switchDive, takeBranch, startTour, backend, state };
+  window.__anatomyOdyssey = { engine, goTo, openCard, switchDive, takeBranch, startTour, backend, state, zoomHeading: () => locked?.diveId ?? null };
 }
 
 /** Center the subject in the uncovered part of the screen, between the gauge (or intro) and the card panel. */

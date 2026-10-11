@@ -145,10 +145,13 @@ export function fibonacciSphere(n) {
   return pts;
 }
 
-/** Dispose every geometry below `root`. Materials are shared and cleared separately. */
+/**
+ * Dispose every geometry below `root`. Materials are shared and cleared separately,
+ * and so are geometries marked userData.shared (the loaded anatomy, reused by every body scene).
+ */
 export function disposeTree(root) {
   root.traverse((o) => {
-    if (o.geometry) o.geometry.dispose();
+    if (o.geometry && !o.geometry.userData.shared) o.geometry.dispose();
   });
 }
 

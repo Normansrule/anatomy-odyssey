@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.20.0
+
+- **A body measured from a real one.** The blocky whole body and skeleton are replaced by 411 meshes built from BodyParts3D (the Database Center for Life Science's model of a real adult male, CC BY-SA 2.1 Japan): every bone, muscle and organ in its measured shape, smoothed and reduced by `tools/build_body_meshes.py` into one 10.9 MB bundle that is checked against the asset manifest before it is used. The simplified figure stays as the fallback while it loads or if it cannot.
+- **The heart beats**, at 72 beats a minute, on the whole body.
+- **Zoom in anywhere.** Scroll or pinch zooms toward whatever is under the pointer. Zoom far enough into the whole body and a guide names the nearest part that has a dive ("Keep zooming in to reach: the heart"), draws the view toward it and then carries you in; a "Go" button does it in one tap. Zooming out far enough goes back a step.
+- Every dive now starts from the measured position of its organ, and the model's height (1.64 m) is the measured one.
+- 1 new reference (Mitsuhashi and others 2009, the BodyParts3D paper).
+- 436 tests (from 421).
+
 ## 0.19.0
 
 - **Smell dive, from a sniff to vanillin.** A fifteenth dive: the whole body, now with an olfactory patch and olfactory bulbs → the nasal cavity cut down the middle, with the conchae, the olfactory patch in its roof, the cribriform plate and the olfactory bulb under the frontal lobe, and a breath control that compares quiet breathing with a sniff → the olfactory epithelium, its neurons reaching cilia into the mucus, following odor molecules from the air to an action potential headed for the bulb → the knob and cilia of one olfactory neuron, following one odor molecule from its carrier protein to a seven-helix receptor, the G protein relay, open channels and a signal → vanillin.
