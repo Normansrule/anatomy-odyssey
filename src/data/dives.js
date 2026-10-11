@@ -108,7 +108,7 @@ export const DIVES = [
     status: 'built',
     summary: 'Lymph node → follicle → plasma cell → the antibodies it makes.',
     steps: [
-      { ...BODY, focusCard: 'immune-system', focus: AT.armpit, systems: ['immune'], narration: 'Hundreds of lymph nodes sit along your lymph vessels. We will enter one in the armpit and find where antibodies are made.' },
+      { ...BODY, frameMeters: 0.7, options: { infection: true }, focusCard: 'immune-system', focus: AT.armpit, systems: ['immune'], narration: 'A cut on the forearm, and the whole body answers. Step through the infection with the control: the alarm at the wound, germ pieces carried to the armpit lymph nodes, and the antibodies sent back. Then we will enter one of those nodes.' },
       { id: 'lymph-node', tier: 3, scene: 'lymph-node', title: 'Lymph node', card: 'lymph-node', frameMeters: 0.026, focusCard: 'lymph-follicle', narration: 'A lymph node is a filter about the size of a bean. Fluid flows in, past crowds of immune cells, and out again.' },
       { id: 'follicle', tier: 4, scene: 'follicle', title: 'Follicle', card: 'lymph-follicle', frameMeters: 3e-4, focusCard: 'plasma-cell', narration: 'In the outer layer, B cells gather in follicles. In the pale center they compete to make better and better antibodies.' },
       { id: 'plasma-cell', tier: 5, scene: 'plasma-cell', title: 'Plasma cell', card: 'plasma-cell', frameMeters: 2.4e-5, focusCard: 'antibody', branch: { label: 'Side trip into its nucleus', card: 'plasma-nucleus', via: ['nucleus', 'dna'] }, narration: 'A winning B cell becomes a plasma cell: an antibody factory, full of protein-building membranes.' },

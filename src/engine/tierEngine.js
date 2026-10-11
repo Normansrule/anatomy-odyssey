@@ -90,7 +90,8 @@ export class TierEngine {
   build(step) {
     const builder = this.scenes[step.scene];
     if (!builder) throw new Error(`No scene builder for "${step.scene}"`);
-    const built = builder({ reducedMotion: this.reducedMotion, systems: this.systems ?? undefined });
+    // A step can ask its scene for extras (the immune dive's infection on the body).
+    const built = builder({ reducedMotion: this.reducedMotion, systems: this.systems ?? undefined, ...step.options });
     const target = new THREE.Vector3(...built.view.target);
     const dir = new THREE.Vector3(...built.view.direction).normalize();
     // Tall subjects are framed by height; wide ones must also fit a narrow (portrait) screen.

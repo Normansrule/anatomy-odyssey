@@ -12,6 +12,7 @@ import { COLORS, materialBank, pick, tubeThrough, ellipsoid, disposeTree, softSh
 import { bodyParts } from './bodyMeshes.js';
 import { buildSimpleSystems, SIMPLE_FIGURE } from './bodySimple.js';
 import { buildBloodFlow } from './bloodFlow.js';
+import { buildInfection, skinPointNear } from './bodyInfection.js';
 import LANDMARKS from '../data/bodyLandmarks.json';
 
 export const SYSTEMS = [
@@ -260,7 +261,31 @@ export function heartbeatScale(phase) {
   return 1 - 0.045 * squeeze - 0.012 * atria;
 }
 
-function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false } = {}) {
+/** Where the immune dive's infection happens: a cut on the left forearm, drained by the left armpit nodes. */
+function infectionSite(parts, immune) {
+  const [top, bottom] = bone('left radius');
+  const axisPoint = lerp(top, bottom, 0.62);
+  const skin = parts.find((p) => p.extras.tissue === 'skin' && p.extras.card === 'skin');
+  const wound = skinPointNear(skin?.geometry.attributes.position.array, add(axisPoint, [0, 0, 0.05]), axisPoint);
+  const toAxis = axisPoint.map((x, i) => x - wound[i]);
+  const len = Math.hypot(...toAxis) || 1;
+  const woundIn = wound.map((x, i) => x + (toAxis[i] / len) * 0.004);
+  const nodes = [];
+  immune.traverse((o) => o.isMesh && o.userData.label === 'Lymph node (armpit)' && o.position.x > 0 && nodes.push(o));
+  const node = nodes.length ? [0, 1, 2].map((k) => nodes.reduce((t, n) => t + n.position.getComponent(k), 0) / nodes.length) : L.vessels.subclavianVein.left;
+  const artery = along('left radius', 0.5, [-0.002, 0, 0.014]);
+  return {
+    wound,
+    woundIn,
+    artery,
+    node,
+    nodes,
+    lymphRoute: [wound, along('left radius', 0.35, [-0.012, 0, 0.012]), along('left humerus', 0.95, [-0.022, 0, 0.018]), along('left humerus', 0.55, [-0.028, 0, 0.006]), along('left humerus', 0.2, [-0.035, -0.01, 0]), node],
+    bloodRoute: [node, L.vessels.subclavianArtery.left, along('left humerus', 0.15, [-0.02, 0, 0.004]), along('left humerus', 0.92, [-0.012, 0, 0.022]), artery, wound],
+  };
+}
+
+function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false, infection: withInfection = false } = {}) {
   const M = materialBank();
   const root = new THREE.Group();
   const skeletonOnly = mode === 'skeleton';
@@ -268,6 +293,8 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
   let groups;
   let heart = null;
   let flow = null;
+  let infection = null;
+  let site = null;
   if (parts) {
     groups = measuredSystems(M, parts, { skeletonOnly });
     groups.nervous.add(buildNerves(M));
@@ -278,6 +305,11 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
       groups.circulatory.add(flow.group);
     }
     groups.immune.add(buildLymphatics(M));
+    if (withInfection && !skeletonOnly) {
+      site = infectionSite(parts, groups.immune);
+      infection = buildInfection(M, site, { reducedMotion });
+      groups.immune.add(infection.group);
+    }
     groups.endocrine.add(buildThyroid(M));
     // The heart and its own vessels beat together, scaled about the heart's centre.
     const beating = groups.circulatory.children.filter((m) => ['heart', 'heart-valves', 'coronary-arteries'].includes(m.userData.cardId));
@@ -316,8 +348,12 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
     detailed: !!parts,
     view: skeletonOnly
       ? { target: [0.03, height / 2, 0], direction: [0.42, 0.12, 1] } // whole skeleton, head to feet
-      : { target: [0, height / 2, 0], direction: [0.28, 0.08, 1] },
-    focus: femurCenter,
+      : site
+        ? { target: lerp(site.wound, site.node, 0.5), direction: [0.45, 0.05, 1] } // the left arm, from the cut to the armpit
+        : { target: [0, height / 2, 0], direction: [0.28, 0.08, 1] },
+    focus: site ? site.wound : femurCenter,
+    controls: infection?.controls,
+    infection,
     setSystems(list) {
       if (skeletonOnly) return;
       for (const [id, grp] of Object.entries(groups)) grp.visible = list.includes(id);
@@ -326,6 +362,7 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
       beat = (beat + dt * BEATS_PER_SECOND) % 1;
       heart?.scale.setScalar(still ? 1 : heartbeatScale(beat));
       if (flow && groups.circulatory.visible) flow.update(dt, beat, still);
+      infection?.update(dt);
     },
     dispose() {
       disposeTree(root);

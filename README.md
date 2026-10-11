@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.20.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-444%20passing-4fb38a)
+![Tests](https://img.shields.io/badge/tests-451%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -46,7 +46,7 @@ No accounts, no tracking. Two ways to use it:
 | 🦴 **Skeletal** | body → skeleton → femur → bone tissue → bone cell → nucleus | DNA |
 | ❤️ **Circulatory** | body → heart → blood → red blood cell → hemoglobin | the iron atom in heme |
 | 💪 **Muscular** | body → biceps → fascicle → muscle fiber → sarcomere | actin and myosin |
-| 🛡️ **Immune** | body → lymph node → follicle → plasma cell → antibody | amino acids |
+| 🛡️ **Immune** | body fighting an infection, from a cut to cleared → lymph node → follicle → plasma cell → antibody | amino acids |
 | 🧠 **Nervous** | body → brain → cortex → neuron → synapse | glutamate |
 | 🫁 **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ |
 | 🍽️ **Digestive** | body → small intestine → villi → absorbing cell | glucose |
@@ -189,7 +189,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 444 unit tests
+npm test               # 451 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
