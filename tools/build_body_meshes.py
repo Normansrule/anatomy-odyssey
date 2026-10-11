@@ -27,6 +27,7 @@ Needs: numpy, fast-simplification (pip install numpy fast-simplification).
 import argparse
 import concurrent.futures as cf
 import csv
+import heapq
 import json
 import os
 import re
@@ -343,6 +344,131 @@ class Glb:
         return total
 
 
+# ── Blood-flow paths: the center line of each large vessel ──────────────
+# Each entry: part name, artery or vein, and which end the blood enters by:
+# 'heart' (the end nearer the heart), 'top', 'bottom', 'inner' (nearer the
+# midline) or 'outer'.
+FLOW = [
+    ('ascending aorta', 'artery', 'heart'),
+    ('arch of aorta', 'artery', 'heart'),
+    ('descending aorta', 'artery', 'top'),
+    ('brachiocephalic artery, nsn', 'artery', 'bottom'),
+    ('left common carotid artery', 'artery', 'bottom'),
+    ('right common carotid artery', 'artery', 'bottom'),
+    ('left subclavian artery', 'artery', 'inner'),
+    ('right subclavian artery', 'artery', 'inner'),
+    ('left renal artery', 'artery', 'inner'),
+    ('right renal artery', 'artery', 'inner'),
+    ('superior mesenteric artery', 'artery', 'top'),
+    ('left common iliac artery', 'artery', 'top'),
+    ('right common iliac artery', 'artery', 'top'),
+    ('left external iliac artery', 'artery', 'top'),
+    ('right external iliac artery', 'artery', 'top'),
+    ('left internal iliac artery', 'artery', 'top'),
+    ('right internal iliac artery', 'artery', 'top'),
+    ('superior vena cava', 'vein', 'top'),
+    ('inferior vena cava', 'vein', 'bottom'),
+    ('left brachiocephalic vein', 'vein', 'outer'),
+    ('right brachiocephalic vein', 'vein', 'top'),
+    ('left internal jugular vein', 'vein', 'top'),
+    ('right internal jugular vein', 'vein', 'top'),
+    ('left subclavian vein', 'vein', 'outer'),
+    ('right subclavian vein', 'vein', 'outer'),
+    ('left renal vein', 'vein', 'outer'),
+    ('right renal vein', 'vein', 'outer'),
+    ('left common iliac vein', 'vein', 'bottom'),
+    ('right common iliac vein', 'vein', 'bottom'),
+    ('left external iliac vein', 'vein', 'bottom'),
+    ('right external iliac vein', 'vein', 'bottom'),
+    ('left internal iliac vein', 'vein', 'bottom'),
+    ('right internal iliac vein', 'vein', 'bottom'),
+]
+
+
+def geodesic(v, f, src):
+    """Distance from vertex src to every vertex, along the mesh's edges (inf where unreachable)."""
+    adj = [[] for _ in range(len(v))]
+    for a, b in ((0, 1), (1, 2), (2, 0)):
+        for i, j in zip(f[:, a].tolist(), f[:, b].tolist()):
+            w = float(np.linalg.norm(v[i] - v[j]))
+            adj[i].append((j, w))
+            adj[j].append((i, w))
+    d = np.full(len(v), np.inf)
+    d[src] = 0.0
+    heap = [(0.0, src)]
+    while heap:
+        dd, i = heapq.heappop(heap)
+        if dd > d[i]:
+            continue
+        for j, w in adj[i]:
+            if dd + w < d[j]:
+                d[j] = dd + w
+                heapq.heappush(heap, (d[j], j))
+    return d
+
+
+def centerline(v, f, step=0.01):
+    """
+    The center line of a tube-shaped mesh and its radius along the way.
+    The surface is sliced by distance from one end (the vertex farthest from
+    any other along the surface); each slice's centroid is then re-centered,
+    three times, in the cross-section its tangent cuts.
+    """
+    d0 = geodesic(v, f, 0)
+    a = int(np.argmax(np.where(np.isfinite(d0), d0, -1)))
+    da = geodesic(v, f, a)
+    ok = np.isfinite(da)
+    length = float(da[ok].max())
+    n = max(3, int(round(length / step)))
+    pts = []
+    for k in range(n):
+        m = ok & (da >= length * k / n) & (da <= length * (k + 1) / n)
+        if m.sum() >= 3:
+            pts.append(v[m].mean(0))
+    pts = np.array(pts)
+    rad = []
+    for _ in range(3):
+        new, rad = [], []
+        for k, p in enumerate(pts):
+            t = pts[min(k + 1, len(pts) - 1)] - pts[max(k - 1, 0)]
+            t = t / (np.linalg.norm(t) or 1)
+            rel = v - p
+            along = rel @ t
+            off = rel - np.outer(along, t)
+            m = (np.abs(along) < step * 0.6) & (np.linalg.norm(off, axis=1) < 0.03)
+            if m.sum() < 6:
+                new.append(p)
+                rad.append(rad[-1] if rad else 0.004)
+                continue
+            c = p + off[m].mean(0)
+            new.append(c)
+            r = (v[m] - c) - np.outer((v[m] - c) @ t, t)
+            rad.append(float(np.median(np.linalg.norm(r, axis=1))))
+        pts = np.array(new)
+    return pts, np.array(rad)
+
+
+def flow_paths(parts, heart):
+    """Blood-flow paths for the app (see FLOW), each running the way the blood does."""
+    out = []
+    for name, kind, enter in FLOW:
+        if name not in parts:
+            continue
+        pts, rad = centerline(*parts[name])
+        a, b = pts[0], pts[-1]
+        first = {
+            'heart': np.linalg.norm(a - heart) <= np.linalg.norm(b - heart),
+            'top': a[1] >= b[1],
+            'bottom': a[1] <= b[1],
+            'inner': abs(a[0]) <= abs(b[0]),
+            'outer': abs(a[0]) >= abs(b[0]),
+        }[enter]
+        if not first:
+            pts, rad = pts[::-1], rad[::-1]
+        out.append({'name': name, 'kind': kind, 'points': pts.round(4).tolist(), 'radius': rad.round(4).tolist()})
+    return out
+
+
 # ── Landmarks the rest of the app aims at ──────────────────────────────
 def landmarks(parts):
     """Centers and axes measured from the meshes (app meters)."""
@@ -417,6 +543,7 @@ def landmarks(parts):
         'spine': [center(n) for n in ['atlas', 'third thoracic vertebra', 'eighth thoracic vertebra', 'first lumbar vertebra',
                                       'fifth lumbar vertebra', 'sacrum']],
     }
+    out['flow'] = flow_paths(parts, np.array(out['heart']))
     return out
 
 

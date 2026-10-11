@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.20.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-436%20passing-4fb38a)
+![Tests](https://img.shields.io/badge/tests-444%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -25,7 +25,7 @@
 ## In one minute
 
 - **Pick a dive** (skeletal, circulatory, muscular, immune, nervous, respiratory, digestive, urinary, endocrine, skin, eye, ear, pancreas, liver or smell) and fall through the body one scale at a time: organ → tissue → cell → molecule.
-- **Zoom in anywhere** on the body, a model measured from a real one with every bone, muscle and organ: the guide names the nearest part with a dive and takes you there.
+- **Zoom in anywhere** on the body, a model measured from a real one with every bone, muscle and organ, a beating heart and blood flowing through its vessels: the guide names the nearest part with a dive and takes you there.
 - **Point at anything** to light it up and see its name; **click** to open a card: what it is, why it matters, its real size, and a source you can check.
 - **Watch the depth gauge**: it shows how big the view is, from about 2 m down to a fraction of a nanometer, so sizes stay honest.
 - **Play with the science**: sliders run real, tested equations (oxygen binding, nerve speed, blood pH, enzyme speed-up and more).
@@ -189,7 +189,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 436 unit tests
+npm test               # 444 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)

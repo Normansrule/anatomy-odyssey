@@ -11,6 +11,7 @@ import * as THREE from 'three/webgpu';
 import { COLORS, materialBank, pick, tubeThrough, ellipsoid, disposeTree, softShadowTexture } from './kit.js';
 import { bodyParts } from './bodyMeshes.js';
 import { buildSimpleSystems, SIMPLE_FIGURE } from './bodySimple.js';
+import { buildBloodFlow } from './bloodFlow.js';
 import LANDMARKS from '../data/bodyLandmarks.json';
 
 export const SYSTEMS = [
@@ -45,6 +46,7 @@ const lerp = (a, b, t) => a.map((x, i) => x + (b[i] - x) * t);
 const add = (a, d) => a.map((x, i) => x + d[i]);
 
 // ── Materials for the measured parts, by tissue ─────────────────────────
+const SEE_THROUGH = { transparent: true, opacity: 0.5 };
 function materialFor(M, extras, { skeletonOnly }) {
   const { tissue, natural, card, side } = extras;
   switch (tissue) {
@@ -63,10 +65,11 @@ function materialFor(M, extras, { skeletonOnly }) {
       return M(0xefe6d6, { roughness: 0.35, tissue: 'tendon', repeat: [1, 1] });
     case 'myocardium':
       return M(COLORS.artery, { roughness: 0.4, tissue: 'myocardium', repeat: [1, 1] });
+    // The vessels are see-through, so the blood moving inside them shows (bloodFlow.js).
     case 'vessel':
-      return M(COLORS.artery, { roughness: 0.4, tissue: 'vessel', repeat: [1, 1] });
+      return M(COLORS.artery, { roughness: 0.4, tissue: 'vessel', repeat: [1, 1], ...SEE_THROUGH });
     case 'vein':
-      return M(COLORS.vein, { roughness: 0.4, tissue: 'vein', repeat: [1, 1] });
+      return M(COLORS.vein, { roughness: 0.4, tissue: 'vein', repeat: [1, 1], ...SEE_THROUGH });
     case 'lung':
       return M(COLORS.lung, { roughness: 0.7, transparent: true, opacity: 0.82, tissue: 'lung', repeat: [1, 1] });
     case 'brain':
@@ -156,11 +159,18 @@ function buildNerves(M) {
   return g;
 }
 
+/** The limb vessels, and the routes blood takes through them (for bloodFlow.js). */
 function buildLimbVessels(M) {
   const g = new THREE.Group();
-  const art = M(COLORS.artery, { roughness: 0.4, tissue: 'vessel' });
-  const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein' });
-  const vessel = (pts, r, material, label) => g.add(pick(tubeThrough(pts, r, material, 64, 8), 'circulatory-system', label));
+  const routes = [];
+  const art = M(COLORS.artery, { roughness: 0.4, tissue: 'vessel', ...SEE_THROUGH });
+  const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein', ...SEE_THROUGH });
+  // Every route below starts at the trunk: blood runs down an artery and back up a vein.
+  const vessel = (pts, r, material, label) => {
+    g.add(pick(tubeThrough(pts, r, material, 64, 8), 'circulatory-system', label));
+    const kind = material === art ? 'artery' : 'vein';
+    routes.push({ kind, points: kind === 'artery' ? pts : [...pts].reverse(), radius: r });
+  };
   for (const side of ['left', 'right']) {
     const s = side === 'left' ? 1 : -1;
     const femur = `${side} femur`;
@@ -189,7 +199,7 @@ function buildLimbVessels(M) {
     vessel(armPath(L.vessels.subclavianArtery[side], 0), 0.0035, art, 'Arm artery (brachial and radial)');
     vessel(armPath(L.vessels.subclavianVein[side], 0.008), 0.0038, vein, 'Arm vein');
   }
-  return g;
+  return { group: g, routes };
 }
 
 function buildLymphatics(M) {
@@ -257,10 +267,16 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
   const parts = bodyParts();
   let groups;
   let heart = null;
+  let flow = null;
   if (parts) {
     groups = measuredSystems(M, parts, { skeletonOnly });
     groups.nervous.add(buildNerves(M));
-    groups.circulatory.add(buildLimbVessels(M));
+    const limbs = buildLimbVessels(M);
+    groups.circulatory.add(limbs.group);
+    if (!skeletonOnly) {
+      flow = buildBloodFlow(M, [...L.flow, ...limbs.routes]);
+      groups.circulatory.add(flow.group);
+    }
     groups.immune.add(buildLymphatics(M));
     groups.endocrine.add(buildThyroid(M));
     // The heart and its own vessels beat together, scaled about the heart's centre.
@@ -307,9 +323,9 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
       for (const [id, grp] of Object.entries(groups)) grp.visible = list.includes(id);
     },
     update(dt, { reducedMotion: still = reducedMotion } = {}) {
-      if (!heart) return;
       beat = (beat + dt * BEATS_PER_SECOND) % 1;
-      heart.scale.setScalar(still ? 1 : heartbeatScale(beat));
+      heart?.scale.setScalar(still ? 1 : heartbeatScale(beat));
+      if (flow && groups.circulatory.visible) flow.update(dt, beat, still);
     },
     dispose() {
       disposeTree(root);

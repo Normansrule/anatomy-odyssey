@@ -76,7 +76,7 @@ export const DIVES = [
     status: 'built',
     summary: 'Heart → blood → a red blood cell → hemoglobin → the iron that holds oxygen.',
     steps: [
-      { ...BODY, focusCard: 'heart', focus: AT.heart, systems: ['circulatory'], narration: 'Your heart sits just left of center in your chest. We will follow the blood it pumps down to a single oxygen molecule.' },
+      { ...BODY, focusCard: 'heart', focus: AT.heart, systems: ['circulatory'], narration: 'Your heart sits just left of center in your chest. Red cells stream out through the arteries with each beat (drawn red) and back through the veins (drawn blue). We will follow that blood down to a single oxygen molecule.' },
       { id: 'heart', tier: 3, scene: 'heart', title: 'Heart', card: 'heart', frameMeters: 0.2, focusCard: 'blood', narration: 'Opened from the front, the heart has four chambers. The thick-walled left ventricle pushes blood out to your whole body.' },
       { id: 'blood', tier: 4, scene: 'blood', title: 'Blood', card: 'blood', frameMeters: 6e-5, focusCard: 'red-blood-cell', narration: 'Blood is a tissue: cells carried in liquid plasma. Most of the cells are red blood cells, tumbling through a small vessel.' },
       { id: 'red-blood-cell', tier: 5, scene: 'red-blood-cell', title: 'Red blood cell', card: 'red-blood-cell', frameMeters: 1.25e-5, focusCard: 'hemoglobin', branch: { label: 'Side trip into its membrane', card: 'cell-membrane', via: ['lipid-bilayer', 'phospholipids'] }, narration: 'A red blood cell is a flexible disc with a dimple on each side. It has no nucleus; it is packed with hemoglobin instead.' },

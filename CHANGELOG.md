@@ -3,11 +3,11 @@
 ## 0.20.0
 
 - **A body measured from a real one.** The blocky whole body and skeleton are replaced by 411 meshes built from BodyParts3D (the Database Center for Life Science's model of a real adult male, CC BY-SA 2.1 Japan): every bone, muscle and organ in its measured shape, smoothed and reduced by `tools/build_body_meshes.py` into one 10.9 MB bundle that is checked against the asset manifest before it is used. The simplified figure stays as the fallback while it loads or if it cannot.
-- **The heart beats**, at 72 beats a minute, on the whole body.
+- **The heart beats and the blood flows.** The heart beats 72 times a minute on the whole body, and red cells stream through 33 measured vessels and the vessels of the arms and legs: out through the arteries in a surge with each beat (drawn red), back through the veins at a steadier pace (drawn blue). The vessels are see-through so the blood shows. Each vessel's center line is traced from its mesh by `tools/build_body_meshes.py`.
 - **Zoom in anywhere.** Scroll or pinch zooms toward whatever is under the pointer. Zoom far enough into the whole body and a guide names the nearest part that has a dive ("Keep zooming in to reach: the heart"), draws the view toward it and then carries you in; a "Go" button does it in one tap. Zooming out far enough goes back a step.
 - Every dive now starts from the measured position of its organ, and the model's height (1.64 m) is the measured one.
 - 1 new reference (Mitsuhashi and others 2009, the BodyParts3D paper).
-- 436 tests (from 421).
+- 444 tests (from 421).
 
 ## 0.19.0
 
