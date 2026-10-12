@@ -860,7 +860,8 @@ async function main() {
     ensureSystems(first.systems);
     engine.systems = state.systems;
   }
-  const BODY_SCENES = new Set(['body', 'skeleton']);
+  // Scenes drawn from the anatomy bundle (body.js, brainMeasured.js, lungsMeasured.js), with a simpler stand-in until it loads.
+  const BODY_SCENES = new Set(['body', 'skeleton', 'brain', 'lungs']);
   if (BODY_SCENES.has(first.scene)) await anatomy.catch(() => null);
   engine.show(first);
   // If the anatomy arrives while the simplified figure is on screen, swap it in place.

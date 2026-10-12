@@ -1,4 +1,5 @@
-// Tier 3: the brain. 1 scene unit = 1 cm; the front of the head faces +z.
+// Tier 3: the brain, drawn (the fallback for brainMeasured.js until the
+// anatomy bundle loads). 1 scene unit = 1 cm; the front of the head faces +z.
 // Two folded cerebral hemispheres, the cerebellum and the brainstem. The
 // right hemisphere (viewer's left is the body's right, so it sits at −x)
 // stays whole; the left hemisphere has a wedge removed toward the camera,
@@ -7,6 +8,8 @@
 // crosses zero: a generalized pattern, not a real person's folding.
 import * as THREE from 'three/webgpu';
 import { materialBank, pick, ellipsoid, tubeThrough, seeded, disposeTree } from './kit.js';
+import { bodyParts } from './bodyMeshes.js';
+import { buildMeasuredBrain } from './brainMeasured.js';
 
 // Half-sizes of one hemisphere (cm): width, height, front-to-back length.
 const HEMI = [3.3, 4.6, 8.2];
@@ -71,6 +74,9 @@ function meridian(field, phi, inset, steps = 180) {
 }
 
 export function buildBrain() {
+  // The measured brain (brainMeasured.js) once the anatomy bundle has loaded; this drawn one until then.
+  const measured = buildMeasuredBrain(bodyParts());
+  if (measured) return measured;
   const M = materialBank();
   const root = new THREE.Group();
   const gray = M(0xd9a6b8, { roughness: 0.62, tissue: 'brain', repeat: [6, 4] });
