@@ -6,6 +6,12 @@ import { buildBrain } from '../src/scenes/brain.js';
 import { buildLungs } from '../src/scenes/lungs.js';
 import { buildMeasuredBrain, brainParts, GYRI, LOBES } from '../src/scenes/brainMeasured.js';
 import { buildMeasuredLungs } from '../src/scenes/lungsMeasured.js';
+import { buildPancreas } from '../src/scenes/pancreas.js';
+import { buildLiver, LIVER_STAGES } from '../src/scenes/liver.js';
+import { buildMeasuredPancreas } from '../src/scenes/pancreasMeasured.js';
+import { buildMeasuredLiver } from '../src/scenes/liverMeasured.js';
+import { insideTester, partOf } from '../src/scenes/organKit.js';
+import LANDMARKS from '../src/data/bodyLandmarks.json';
 import { getCard } from '../src/data/cards.js';
 
 const bytes = readFileSync(new URL('../assets/anatomy/body.glb', import.meta.url));
@@ -24,6 +30,8 @@ describe('the measured organ close-ups', async () => {
   it('fall back to the drawn scenes until the anatomy bundle loads', () => {
     expect(buildMeasuredBrain(null)).toBeNull();
     expect(buildMeasuredLungs(null)).toBeNull();
+    expect(buildMeasuredPancreas(null)).toBeNull();
+    expect(buildMeasuredLiver(null)).toBeNull();
   });
 
   describe('brain', () => {
@@ -124,6 +132,80 @@ describe('the measured organ close-ups', async () => {
       playing.update(1.25);
       expect(playing.controls.value).toBeCloseTo(0.5, 1);
       playing.dispose();
+    });
+  });
+
+  describe('pancreas', () => {
+    it('is the measured gland in the curve of the duodenum, with the spleen at its tail', () => {
+      const built = buildPancreas({ reducedMotion: true });
+      expect(built.detailed).toBe(true);
+      expect(built.root.position.length()).toBe(0);
+      const ids = cardsIn(built);
+      for (const id of ['pancreas', 'duodenum', 'spleen', 'gallbladder', 'pancreatic-duct', 'islet']) expect(ids.has(id), id).toBe(true);
+      for (const id of ids) expect(getCard(id), id).toBeTruthy();
+      // About 15 cm from head to tail.
+      const size = boundsCm(built).getSize(new THREE.Vector3());
+      expect(size.x).toBeGreaterThan(120);
+      built.dispose();
+    });
+
+    it('runs the duct from the tail to the ampulla on the duodenum, with islets inside the gland', () => {
+      const D = LANDMARKS.digestive;
+      const duct = D.pancreaticDuct;
+      expect(duct.length).toBeGreaterThan(10);
+      expect(duct[0][0]).toBeGreaterThan(duct.at(-1)[0]); // tail on the body's left (+x), head on the right
+      const [hx, hy, hz] = duct.at(-1);
+      expect(Math.hypot(hx - D.ampulla[0], hy - D.ampulla[1], hz - D.ampulla[2])).toBeLessThan(0.04);
+      const inside = insideTester(partOf(parts, 'pancreas').geometry);
+      const built = buildPancreas({ reducedMotion: true });
+      const c = LANDMARKS.pancreas;
+      let islets = 0;
+      built.root.traverse((o) => {
+        if (o.userData.cardId !== 'islet') return;
+        islets++;
+        const p = o.position.clone().multiplyScalar(1e-3).add(new THREE.Vector3(...c));
+        expect(inside(p)).toBe(true);
+      });
+      expect(islets).toBeGreaterThan(60);
+      built.dispose();
+    });
+
+    it('starts the juice flowing after a meal', () => {
+      const built = buildPancreas({ reducedMotion: true });
+      const juice = [];
+      built.root.traverse((o) => o.userData.label === 'Pancreatic juice flowing to the duodenum' && juice.push(o));
+      expect(built.controls.set(0)).toMatch(/glucagon/);
+      expect(juice.every((m) => !m.visible)).toBe(true);
+      expect(built.controls.set(1)).toMatch(/insulin/);
+      expect(juice.every((m) => m.visible)).toBe(true);
+      built.dispose();
+    });
+  });
+
+  describe('liver', () => {
+    it('is the measured liver with its gallbladder, vessels and a magnifier on the lobules', () => {
+      const built = buildLiver({ reducedMotion: true });
+      expect(built.detailed).toBe(true);
+      expect(built.root.position.length()).toBe(0);
+      const ids = cardsIn(built);
+      for (const id of ['liver', 'gallbladder', 'liver-vessels', 'hepatic-lobule', 'duodenum']) expect(ids.has(id), id).toBe(true);
+      for (const id of ids) expect(getCard(id), id).toBeTruthy();
+      // Over 20 cm side to side; the magnifier sits on the right lobe (−x), where the dive continues.
+      const box = boundsCm(built);
+      expect(box.getSize(new THREE.Vector3()).x).toBeGreaterThan(180);
+      expect(built.focus[0]).toBeLessThan(0);
+      built.dispose();
+    });
+
+    it('steps through blood in, blood out and bile out', () => {
+      const built = buildLiver({ reducedMotion: true });
+      const bile = [];
+      built.root.traverse((o) => o.userData.label === 'Bile' && bile.push(o));
+      built.controls.set(0);
+      expect(bile.every((m) => !m.visible)).toBe(true);
+      built.controls.set(LIVER_STAGES.length - 1);
+      expect(bile.every((m) => m.visible)).toBe(true);
+      built.dispose();
     });
   });
 });

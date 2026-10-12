@@ -448,6 +448,34 @@ def centerline(v, f, step=0.01):
     return pts, np.array(rad)
 
 
+def nearest_pair(a, b):
+    """The closest pair of points between point sets a and b: (point of a, point of b)."""
+    best, pair = np.inf, None
+    for i in range(0, len(a), 2000):
+        d = ((a[i:i + 2000, None, :] - b[None, :, :]) ** 2).sum(-1)
+        k = np.unravel_index(d.argmin(), d.shape)
+        if d[k] < best:
+            best, pair = d[k], (a[i + k[0]], b[k[1]])
+    return pair
+
+
+def digestive_marks(parts):
+    """Where the liver, gallbladder, pancreas and duodenum meet (for the organ close-ups)."""
+    pancreas = parts.get('pancreas, nsn') or parts['pancreas']
+    duct, _ = centerline(*pancreas, step=0.008)
+    if np.linalg.norm(duct[0] - parts['spleen'][0].mean(0)) > np.linalg.norm(duct[-1] - parts['spleen'][0].mean(0)):
+        duct = duct[::-1]  # from the tail (at the spleen) to the head, the way the juice flows
+    duo = parts['duodenum'][0]
+    ampulla = duo[np.linalg.norm(duo - duct[-1], axis=1).argmin()]
+    porta, _ = nearest_pair(parts['liver'][0], parts['common hepatic artery'][0])
+    gb = parts['gallbladder'][0]
+    neck = gb[np.linalg.norm(gb - porta, axis=1).argmin()]
+    portal_start = np.mean(nearest_pair(parts['splenic vein'][0], parts['superior mesenteric vein'][0]), axis=0)
+    r = lambda v: np.asarray(v).round(4).tolist()
+    return {'pancreaticDuct': r(duct), 'ampulla': r(ampulla), 'porta': r(porta), 'gallbladderNeck': r(neck),
+            'portalVeinStart': r(portal_start)}
+
+
 def flow_paths(parts, heart):
     """Blood-flow paths for the app (see FLOW), each running the way the blood does."""
     out = []
@@ -544,6 +572,7 @@ def landmarks(parts):
                                       'fifth lumbar vertebra', 'sacrum']],
     }
     out['flow'] = flow_paths(parts, np.array(out['heart']))
+    out['digestive'] = digestive_marks(parts)
     return out
 
 
