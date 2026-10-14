@@ -476,6 +476,142 @@ def digestive_marks(parts):
             'portalVeinStart': r(portal_start)}
 
 
+def axis_crossings(tri, axes, a):
+    """For a voxel grid (cell centers `axes`), how many triangles of `tri` (T×3×3)
+    a ray from each cell crosses going down and up axis a."""
+    b, c = [i for i in range(3) if i != a]
+    shape = tuple(len(x) for x in axes)
+    step = axes[0][1] - axes[0][0]
+    below = np.zeros(shape, np.int16)
+    above = np.zeros(shape, np.int16)
+    P, Z = tri[:, :, [b, c]], tri[:, :, a]
+    lo = np.ceil((P.min(1) - [axes[b][0], axes[c][0]]) / step).astype(int).clip(0)
+    hi = np.floor((P.max(1) - [axes[b][0], axes[c][0]]) / step).astype(int).clip(None, [shape[b] - 1, shape[c] - 1])
+    hits = {}
+    for t in range(len(tri)):
+        (x0, y0), (x1, y1), (x2, y2) = P[t]
+        den = (y1 - y2) * (x0 - x2) + (x2 - x1) * (y0 - y2)
+        if abs(den) < 1e-14:
+            continue
+        for i in range(lo[t, 0], hi[t, 0] + 1):
+            for j in range(lo[t, 1], hi[t, 1] + 1):
+                px, py = axes[b][i], axes[c][j]
+                l0 = ((y1 - y2) * (px - x2) + (x2 - x1) * (py - y2)) / den
+                l1 = ((y2 - y0) * (px - x2) + (x0 - x2) * (py - y2)) / den
+                if l0 >= 0 and l1 >= 0 and l0 + l1 <= 1:
+                    hits.setdefault((i, j), []).append(l0 * Z[t, 0] + l1 * Z[t, 1] + (1 - l0 - l1) * Z[t, 2])
+    for (i, j), zs in hits.items():
+        zs = np.sort(zs)
+        n = np.searchsorted(zs, axes[a])
+        idx = [slice(None)] * 3
+        idx[b], idx[c] = i, j
+        below[tuple(idx)] = n
+        above[tuple(idx)] = len(zs) - n
+    return below, above
+
+
+N6 = [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]
+
+
+def flood(labels, mask):
+    """Grow the nonzero labels through mask, breadth first (a simple watershed)."""
+    from collections import deque
+    lab = labels.copy()
+    q = deque(map(tuple, np.argwhere(lab > 0)))
+    while q:
+        p = q.popleft()
+        for d in N6:
+            n = (p[0] + d[0], p[1] + d[1], p[2] + d[2])
+            if all(0 <= n[k] < mask.shape[k] for k in range(3)) and mask[n] and not lab[n]:
+                lab[n] = lab[p]
+                q.append(n)
+    return lab
+
+
+def components(mask):
+    """Connected pieces of a voxel mask, largest first, as boolean masks."""
+    lab = np.zeros(mask.shape, int)
+    out = []
+    for start in map(tuple, np.argwhere(mask)):
+        if lab[start]:
+            continue
+        seed = np.zeros(mask.shape, int)
+        seed[start] = len(out) + 1
+        grown = flood(seed, mask & (lab == 0))
+        lab[grown > 0] = len(out) + 1
+        out.append(grown > 0)
+    return sorted(out, key=lambda m: -m.sum())
+
+
+def heart_marks(parts, step=0.003, samples=300):
+    """The four chambers of the measured heart, found as the hollows inside its wall.
+
+    Voxels enclosed by the wall and valves in all six directions are the cavity.
+    Eroding it splits the right side from the left (the septum); each side is
+    then split at its atrioventricular valve, across the long axis from the
+    valve to the apex.
+    """
+    wall_v, wall_f = parts['wall of heart']
+    valves = {n: parts[n][0] for n in ['tricuspid valve', 'mitral valve', 'pulmonary valve']}
+    tri = np.concatenate([wall_v[wall_f]] + [parts[n][0][parts[n][1]] for n in valves])
+    lo, hi = wall_v.min(0) - step, wall_v.max(0) + step
+    axes = [np.arange(lo[i] + step / 2, hi[i], step) for i in range(3)]
+    cross = [axis_crossings(tri, axes, a) for a in range(3)]
+    enclosed = np.all([(b > 0) & (u > 0) for b, u in cross], axis=0)
+    even = np.sum([b % 2 == 0 for b, _ in cross], axis=0) >= 2
+    cavity = components(enclosed & even)[0]
+
+    def erode(m):
+        o = m.copy()
+        for a in range(3):
+            for sgn in (1, -1):
+                r = np.roll(m, sgn, a)
+                idx = [slice(None)] * 3
+                idx[a] = 0 if sgn == 1 else -1
+                r[tuple(idx)] = False
+                o &= r
+        return o
+
+    grid = np.stack(np.meshgrid(*axes, indexing='ij'), -1)
+    sides = components(erode(erode(cavity)))[:2]
+    seed = np.zeros(cavity.shape, int)
+    for k, m in enumerate(sides):
+        seed[m] = k + 1
+    side = flood(seed, cavity)
+    apex = wall_v[np.argmax(wall_v @ np.array([0.55, -0.6, 0.55]))]  # the tip: left, low and forward
+    tricuspid, mitral = valves['tricuspid valve'].mean(0), valves['mitral valve'].mean(0)
+
+    def near(lab, p):
+        idx = np.argwhere(lab > 0)
+        return lab[tuple(idx[np.linalg.norm(grid[tuple(idx.T)] - p, axis=1).argmin()])]
+
+    right = near(side, tricuspid)
+    chambers = np.zeros(cavity.shape, int)
+    for label, valve, (atrium, ventricle) in [(right, 'tricuspid valve', (1, 2)), (3 - right, 'mitral valve', (3, 4))]:
+        v = valves[valve]
+        c = v.mean(0)
+        axis = (apex - c) / np.linalg.norm(apex - c)
+        radius = np.linalg.norm((v - c) - np.outer((v - c) @ axis, axis), axis=1).max()
+        mask = side == label
+        d = (grid - c) @ axis
+        radial = np.linalg.norm((grid - c) - d[..., None] * axis, axis=-1)
+        open_ = mask & ~((np.abs(d) < 0.0035) & (radial < radius * 1.15))  # the valve's opening, closed
+        s = np.zeros(cavity.shape, int)
+        s[open_ & (d < -0.012)] = atrium
+        s[open_ & (d > 0.012)] = ventricle
+        g = flood(flood(s, open_), mask)
+        chambers[g > 0] = g[g > 0]
+    rng = np.random.default_rng(7)
+    r = lambda v: np.asarray(v).round(4).tolist()
+    out = {'apex': r(apex), 'tricuspid': r(tricuspid), 'mitral': r(mitral), 'pulmonaryValve': r(valves['pulmonary valve'].mean(0)),
+           'chambers': {}}
+    for k, name in enumerate(['rightAtrium', 'rightVentricle', 'leftAtrium', 'leftVentricle'], 1):
+        pts = grid[chambers == k]
+        pick = rng.choice(len(pts), min(samples, len(pts)), replace=False)
+        out['chambers'][name] = {'center': r(pts.mean(0)), 'volumeMl': round(len(pts) * (step * 100) ** 3), 'points': r(pts[np.sort(pick)])}
+    return out
+
+
 def flow_paths(parts, heart):
     """Blood-flow paths for the app (see FLOW), each running the way the blood does."""
     out = []
@@ -573,6 +709,7 @@ def landmarks(parts):
     }
     out['flow'] = flow_paths(parts, np.array(out['heart']))
     out['digestive'] = digestive_marks(parts)
+    out['heartChambers'] = heart_marks(parts)
     return out
 
 

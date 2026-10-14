@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   conductionVelocity, conductionTime, nernst, IONS, D_GLUTAMATE, SYNAPTIC_CLEFT_M, alveolarAreaEstimate,
-  capillaryPO2, minuteVentilation, AIR_BLOOD_BARRIER_M,
+  capillaryPO2, minuteVentilation, cardiacOutput, AIR_BLOOD_BARRIER_M,
 } from '../src/science/equations.js';
 import { dnaLength, helixTurns, diffusionTime, D_O2_WATER, complement, hydrogenBonds } from '../src/science/equations.js';
 import { DNA_SEQUENCE } from '../src/library/dna.js';
@@ -177,6 +177,7 @@ describe('respiratory worked examples', () => {
   });
   it('minute ventilation: 500 mL × 12 breaths = 6 L/min', () => {
     expect(minuteVentilation(500, 12)).toBe(6);
+    expect(cardiacOutput(70, 72)).toBeCloseTo(5.04, 2); // about 5 L a minute at rest
   });
 });
 

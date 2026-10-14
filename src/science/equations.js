@@ -184,6 +184,11 @@ export function minuteVentilation(tidalMl, breathsPerMin) {
   return (tidalMl * breathsPerMin) / 1000;
 }
 
+/** Cardiac output in L/min from stroke volume (mL) and heart rate (beats per minute). */
+export function cardiacOutput(strokeMl, beatsPerMin) {
+  return (strokeMl * beatsPerMin) / 1000;
+}
+
 // ── Gene to protein ─────────────────────────────────────────────────
 
 /**

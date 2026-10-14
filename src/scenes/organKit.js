@@ -68,3 +68,61 @@ export function nearestVertex(geometry, p) {
   }
   return [a[best], a[best + 1], a[best + 2]];
 }
+
+/**
+ * A copy of an indexed part geometry with everything in front of a plane cut
+ * away: triangles are kept where (p − point)·normal ≤ 0, and triangles the
+ * plane crosses are trimmed along it. Position, normal and uv carry over.
+ */
+export function cutAway(geometry, point, normal) {
+  const names = ['position', 'normal', 'uv'].filter((n) => geometry.attributes[n]);
+  const src = names.map((n) => geometry.attributes[n]);
+  const idx = geometry.index ? geometry.index.array : Array.from({ length: geometry.attributes.position.count }, (_, i) => i);
+  const pos = geometry.attributes.position.array;
+  const side = (i) => (pos[i * 3] - point[0]) * normal[0] + (pos[i * 3 + 1] - point[1]) * normal[1] + (pos[i * 3 + 2] - point[2]) * normal[2];
+  const out = names.map(() => []);
+  // A vertex is [index a, index b, t]: the point a + t(b − a).
+  const emit = (v) => src.forEach((attr, k) => {
+    for (let c = 0; c < attr.itemSize; c++) {
+      const a = attr.array[v[0] * attr.itemSize + c];
+      out[k].push(a + (attr.array[v[1] * attr.itemSize + c] - a) * v[2]);
+    }
+  });
+  for (let t = 0; t < idx.length; t += 3) {
+    const tri = [idx[t], idx[t + 1], idx[t + 2]];
+    const d = tri.map(side);
+    if (d.every((x) => x <= 0)) {
+      tri.forEach((i) => emit([i, i, 0]));
+      continue;
+    }
+    if (d.every((x) => x > 0)) continue;
+    // Clip the triangle to the kept side (Sutherland–Hodgman against one plane).
+    const poly = [];
+    for (let k = 0; k < 3; k++) {
+      const [i, j] = [tri[k], tri[(k + 1) % 3]];
+      const [di, dj] = [d[k], d[(k + 1) % 3]];
+      if (di <= 0) poly.push([i, i, 0]);
+      if ((di <= 0) !== (dj <= 0)) poly.push([i, j, di / (di - dj)]);
+    }
+    for (let k = 1; k + 1 < poly.length; k++) [poly[0], poly[k], poly[k + 1]].forEach(emit);
+  }
+  const g = new THREE.BufferGeometry();
+  names.forEach((n, k) => g.setAttribute(n, new THREE.Float32BufferAttribute(out[k], src[k].itemSize)));
+  g.computeBoundingBox();
+  return g;
+}
+
+/** A copy of an indexed part geometry keeping only the triangles within radius of center. */
+export function keepNear(geometry, center, radius) {
+  const pos = geometry.attributes.position.array;
+  const idx = geometry.index.array;
+  const r2 = radius * radius;
+  const near = (i) => (pos[i * 3] - center[0]) ** 2 + (pos[i * 3 + 1] - center[1]) ** 2 + (pos[i * 3 + 2] - center[2]) ** 2 <= r2;
+  const kept = [];
+  for (let t = 0; t < idx.length; t += 3) if (near(idx[t]) && near(idx[t + 1]) && near(idx[t + 2])) kept.push(idx[t], idx[t + 1], idx[t + 2]);
+  const g = new THREE.BufferGeometry();
+  for (const [n, a] of Object.entries(geometry.attributes)) g.setAttribute(n, a.clone()); // copied: the part's own are shared
+  g.setIndex(kept);
+  g.computeBoundingBox();
+  return g;
+}

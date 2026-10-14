@@ -10,7 +10,9 @@ import { buildPancreas } from '../src/scenes/pancreas.js';
 import { buildLiver, LIVER_STAGES } from '../src/scenes/liver.js';
 import { buildMeasuredPancreas } from '../src/scenes/pancreasMeasured.js';
 import { buildMeasuredLiver } from '../src/scenes/liverMeasured.js';
-import { insideTester, partOf } from '../src/scenes/organKit.js';
+import { insideTester, partOf, cutAway } from '../src/scenes/organKit.js';
+import { buildHeart } from '../src/scenes/heart.js';
+import { buildMeasuredHeart, fourChamberPlane, STROKE_ML } from '../src/scenes/heartMeasured.js';
 import LANDMARKS from '../src/data/bodyLandmarks.json';
 import { getCard } from '../src/data/cards.js';
 
@@ -32,6 +34,7 @@ describe('the measured organ close-ups', async () => {
     expect(buildMeasuredLungs(null)).toBeNull();
     expect(buildMeasuredPancreas(null)).toBeNull();
     expect(buildMeasuredLiver(null)).toBeNull();
+    expect(buildMeasuredHeart(null)).toBeNull();
   });
 
   describe('brain', () => {
@@ -205,6 +208,75 @@ describe('the measured organ close-ups', async () => {
       expect(bile.every((m) => !m.visible)).toBe(true);
       built.controls.set(LIVER_STAGES.length - 1);
       expect(bile.every((m) => m.visible)).toBe(true);
+      built.dispose();
+    });
+  });
+
+  describe('heart', () => {
+    it('finds four real chambers inside the measured wall, each a plausible size', () => {
+      const C = LANDMARKS.heartChambers.chambers;
+      expect(Object.keys(C)).toEqual(['rightAtrium', 'rightVentricle', 'leftAtrium', 'leftVentricle']);
+      for (const c of Object.values(C)) {
+        expect(c.volumeMl).toBeGreaterThan(40); // a chamber holds roughly 50 to 150 mL
+        expect(c.volumeMl).toBeLessThan(160);
+      }
+      // Right chambers toward the body's right (−x) of their left partners, the atria above and behind.
+      expect(C.rightAtrium.center[0]).toBeLessThan(C.leftAtrium.center[0]);
+      expect(C.rightVentricle.center[0]).toBeLessThan(C.leftVentricle.center[0]);
+      expect(C.leftAtrium.center[2]).toBeLessThan(C.leftVentricle.center[2]);
+      expect(C.leftAtrium.center[1]).toBeGreaterThan(C.leftVentricle.center[1]);
+      // Chamber points are hollows, not wall (a few 3 mm cells at the lining may graze it).
+      const wall = insideTester(partOf(parts, 'heart', 'Heart').geometry);
+      for (const c of Object.values(C)) {
+        const inWall = c.points.filter((p) => wall(new THREE.Vector3(...p))).length;
+        expect(inWall / c.points.length).toBeLessThan(0.1);
+      }
+    });
+
+    it('cuts through all four chambers, keeping only what lies behind the cut', () => {
+      const { point, normal } = fourChamberPlane();
+      expect(normal[2]).toBeGreaterThan(0);
+      const side = (p) => p.reduce((s, x, i) => s + (x - point[i]) * normal[i], 0);
+      for (const c of Object.values(LANDMARKS.heartChambers.chambers)) {
+        const d = c.points.map(side);
+        expect(d.some((x) => x < 0) && d.some((x) => x > 0)).toBe(true);
+      }
+      const cut = cutAway(partOf(parts, 'heart', 'Heart').geometry, point, normal);
+      const a = cut.attributes.position.array;
+      for (let i = 0; i < a.length; i += 3) expect(side([a[i], a[i + 1], a[i + 2]])).toBeLessThan(1e-6); // float32 positions
+      expect(a.length / 3).toBeGreaterThan(10000);
+    });
+
+    it('is the measured heart once the bundle has loaded, with blood in every chamber', () => {
+      const built = buildHeart({ reducedMotion: true });
+      expect(built.detailed).toBe(true);
+      expect(built.root.position.length()).toBe(0);
+      const ids = cardsIn(built);
+      for (const id of ['heart', 'heart-valves', 'coronary-arteries', 'aorta', 'great-vessels', 'blood']) expect(ids.has(id), id).toBe(true);
+      for (const id of ids) expect(getCard(id), id).toBeTruthy();
+      const chambers = [];
+      built.root.traverse((o) => o.isInstancedMesh && chambers.push(o.userData.label.split(':')[0]));
+      expect(chambers).toEqual(['Right atrium', 'Right ventricle', 'Left atrium', 'Left ventricle']);
+      // About 12 cm across, and the dive continues from the blood in the left ventricle (the body's left, +x).
+      const size = boundsCm(built).getSize(new THREE.Vector3());
+      expect(Math.max(size.x, size.y)).toBeGreaterThan(9);
+      expect(built.focus[0]).toBeGreaterThan(0);
+      built.dispose();
+    });
+
+    it('beats faster with the rate control, and pumps rate × stroke volume a minute', () => {
+      expect(buildHeart({ reducedMotion: true }).controls.set(72)).toMatch(new RegExp(`${((72 * STROKE_ML) / 1000).toFixed(1)} L`));
+      const built = buildHeart();
+      let lv = null;
+      built.root.traverse((o) => o.isInstancedMesh && o.userData.label.startsWith('Left ventricle') && (lv = o));
+      const spread = () => {
+        lv.computeBoundingBox();
+        return lv.boundingBox.getSize(new THREE.Vector3()).length();
+      };
+      built.controls.set(60);
+      const relaxed = spread();
+      built.update(0.18 - 0.5 + 1); // from mid-beat (0.5) on to the squeeze (phase 0.18) at 60 beats a minute
+      expect(spread()).toBeLessThan(relaxed);
       built.dispose();
     });
   });
