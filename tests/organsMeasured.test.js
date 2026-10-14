@@ -10,9 +10,11 @@ import { buildPancreas } from '../src/scenes/pancreas.js';
 import { buildLiver, LIVER_STAGES } from '../src/scenes/liver.js';
 import { buildMeasuredPancreas } from '../src/scenes/pancreasMeasured.js';
 import { buildMeasuredLiver } from '../src/scenes/liverMeasured.js';
-import { insideTester, partOf, cutAway, sectionLoops } from '../src/scenes/organKit.js';
+import { insideTester, partOf, cutAway, sectionLoops, partAxes } from '../src/scenes/organKit.js';
 import { buildKidney } from '../src/scenes/kidney.js';
-import { buildMeasuredKidney, kidneyAxes } from '../src/scenes/kidneyMeasured.js';
+import { buildMeasuredKidney } from '../src/scenes/kidneyMeasured.js';
+import { buildFemur } from '../src/scenes/femur.js';
+import { buildMeasuredFemur } from '../src/scenes/femurMeasured.js';
 import { buildHeart } from '../src/scenes/heart.js';
 import { buildMeasuredHeart, fourChamberPlane, STROKE_ML } from '../src/scenes/heartMeasured.js';
 import LANDMARKS from '../src/data/bodyLandmarks.json';
@@ -38,6 +40,7 @@ describe('the measured organ close-ups', async () => {
     expect(buildMeasuredLiver(null)).toBeNull();
     expect(buildMeasuredHeart(null)).toBeNull();
     expect(buildMeasuredKidney(null)).toBeNull();
+    expect(buildMeasuredFemur(null)).toBeNull();
   });
 
   describe('brain', () => {
@@ -287,7 +290,7 @@ describe('the measured organ close-ups', async () => {
   describe('kidney', () => {
     it('is cut along its own broad plane, through its length, with the real outline as the cut face', () => {
       const g = partOf(parts, 'kidney', 'Left kidney').geometry;
-      const { center, long, lateral, normal } = kidneyAxes(g);
+      const { center, long, lateral, normal } = partAxes(g);
       expect(long[1]).toBeGreaterThan(0.8); // the long axis runs up and down
       expect(lateral[0]).toBeGreaterThan(0.5); // away from the spine, for the left kidney
       expect(normal[2]).toBeGreaterThan(0.5); // the cut faces the front
@@ -326,6 +329,50 @@ describe('the measured organ close-ups', async () => {
         expect(box.containsBox(m.geometry.boundingBox)).toBe(true);
       }
       expect(box.containsPoint(new THREE.Vector3(...built.focus))).toBe(true);
+      built.dispose();
+    });
+  });
+
+  describe('femur', () => {
+    const layers = (built) => {
+      const out = {};
+      built.root.traverse((o) => o.userData.label && (out[o.userData.label.split(' (')[0]] = o));
+      return out;
+    };
+
+    it('is the measured left femur, cut open along its whole length', () => {
+      const built = buildFemur();
+      expect(built.detailed).toBe(true);
+      expect(built.root.position.length()).toBe(0);
+      const ids = cardsIn(built);
+      for (const id of ['femur', 'compact-bone', 'bone-marrow', 'spongy-bone', 'articular-cartilage']) expect(ids.has(id), id).toBe(true);
+      for (const id of ids) expect(getCard(id), id).toBeTruthy();
+      const L = layers(built);
+      // The cut face runs the bone's full length, about 40 to 48 cm.
+      L['Compact bone'].geometry.computeBoundingBox();
+      const length = L['Compact bone'].geometry.boundingBox.getSize(new THREE.Vector3()).y;
+      expect(length).toBeGreaterThan(38);
+      expect(length).toBeLessThan(50);
+      built.dispose();
+    });
+
+    it('layers the cut face: marrow inside the compact wall, yellow marrow only along the shaft', () => {
+      const built = buildFemur();
+      const L = layers(built);
+      const box = (m) => {
+        m.geometry.computeBoundingBox();
+        return m.geometry.boundingBox;
+      };
+      const wall = box(L['Compact bone']);
+      const red = box(L['Red marrow']);
+      const yellow = box(L['Yellow marrow']);
+      expect(wall.clone().expandByScalar(0.05).containsBox(red)).toBe(true);
+      expect(red.clone().expandByScalar(0.05).containsBox(yellow)).toBe(true);
+      const shaft = yellow.getSize(new THREE.Vector3()).y / wall.getSize(new THREE.Vector3()).y;
+      expect(shaft).toBeGreaterThan(0.3);
+      expect(shaft).toBeLessThan(0.6);
+      // The dive continues into the compact wall, halfway up the shaft.
+      expect(wall.containsPoint(new THREE.Vector3(...built.focus))).toBe(true);
       built.dispose();
     });
   });

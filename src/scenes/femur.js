@@ -1,8 +1,11 @@
-// Tier 3: the femur, opened with a cutaway wedge. 1 scene unit = 10 cm.
+// Tier 3: the femur, drawn (the fallback for femurMeasured.js until the
+// anatomy bundle loads), opened with a cutaway wedge. 1 scene unit = 10 cm.
 // The shaft is a lathe (rotated profile) with a quarter removed so the
 // compact outer wall, the marrow cavity and the spongy ends are visible.
 import * as THREE from 'three/webgpu';
 import { COLORS, materialBank, pick, ellipsoid, cylinderBetween, seeded, disposeTree } from './kit.js';
+import { bodyParts } from './bodyMeshes.js';
+import { buildMeasuredFemur } from './femurMeasured.js';
 
 // Outer profile [radius, height] from the knee end (y≈0) to the hip end.
 const OUTER = [
@@ -29,6 +32,8 @@ function radiusAt(y) {
 }
 
 export function buildFemur() {
+  const measured = buildMeasuredFemur(bodyParts());
+  if (measured) return measured;
   const M = materialBank();
   const root = new THREE.Group();
   const bone = M(COLORS.bone, { roughness: 0.5, side: THREE.DoubleSide, tissue: 'bone' });

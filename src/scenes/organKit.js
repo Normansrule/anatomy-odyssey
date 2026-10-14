@@ -180,3 +180,41 @@ export function sectionLoops(geometry, point, normal) {
   }
   return loops.sort((a, b) => b.length - a.length);
 }
+
+/**
+ * A part's own axes from its vertices: its center, its long axis (pointing
+ * up), its broad face's normal (pointing to the front) and the axis across
+ * it (lateral × long = normal; toward the body's left for upright parts).
+ */
+export function partAxes(geometry) {
+  const a = geometry.attributes.position.array;
+  const n = a.length / 3;
+  const c = [0, 0, 0];
+  for (let i = 0; i < a.length; i++) c[i % 3] += a[i] / n;
+  const cov = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+  for (let i = 0; i < a.length; i += 3) {
+    const d = [a[i] - c[0], a[i + 1] - c[1], a[i + 2] - c[2]];
+    for (let r = 0; r < 3; r++) for (let k = 0; k < 3; k++) cov[r][k] += (d[r] * d[k]) / n;
+  }
+  // Power iteration for the longest axis, then for the longest axis across it.
+  const largest = (m, not) => {
+    let v = [0.3, 1, 0.2];
+    for (let it = 0; it < 60; it++) {
+      v = [0, 1, 2].map((r) => m[r][0] * v[0] + m[r][1] * v[1] + m[r][2] * v[2]);
+      if (not) {
+        const k = v[0] * not[0] + v[1] * not[1] + v[2] * not[2];
+        v = v.map((x, i) => x - k * not[i]);
+      }
+      const len = Math.hypot(...v);
+      v = v.map((x) => x / len);
+    }
+    return v;
+  };
+  let long = largest(cov);
+  if (long[1] < 0) long = long.map((x) => -x);
+  const wide = largest(cov, long);
+  let normal = new THREE.Vector3(...long).cross(new THREE.Vector3(...wide)).normalize().toArray();
+  if (normal[2] < 0) normal = normal.map((x) => -x);
+  const lateral = new THREE.Vector3(...long).cross(new THREE.Vector3(...normal)).toArray(); // so lateral × long = normal
+  return { center: c, long, lateral, normal };
+}

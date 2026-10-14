@@ -12,41 +12,7 @@
 import * as THREE from 'three/webgpu';
 import { materialBank, pick, disposeTree, COLORS } from './kit.js';
 import { drawKidneyInside, kidneyPoint, KIDNEY_MM, CORTEX } from './kidney.js';
-import { organFrame, partOf, cutAway, keepNear, sectionLoops } from './organKit.js';
-
-/** The kidney's own axes from its vertices: center, long axis (up), the axis across it (lateral) and its broad face's normal (front). */
-export function kidneyAxes(geometry) {
-  const a = geometry.attributes.position.array;
-  const n = a.length / 3;
-  const c = [0, 0, 0];
-  for (let i = 0; i < a.length; i++) c[i % 3] += a[i] / n;
-  const cov = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-  for (let i = 0; i < a.length; i += 3) {
-    const d = [a[i] - c[0], a[i + 1] - c[1], a[i + 2] - c[2]];
-    for (let r = 0; r < 3; r++) for (let k = 0; k < 3; k++) cov[r][k] += (d[r] * d[k]) / n;
-  }
-  // Power iteration for the longest axis, then for the longest axis across it.
-  const largest = (m, not) => {
-    let v = [0.3, 1, 0.2];
-    for (let it = 0; it < 60; it++) {
-      v = [0, 1, 2].map((r) => m[r][0] * v[0] + m[r][1] * v[1] + m[r][2] * v[2]);
-      if (not) {
-        const k = v[0] * not[0] + v[1] * not[1] + v[2] * not[2];
-        v = v.map((x, i) => x - k * not[i]);
-      }
-      const len = Math.hypot(...v);
-      v = v.map((x) => x / len);
-    }
-    return v;
-  };
-  let long = largest(cov);
-  if (long[1] < 0) long = long.map((x) => -x);
-  const wide = largest(cov, long);
-  let normal = new THREE.Vector3(...long).cross(new THREE.Vector3(...wide)).normalize().toArray();
-  if (normal[2] < 0) normal = normal.map((x) => -x);
-  const lateral = new THREE.Vector3(...long).cross(new THREE.Vector3(...normal)).toArray(); // so lateral × long = normal
-  return { center: c, long, lateral, normal };
-}
+import { organFrame, partOf, cutAway, keepNear, sectionLoops, partAxes } from './organKit.js';
 
 /** Build the measured kidney scene, or null when the bundle is not loaded. */
 export function buildMeasuredKidney(parts) {
@@ -54,7 +20,7 @@ export function buildMeasuredKidney(parts) {
   if (!kidney) return null;
   const M = materialBank();
   const root = new THREE.Group();
-  const { center, long, lateral, normal } = kidneyAxes(kidney.geometry);
+  const { center, long, lateral, normal } = partAxes(kidney.geometry);
   const { group } = organFrame(center, 1000);
   root.add(group);
   const cut = (geometry) => cutAway(geometry, center, normal);
