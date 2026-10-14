@@ -10,7 +10,9 @@ import { buildPancreas } from '../src/scenes/pancreas.js';
 import { buildLiver, LIVER_STAGES } from '../src/scenes/liver.js';
 import { buildMeasuredPancreas } from '../src/scenes/pancreasMeasured.js';
 import { buildMeasuredLiver } from '../src/scenes/liverMeasured.js';
-import { insideTester, partOf, cutAway } from '../src/scenes/organKit.js';
+import { insideTester, partOf, cutAway, sectionLoops } from '../src/scenes/organKit.js';
+import { buildKidney } from '../src/scenes/kidney.js';
+import { buildMeasuredKidney, kidneyAxes } from '../src/scenes/kidneyMeasured.js';
 import { buildHeart } from '../src/scenes/heart.js';
 import { buildMeasuredHeart, fourChamberPlane, STROKE_ML } from '../src/scenes/heartMeasured.js';
 import LANDMARKS from '../src/data/bodyLandmarks.json';
@@ -35,6 +37,7 @@ describe('the measured organ close-ups', async () => {
     expect(buildMeasuredPancreas(null)).toBeNull();
     expect(buildMeasuredLiver(null)).toBeNull();
     expect(buildMeasuredHeart(null)).toBeNull();
+    expect(buildMeasuredKidney(null)).toBeNull();
   });
 
   describe('brain', () => {
@@ -277,6 +280,52 @@ describe('the measured organ close-ups', async () => {
       const relaxed = spread();
       built.update(0.18 - 0.5 + 1); // from mid-beat (0.5) on to the squeeze (phase 0.18) at 60 beats a minute
       expect(spread()).toBeLessThan(relaxed);
+      built.dispose();
+    });
+  });
+
+  describe('kidney', () => {
+    it('is cut along its own broad plane, through its length, with the real outline as the cut face', () => {
+      const g = partOf(parts, 'kidney', 'Left kidney').geometry;
+      const { center, long, lateral, normal } = kidneyAxes(g);
+      expect(long[1]).toBeGreaterThan(0.8); // the long axis runs up and down
+      expect(lateral[0]).toBeGreaterThan(0.5); // away from the spine, for the left kidney
+      expect(normal[2]).toBeGreaterThan(0.5); // the cut faces the front
+      const [loop] = sectionLoops(g, center, normal);
+      const span = (axis) => {
+        const d = loop.map((p) => p.reduce((s, x, i) => s + (x - center[i]) * axis[i], 0));
+        return (Math.max(...d) - Math.min(...d)) * 100;
+      };
+      // About 10 to 13 cm long and 5 to 7 cm wide.
+      expect(span(long)).toBeGreaterThan(9);
+      expect(span(long)).toBeLessThan(14);
+      expect(span(lateral)).toBeGreaterThan(4.5);
+      expect(span(lateral)).toBeLessThan(8);
+      for (const p of loop) expect(Math.abs(p.reduce((s, x, i) => s + (x - center[i]) * normal[i], 0))).toBeLessThan(1e-6);
+    });
+
+    it('fits the drawn inside within the real cut face, and names every part', () => {
+      const built = buildKidney();
+      expect(built.detailed).toBe(true);
+      expect(built.root.position.length()).toBe(0);
+      const ids = cardsIn(built);
+      for (const id of ['kidney', 'renal-cortex', 'renal-pyramid', 'renal-pelvis', 'adrenal-gland']) expect(ids.has(id), id).toBe(true);
+      for (const id of ids) expect(getCard(id), id).toBeTruthy();
+      let face = null;
+      const pyramids = [];
+      built.root.traverse((o) => {
+        if (o.userData.cardId === 'renal-cortex' && o.userData.label.startsWith('Renal cortex')) face = o;
+        if (o.userData.label?.startsWith('Renal pyramid')) pyramids.push(o);
+      });
+      expect(pyramids.length).toBe(8);
+      // Every pyramid sits on the cut face, inside its outline.
+      face.geometry.computeBoundingBox();
+      const box = face.geometry.boundingBox.clone().expandByScalar(1);
+      for (const m of pyramids) {
+        m.geometry.computeBoundingBox();
+        expect(box.containsBox(m.geometry.boundingBox)).toBe(true);
+      }
+      expect(box.containsPoint(new THREE.Vector3(...built.focus))).toBe(true);
       built.dispose();
     });
   });

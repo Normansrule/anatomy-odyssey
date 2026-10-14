@@ -126,3 +126,57 @@ export function keepNear(geometry, center, radius) {
   g.computeBoundingBox();
   return g;
 }
+
+/**
+ * Where a plane cuts a closed part: the outlines of the cut, as loops of
+ * [x, y, z] points (largest first). Pairs with cutAway() to cap the cut.
+ */
+export function sectionLoops(geometry, point, normal) {
+  const pos = geometry.attributes.position.array;
+  const idx = geometry.index.array;
+  const d = new Float64Array(pos.length / 3);
+  for (let i = 0; i < d.length; i++) {
+    // Nudge vertices lying exactly on the plane, so every crossing is on an edge.
+    d[i] = (pos[i * 3] - point[0]) * normal[0] + (pos[i * 3 + 1] - point[1]) * normal[1] + (pos[i * 3 + 2] - point[2]) * normal[2] || 1e-12;
+  }
+  const key = (a, b) => (a < b ? `${a},${b}` : `${b},${a}`);
+  const at = (a, b) => {
+    const t = d[a] / (d[a] - d[b]);
+    return [0, 1, 2].map((k) => pos[a * 3 + k] + (pos[b * 3 + k] - pos[a * 3 + k]) * t);
+  };
+  // Each crossed triangle joins the two crossed edges; chain them edge to edge.
+  const next = new Map();
+  const where = new Map();
+  for (let t = 0; t < idx.length; t += 3) {
+    const tri = [idx[t], idx[t + 1], idx[t + 2]];
+    const crossed = [];
+    for (let k = 0; k < 3; k++) {
+      const [a, b] = [tri[k], tri[(k + 1) % 3]];
+      if (d[a] > 0 !== d[b] > 0) crossed.push([a, b]);
+    }
+    if (crossed.length !== 2) continue;
+    const [e0, e1] = crossed.map(([a, b]) => key(a, b));
+    for (const [e, [a, b]] of [[e0, crossed[0]], [e1, crossed[1]]]) if (!where.has(e)) where.set(e, at(a, b));
+    if (!next.has(e0)) next.set(e0, []);
+    if (!next.has(e1)) next.set(e1, []);
+    next.get(e0).push(e1);
+    next.get(e1).push(e0);
+  }
+  const seen = new Set();
+  const loops = [];
+  for (const start of next.keys()) {
+    if (seen.has(start)) continue;
+    const loop = [];
+    let prev = null;
+    let cur = start;
+    while (cur && !seen.has(cur)) {
+      seen.add(cur);
+      loop.push(where.get(cur));
+      const n = next.get(cur).find((e) => e !== prev && !seen.has(e));
+      prev = cur;
+      cur = n;
+    }
+    if (loop.length > 2) loops.push(loop);
+  }
+  return loops.sort((a, b) => b.length - a.length);
+}

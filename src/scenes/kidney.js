@@ -1,4 +1,6 @@
-// Tier 3: a kidney cut in half lengthwise. 1 scene unit = 1 mm.
+// Tier 3: a kidney cut in half lengthwise, drawn (the fallback for
+// kidneyMeasured.js until the anatomy bundle loads, which reuses the inside).
+// 1 scene unit = 1 mm.
 // About 12 cm long, 6 cm wide and 4 cm thick, its dent (the hilum) facing
 // the viewer's left, toward the spine. The front half is removed so the cut
 // face shows the outer cortex, eight renal pyramids of the medulla with
@@ -8,6 +10,8 @@
 // along their bases (arcuate). The adrenal gland sits on top.
 import * as THREE from 'three/webgpu';
 import { materialBank, pick, tubeThrough, taperedTube, seeded, disposeTree, COLORS } from './kit.js';
+import { bodyParts } from './bodyMeshes.js';
+import { buildMeasuredKidney } from './kidneyMeasured.js';
 
 export const KIDNEY_MM = { length: 120, width: 60, thickness: 40 };
 const RX = KIDNEY_MM.width / 2;
@@ -50,32 +54,23 @@ export function pyramidLayout() {
   return out;
 }
 
-export function buildKidney() {
-  const M = materialBank();
-  const root = new THREE.Group();
+export const CORTEX = [0xc9675e, { roughness: 0.6, tissue: 'organ', natural: 0xb85d55, repeat: [0.05, 0.05] }];
+
+/**
+ * The inside of the cut face, drawn in the plane z = 0 in this file's
+ * kidney frame (mm, hilum toward −x): the sinus fat, pyramids, calyces,
+ * pelvis and the arteries between and over the pyramids. Returns
+ * { group, pyramids }.
+ */
+export function drawKidneyInside(M) {
+  const group = new THREE.Group();
   const rand = seeded(2525);
-
-  // The back half: a bean with its dent at −x.
-  const geo = new THREE.SphereGeometry(1, 72, 48, 0, Math.PI);
-  const p = geo.attributes.position;
-  for (let i = 0; i < p.count; i++) {
-    let x = p.getX(i);
-    const y = p.getY(i);
-    if (x < 0) x += DENT * Math.exp(-((y / 0.38) ** 2)) * -x;
-    p.setXYZ(i, x * RX, y * RY, -Math.abs(p.getZ(i)) * RZ);
-  }
-  geo.computeVertexNormals();
-  const surface = M(0x9c4a4a, { roughness: 0.38, tissue: 'organ', natural: 0x8e3f3a, side: THREE.DoubleSide });
-  root.add(pick(new THREE.Mesh(geo, surface), 'kidney', 'Kidney (its smooth capsule)'));
-
-  // Cut face, drawn in layers: cortex, then pyramids, calyces and pelvis on top.
   const face = (shape, color, z, card, label, opts = {}) => {
     const m = new THREE.Mesh(new THREE.ShapeGeometry(shape, 6), M(color, { roughness: 0.6, ...opts }));
     m.position.z = z;
-    root.add(pick(m, card, label));
+    group.add(pick(m, card, label));
     return m;
   };
-  face(outline(1, 1), 0xc9675e, 0, 'renal-cortex', 'Renal cortex (where the filters are)', { tissue: 'organ', natural: 0xb85d55, repeat: [0.05, 0.05] });
   // Renal sinus: the fat-filled space around the pelvis at the hilum.
   const sinus = new THREE.Shape();
   sinus.absellipse(HILUM.x + 6, 0, 13, 30, 0, Math.PI * 2);
@@ -93,7 +88,7 @@ export function buildKidney() {
     // Striations: collecting ducts converging on the papilla.
     for (let k = 0; k < 6; k++) {
       const from = pyr.base[0].clone().lerp(pyr.base[1], (k + 0.5) / 6);
-      root.add(pick(tubeThrough([[from.x, from.y, 0.07], [pyr.tip.x, pyr.tip.y, 0.07]], 0.18, M(0xb55a62, { roughness: 0.6 }), 8, 4), 'renal-pyramid', 'Collecting ducts in a pyramid'));
+      group.add(pick(tubeThrough([[from.x, from.y, 0.07], [pyr.tip.x, pyr.tip.y, 0.07]], 0.18, M(0xb55a62, { roughness: 0.6 }), 8, 4), 'renal-pyramid', 'Collecting ducts in a pyramid'));
     }
     m.userData.tip = pyr.tip;
   }
@@ -108,9 +103,9 @@ export function buildKidney() {
     cupMesh.position.set(c.x - dir.x * 0.5, c.y - dir.y * 0.5, 0.1);
     cupMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(-dir.x, -dir.y, 0));
     cupMesh.scale.z = 0.35;
-    root.add(pick(cupMesh, 'renal-pelvis', 'Minor calyx (cups one papilla and collects its urine)'));
+    group.add(pick(cupMesh, 'renal-pelvis', 'Minor calyx (cups one papilla and collects its urine)'));
     calyxPts.push(c);
-    root.add(pick(taperedTube([[c.x, c.y, 0.1], [(c.x + HILUM.x) / 2 + 3, c.y / 2, 0.1], [HILUM.x + 5, c.y * 0.15, 0.1]], (t) => 2.6 - 1.2 * t + 1.4 * t * t, urineMat, 16, 10), 'renal-pelvis', 'Major calyx (minor calyces merging toward the pelvis)'));
+    group.add(pick(taperedTube([[c.x, c.y, 0.1], [(c.x + HILUM.x) / 2 + 3, c.y / 2, 0.1], [HILUM.x + 5, c.y * 0.15, 0.1]], (t) => 2.6 - 1.2 * t + 1.4 * t * t, urineMat, 16, 10), 'renal-pelvis', 'Major calyx (minor calyces merging toward the pelvis)'));
   }
   const pelvis = new THREE.Shape();
   pelvis.moveTo(HILUM.x + 8, 20);
@@ -119,34 +114,62 @@ export function buildKidney() {
   pelvis.quadraticCurveTo(HILUM.x + 4, -6, HILUM.x + 10, -18);
   pelvis.closePath();
   face(pelvis, 0xf0e2b8, 0.12, 'renal-pelvis', 'Renal pelvis (funnels urine into the ureter)');
-  root.add(pick(tubeThrough([[HILUM.x - 8, -13, -2], [HILUM.x - 16, -30, -4], [HILUM.x - 14, -70, -6]], 2.6, urineMat, 24, 10), 'renal-pelvis', 'Ureter (to the bladder)'));
 
-  // Blood vessels on the cut face: renal artery and vein at the hilum,
-  // interlobar branches between the pyramids, arcuate arches along their bases.
+  // Arteries on the cut face: interlobar branches between the pyramids,
+  // arcuate arches along their bases.
   const art = M(COLORS.artery, { roughness: 0.4, tissue: 'vessel' });
-  const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein' });
-  root.add(pick(tubeThrough([[HILUM.x - 40, 14, -6], [HILUM.x - 16, 10, -2], [HILUM.x + 4, 8, 0.15]], 3.2, art, 24, 10), 'kidney', 'Renal artery (from the aorta)'));
-  root.add(pick(tubeThrough([[HILUM.x - 40, 2, -10], [HILUM.x - 16, 0, -4], [HILUM.x + 2, 1, -1]], 3.8, vein, 24, 10), 'kidney', 'Renal vein (to the inferior vena cava)'));
   for (let i = 0; i < pyramids.length - 1; i++) {
     const a = (pyramids[i].a + pyramids[i + 1].a) / 2;
     const [bx, by] = kidneyPoint(a, 0.8, 0.86);
     const start = new THREE.Vector2(HILUM.x + 6, 6 + (i - 3.5) * 1.5);
     const mid = start.clone().lerp(new THREE.Vector2(bx, by), 0.55);
-    root.add(pick(tubeThrough([[start.x, start.y, 0.2], [mid.x, mid.y, 0.2], [bx, by, 0.2]], 0.75, art, 16, 6), 'kidney', 'Interlobar artery (runs between pyramids)'));
+    group.add(pick(tubeThrough([[start.x, start.y, 0.2], [mid.x, mid.y, 0.2], [bx, by, 0.2]], 0.75, art, 16, 6), 'kidney', 'Interlobar artery (runs between pyramids)'));
     // Arcuate arch over the pyramid base, with a few small arteries climbing into the cortex.
     const arch = [];
     for (let k = 0; k <= 6; k++) {
       const [x, y] = kidneyPoint(a + (k / 6 - 0.5) * 0.42, 0.81, 0.87);
       arch.push([x, y, 0.22]);
     }
-    root.add(pick(tubeThrough(arch, 0.45, art, 16, 5), 'kidney', 'Arcuate artery (arches along the pyramid bases)'));
+    group.add(pick(tubeThrough(arch, 0.45, art, 16, 5), 'kidney', 'Arcuate artery (arches along the pyramid bases)'));
     for (let k = 0; k < 3; k++) {
       const aa = a + (rand() - 0.5) * 0.35;
       const [x0, y0] = kidneyPoint(aa, 0.81, 0.87);
       const [x1, y1] = kidneyPoint(aa, 0.96, 0.97);
-      root.add(pick(tubeThrough([[x0, y0, 0.23], [x1, y1, 0.23]], 0.22, art, 4, 4), 'renal-cortex', 'Small artery feeding the filters in the cortex'));
+      group.add(pick(tubeThrough([[x0, y0, 0.23], [x1, y1, 0.23]], 0.22, art, 4, 4), 'renal-cortex', 'Small artery feeding the filters in the cortex'));
     }
   }
+
+  return { group, pyramids };
+}
+
+export function buildKidney() {
+  const measured = buildMeasuredKidney(bodyParts());
+  if (measured) return measured;
+  const M = materialBank();
+  const root = new THREE.Group();
+
+  // The back half: a bean with its dent at −x.
+  const geo = new THREE.SphereGeometry(1, 72, 48, 0, Math.PI);
+  const p = geo.attributes.position;
+  for (let i = 0; i < p.count; i++) {
+    let x = p.getX(i);
+    const y = p.getY(i);
+    if (x < 0) x += DENT * Math.exp(-((y / 0.38) ** 2)) * -x;
+    p.setXYZ(i, x * RX, y * RY, -Math.abs(p.getZ(i)) * RZ);
+  }
+  geo.computeVertexNormals();
+  const surface = M(0x9c4a4a, { roughness: 0.38, tissue: 'organ', natural: 0x8e3f3a, side: THREE.DoubleSide });
+  root.add(pick(new THREE.Mesh(geo, surface), 'kidney', 'Kidney (its smooth capsule)'));
+
+  // Cut face, drawn in layers: cortex, then pyramids, calyces and pelvis on top.
+  const cortex = new THREE.Mesh(new THREE.ShapeGeometry(outline(1, 1), 6), M(...CORTEX));
+  root.add(pick(cortex, 'renal-cortex', 'Renal cortex (where the filters are)'));
+  const { group: inside, pyramids } = drawKidneyInside(M);
+  root.add(inside);
+  // The ureter, and the renal artery and vein at the hilum.
+  root.add(pick(tubeThrough([[HILUM.x - 8, -13, -2], [HILUM.x - 16, -30, -4], [HILUM.x - 14, -70, -6]], 2.6, M(0xf0e2b8, { roughness: 0.45 }), 24, 10), 'renal-pelvis', 'Ureter (to the bladder)'));
+  root.add(pick(tubeThrough([[HILUM.x - 40, 14, -6], [HILUM.x - 16, 10, -2], [HILUM.x + 4, 8, 0.15]], 3.2, M(COLORS.artery, { roughness: 0.4, tissue: 'vessel' }), 24, 10), 'kidney', 'Renal artery (from the aorta)'));
+  root.add(pick(tubeThrough([[HILUM.x - 40, 2, -10], [HILUM.x - 16, 0, -4], [HILUM.x + 2, 1, -1]], 3.8, M(COLORS.vein, { roughness: 0.4, tissue: 'vein' }), 24, 10), 'kidney', 'Renal vein (to the inferior vena cava)'));
 
   // Adrenal gland on the upper pole.
   const capGeo = new THREE.SphereGeometry(1, 32, 20, 0, Math.PI * 2, 0, Math.PI / 2);

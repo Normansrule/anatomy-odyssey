@@ -860,8 +860,8 @@ async function main() {
     ensureSystems(first.systems);
     engine.systems = state.systems;
   }
-  // Scenes drawn from the anatomy bundle (body.js and the measured heart, brain, lungs, pancreas and liver), with a simpler stand-in until it loads.
-  const BODY_SCENES = new Set(['body', 'skeleton', 'heart', 'brain', 'lungs', 'pancreas', 'liver']);
+  // Scenes drawn from the anatomy bundle (body.js and the measured heart, brain, lungs, kidney, pancreas and liver), with a simpler stand-in until it loads.
+  const BODY_SCENES = new Set(['body', 'skeleton', 'heart', 'brain', 'lungs', 'kidney', 'pancreas', 'liver']);
   if (BODY_SCENES.has(first.scene)) await anatomy.catch(() => null);
   engine.show(first);
   // If the anatomy arrives while the simplified figure is on screen, swap it in place.
