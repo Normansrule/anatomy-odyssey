@@ -15,6 +15,8 @@ import { buildKidney } from '../src/scenes/kidney.js';
 import { buildMeasuredKidney } from '../src/scenes/kidneyMeasured.js';
 import { buildFemur } from '../src/scenes/femur.js';
 import { buildMeasuredFemur } from '../src/scenes/femurMeasured.js';
+import { buildDigestiveTract, GUT_STAGES } from '../src/scenes/digestiveTract.js';
+import { getDive } from '../src/data/dives.js';
 import { buildHeart } from '../src/scenes/heart.js';
 import { buildMeasuredHeart, fourChamberPlane, STROKE_ML } from '../src/scenes/heartMeasured.js';
 import LANDMARKS from '../src/data/bodyLandmarks.json';
@@ -373,6 +375,58 @@ describe('the measured organ close-ups', async () => {
       expect(shaft).toBeLessThan(0.6);
       // The dive continues into the compact wall, halfway up the shaft.
       expect(wall.containsPoint(new THREE.Vector3(...built.focus))).toBe(true);
+      built.dispose();
+    });
+  });
+
+  describe('digestive tract', () => {
+    const G = LANDMARKS.gut;
+    const length = (pts) => pts.slice(1).reduce((s, p, i) => s + Math.hypot(...p.map((x, k) => x - pts[i][k])), 0);
+    const gap = (a, b) => Math.hypot(...a.map((x, k) => x - b[k]));
+
+    it('routes food from the throat down to the rectum, each part joining the next', () => {
+      expect(GUT_STAGES.map((s) => s.key)).toEqual(['esophagus', 'stomach', 'duodenum', 'smallIntestine', 'largeIntestine']);
+      for (let i = 1; i < GUT_STAGES.length; i++) expect(gap(G[GUT_STAGES[i - 1].key].at(-1), G[GUT_STAGES[i].key][0])).toBeLessThan(0.03);
+      // The esophagus runs down about 25 cm; the duodenum is about 25 cm.
+      expect(G.esophagus[0][1]).toBeGreaterThan(G.esophagus.at(-1)[1]);
+      expect(length(G.esophagus)).toBeGreaterThan(0.2);
+      expect(length(G.esophagus)).toBeLessThan(0.3);
+      expect(length(G.duodenum)).toBeGreaterThan(0.18);
+      expect(length(G.duodenum)).toBeLessThan(0.32);
+      // The large intestine starts low on the body's right (the cecum) and ends lowest of all.
+      expect(G.largeIntestine[0][0]).toBeLessThan(-0.04);
+      const ys = Object.values(G).flat().map((p) => p[1]);
+      expect(G.largeIntestine.at(-1)[1]).toBe(Math.min(...ys));
+    });
+
+    it('winds the small-intestine path through the inside of the jejunum and ileum', () => {
+      const inside = ['Small intestine: Jejunum', 'Small intestine: Ileum'].map((l) => insideTester(partOf(parts, 'small-intestine', l).geometry));
+      const middle = G.smallIntestine.slice(1, -1);
+      const hits = middle.filter((p) => inside.some((t) => t(new THREE.Vector3(...p)))).length;
+      expect(hits / middle.length).toBeGreaterThan(0.85);
+      expect(length(G.smallIntestine)).toBeGreaterThan(1);
+    });
+
+    it('is a step of the digestive dive, with the meal moving and its organ glowing', () => {
+      expect(getDive('digestive').steps.map((s) => s.id).slice(0, 3)).toEqual(['body', 'digestive-tract', 'small-intestine']);
+      const built = buildDigestiveTract({ reducedMotion: true });
+      expect(built.detailed).toBe(true);
+      const ids = cardsIn(built);
+      for (const id of ['digestive-system', 'stomach', 'duodenum', 'small-intestine', 'large-intestine', 'liver']) expect(ids.has(id), id).toBe(true);
+      for (const id of ids) expect(getCard(id), id).toBeTruthy();
+      let food = null;
+      let stomach = null;
+      built.root.traverse((o) => {
+        if (o.userData.label?.startsWith('A mouthful')) food = o;
+        if (o.userData.cardId === 'stomach') stomach = o;
+      });
+      expect(built.controls.set(1.5)).toMatch(/two to four hours/);
+      const atStomach = food.position.clone();
+      expect(stomach.material.emissiveIntensity).toBeGreaterThan(0.3);
+      built.controls.set(4.5);
+      expect(stomach.material.emissiveIntensity).toBeLessThan(0.01);
+      expect(built.controls.set(5)).toMatch(/one to three days/);
+      expect(food.position.y).toBeLessThan(atStomach.y - 25); // cm: at the end of the rectum
       built.dispose();
     });
   });

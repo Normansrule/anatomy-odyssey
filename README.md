@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.20.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-472%20passing-4fb38a)
+![Tests](https://img.shields.io/badge/tests-476%20passing-4fb38a)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -189,7 +189,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 472 unit tests
+npm test               # 476 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)

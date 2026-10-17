@@ -612,6 +612,73 @@ def heart_marks(parts, step=0.003, samples=300):
     return out
 
 
+def inside_points(v, f, step, rng, n):
+    """Up to n points inside a closed mesh, one per voxel cell of the given size, picked at random."""
+    lo, hi = v.min(0), v.max(0)
+    axes = [np.arange(lo[i] + step / 2, hi[i], step) for i in range(3)]
+    below, _ = axis_crossings(v[f], axes, 1)
+    grid = np.stack(np.meshgrid(*axes, indexing='ij'), -1)
+    pts = grid[below % 2 == 1]
+    return pts[rng.choice(len(pts), min(n, len(pts)), replace=False)] if len(pts) else pts
+
+
+def meander(pts, start, end):
+    """A route from start to end through every point, always to the nearest unvisited one (a winding path)."""
+    left = list(range(len(pts)))
+    route, cur = [], np.asarray(start)
+    while left:
+        # Lean toward the end as the route runs out of points, so it finishes there.
+        d = np.linalg.norm(pts[left] - cur, axis=1) + 0.3 * np.linalg.norm(pts[left] - end, axis=1) / max(1, len(left) / 8)
+        k = left.pop(int(np.argmin(d)))
+        cur = pts[k]
+        route.append(cur)
+    return np.array(route)
+
+
+def gut_route(parts):
+    """The path food takes from the throat to the rectum, through the measured digestive organs.
+
+    The esophagus, stomach, duodenum, colon and rectum are tubes (or bags), so
+    their center lines are traced. The atlas models the jejunum and ileum as two
+    packed masses rather than one long coiled tube, so the route through them
+    is a winding path through points inside each mass (drawn, not traced).
+    """
+    rng = np.random.default_rng(23)
+
+    def line(name, start_near):
+        pts, _ = centerline(*parts[name], step=0.01)
+        if np.linalg.norm(pts[0] - start_near) > np.linalg.norm(pts[-1] - start_near):
+            pts = pts[::-1]
+        return pts
+
+    eso = centerline(*parts['esophagus'], step=0.01)[0]
+    if eso[0][1] < eso[-1][1]:
+        eso = eso[::-1]  # from the throat down
+    cardia = nearest_pair(parts['esophagus'][0], parts['stomach'][0])[1]
+    pylorus = np.mean(nearest_pair(parts['stomach'][0], parts['duodenum'][0]), axis=0)
+    body = line('stomach', cardia)  # from the fundus, beside the cardia, round to the pylorus
+    body = body[np.linalg.norm(body - cardia, axis=1).argmin():]
+    duo = line('duodenum', pylorus)
+    flexure = np.mean(nearest_pair(parts['duodenum'][0], parts['jejunum'][0]), axis=0)
+    turn = np.mean(nearest_pair(parts['jejunum'][0], parts['ileum'][0]), axis=0)
+    colon = centerline(*parts['colon, nsn'], step=0.01)[0]
+    if colon[0][0] > colon[-1][0]:
+        colon = colon[::-1]  # from the cecum (low on the body's right, −x) round to the sigmoid
+    ile_v = parts['ileum'][0]
+    ileocecal = (ile_v[np.linalg.norm(ile_v - colon[0], axis=1).argmin()] + colon[0]) / 2
+    jej = meander(inside_points(*parts['jejunum'], 0.012, rng, 28), flexure, turn)
+    ile = meander(inside_points(*parts['ileum'], 0.012, rng, 22), turn, ileocecal)
+    rectum = line('rectum', colon[-1])
+    r = lambda v: np.asarray(v).round(4).tolist()
+    return {
+        'esophagus': r(eso),
+        'stomach': r([cardia, *body, pylorus]),
+        'duodenum': r([pylorus, *duo, flexure]),
+        'smallIntestine': r([flexure, *jej, turn, *ile, ileocecal]),
+        'largeIntestine': r([ileocecal, *colon, *rectum]),
+    }
+
+
 def flow_paths(parts, heart):
     """Blood-flow paths for the app (see FLOW), each running the way the blood does."""
     out = []
@@ -710,6 +777,7 @@ def landmarks(parts):
     out['flow'] = flow_paths(parts, np.array(out['heart']))
     out['digestive'] = digestive_marks(parts)
     out['heartChambers'] = heart_marks(parts)
+    out['gut'] = gut_route(parts)
     return out
 
 

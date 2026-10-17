@@ -235,9 +235,10 @@ export const DIVES = [
     kind: 'dive',
     title: 'Digestive dive',
     status: 'built',
-    summary: 'Small intestine → villi → an absorbing cell → the glucose molecule it takes in.',
+    summary: 'The digestive tract → small intestine → villi → an absorbing cell → the glucose molecule it takes in.',
     steps: [
       { ...BODY, focusCard: 'small-intestine', focus: AT.smallIntestine, systems: ['digestive'], narration: 'Everything you eat ends up as molecules small enough to cross into your blood. We will follow one sugar molecule from the gut into you.' },
+      { id: 'digestive-tract', tier: 2, scene: 'digestive-tract', title: 'Digestive tract', card: 'digestive-system', frameMeters: 0.72, focusCard: 'small-intestine', narration: 'The real digestive tract, about 7.5 m from mouth to end in a living person. Follow one meal through it: down the esophagus, churned in the stomach, digested and absorbed in the small intestine, dried out in the large intestine.' },
       { id: 'small-intestine', tier: 3, scene: 'small-intestine', title: 'Small intestine', card: 'small-intestine', frameMeters: 0.06, focusCard: 'intestinal-villus', narration: 'Cut open, the small intestine is not smooth: circular folds run around the inside, and every surface is velvet with villi.' },
       { id: 'villi', tier: 4, scene: 'villi', title: 'Villi', card: 'intestinal-villus', frameMeters: 1.6e-3, focusCard: 'enterocyte', narration: 'Each villus is a finger of tissue under a millimeter tall, with a net of capillaries and a lymph vessel inside. One is cut open in front.' },
       { id: 'enterocyte', tier: 5, scene: 'enterocyte', title: 'Absorbing cell', card: 'enterocyte', frameMeters: 4.2e-5, focusCard: 'glucose', narration: 'The villus is covered by a single layer of absorbing cells, each topped with a brush of microvilli. Step through how one glucose molecule gets from the gut into the blood.' },
