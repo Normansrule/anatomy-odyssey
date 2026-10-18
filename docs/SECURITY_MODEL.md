@@ -7,7 +7,7 @@ Anatomy Odyssey is a static, local-first web app. It has no server, no accounts 
 | Boundary | Trusted? | Notes |
 |---|---|---|
 | Code in this repository, built by CI | Yes | Reviewed, tested, built from a pinned lockfile |
-| npm dependencies | Conditionally | Exact versions (`save-exact`), lockfile, `npm ci --ignore-scripts`, `npm audit`, Dependabot |
+| npm dependencies | Conditionally | Exact versions (`save-exact`), lockfile, `npm ci --ignore-scripts`, `npm audit` |
 | GitHub Actions | Conditionally | Every third-party action pinned by full commit hash; least-privilege `permissions` per job |
 | 3D assets (from Milestone 2) | No, until verified | Must match `assets/manifest.json` (SHA-256 and size) before parsing |
 | Text typed into search | No | Normalized, length-capped, rendered as text only |
@@ -39,7 +39,6 @@ Planned for Milestone 5: sign `manifest.json` in CI and verify the signature in 
 - Lockfile committed; installs use `npm ci --ignore-scripts` so dependency install scripts never run in CI.
 - CI produces a Software Bill of Materials (SBOM, CycloneDX) as a build artifact.
 - CodeQL scans JavaScript on every push and weekly; gitleaks scans history for secrets.
-- Dependabot updates npm packages and pinned actions weekly.
 - Desktop releases publish SHA-256 checksums; code signing is still to do.
 
 ### Privacy
