@@ -37,6 +37,75 @@ No accounts, no tracking. Two ways to use it:
 | **Web** | [normansrule.github.io/anatomy-odyssey](https://normansrule.github.io/anatomy-odyssey/) | Any current browser, phones included. Nothing to install. |
 | **Desktop** | [Latest release](https://github.com/Normansrule/anatomy-odyssey/releases/latest) | Windows `.exe`/`.msi`, macOS `.dmg`, Linux `.AppImage`/`.deb`. Not code-signed yet, so the first launch shows a warning. |
 
+## Progress
+
+Version 0.20 (in progress) swaps the drawn body for one **measured from a real person**: 411 meshes from BodyParts3D, with every bone, muscle and organ in its true place. It beats, its blood flows, and the organ close-ups are the real organs cut open. Everything below is from the current build.
+
+<table>
+<tr>
+<td align="center" width="50%"><img src="docs/media/heartbeat.gif" alt="The real heart cut open to its four chambers, beating at 72 a minute, with oxygen-poor blood (blue) and oxygen-rich blood (red) moving through the chambers and valves" width="360" /><br /><sub><b>Heartbeat.</b> The measured heart opened to its four chambers; set the rate from asleep to running.</sub></td>
+<td align="center" width="50%"><img src="docs/media/zoom-anywhere.gif" alt="Zooming in on the chest of the measured body while the guide names the nearest part with a dive and offers to go there" width="400" /><br /><sub><b>Zoom anywhere.</b> Zoom into the measured body; the guide names the nearest dive and takes you there.</sub></td>
+</tr>
+<tr>
+<td align="center"><img src="docs/media/digestive-tract.gif" alt="The real digestive tract from the esophagus to the rectum, a glowing mouthful moving through it while the organ it is in lights up" width="360" /><br /><sub><b>Digestion.</b> One meal through the real gut, with how long each part takes.</sub></td>
+<td align="center"><img src="docs/media/urinary-tract.gif" alt="Both real kidneys, the ureters and the bladder: blood flows into the kidneys, urine runs down the ureters and the bladder fills and empties" width="360" /><br /><sub><b>Urine.</b> From the blood, down the ureters, into the bladder and out.</sub></td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td><img src="docs/screenshots/body.webp" alt="The whole measured body: the skeleton with the organs inside and see-through skin" /><br /><sub>Whole body</sub></td>
+<td><img src="docs/screenshots/skeleton.webp" alt="The measured skeleton with the femur glowing" /><br /><sub>Skeleton</sub></td>
+<td><img src="docs/screenshots/heart.webp" alt="The real heart cut open to its four chambers" /><br /><sub>Heart</sub></td>
+<td><img src="docs/screenshots/brain.webp" alt="The real brain, every fold where it was in that person" /><br /><sub>Brain</sub></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/lungs.webp" alt="The real lungs, five lobes around the bronchial tree" /><br /><sub>Lungs</sub></td>
+<td><img src="docs/screenshots/liver.webp" alt="The real liver, see-through, with its veins and bile ducts and a lobule magnifier" /><br /><sub>Liver</sub></td>
+<td><img src="docs/screenshots/pancreas.webp" alt="The real pancreas, see-through, with its duct, islets and the spleen" /><br /><sub>Pancreas</sub></td>
+<td><img src="docs/screenshots/kidney.webp" alt="The real left kidney cut in half, the drawn inside fitted to its outline" /><br /><sub>Kidney</sub></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/femur.webp" alt="The real femur cut lengthwise: compact bone, marrow and spongy bone" /><br /><sub>Femur</sub></td>
+<td><img src="docs/screenshots/digestive-tract.webp" alt="The real digestive tract with the liver, gallbladder and pancreas" /><br /><sub>Digestive tract</sub></td>
+<td><img src="docs/screenshots/urinary-tract.webp" alt="The real urinary tract: kidneys, ureters and bladder with the vessels behind" /><br /><sub>Urinary tract</sub></td>
+<td></td>
+</tr>
+</table>
+
+### Progress tracker
+
+**Real organs at the organ tier: 8 of 15 dives**
+
+`████████████████░░░░░░░░░░░░░░` 53%
+
+| Dive | Whole body | Organ tier | Moving | State |
+|---|---|---|---|---|
+| 🦴 Skeletal | measured skeleton | measured femur, cut open | | ✅ Done |
+| ❤️ Circulatory | measured vessels | measured heart, four chambers | heartbeat, blood flow, heart rate | ✅ Done |
+| 🫁 Respiratory | measured | measured lungs and bronchial tree | breathing | ✅ Done |
+| 🧠 Nervous | measured | measured brain, lobes and inside | | ✅ Done |
+| 🍽️ Digestive | measured | measured tract, esophagus to rectum | a meal moving through | ✅ Done |
+| 💧 Urinary | measured | measured kidneys, ureters, bladder; kidney cut open | urine flow, bladder filling | ✅ Done |
+| 🍬 Pancreas | measured | measured pancreas with duct and islets | | ✅ Done |
+| 🟤 Liver | measured | measured liver with veins and bile ducts | blood and bile flow | ✅ Done |
+| 🛡️ Immune | measured, with a cut on the forearm | lymph node drawn | infection to the armpit nodes | 🟡 Body done, close-up drawn |
+| 💪 Muscular | measured muscles | biceps drawn, cut across | | 🟡 Next candidate |
+| ☀️ Skin | measured skin | skin block drawn | heat and cold | 🟡 Drawn close-up |
+| 👃 Smell | measured | nasal cavity drawn | sniff | 🟡 Drawn close-up |
+| 🦋 Endocrine | measured | thyroid drawn | | ⬜ The atlas has no thyroid |
+| 👁️ Eye | measured | eye drawn | light focusing | ⬜ Atlas eye too coarse |
+| 👂 Ear | measured | ear drawn | sound | ⬜ Atlas ear outer only |
+
+| Feature | State |
+|---|---|
+| Body measured from a real one (411 meshes), every bone, muscle and organ | ✅ Done |
+| Zoom in anywhere, with a guide to the nearest dive | ✅ Done |
+| Beating heart and blood flow timed to the beat | ✅ Done |
+| Immune response on the body: cut, infection, lymph nodes | ✅ Done |
+| Web app on GitHub Pages and desktop app (Windows, macOS, Linux) | ✅ Built |
+| Code-signed desktop releases | ⬜ Later |
+
 ## What you can explore
 
 ### Fifteen dives
@@ -49,8 +118,8 @@ No accounts, no tracking. Two ways to use it:
 | 🛡️ **Immune** | body fighting an infection, from a cut to cleared → lymph node → follicle → plasma cell → antibody | amino acids |
 | 🧠 **Nervous** | body → brain → cortex → neuron → synapse | glutamate |
 | 🫁 **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ |
-| 🍽️ **Digestive** | body → small intestine → villi → absorbing cell | glucose |
-| 💧 **Urinary** | body → kidney → nephron → the filtration barrier | urea |
+| 🍽️ **Digestive** | body → digestive tract → small intestine → villi → absorbing cell | glucose |
+| 💧 **Urinary** | body → urinary tract → kidney → nephron → the filtration barrier | urea |
 | 🦋 **Endocrine** | body → thyroid gland → follicles → hormone-making cell | thyroxine (T4) and T3 |
 | ☀️ **Skin** | body → a block of skin → the epidermis → a skin cell in sunlight | vitamin D3 |
 | 👁️ **Eye** | body → eye → retina → light becoming a signal in a rod | retinal (11-cis and all-trans) |
@@ -79,7 +148,7 @@ Side trips branch into a **shared library** of building blocks (nucleus, nucleos
 <tr>
 <td><img src="docs/screenshots/femur.webp" alt="A femur cut open: compact bone, yellow marrow and spongy bone at the ends, in natural colors" /></td>
 <td><img src="docs/screenshots/heart.webp" alt="The heart opened from the front, showing its four chambers, in natural colors" /></td>
-<td><img src="docs/screenshots/brain.webp" alt="The brain with one hemisphere cut open to show gray and white matter, in natural colors" /></td>
+<td><img src="docs/screenshots/brain.webp" alt="The real brain from the side, its folds measured, with controls to color the lobes or see inside" /></td>
 </tr>
 <tr>
 <td><img src="docs/screenshots/cortex.webp" alt="A block of cerebral cortex with six layers and pyramidal neurons" /></td>
@@ -132,7 +201,7 @@ Side trips branch into a **shared library** of building blocks (nucleus, nucleos
 <td><img src="docs/screenshots/beta-cell.webp" alt="A beta cell beside a capillary, cut open: nucleus, mitochondria and insulin granules, with glucose transporters, potassium and calcium channels in its membrane" /></td>
 </tr>
 <tr>
-<td><img src="docs/screenshots/liver.webp" alt="The liver from the front, its right lobe cut to show hexagonal lobules, with the gallbladder, bile ducts, portal vein, hepatic artery and inferior vena cava" /></td>
+<td><img src="docs/screenshots/liver.webp" alt="The real liver from the front, see-through, with a magnifier on its hexagonal lobules, the gallbladder, bile ducts and inferior vena cava" /></td>
 <td><img src="docs/screenshots/lobule.webp" alt="A hepatic lobule: plates of liver cells radiating from the central vein, with portal triads at the corners and blood flowing inward" /></td>
 <td><img src="docs/screenshots/hepatocyte.webp" alt="Two liver cells beside a sinusoid with a Kupffer cell, bilirubin riding on albumin, and a bile canaliculus between the cells" /></td>
 </tr>
@@ -193,6 +262,8 @@ npm test               # 479 unit tests
 npm run build          # production build in dist/ (what GitHub Pages serves)
 npm run build:preview  # one self-contained HTML file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
+python3 tools/record-hero.py --dive circulatory --step heart --live 3 --crop 0.08,0.1,0.7,0.9 --width 440 --out docs/media/heartbeat.gif
+                       # record a README animation (see the file for the other modes; needs Playwright)
 python3 tools/build_body_meshes.py --fetch && python3 tools/build_body_meshes.py && npm run manifest
                        # rebuild the body anatomy from BodyParts3D (needs: pip install numpy fast-simplification)
 npm run a11y           # accessibility audit against a running preview (needs Playwright)
@@ -272,14 +343,15 @@ docs/          state of the model, equations, security model, publishing
 - [x] Desktop app, device check, accessibility audit
 - [x] Realistic tissue surfaces with natural and stain looks
 - [x] The spinal cord, through the knee-jerk reflex
-- [ ] Real anatomical meshes (Z-Anatomy, CC BY-SA) for the organ tiers
+- [x] A body measured from a real one (BodyParts3D, CC BY-SA), and real organs for the heart, brain, lungs, liver, pancreas, kidney, femur and the digestive and urinary tracts
+- [ ] Measured thyroid, eye and ear
 - [ ] Real atomic structures from the Protein Data Bank for the large molecules
 - [ ] Code-signed desktop releases
 
 ## License
 
 - **Code**: [MIT](LICENSE).
-- **Anatomy assets** in `assets/anatomy/` (when added): CC BY-SA 4.0, as Z-Anatomy and BodyParts3D require. ShareAlike covers those files only.
+- **Anatomy assets** in `assets/anatomy/`: derived from BodyParts3D, CC BY-SA 2.1 Japan (see [assets/CREDITS.md](assets/CREDITS.md)). ShareAlike covers those files only.
 - **Molecular assets**: each file's own license, listed in [assets/CREDITS.md](assets/CREDITS.md).
 - **Fonts**: Atkinson Hyperlegible Next and Literata, SIL Open Font License 1.1.
 - Tissue textures are generated in code and covered by the MIT license.
