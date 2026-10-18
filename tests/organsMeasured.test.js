@@ -16,6 +16,7 @@ import { buildMeasuredKidney } from '../src/scenes/kidneyMeasured.js';
 import { buildFemur } from '../src/scenes/femur.js';
 import { buildMeasuredFemur } from '../src/scenes/femurMeasured.js';
 import { buildDigestiveTract, GUT_STAGES } from '../src/scenes/digestiveTract.js';
+import { buildUrinaryTract, ureterRoute, URINE_STAGES } from '../src/scenes/urinaryTract.js';
 import { getDive } from '../src/data/dives.js';
 import { buildHeart } from '../src/scenes/heart.js';
 import { buildMeasuredHeart, fourChamberPlane, STROKE_ML } from '../src/scenes/heartMeasured.js';
@@ -427,6 +428,60 @@ describe('the measured organ close-ups', async () => {
       expect(stomach.material.emissiveIntensity).toBeLessThan(0.01);
       expect(built.controls.set(5)).toMatch(/one to three days/);
       expect(food.position.y).toBeLessThan(atStomach.y - 25); // cm: at the end of the rectum
+      built.dispose();
+    });
+  });
+  describe('urinary tract', () => {
+    const ureter = partOf(parts, 'urinary-system', /Ureter/);
+    const bladder = partOf(parts, 'urinary-system', 'Bladder');
+    const length = (pts) => pts.slice(1).reduce((s, p, i) => s + Math.hypot(...p.map((x, k) => x - pts[i][k])), 0);
+
+    it('runs each ureter from inside its kidney down to the back of the bladder', () => {
+      for (const [side, label] of [[-1, 'Right kidney'], [1, 'Left kidney']]) {
+        const route = ureterRoute(ureter.geometry, side);
+        const kidney = partOf(parts, 'kidney', label).geometry.boundingBox.clone().expandByScalar(0.005);
+        expect(kidney.containsPoint(new THREE.Vector3(...route[0])), label).toBe(true); // the renal pelvis
+        for (let i = 2; i < route.length; i++) expect(route[i][1]).toBeLessThan(route[i - 1][1]); // always downhill
+        const end = route.at(-1);
+        const b = bladder.geometry.boundingBox;
+        expect(end[1]).toBeLessThan(b.max.y);
+        expect(Math.abs(end[0])).toBeLessThan(b.max.x);
+        // About 25 cm in a living adult.
+        expect(length(route)).toBeGreaterThan(0.2);
+        expect(length(route)).toBeLessThan(0.35);
+      }
+    });
+
+    it('is a step of the urinary dive, the urine moving and the bladder filling and emptying', () => {
+      expect(URINE_STAGES.map((s) => s.key)).toEqual(['blood', 'filter', 'ureter', 'fill', 'empty']);
+      const built = buildUrinaryTract({ reducedMotion: true });
+      expect(built.detailed).toBe(true);
+      const ids = cardsIn(built);
+      for (const id of ['kidney', 'urinary-system', 'renal-pelvis', 'adrenal-gland', 'aorta', 'blood']) expect(ids.has(id), id).toBe(true);
+      for (const id of ids) expect(getCard(id), id).toBeTruthy();
+      const named = (re) => {
+        const out = [];
+        built.root.traverse((o) => re.test(o.userData.label ?? '') && out.push(o));
+        return out;
+      };
+      const [pool] = named(/^Urine in the bladder/);
+      const ureterMesh = named(/^Ureter/)[0];
+      const size = () => pool.parent.scale.x;
+      built.controls.set(0.5);
+      expect(named(/^Blood on its way/).some((m) => m.visible)).toBe(true);
+      expect(built.controls.set(2.5)).toMatch(/waves of muscle/);
+      expect(ureterMesh.material.emissiveIntensity).toBeGreaterThan(0.3);
+      const low = size();
+      expect(built.controls.set(3.95)).toMatch(/holding about [45]\d0 mL/);
+      expect(size()).toBeGreaterThan(low * 1.8);
+      expect(ureterMesh.material.emissiveIntensity).toBeLessThan(0.01);
+      built.controls.set(4.95);
+      expect(size()).toBeLessThan(low);
+      expect(built.controls.set(5)).toMatch(/1 to 2 L/);
+      // The step frames the whole tract, kidneys to bladder (about 35 cm).
+      const height = boundsCm(built).getSize(new THREE.Vector3()).y;
+      expect(height).toBeGreaterThan(30);
+      expect(height).toBeLessThan(45);
       built.dispose();
     });
   });

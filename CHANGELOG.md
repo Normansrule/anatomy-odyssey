@@ -11,10 +11,11 @@
 - **The real kidney, cut in half.** The kidney step now shows the measured left kidney with its adrenal gland and renal vessels, cut along its own broad plane (found from the mesh) so the cut face has the real outline. The atlas has only the kidney's outside, so the cortex, pyramids, calyces, pelvis and arteries on the cut face are the drawn ones, stretched to fit that outline.
 - **The real thigh bone, cut open.** The femur step now shows the measured left femur, cut lengthwise through its shaft and head so the cut face has its real outline: head, neck, trochanter, shaft and condyles, with cartilage over the hip and knee ends. On that face are the compact wall (about 6 mm thick along the shaft, thin over the ends), yellow marrow in the shaft and spongy bone with red marrow in the ends.
 - **Follow a meal through the real digestive tract.** The digestive dive has a new step between the whole body and the small intestine: the measured esophagus, stomach, duodenum, small and large intestines, with the liver, gallbladder and pancreas. A stage control follows one mouthful along the route traced through them by `tools/build_body_meshes.py` (the atlas packs the jejunum and ileum as two masses, so the path through their loops is drawn), with how long each part takes; the organ it is in glows while the others fade.
+- **Follow urine through the real urinary tract.** The urinary dive has a new step between the whole body and the kidney: both measured kidneys, the ureters with their renal pelves, the bladder, the adrenal glands and the renal arteries and veins, with the aorta, vena cava and pelvis behind. The routes are read from the meshes (the ureters' center lines from 1 cm slices); a stage control follows blood in along the renal arteries, urine gathering in each pelvis, down the ureters, and into the bladder, whose urine rises as it fills and drains as it empties through a drawn urethra (the atlas has none).
 - **Zoom in anywhere.** Scroll or pinch zooms toward whatever is under the pointer. Zoom far enough into the whole body and a guide names the nearest part that has a dive ("Keep zooming in to reach: the heart"), draws the view toward it and then carries you in; a "Go" button does it in one tap. Zooming out far enough goes back a step.
 - Every dive now starts from the measured position of its organ, and the model's height (1.64 m) is the measured one.
 - 1 new reference (Mitsuhashi and others 2009, the BodyParts3D paper).
-- 476 tests (from 421).
+- 479 tests (from 421).
 
 ## 0.19.0
 

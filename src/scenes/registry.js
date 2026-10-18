@@ -62,6 +62,7 @@ import { buildThyroidFollicles } from './thyroidFollicles.js';
 import { buildFollicleCell } from './follicleCell.js';
 import { buildKidney } from './kidney.js';
 import { buildDigestiveTract } from './digestiveTract.js';
+import { buildUrinaryTract } from './urinaryTract.js';
 import { buildNephron } from './nephron.js';
 import { buildFiltrationBarrier } from './filtrationBarrier.js';
 import { buildMastCell } from './mastCell.js';
@@ -86,6 +87,7 @@ export const SCENES = {
   skeleton: buildSkeletonScene,
   femur: buildFemur,
   'digestive-tract': buildDigestiveTract,
+  'urinary-tract': buildUrinaryTract,
   'bone-tissue': buildBoneTissue,
   osteocyte: buildOsteocyte,
   heart: buildHeart,

@@ -251,9 +251,10 @@ export const DIVES = [
     kind: 'dive',
     title: 'Urinary dive',
     status: 'built',
-    summary: 'Kidney → a nephron → the filter where blood becomes urine → urea, the waste it removes.',
+    summary: 'The urinary tract → kidney → a nephron → the filter where blood becomes urine → urea, the waste it removes.',
     steps: [
       { ...BODY, focusCard: 'kidney', focus: AT.kidney, systems: ['urinary'], narration: 'Your kidneys filter all your blood plasma dozens of times a day. We will follow it into a kidney and down to the waste molecule it is there to remove.' },
+      { id: 'urinary-tract', tier: 2, scene: 'urinary-tract', title: 'Urinary tract', card: 'urinary-system', frameMeters: 0.42, focusCard: 'kidney', narration: 'The real urinary tract: two kidneys, two ureters and the bladder, with the arteries that feed the kidneys. Follow one batch of urine from the blood, down the ureters, into the bladder as it fills, and out.' },
       { id: 'kidney', tier: 3, scene: 'kidney', title: 'Kidney', card: 'kidney', frameMeters: 0.14, focusCard: 'renal-cortex', narration: 'Cut in half, a kidney has a pale outer cortex, striped pyramids inside, and a funnel that gathers urine into the ureter. Arteries arch along the pyramid bases and climb into the cortex.' },
       { id: 'nephron', tier: 4, scene: 'nephron', title: 'Nephron', card: 'nephron', frameMeters: 3e-3, focusCard: 'glomerulus', narration: 'In the cortex sit about a million of these: a filter, the glomerulus, and a long folded tube. Step through to follow the filtrate and watch the tube take most of it back.' },
       { id: 'filtration-barrier', tier: 6, scene: 'filtration-barrier', title: 'The filter', card: 'filtration-barrier', frameMeters: 1.9e-6, focusCard: 'urea', narration: 'The wall between blood and filtrate has three layers: a lining full of pores, a protein mesh, and interlocking podocyte feet. Step through to see what gets through and what is held back.' },

@@ -58,7 +58,7 @@ describe('nephron and filter', () => {
     expect(PASS_NM).toEqual({ readily: 4, most: 8 });
     expect(FILTER_STAGES.at(-1).label).toBe('Held back');
   });
-  it('the urinary dive runs body → kidney → nephron → filter → urea', () => {
-    expect(getDive('urinary').steps.map((s) => s.id)).toEqual(['body', 'kidney', 'nephron', 'filtration-barrier', 'urea']);
+  it('the urinary dive runs body → urinary tract → kidney → nephron → filter → urea', () => {
+    expect(getDive('urinary').steps.map((s) => s.id)).toEqual(['body', 'urinary-tract', 'kidney', 'nephron', 'filtration-barrier', 'urea']);
   });
 });
