@@ -440,6 +440,7 @@ h3 {
 
 /* ── How to read it ─────────────────────────────────────────────── */
 .howto,
+.fall,
 .scale,
 .booklet-index {
   padding: var(--s-6);
@@ -843,6 +844,390 @@ h3 {
 }
 
 /* ── Hover, only where there is a real pointer ──────────────────── */
+/* ── The fall ───────────────────────────────────────────────────────
+   Without the script (or with reduced motion) the plates are a row of
+   specimens. With it (.is-scrolly) the stage pins to the screen and the
+   page's scroll drives the dive: each plate grows past the viewer as the
+   next, smaller thing rises out of it, and the ruler's needle falls. */
+.fall__plates {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--s-4);
+}
+
+.fall__plate {
+  margin: 0;
+}
+
+.fall__plate img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  background: var(--tint);
+}
+
+.fall__plate figcaption {
+  display: grid;
+  padding-top: var(--s-2);
+}
+
+.fall__num {
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.fall__title {
+  font-family: var(--display);
+  font-stretch: 74%;
+  font-weight: 800;
+  font-size: var(--step-1);
+  text-transform: uppercase;
+}
+
+.fall__size {
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.fall__line,
+.fall__gauge {
+  display: none;
+}
+
+.fall.is-scrolly {
+  padding-bottom: 0;
+}
+
+.fall.is-scrolly .fall__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 132px;
+  overflow: hidden;
+  /* A pool of light on the paper, where the specimen sits. */
+  background: radial-gradient(ellipse 46% 52% at 64% 50%, var(--raised), transparent 70%);
+}
+
+.fall.is-scrolly .fall__plates {
+  position: relative;
+  display: block;
+}
+
+.fall.is-scrolly .fall__plate {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: center;
+  pointer-events: none;
+}
+
+.fall.is-scrolly .fall__plate img {
+  grid-column: 2;
+  grid-row: 1;
+  height: 86svh;
+  width: 100%;
+  aspect-ratio: auto;
+  background: none;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.fall.is-scrolly .fall__plate figcaption {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  gap: var(--s-2);
+  padding: 0 var(--s-5) 0 0;
+}
+
+/* Each caption rises into place as its plate takes the stage. */
+.fall.is-scrolly figcaption > * {
+  opacity: 0;
+  transform: translateY(0.6em);
+  transition: opacity 360ms var(--ease-out), transform 520ms var(--ease-out);
+}
+
+.fall.is-scrolly .fall__title {
+  font-stretch: 62%;
+  font-weight: 900;
+  font-size: clamp(3.25rem, 7.4vw, 7.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(0.35em);
+  transition: clip-path 620ms var(--ease-out), transform 620ms var(--ease-out);
+}
+
+.fall.is-scrolly .fall__size {
+  font-size: var(--step-2);
+  font-family: var(--display);
+  font-stretch: 74%;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.fall.is-scrolly .fall__line {
+  display: block;
+  max-width: 26em;
+  color: var(--muted);
+}
+
+.fall.is-scrolly .is-on figcaption > * {
+  opacity: 1;
+  transform: none;
+}
+
+.fall.is-scrolly .is-on .fall__title {
+  clip-path: inset(0 0 -0.2em 0);
+}
+
+.fall.is-scrolly .is-on figcaption > :nth-child(2) {
+  transition-delay: 40ms;
+}
+
+.fall.is-scrolly .is-on figcaption > :nth-child(3) {
+  transition-delay: 160ms;
+}
+
+.fall.is-scrolly .is-on figcaption > :nth-child(4) {
+  transition-delay: 240ms;
+}
+
+/* The ruler down the right edge, with a needle at the view's height. */
+.fall.is-scrolly .fall__gauge {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--s-4);
+  padding: var(--s-6) 0 var(--s-6) var(--s-4);
+  border-left: var(--rule-w) solid var(--rule);
+  /* Its own strip of paper, so a plate growing past the viewer slides under it. */
+  position: relative;
+  z-index: 1;
+  background: var(--grain), var(--sheet);
+}
+
+.fall__readout {
+  display: grid;
+  margin: 0;
+}
+
+.fall__readout span {
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.fall__readout output {
+  font-family: var(--display);
+  font-stretch: 74%;
+  font-weight: 800;
+  font-size: var(--step-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--accent);
+}
+
+.fall__ruler {
+  position: relative;
+  margin: var(--s-2) 0;
+}
+
+.fall__ruler ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fall__ruler::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: var(--rule-w) solid var(--rule);
+}
+
+.fall__tick {
+  position: absolute;
+  top: var(--at);
+  left: 0;
+  width: 10px;
+  border-top: 1.5px solid var(--rule);
+}
+
+.fall__tick.is-major {
+  width: 18px;
+  border-top-width: var(--rule-w);
+}
+
+.fall__tick span {
+  position: absolute;
+  left: 24px;
+  top: 0;
+  transform: translateY(-50%);
+  font-size: var(--step--2);
+  font-weight: 700;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.fall__tick:not(.is-major) span {
+  display: none;
+}
+
+.fall__marker {
+  position: absolute;
+  left: -7px;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 12px solid var(--accent);
+  transform: translateY(-50%);
+}
+
+.fall__marker::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 64px;
+  border-top: 2px solid var(--accent);
+}
+
+@media (max-width: 760px) {
+  .fall__plates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fall.is-scrolly .fall__stage {
+    grid-template-columns: minmax(0, 1fr) 76px;
+    background: radial-gradient(ellipse 70% 40% at 50% 64%, var(--raised), transparent 70%);
+  }
+
+  .fall.is-scrolly .fall__plate {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .fall.is-scrolly .fall__plate figcaption {
+    grid-row: 1;
+    padding: var(--s-5) 0 0;
+  }
+
+  .fall.is-scrolly .fall__plate img {
+    grid-column: 1;
+    grid-row: 2;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .fall.is-scrolly .fall__title {
+    font-size: clamp(2.5rem, 13vw, 3.5rem);
+  }
+
+  .fall.is-scrolly .fall__size {
+    font-size: var(--step-1);
+  }
+
+  .fall.is-scrolly .fall__line {
+    display: none;
+  }
+
+  .fall.is-scrolly .fall__gauge {
+    padding: var(--s-5) 0 var(--s-5) var(--s-2);
+  }
+
+  .fall__readout output {
+    font-size: var(--step-0);
+  }
+
+  .fall__tick span {
+    left: 22px;
+    font-size: 0.6875rem;
+  }
+
+  .fall__marker::after {
+    width: 30px;
+  }
+}
+
+/* ── First paint ────────────────────────────────────────────────────
+   The heading rises out of its own baseline and the specimen settles
+   onto the sheet, once, as the page opens. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1,
+  .hero .lede,
+  .hero .actions,
+  .hero .facts {
+    animation: rise 900ms var(--ease-out) backwards;
+  }
+
+  .hero h1 {
+    animation-name: rise-clip;
+  }
+
+  .hero .lede {
+    animation-delay: 120ms;
+  }
+
+  .hero .actions {
+    animation-delay: 220ms;
+  }
+
+  .hero .facts {
+    animation-delay: 300ms;
+  }
+
+  .specimen img {
+    animation: settle 1400ms var(--ease-out) 80ms backwards;
+  }
+
+  .hero .mark {
+    animation: rise 600ms var(--ease-out) backwards;
+    animation-delay: calc(500ms + var(--n-delay, 0ms));
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes rise-clip {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.4em);
+  }
+
+  to {
+    clip-path: inset(0 0 -0.3em 0);
+    transform: none;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: scale(1.06) translateY(10px);
+    filter: blur(6px);
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .bar__nav a:hover {
     box-shadow: inset 0 -4px 0 var(--rule-soft);
@@ -938,6 +1323,7 @@ h3 {
 
   .hero__title,
   .howto,
+  .fall,
   .scale,
   .booklet-index,
   .prose {

@@ -106,7 +106,7 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
     clear(marksEl);
     clear(calloutsEl);
     parts = numberParts(ids);
-    for (const p of parts) {
+    for (const [i, p] of parts.entries()) {
       p.mark = el('span', { class: 'mark', dataset: { card: p.id } },
         el('span', { class: 'mark__num', text: String(p.n) }),
         el('span', { class: 'mark__name', text: p.title }));
@@ -114,8 +114,11 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
       p.line = document.createElementNS(SVG, 'polyline');
       p.dot = document.createElementNS(SVG, 'circle');
       p.dot.setAttribute('r', '3');
+      p.line.setAttribute('pathLength', '1'); // so the draw-in animation needs no measuring
       const g = document.createElementNS(SVG, 'g');
       g.append(p.line, p.dot);
+      // Callouts draw in one after another, the first part first.
+      for (const node of [g, p.mark]) node.style.setProperty('--i', String(Math.min(i, MAX_MARKS)));
       p.callout = g;
       calloutsEl.append(g);
     }
@@ -191,10 +194,11 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
       const x = side === 'left' ? f.left : f.right - w;
       s.p.mark.dataset.side = side;
       s.p.mark.style.transform = `translate(${x.toFixed(1)}px, ${(y - 12).toFixed(1)}px)`;
-      // Out from the label's end, level with it, then on to the part: a chart's dog-leg.
+      // From the part out to the label's end, the last leg level with it: a chart's dog-leg.
+      // Drawn in that order, so the line grows from the dot toward its label.
       const edge = side === 'left' ? x + w + 6 : x - 6;
       const knee = side === 'left' ? Math.min(s.px - 8, edge + 18) : Math.max(s.px + 8, edge - 18);
-      const pts = [[edge, y], [knee, y], [s.px, s.py]];
+      const pts = [[s.px, s.py], [knee, y], [edge, y]];
       s.p.line.setAttribute('points', pts.map(([a, b]) => `${a.toFixed(1)},${b.toFixed(1)}`).join(' '));
       s.p.dot.setAttribute('cx', s.px.toFixed(1));
       s.p.dot.setAttribute('cy', s.py.toFixed(1));

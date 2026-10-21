@@ -2301,6 +2301,133 @@ button:active:not(:disabled):not([aria-disabled='true']),
   }
 }
 
+/* ── Motion ───────────────────────────────────────────────────────────
+   The chart sets itself like a printed plate: the neatline rules itself on
+   the first visit, each new heading rises out of its baseline, and after
+   every flight the callouts draw out from their parts, one after another,
+   with each label appearing where its line arrives. Only with full motion
+   (main.js sets data-motion from the system and the app's own setting). */
+:root[data-motion='full'] .app::before {
+  animation: neatline-draw 1400ms var(--ease-out) 150ms backwards;
+  transition: right 420ms var(--ease-out);
+}
+
+:root[data-motion='full'] .plate-head.is-set .plate-head__kicker {
+  animation: set-rise 520ms var(--ease-out) backwards;
+}
+
+:root[data-motion='full'] .plate-head.is-set .plate-head__title {
+  animation: set-type 760ms var(--ease-out) 60ms backwards;
+}
+
+:root[data-motion='full'] .plate-head.is-set .plate-head__dive {
+  animation: set-wipe 700ms var(--ease-out) 240ms backwards;
+}
+
+:root[data-motion='full'] .callouts circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: callout-dot 360ms var(--ease-out) backwards;
+  animation-delay: calc(60ms + var(--i, 0) * 55ms);
+}
+
+:root[data-motion='full'] .callouts polyline {
+  stroke-dasharray: 1;
+  animation: callout-line 620ms var(--ease-out) backwards;
+  animation-delay: calc(140ms + var(--i, 0) * 55ms);
+}
+
+:root[data-motion='full'] .marks.is-chart .mark {
+  animation: callout-label-left 420ms var(--ease-out) backwards;
+  animation-delay: calc(460ms + var(--i, 0) * 55ms);
+}
+
+:root[data-motion='full'] .marks.is-chart .mark[data-side='right'] {
+  animation-name: callout-label-right;
+}
+
+@keyframes neatline-draw {
+  from {
+    clip-path: inset(0 100% 100% 0);
+  }
+
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes set-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes set-type {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.45em);
+  }
+
+  to {
+    clip-path: inset(0 0 -0.3em 0);
+    transform: none;
+  }
+}
+
+@keyframes set-wipe {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
+}
+
+@keyframes callout-dot {
+  from {
+    transform: scale(0);
+  }
+}
+
+@keyframes callout-line {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* A left-hand label's line arrives at its right end, so it reads in from there. */
+@keyframes callout-label-left {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 0 100%);
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
+}
+
+@keyframes callout-label-right {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    opacity: 1;
+    clip-path: inset(0);
+  }
+}
+
 /* Reduced motion keeps colour and opacity feedback and drops movement:
    no press scale, no slide, no sliding switch knob, no ruling animation. */
 @media (prefers-reduced-motion: reduce) {

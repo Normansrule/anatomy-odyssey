@@ -7,6 +7,7 @@ import * as THREE from 'three/webgpu';
 import { createEnvironment } from './environment.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { setOpacity } from './fade.js';
+import { followAim, lightDirections } from './studioLight.js';
 import { lerpLog, distanceForFrame, visibleHeightMeters } from '../science/scale.js';
 
 const FOV = 40;
@@ -104,6 +105,11 @@ export class TierEngine {
     this.scene.add(rim);
     this.key = key;
     this.rim = rim;
+    // The lights ride with the camera; the key leans toward the pointer (studioLight.js).
+    this.lightAim = { x: 0, y: 0 };
+    this.lightNow = { x: 0, y: 0 };
+    this.lightDist = 1;
+    this.basis = [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()];
     this.renderer = renderer;
     this.envTexture = null;
   }
@@ -165,10 +171,27 @@ export class TierEngine {
     this.controls.minDistance = d * 0.1;
     this.controls.maxDistance = d * 3.2;
     // Keep the lights framed around the subject at every scale.
-    this.key.position.copy(target).add(new THREE.Vector3(2, 3, 4).multiplyScalar(d * 0.5));
-    this.key.target.position.copy(target);
-    this.key.target.updateMatrixWorld();
-    this.rim.position.copy(target).add(new THREE.Vector3(-3, 1, -2).multiplyScalar(d * 0.5));
+    this.lightDist = d * 2.7;
+    this.aimLights();
+  }
+
+  /** Where the pointer is over the view, x and y from -1 to 1; the key light leans toward it. */
+  setLightAim(x, y) {
+    this.lightAim = this.reducedMotion ? { x: 0, y: 0 } : { x, y };
+  }
+
+  /** Place the key and rim lights around the subject, in the camera's frame. */
+  aimLights() {
+    const { key, rim } = lightDirections(this.lightNow);
+    const target = this.controls.target;
+    this.camera.updateMatrixWorld();
+    this.camera.matrixWorld.extractBasis(...this.basis); // right, up, toward the viewer
+    for (const [light, dir] of [[this.key, key], [this.rim, rim]]) {
+      light.position.copy(target);
+      dir.forEach((c, i) => light.position.addScaledVector(this.basis[i], c * this.lightDist));
+      light.target.position.copy(target);
+      light.target.updateMatrixWorld();
+    }
   }
 
   /** Show a step immediately, with no animation (first load). */
@@ -558,6 +581,8 @@ export class TierEngine {
       this.controls.update();
       this.holdCursorZoom();
     }
+    this.lightNow = this.reducedMotion ? { x: 0, y: 0 } : followAim(this.lightNow, this.lightAim, dt);
+    this.aimLights();
   }
 
   render() {

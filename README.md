@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.20.0-a3242f)
-![Tests](https://img.shields.io/badge/tests-507%20passing-276a40)
+![Tests](https://img.shields.io/badge/tests-518%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -38,12 +38,19 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 - **Light sheet or slate.** It follows your device's light or dark setting, or pick one in About.
 - **Science you can play with.** Sliders run real, tested equations (oxygen binding, nerve speed, blood acidity, how fast an enzyme works, how much blood the heart pumps).
 - **A map by scale, a tour, quizzes and a glossary.** The map (press M) lays out every dive on one size axis; the tour narrates a dive with captions you can have read aloud.
+- **Made to move.** After every flight the plate sets itself like a printed chart: the heading rises out of its baseline and each label's line draws out from its part. The studio light follows your pointer across the model, and the guide's landing page falls through the body as you scroll.
 - **A guide website.** A landing page drawn as the same chart, plus the docs as a printed booklet, at [/guide/](https://normansrule.github.io/anatomy-odyssey/guide/).
-- **Private and accessible.** No network calls after loading, full keyboard control, screen-reader announcements, a reduced-motion mode, and an automated Web Content Accessibility Guidelines (WCAG) 2.2 audit with zero violations in 47 states, light and dark.
+- **Private and accessible.** No network calls after loading, full keyboard control, screen-reader announcements, a reduced-motion mode, and an automated Web Content Accessibility Guidelines (WCAG) 2.2 audit with zero violations in 52 states, light and dark.
 
 ## See it
 
 <table>
+<tr>
+<td align="center" colspan="2"><img src="docs/media/guide-fall.gif" alt="The guide's landing page scrolling through Fall through the body: each plate of the skeletal dive grows past the viewer and fades as the next, smaller one rises out of it, from the whole body through the skeleton, femur, bone tissue, a bone cell and its nucleus to DNA, while a needle falls down the ruler on the right and the view height counts down from 1.9 m to 11 nm" width="860" /><br /><sub><b>Fall through the body.</b> Scroll the guide and drop from your whole body to a strand of DNA.</sub></td>
+</tr>
+<tr>
+<td align="center" colspan="2"><img src="docs/media/plate-set.gif" alt="The bone tissue plate setting itself after a flight: the heading rises into place, then a line grows out from each labeled part to the edge of the plate and its name reads in where the line arrives" width="860" /><br /><sub><b>The plate sets itself.</b> After every flight the heading rises and each callout draws out from its part.</sub></td>
+</tr>
 <tr>
 <td align="center" colspan="2"><img src="docs/media/living-key.gif" alt="The heart plate, labeled like a printed chart with names at the edges and lines to the parts: pointing at each entry in the key draws a red leader line to its part on the heart" width="860" /><br /><sub><b>The living key.</b> Point at an entry and its leader line draws to the part.</sub></td>
 </tr>
@@ -210,7 +217,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 507 unit tests, plus the asset manifest check
+npm test               # 518 unit tests, plus the asset manifest check
 npm run build          # production build in dist/ (what GitHub Pages serves), with the guide in dist/guide/
 npm run build:preview  # one self-contained HTML (HyperText Markup Language) file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -237,6 +244,8 @@ pip install playwright pillow && python3 -m playwright install chromium
 python3 tools/screenshots.py --mobile    # every step; fails on console errors or a blank view
 python3 tools/a11y-audit.py              # axe-core accessibility audit, WCAG 2.2 A and AA, app and guide, light and dark
 python3 tools/shoot-guide-body.py        # redraw the guide's body picture and measure where each dive starts on it
+python3 tools/shoot-guide-fall.py        # redraw the cut-out plates for the guide's "Fall through the body"
+python3 tools/record-motion.py fall      # record the README's motion animations (fall, or plate)
 ```
 
 **Web address options**: `?dive=nervous&step=synapse` opens a step, `&trip=1` opens a side trip, `?renderer=webgl` forces the WebGL 2 fallback, `?env=0` turns off studio reflections.
@@ -296,7 +305,9 @@ Each dive is a **chain of scenes**, each built at its own scale (1 unit = 1 m fo
 
 **The second is the living key.** On a wide screen the plate is labeled the way a printed chart is: every part's name is set in a column at the plate's edge, with a hairline running to a dot on the part. The labels are projected from the 3D parts every frame, stacked a row apart and centered on their parts so the lines stay short, and they follow the model as you turn it. Point at a label or a key entry and its line turns red; on a phone each part carries a numbered mark instead.
 
-**Motion has a job or it doesn't happen.** Buttons answer a press with a slight 0.97 scale in 140 milliseconds, easing out so they feel immediate. Hover effects only switch on for a real mouse, so taps never leave a stuck highlight. With reduced motion on, flights become a short crossfade, the slider and leader lines jump instead of springing, and nothing slides or scales, but color and fade feedback stay so you still see what happened.
+**Then the plate sets itself.** Big product pages earn their polish with motion that explains: a scroll that tells a story, light that answers the pointer, type that arrives instead of appearing. The chart borrows those, in its own printed voice. The neatline rules itself around the plate on the first visit. After every flight the heading rises out of its own baseline and the callouts draw out from their parts one by one, each label reading in from the end its line arrives at, so your eye goes from the part to its name. The studio lights ride with the camera like a photographer's, and the key light leans toward your pointer, so highlights slide across the model as you explore. On the guide, "Fall through the body" pins a stage to the screen and lets your scroll drive the dive: each plate grows past you and fades as the next, smaller one rises out of it, while a needle falls down the ruler and the view height counts down.
+
+**Motion has a job or it doesn't happen.** Buttons answer a press with a slight 0.97 scale in 140 milliseconds, easing out so they feel immediate. Hover effects only switch on for a real mouse, so taps never leave a stuck highlight. With reduced motion on, flights become a short crossfade, the slider and leader lines jump instead of springing, headings and callouts simply appear, the light stays put, the guide shows its plates as a plain row, and nothing slides or scales, but color and fade feedback stay so you still see what happened.
 
 **States are designed too.** Loading shows a ruled "Drawing the plate" title card while the 11 megabyte body loads; if the measured body can't load, a notice says the simplified figure is showing; a browser without 3D graphics gets a plain explanation instead of a blank page; and an empty search suggests what to try.
 

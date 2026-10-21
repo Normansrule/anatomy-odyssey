@@ -1,6 +1,6 @@
 // Builds the guide website into dist/guide/ after `vite build`: a landing
 // page drawn like the app's wall chart, plus the docs as booklet pages.
-// Plain HTML and CSS with one small script, the same strict Content
+// Plain HTML and CSS with one small script (plus the app's scale math), the same strict Content
 // Security Policy as the app, and fonts served from the site itself.
 //
 //   node tools/build-guide.mjs            (run by `npm run build`)
@@ -56,7 +56,7 @@ const at = Object.fromEntries(placed.map((m) => [m.id, [+((m.x / SHOWN_W) * 100)
 
 // Per-dive positions and colors become CSS rules: the policy allows no style attributes.
 const generated = [
-  ...dives.map((d, i) => `.mark[data-n='${i + 1}'] { left: ${at[d.id][0]}%; top: ${at[d.id][1]}%; }`),
+  ...dives.map((d, i) => `.mark[data-n='${i + 1}'] { left: ${at[d.id][0]}%; top: ${at[d.id][1]}%; --n-delay: ${i * 50}ms; }`),
   ...dives.map((d, i) => `[data-n='${i + 1}'] { --swatch: ${d.swatch}; }`),
 ];
 
@@ -85,7 +85,7 @@ function page({ file, title, description, body, current = 'index.html' }) {
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23eef0ea'/%3E%3Cpath d='M10 4c8 6 4 18 12 24M22 4c-8 6-4 18-12 24' stroke='%23a3242f' stroke-width='3' fill='none'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="guide.css" />
     <script src="theme.js"></script>
-    <script src="guide.js" defer></script>
+    <script type="module" src="guide.js"></script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to the content</a>
@@ -121,7 +121,19 @@ function landing() {
     .join('');
   const ticks = [];
   for (let e = 1; e >= -10; e--) ticks.push(`<li class="ruler__tick${e % 3 === 0 ? ' is-major' : ''}" data-e="${e}"><span>${escape(formatLength(10 ** e, 1).text)}</span></li>`);
-  generated.push(...[...Array(12)].map((_, k) => `.ruler__tick[data-e='${1 - k}'] { --at: ${((k / 11) * 100).toFixed(2)}%; }`));
+  generated.push(...[...Array(12)].map((_, k) => `.ruler__tick[data-e='${1 - k}'], .fall__tick[data-e='${1 - k}'] { --at: ${((k / 11) * 100).toFixed(2)}%; }`));
+  // The fall: the same plates as cut-outs, one per screen of scrolling once
+  // guide.js takes over, or a plain list of specimens without it.
+  const fallTicks = ticks.map((t) => t.replace('ruler__tick', 'fall__tick')).join('');
+  const fall = plates
+    .map((p) => {
+      const card = getCard(p.card);
+      const narration = p.narration ?? '';
+      const line = narration.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? narration;
+      return `<figure class="fall__plate" data-i="${p.n}" data-m="${p.frameMeters}"><img src="fall/${p.id}.webp" alt="${escape(p.title)}, as the app draws it." width="800" height="1000" loading="lazy" decoding="async" /><figcaption><span class="fall__num">Plate ${p.n} of ${plates.length}</span><span class="fall__title">${escape(p.title)}</span><span class="fall__size">${escape(card?.size ?? p.size)}</span><span class="fall__line">${escape(line)}</span></figcaption></figure>`;
+    })
+    .join('');
+  generated.push(`.fall.is-scrolly .fall__track { height: calc(${plates.length} * 70svh + 100svh); }`);
   // Pins for plates that land close together on the ruler stack upward, like labels set clear on a chart.
   let lastF = -1;
   let row = 0;
@@ -170,6 +182,22 @@ function landing() {
           <svg class="leader" id="leader" aria-hidden="true" focusable="false" hidden><line id="leader-line" /></svg>
         </section>
 
+        <section class="fall" id="fall" aria-labelledby="fall-title">
+          <div class="section-head">
+            <h2 id="fall-title" class="section-title">Fall through the body</h2>
+            <p>Scroll, and drop from your whole body through one bone, one cell and one nucleus to a strand of DNA: the skeletal dive, seven plates deep.</p>
+          </div>
+          <div class="fall__track">
+            <div class="fall__stage">
+              <div class="fall__plates">${fall}</div>
+              <div class="fall__gauge" aria-hidden="true">
+                <p class="fall__readout"><span>View height</span><output id="fall-meters">${escape(plates[0].size)}</output></p>
+                <div class="fall__ruler"><ol>${fallTicks}</ol><span class="fall__marker" id="fall-marker"></span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="howto" aria-labelledby="howto-title">
           <h2 id="howto-title" class="section-title">How to read the chart</h2>
           <ol class="howto__steps">
@@ -216,15 +244,20 @@ ${html}
 
 mkdirSync(join(out, 'fonts'), { recursive: true });
 mkdirSync(join(out, 'plates'), { recursive: true });
+mkdirSync(join(out, 'fall'), { recursive: true });
 writeFileSync(join(out, 'index.html'), landing());
 DOCS.forEach((d, i) => writeFileSync(join(out, d.page), docPage(d, i)));
 writeFileSync(join(out, 'guide.css'), `/* Built by tools/build-guide.mjs. Tokens come from src/styles/app.css. */\n${tokens}\n${readFileSync(join(root, 'guide/guide.css'), 'utf8')}\n/* Positions and colors from the dive data. */\n${generated.join('\n')}\n`);
-for (const f of ['guide.js', 'theme.js', 'body.webp']) cpSync(join(root, 'guide', f), join(out, f));
+for (const f of ['guide.js', 'fall.js', 'theme.js', 'body.webp']) cpSync(join(root, 'guide', f), join(out, f));
+cpSync(join(root, 'src/science/scale.js'), join(out, 'scale.js'));
 const fonts = {
   'archivo.woff2': 'node_modules/@fontsource-variable/archivo/files/archivo-latin-standard-normal.woff2',
   'atkinson-400.woff2': 'node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-400-normal.woff2',
   'atkinson-700.woff2': 'node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-700-normal.woff2',
 };
 for (const [name, from] of Object.entries(fonts)) cpSync(join(root, from), join(out, 'fonts', name));
-for (const p of plates) cpSync(join(root, 'docs/screenshots', `${p.id}.webp`), join(out, 'plates', `${p.id}.webp`));
+for (const p of plates) {
+  cpSync(join(root, 'docs/screenshots', `${p.id}.webp`), join(out, 'plates', `${p.id}.webp`));
+  cpSync(join(root, 'guide/fall', `${p.id}.webp`), join(out, 'fall', `${p.id}.webp`));
+}
 console.log(`guide: ${DOCS.length + 1} pages in dist/guide`);

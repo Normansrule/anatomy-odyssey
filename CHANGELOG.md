@@ -22,11 +22,15 @@
 - **The guide's dive numbers are measured.** `tools/shoot-guide-body.py` renders the guide's body picture and projects each dive's starting point (the same points the zoom guide steers to) through the same camera, replacing positions placed by eye; the skeletal dive's number now sits on the left femur, where the dive goes. Crowded numbers in the head and chest are set clear of each other as in the app's key.
 - **Labeled like a printed chart.** On wide screens every part in view is named in a column at the plate's edge, with a hairline from the name to a dot on the part, the way a wall chart is labeled; the numbered marks stay on phones. Labels are stacked a row apart and centered on their parts, point at one to light its part (and its key entry), and click it to open its card.
 - **A chart heading and printed paper.** Each plate gets a heading: a red rubric with the plate number and tier, the subject in huge condensed capitals, and the dive, with the scale bar under it. The light sheet is now warm paper with a fine grain, and the plate sits in a double-ruled frame.
+- **Fall through the body.** The guide's landing page has a new scroll story: a stage pins to the screen and scrolling drives the skeletal dive, each plate growing past the viewer and fading as the next, smaller one rises out of it, with its title rising into place, the view height counting down on a log scale and a needle falling down a ruler from 10 m to 0.1 nm. The plates are cut-out renders from the app (`tools/shoot-guide-fall.py`); without the script or with reduced motion they are a plain row of specimens.
+- **The plate sets itself.** After every flight the heading rises out of its baseline and each callout draws out from its part to its label, one after another, with the label reading in where its line arrives; the neatline rules itself on the first visit and follows the card as it opens. The guide's heading and body settle in the same way. All of it follows the app's reduced-motion setting as well as the device's.
+- **Light that follows the pointer.** The key and rim lights now ride with the camera, so a part is lit the same way from every side, and the key light leans toward the mouse pointer, easing after it, so highlights slide across the model (`src/engine/studioLight.js`). The rim light now aims at the subject instead of the scene's origin.
+- `tools/record-motion.py` records the README's two new animations (the guide's fall, and a plate setting itself, stepped frame by frame through the page's animations); the accessibility audit covers the fall on desktop and phone (52 states, no violations).
 - The dive menu and first-screen colors are set through the style object, since the Content Security Policy was blocking them as style attributes.
 - **Zoom in anywhere.** Scroll or pinch zooms toward whatever is under the pointer. Zoom far enough into the whole body and a guide names the nearest part that has a dive ("Keep zooming in to reach: the heart"), draws the view toward it and then carries you in; a "Go" button does it in one tap. Zooming out far enough goes back a step.
 - Every dive now starts from the measured position of its organ, and the model's height (1.64 m) is the measured one.
 - 1 new reference (Mitsuhashi and others 2009, the BodyParts3D paper).
-- 507 tests (from 421).
+- 518 tests (from 421).
 
 ## 0.19.0
 

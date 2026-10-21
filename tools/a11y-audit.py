@@ -82,6 +82,8 @@ GUIDE = [
     ("guide: state of the model, slate", "guide/state-of-the-model.html", "dark", DESKTOP),
     ("guide: changelog, phone", "guide/changelog.html", "light", PHONE),
     ("guide: landing, phone, slate", "guide/", "dark", PHONE),
+    ("guide: falling through the plates", "guide/", "light:scroll:0.45", DESKTOP),
+    ("guide: falling, phone, slate", "guide/", "dark:scroll:0.8", PHONE),
 ]
 
 
@@ -124,6 +126,10 @@ def main():
                 page.keyboard.press("ArrowDown")
             elif action and action.startswith("hover:"):
                 page.locator(action[6:]).nth(1).hover()
+            elif action and action.startswith("scroll:"):
+                # Part way down the guide's fall, once its plates have handed over.
+                page.evaluate("(q) => { const t = document.querySelector('.fall__track'); scrollTo(0, t.getBoundingClientRect().top + scrollY + q * (t.offsetHeight - innerHeight)); }", float(action[7:]))
+                page.wait_for_timeout(1200)
             elif action and action.startswith("focus:"):
                 page.focus(action[6:])
             elif action:

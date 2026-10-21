@@ -1,6 +1,9 @@
-// The guide's two behaviors: the light/slate switch, and the landing page's
+// The guide's three behaviors: the light/slate switch; the landing page's
 // living key, where pointing at a dive draws a red leader line to the place
-// on the body where it starts (and pointing at a number lights its entry).
+// on the body where it starts (and pointing at a number lights its entry);
+// and the fall, where scrolling drops through the skeletal dive's plates.
+import { formatLength, gaugeFraction } from './scale.js';
+import { fallFrame } from './fall.js';
 
 const root = document.documentElement;
 const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -80,4 +83,54 @@ if (hero && leader) {
     });
   }
   new ResizeObserver(() => draw()).observe(hero);
+}
+
+// The fall. Each plate grows past the viewer and fades as the next, smaller
+// one rises out of it; the readout and the needle on the ruler follow the
+// view height. Reduced motion keeps the plain row of specimens.
+const fall = document.getElementById('fall');
+if (fall && !reduce.matches) {
+  const plates = [...fall.querySelectorAll('.fall__plate')];
+  const images = plates.map((p) => p.querySelector('img'));
+  const meters = plates.map((p) => Number(p.dataset.m));
+  const readout = document.getElementById('fall-meters');
+  const marker = document.getElementById('fall-marker');
+  const track = fall.querySelector('.fall__track');
+  for (const img of images) img.loading = 'eager'; // all seven are on one stage
+  fall.classList.add('is-scrolly');
+  let active = -1;
+  let queued = false;
+  function render() {
+    queued = false;
+    const box = track.getBoundingClientRect();
+    const frame = fallFrame(-box.top / Math.max(1, box.height - window.innerHeight), meters);
+    images.forEach((img, i) => {
+      let opacity = 0;
+      let scale = 1;
+      if (i === frame.from) {
+        opacity = 1 - frame.w;
+        scale = 1 + 2.4 * frame.w * frame.w; // accelerating, as if falling into it
+      } else if (i === frame.to) {
+        opacity = frame.w;
+        scale = 0.42 + 0.58 * frame.w;
+      }
+      img.style.opacity = opacity.toFixed(3);
+      img.style.transform = `scale(${scale.toFixed(4)})`;
+    });
+    if (frame.active !== active) {
+      plates[active]?.classList.remove('is-on');
+      active = frame.active;
+      plates[active].classList.add('is-on');
+    }
+    readout.textContent = formatLength(frame.meters, 2).text;
+    marker.style.top = `${(gaugeFraction(frame.meters) * 100).toFixed(2)}%`;
+  }
+  const queue = () => {
+    if (!queued) requestAnimationFrame(render);
+    queued = true;
+  };
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  reduce.addEventListener('change', () => reduce.matches && location.reload());
+  render();
 }

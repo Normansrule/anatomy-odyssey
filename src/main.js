@@ -62,6 +62,11 @@ applyTheme();
 let applySurfaces = () => setSurfaceOptions({ look: settings.look, detail: detailFor(settings.quality, settings.benchmark?.tier) });
 applySurfaces();
 const reducedMotion = () => (settings.motion === 'system' ? systemReduce.matches : settings.motion === 'reduce');
+// The page's own motion (headings, callouts, the neatline) follows the same choice as the camera.
+function applyMotion() {
+  document.documentElement.dataset.motion = reducedMotion() ? 'reduce' : 'full';
+}
+applyMotion();
 
 const state = {
   dive: getDive('skeletal'),
@@ -116,7 +121,10 @@ async function main() {
   let bench = settings.benchmark ? null : new FrameBenchmark();
   resize();
   new ResizeObserver(resize).observe(canvas);
-  systemReduce.addEventListener('change', () => (engine.reducedMotion = reducedMotion()));
+  systemReduce.addEventListener('change', () => {
+    engine.reducedMotion = reducedMotion();
+    applyMotion();
+  });
   engine.setTheme(isDark());
   systemDark.addEventListener('change', () => engine.setTheme(isDark()));
 
@@ -461,9 +469,12 @@ async function main() {
   function setPlateHead(s) {
     const main = state.path.filter((p) => !p.sideTrip);
     const n = main.indexOf(s);
+    const changed = $('plate-title').textContent !== s.title;
     $('plate-kicker').textContent = s.sideTrip ? `Side plate · ${TIERS[s.tier]} tier` : `Plate ${n + 1} of ${main.length} · ${TIERS[s.tier]} tier`;
     $('plate-title').textContent = s.title;
     $('plate-dive').textContent = state.dive.title;
+    // A new subject sets itself in type again: the heading rises out of its baseline.
+    if (changed) restartAnimation($('plate-head'), 'is-set');
   }
 
   async function takeBranch() {
@@ -750,7 +761,10 @@ async function main() {
       onSetting: (name, value) => {
         settings[name] = value;
         progress.setPref(name, value);
-        if (name === 'motion') engine.reducedMotion = reducedMotion();
+        if (name === 'motion') {
+          engine.reducedMotion = reducedMotion();
+          applyMotion();
+        }
         if (name === 'theme') {
           applyTheme();
           engine.setTheme(isDark());
@@ -950,9 +964,13 @@ async function main() {
   });
   let hoverQueued = null;
   canvas.addEventListener('pointermove', (e) => {
-    if (e.pointerType === 'mouse') hoverQueued = e;
+    if (e.pointerType !== 'mouse') return;
+    hoverQueued = e;
+    const at = ndcOf(e);
+    engine.setLightAim(at.x, at.y); // the key light leans toward the pointer
   });
   canvas.addEventListener('pointerleave', () => {
+    engine.setLightAim(0, 0);
     hoverQueued = null;
     tooltip.hidden = true;
     engine.setHover(null);
@@ -1141,6 +1159,13 @@ function viewShiftY(bottomInset) {
   if (!controlsEl || controlsEl.hidden || controlsEl.offsetParent === null) return 0;
   const covered = canvas.getBoundingClientRect().bottom - controlsEl.getBoundingClientRect().top;
   return Math.max(0, (covered - bottomInset) / 2);
+}
+
+/** Play a CSS animation keyed to `className` again from its start. */
+function restartAnimation(node, className) {
+  node.classList.remove(className);
+  void node.offsetWidth; // a layout read, so the browser sees the class leave before it returns
+  node.classList.add(className);
 }
 
 function announce(text) {
