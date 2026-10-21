@@ -5,15 +5,21 @@
 
 const escape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-/** A heading's id: lowercase words joined by hyphens. */
+/** A heading's id, from its plain text: lowercase words joined by hyphens. */
 export function slug(text) {
   return text
     .toLowerCase()
-    .replace(/<[^>]+>/g, '')
-    .replace(/&[a-z]+;/g, '')
     .replace(/[^\p{L}\p{N}\s-]/gu, '')
     .trim()
     .replace(/\s+/g, '-');
+}
+
+/** Markdown inline text without its markup: link labels, code and emphasis kept as words. */
+export function plain(text) {
+  return text
+    .replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1')
+    .replace(/[`*]/g, '')
+    .replace(/(^|[^\w])_([^_\s][^_]*)_(?!\w)/g, '$1$2');
 }
 
 /** Only web, mail and relative links survive; anything else (javascript: and the like) becomes plain text. */
@@ -61,11 +67,12 @@ export function markdownToHtml(md, { links = {} } = {}) {
     if ((m = /^(#{1,6}) (.*)$/.exec(line))) {
       const level = m[1].length;
       const html = inline(m[2].trim(), links);
-      let id = slug(html) || 'section';
+      const text = plain(m[2].trim());
+      let id = slug(text) || 'section';
       const n = used.get(id) ?? 0;
       used.set(id, n + 1);
       if (n) id += `-${n + 1}`;
-      if (level === 2) headings.push({ id, text: html.replace(/<[^>]+>/g, '') });
+      if (level === 2) headings.push({ id, text: escape(text) });
       out.push(`<h${level} id="${id}">${html}</h${level}>`);
       i++;
     } else if (line.startsWith('```')) {

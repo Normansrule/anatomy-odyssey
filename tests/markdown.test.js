@@ -42,7 +42,8 @@ describe('guide markdown', () => {
   });
 
   it('makes heading slugs from words only', () => {
-    expect(slug('What’s <code>new</code> & next?')).toBe('whats-new-next');
+    expect(slug('What’s new & next?')).toBe('whats-new-next');
+    expect(markdownToHtml('## What’s `new` & [next](x.md)?').headings).toEqual([{ id: 'whats-new-next', text: 'What’s new &amp; next?' }]);
   });
 
   it('converts every real doc without leaving raw markdown markers', async () => {
