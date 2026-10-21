@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.20.0-a3242f)
-![Tests](https://img.shields.io/badge/tests-518%20passing-276a40)
+![Tests](https://img.shields.io/badge/tests-528%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -16,7 +16,12 @@
 [Setup](#setup-and-usage) ·
 [Design](#design)
 
-<img src="docs/media/scale-slider.gif" alt="One drag down the scale slider on the left: the view flies from the whole body to the skeleton, the femur, bone tissue, a bone cell, its nucleus and DNA, while the plates along the bottom and the key on the right follow" width="860" />
+<a href="https://normansrule.github.io/anatomy-odyssey/">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/media/hero-dark.webp" />
+  <img src="docs/media/hero-light.webp" alt="The human body, to scale. A grid of tiles from the app: the realistic skeleton of 258 measured bones, the new heart scan with the beam cutting the real heart beside a live echo screen, the beating heart opened to its four chambers, and the real brain with every fold" width="860" />
+</picture>
+</a>
 
 </div>
 
@@ -30,7 +35,9 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 ## Key features
 
 - **Fifteen dives and six modules.** Skeletal, circulatory, muscular, immune, nervous, respiratory, digestive, urinary, endocrine, skin, eye, ear, pancreas, liver and smell, plus modules on inflammation, gene to protein, body chemistry, immune memory, T cells and the knee-jerk reflex. Every one ends at a molecule.
-- **A body measured from a real one.** 411 meshes from BodyParts3D, an open anatomy atlas: every bone, muscle and organ in its true place. The heart beats, blood flows through the vessels, and the organ close-ups are the real organs cut open.
+- **A body measured from a real one.** Meshes from BodyParts3D, an open anatomy atlas: every muscle and organ in its true place. The heart beats, blood flows through the vessels, and the organ close-ups are the real organs cut open.
+- **A skeleton you'd find in a lecture hall.** 258 bones and teeth from Z-Anatomy, a finer, cleaned-up rebuild of that atlas, fitted back onto the body to within about a millimeter and shaded with the soft shadow each bone casts on itself: every foramen of the skull, every facet of the spine.
+- **Read a heart scan.** A new step turns an ultrasound probe through the four standard echo views, the way trainee doctors learn them with teaching tools like Toronto's Virtual TEE: a fan of sound cuts the real heart, the heart turns to show you the slice, and a scanner screen beside it draws that slice as an echo machine would, grainy and beating, with an ECG running underneath.
 - **One slider from 10 m to 0.1 nm.** The scale on the left is a slider. Drag it (or use the arrow keys) and the view zooms continuously, flying on to the next plate whenever you get close to its size, so a single drag can take you from your whole body to DNA.
 - **Labeled like a wall chart.** Every part in view is named at the edge of the plate with a line to the part, and numbered in the card's key. Point at a label, a part or a key entry and a red leader line lights up, following the part as the model turns.
 - **Zoom in anywhere.** Scroll or pinch toward any part of the body; a guide names the nearest part that has a dive and takes you there.
@@ -40,11 +47,18 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 - **A map by scale, a tour, quizzes and a glossary.** The map (press M) lays out every dive on one size axis; the tour narrates a dive with captions you can have read aloud.
 - **Made to move.** After every flight the plate sets itself like a printed chart: the heading rises out of its baseline and each label's line draws out from its part. The studio light follows your pointer across the model, and the guide's landing page falls through the body as you scroll.
 - **A guide website.** A landing page drawn as the same chart, plus the docs as a printed booklet, at [/guide/](https://normansrule.github.io/anatomy-odyssey/guide/).
-- **Private and accessible.** No network calls after loading, full keyboard control, screen-reader announcements, a reduced-motion mode, and an automated Web Content Accessibility Guidelines (WCAG) 2.2 audit with zero violations in 52 states, light and dark.
+- **Private and accessible.** No network calls after loading, full keyboard control, screen-reader announcements, a reduced-motion mode, and an automated Web Content Accessibility Guidelines (WCAG) 2.2 audit with zero violations in 55 states, light and dark.
 
 ## See it
 
 <table>
+<tr>
+<td align="center" colspan="2"><img src="docs/media/heart-scan.gif" alt="The heart scan step: the probe turns from the four-chamber view through the two-chamber and long-axis views to the short axis and back; at each view the real heart turns to show the slice the beam cuts, and the scanner screen beside it shows that slice as a grainy, beating echo picture with the chambers named and an ECG running along the bottom" width="860" /><br /><sub><b>Read a heart scan.</b> Turn the probe through the four standard views and match each echo picture to the real heart.</sub></td>
+</tr>
+<tr>
+<td align="center" width="50%"><img src="docs/media/skeleton-turn.gif" alt="The skeleton turning slowly all the way round: 258 measured bones with soft self-shadowing, the left femur glowing" width="300" /><br /><sub><b>258 real bones.</b> Z-Anatomy's skeleton, fitted to the body to a millimeter.</sub></td>
+<td align="center" width="50%"><img src="docs/media/scale-slider.gif" alt="One drag down the scale slider on the left: the view flies from the whole body to the skeleton, the femur, bone tissue, a bone cell, its nucleus and DNA, while the plates along the bottom and the key on the right follow" width="400" /><br /><sub><b>One slider, 10 m to 0.1 nm.</b> A single drag takes you from your whole body to DNA.</sub></td>
+</tr>
 <tr>
 <td align="center" colspan="2"><img src="docs/media/guide-fall.gif" alt="The guide's landing page scrolling through Fall through the body: each plate of the skeletal dive grows past the viewer and fades as the next, smaller one rises out of it, from the whole body through the skeleton, femur, bone tissue, a bone cell and its nucleus to DNA, while a needle falls down the ruler on the right and the view height counts down from 1.9 m to 11 nm" width="860" /><br /><sub><b>Fall through the body.</b> Scroll the guide and drop from your whole body to a strand of DNA.</sub></td>
 </tr>
@@ -67,7 +81,7 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 <table>
 <tr>
 <td><img src="docs/screenshots/body.webp" alt="The whole measured body: the skeleton with the organs inside and see-through skin" /><br /><sub>Whole body</sub></td>
-<td><img src="docs/screenshots/heart.webp" alt="The real heart cut open to its four chambers, with its card and the heart rate control" /><br /><sub>Heart</sub></td>
+<td><img src="docs/screenshots/heart-scan.webp" alt="The heart scan: the real heart cut by the ultrasound beam beside the scanner screen showing the four-chamber view, with the probe control" /><br /><sub>Heart scan</sub></td>
 <td><img src="docs/screenshots/brain.webp" alt="The real brain, every fold where it was in that person" /><br /><sub>Brain</sub></td>
 <td><img src="docs/screenshots/lungs.webp" alt="The real lungs, five lobes around the bronchial tree" /><br /><sub>Lungs</sub></td>
 </tr>
@@ -85,8 +99,8 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 
 | Dive | Organ step | What moves | State |
 |---|---|---|---|
-| Skeletal | measured femur, cut open | | Done |
-| Circulatory | measured heart, four chambers | heartbeat, blood flow, heart rate | Done |
+| Skeletal | measured skeleton (258 Z-Anatomy bones); femur cut open | | Done |
+| Circulatory | measured heart, four chambers; heart scan in the four echo views | heartbeat, blood flow, heart rate, the probe turning | Done |
 | Respiratory | measured lungs and bronchial tree | breathing | Done |
 | Nervous | measured brain, lobes and inside | | Done |
 | Digestive | measured tract, esophagus to rectum | a meal moving through | Done |
@@ -217,7 +231,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 518 unit tests, plus the asset manifest check
+npm test               # 528 unit tests, plus the asset manifest check
 npm run build          # production build in dist/ (what GitHub Pages serves), with the guide in dist/guide/
 npm run build:preview  # one self-contained HTML (HyperText Markup Language) file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -225,6 +239,9 @@ python3 tools/record-hero.py --dive skeletal --slide 1e-8 --width 860 --out docs
                        # record a README animation (see the file for the other modes; needs Playwright)
 python3 tools/build_body_meshes.py --fetch && python3 tools/build_body_meshes.py && npm run manifest
                        # rebuild the body anatomy from BodyParts3D (needs: pip install numpy fast-simplification)
+python3 tools/zanatomy_skeleton.py --fetch && python3 tools/zanatomy_skeleton.py
+python3 tools/build_body_meshes.py --skeleton tools/sources/zanatomy/skeleton.npz --from-bundle && npm run manifest
+                       # swap in Z-Anatomy's skeleton with baked shading (needs: pip install bpy==4.2.0, Python 3.11)
 ```
 
 **Desktop app** (needs [Rust](https://rustup.rs); on Linux also `sudo apt install libwebkit2gtk-4.1-dev build-essential libssl-dev libayatana-appindicator3-dev librsvg2-dev`):
@@ -245,7 +262,8 @@ python3 tools/screenshots.py --mobile    # every step; fails on console errors o
 python3 tools/a11y-audit.py              # axe-core accessibility audit, WCAG 2.2 A and AA, app and guide, light and dark
 python3 tools/shoot-guide-body.py        # redraw the guide's body picture and measure where each dive starts on it
 python3 tools/shoot-guide-fall.py        # redraw the cut-out plates for the guide's "Fall through the body"
-python3 tools/record-motion.py fall      # record the README's motion animations (fall, or plate)
+python3 tools/record-motion.py fall      # record the README's motion animations (fall, plate, scan or skeleton)
+python3 tools/shoot-readme-hero.py       # redraw the README's poster, light and dark
 ```
 
 **Web address options**: `?dive=nervous&step=synapse` opens a step, `&trip=1` opens a side trip, `?renderer=webgl` forces the WebGL 2 fallback, `?env=0` turns off studio reflections.
@@ -309,7 +327,7 @@ Each dive is a **chain of scenes**, each built at its own scale (1 unit = 1 m fo
 
 **Motion has a job or it doesn't happen.** Buttons answer a press with a slight 0.97 scale in 140 milliseconds, easing out so they feel immediate. Hover effects only switch on for a real mouse, so taps never leave a stuck highlight. With reduced motion on, flights become a short crossfade, the slider and leader lines jump instead of springing, headings and callouts simply appear, the light stays put, the guide shows its plates as a plain row, and nothing slides or scales, but color and fade feedback stay so you still see what happened.
 
-**States are designed too.** Loading shows a ruled "Drawing the plate" title card while the 11 megabyte body loads; if the measured body can't load, a notice says the simplified figure is showing; a browser without 3D graphics gets a plain explanation instead of a blank page; and an empty search suggests what to try.
+**States are designed too.** Loading shows a ruled "Drawing the plate" title card while the 15 megabyte body loads; if the measured body can't load, a notice says the simplified figure is showing; a browser without 3D graphics gets a plain explanation instead of a blank page; and an empty search suggests what to try.
 
 The whole visual system is the token block at the top of [`src/styles/app.css`](src/styles/app.css), and the guide website reads its tokens from the same file.
 
@@ -340,7 +358,7 @@ All of these are also on the [guide website](https://normansrule.github.io/anato
 ## License
 
 - **Code**: [MIT License](LICENSE).
-- **Anatomy assets** in `assets/anatomy/`: derived from BodyParts3D, Creative Commons Attribution-ShareAlike 2.1 Japan (CC BY-SA 2.1 JP); see [assets/CREDITS.md](assets/CREDITS.md). ShareAlike covers those files only.
+- **Anatomy assets** in `assets/anatomy/`: derived from BodyParts3D, Creative Commons Attribution-ShareAlike 2.1 Japan (CC BY-SA 2.1 JP), with the skeleton from Z-Anatomy by Lluís Vinent and Gauthier Kervyn (CC BY-SA 4.0); see [assets/CREDITS.md](assets/CREDITS.md). ShareAlike covers those files only.
 - **Molecular assets**: each file's own license, listed in [assets/CREDITS.md](assets/CREDITS.md).
 - **Fonts**: Archivo and Atkinson Hyperlegible Next, SIL Open Font License 1.1, served from the app itself.
 - Tissue textures are generated in code and covered by the MIT License.

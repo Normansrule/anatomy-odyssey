@@ -73,8 +73,8 @@ SKIP = re.compile(
     r'puborectalis|tendinous arch|white matter|levator ani'
 )
 
-SKULL = r'frontal bone|parietal bone|occipital bone|temporal bone|sphenoid|ethmoid|maxilla|zygomatic bone|nasal bone|lacrimal|palatine|vomer|inferior nasal concha|mandible|hyoid'
-CARPALS = r'scaphoid|lunate|triquetral|pisiform|trapezium|trapezoid|capitate|hamate'
+SKULL = r'frontal bone|parietal bone|occipital bone|temporal bone|sphenoid|ethmoid|maxilla|zygomatic bone|nasal bone|lacrimal|palatine|vomer|inferior nasal concha|mandible|hyoid bone'
+CARPALS = r'scaphoid|lunate|triquetral|triquetrum|pisiform|trapezium|trapezoid|capitate|hamate'
 TARSALS = r'talus|calcaneus|navicular|cuboid|cuneiform|sesamoid'
 BRAIN = r'gyrus|gyri|lobe$|occipital lobe|insula|lobule|precuneus|cerebellum|pons|medulla oblongata|midbrain|corpus callosum|peduncle of midbrain'
 
@@ -85,10 +85,11 @@ RULES = [
     # Skeleton
     (r'tooth', dict(system='skeletal', card='skull', label='Teeth (32 in an adult)', tissue='enamel', budget=300)),
     (SKULL, dict(system='skeletal', card='skull', label='{name}', tissue='bone', budget=7000)),
+    (r'intervertebral disk', dict(system='skeletal', card='intervertebral-disc', label='Intervertebral discs', tissue='cartilage', budget=500)),
     (r'^(atlas|axis)$', dict(system='skeletal', card='vertebral-column', label='{name} (vertebra)', tissue='bone', budget=2500)),
     (r'vertebra$', dict(system='skeletal', card='vertebral-column', label='{name}', tissue='bone', budget=2500)),
-    (r'intervertebral disk', dict(system='skeletal', card='intervertebral-disc', label='Intervertebral discs', tissue='cartilage', budget=500)),
     (r'^sacrum$', dict(system='skeletal', card='pelvis', label='Sacrum (five fused vertebrae)', tissue='bone', budget=5000)),
+    (r'^coccyx$', dict(system='skeletal', card='pelvis', label='Tailbone (coccyx)', tissue='bone', budget=1500)),
     (r'hip bone', dict(system='skeletal', card='pelvis', label='Hip bone', tissue='bone', budget=9000)),
     (r'costal cartilage', dict(system='skeletal', card='rib-cage', label='Rib cartilage (costal cartilage)', tissue='cartilage', budget=900)),
     (r' rib$', dict(system='skeletal', card='rib-cage', label='{name}', tissue='bone', budget=1800)),
@@ -277,6 +278,9 @@ def process(path, budget):
 
 
 # ── glTF writer (KHR_mesh_quantization) ─────────────────────────────────
+COPYRIGHT = 'BodyParts3D, © The Database Center for Life Science, licensed CC BY-SA 2.1 Japan'
+COPYRIGHT_ZA = (COPYRIGHT + '; skeleton from Z-Anatomy (Lluís Vinent, Gauthier Kervyn), built on BodyParts3D, '
+                'licensed CC BY-SA 4.0. The bundle as a whole: CC BY-SA 4.0')
 class Glb:
     def __init__(self):
         self.bin = bytearray()
@@ -301,7 +305,7 @@ class Glb:
         self.accessors.append(a)
         return len(self.accessors) - 1
 
-    def add(self, name, v, f, extras):
+    def add(self, name, v, f, extras, shade=None):
         lo, hi = v.min(0), v.max(0)
         center = (lo + hi) / 2
         half = np.maximum((hi - lo) / 2, 1e-6)
@@ -320,14 +324,20 @@ class Glb:
                             [int(x) for x in q.min(0)], [int(x) for x in q.max(0)])
         na = self._accessor(self._view(nrm.tobytes(), 34962, 4), 5120, len(v), 'VEC3', True)
         ia = self._accessor(self._view(idx.tobytes(), 34963), 5123 if idx.dtype == np.dtype('<u2') else 5125, idx.size, 'SCALAR')
-        self.meshes.append({'primitives': [{'attributes': {'POSITION': pa, 'NORMAL': na}, 'indices': ia}]})
+        attributes = {'POSITION': pa, 'NORMAL': na}
+        if shade is not None:
+            # Baked ambient occlusion as a gray vertex color (1 = open sky, 0 = fully shut in).
+            rgba = np.full((len(v), 4), 255, 'u1')
+            rgba[:, :3] = np.round(np.clip(shade, 0, 1) * 255).astype('u1')[:, None]
+            attributes['COLOR_0'] = self._accessor(self._view(rgba.tobytes(), 34962, 4), 5121, len(v), 'VEC4', True)
+        self.meshes.append({'primitives': [{'attributes': attributes, 'indices': ia}]})
         self.nodes.append({'name': name, 'mesh': len(self.meshes) - 1, 'translation': [float(x) for x in center],
                            'scale': [float(x) for x in half], 'extras': extras})
 
-    def write(self, path, asset_extras):
+    def write(self, path, asset_extras, copyright=COPYRIGHT):
         doc = {
             'asset': {'version': '2.0', 'generator': 'tools/build_body_meshes.py', 'extras': asset_extras,
-                      'copyright': 'BodyParts3D, © The Database Center for Life Science, licensed CC BY-SA 2.1 Japan'},
+                      'copyright': copyright},
             'extensionsUsed': ['KHR_mesh_quantization'], 'extensionsRequired': ['KHR_mesh_quantization'],
             'scene': 0, 'scenes': [{'nodes': list(range(len(self.nodes)))}],
             'nodes': self.nodes, 'meshes': self.meshes, 'accessors': self.accessors, 'bufferViews': self.views,
@@ -701,16 +711,8 @@ def flow_paths(parts, heart):
 
 
 # ── Landmarks the rest of the app aims at ──────────────────────────────
-def landmarks(parts):
-    """Centers and axes measured from the meshes (app meters)."""
-    def box(name):
-        v = parts[name][0]
-        return v.min(0), v.max(0)
-
-    def center(name):
-        lo, hi = box(name)
-        return ((lo + hi) / 2).round(4).tolist()
-
+def bone_marks(parts):
+    """The long bones' axes, the femur's head and points down the spine (from whichever skeleton is in use)."""
     def axis(name):
         """End points of a long bone: the extreme points along its main axis."""
         v = parts[name][0]
@@ -724,6 +726,29 @@ def landmarks(parts):
         a = c + vt[0] * ((a - c) @ vt[0])
         b = c + vt[0] * ((b - c) @ vt[0])
         return [a.round(4).tolist(), b.round(4).tolist()]
+
+    def center(name):
+        v = parts[name][0]
+        return ((v.min(0) + v.max(0)) / 2).round(4).tolist()
+
+    return {
+        'bones': {k: axis(k) for k in ['left humerus', 'right humerus', 'left radius', 'right radius', 'left femur', 'right femur',
+                                         'left tibia', 'right tibia']},
+        'femurHead': {'left': parts['left femur'][0].max(0).round(4).tolist()},
+        'spine': [center(n) for n in ['atlas', 'third thoracic vertebra', 'eighth thoracic vertebra', 'first lumbar vertebra',
+                                      'fifth lumbar vertebra', 'sacrum']],
+    }
+
+
+def landmarks(parts):
+    """Centers and axes measured from the meshes (app meters)."""
+    def box(name):
+        v = parts[name][0]
+        return v.min(0), v.max(0)
+
+    def center(name):
+        lo, hi = box(name)
+        return ((lo + hi) / 2).round(4).tolist()
 
     def union(names):
         v = np.concatenate([parts[n][0] for n in names])
@@ -768,11 +793,7 @@ def landmarks(parts):
             'subclavianVein': {'left': end('left subclavian vein', 'out'), 'right': end('right subclavian vein', 'out')},
         },
         'smallIntestine': center('jejunum'),
-        'bones': {k: axis(k) for k in ['left humerus', 'right humerus', 'left radius', 'right radius', 'left femur', 'right femur',
-                                         'left tibia', 'right tibia']},
-        'femurHead': {'left': box('left femur')[1].round(4).tolist()},
-        'spine': [center(n) for n in ['atlas', 'third thoracic vertebra', 'eighth thoracic vertebra', 'first lumbar vertebra',
-                                      'fifth lumbar vertebra', 'sacrum']],
+        **bone_marks(parts),
     }
     out['flow'] = flow_paths(parts, np.array(out['heart']))
     out['digestive'] = digestive_marks(parts)
@@ -808,11 +829,104 @@ def list_names():
     return names
 
 
+# ── The Z-Anatomy skeleton (tools/zanatomy_skeleton.py) ─────────────────
+def replaced_by_skeleton(extras):
+    """Whether a BodyParts3D part gives way to the Z-Anatomy skeleton: bones, teeth and rib cartilage."""
+    return extras.get('system') == 'skeletal' and (extras.get('tissue') in ('bone', 'enamel') or extras.get('card') == 'rib-cage')
+
+
+def skeleton_pieces(path):
+    """→ [(name, rule, v, f, shade)] for every bone in the exported skeleton."""
+    z = np.load(path)
+    count = len({k.split('|')[0] for k in z.files})
+    out = []
+    for i in range(count):
+        name = str(z[f'{i}|name'])
+        rule = classify(name)
+        if rule and rule['system'] == 'skeletal':
+            out.append((name, rule, z[f'{i}|v'].astype(np.float64), z[f'{i}|f'].astype(np.int64), z[f'{i}|ao'].astype(np.float64)))
+    return out
+
+
+def add_groups(glb, groups):
+    """Write each group of pieces (same system, card, label and side) as one mesh. → triangles written."""
+    tris = 0
+    for (system, card, label, side), g in sorted(groups.items()):
+        vs, fs, shades, off = [], [], [], 0
+        for piece in g['pieces']:
+            v, f = piece[0], piece[1]
+            vs.append(v)
+            fs.append(f + off)
+            shades.append(piece[2] if len(piece) > 2 else None)
+            off += len(v)
+        v, f = np.concatenate(vs), np.concatenate(fs)
+        shade = np.concatenate(shades) if all(x is not None for x in shades) else None
+        rule = g['rule']
+        extras = {'system': system, 'card': card, 'label': label, 'tissue': rule['tissue'], **g.get('extras', {})}
+        if g.get('fma'):
+            extras['fma'] = sorted(g['fma'])
+        if side:
+            extras['side'] = side
+        if 'natural' in rule:
+            extras['natural'] = rule['natural']
+        glb.add(f'{card}:{label}{":" + side if side else ""}', v, f, extras, shade)
+        tris += len(f)
+    return tris
+
+
+def group_skeleton(groups, pieces):
+    for name, rule, v, f, shade in pieces:
+        key = (rule['system'], rule['card'], rule['label'], rule['side'])
+        groups.setdefault(key, {'rule': rule, 'pieces': [], 'fma': [], 'extras': {'source': 'Z-Anatomy'}})
+        groups[key]['pieces'].append((v, f, shade))
+
+
+def from_bundle(skeleton):
+    """Rebuild the bundle from itself with the Z-Anatomy skeleton, without the BodyParts3D sources."""
+    sys.path.insert(0, str(ROOT / 'tools'))
+    from glb_read import read_glb
+    asset, old = read_glb(OUT)
+    glb = Glb()
+    discs = []
+    for p in old:
+        label = p['extras'].get('label', '')
+        # Older bundles filed the spinal discs and the hyoid's muscles as bone; file them as the rules now do.
+        if label.startswith(('Intervertebral disk', 'Intervertebral discs')):
+            discs.append((p['pos'], p['idx'].reshape(-1, 3)))
+            continue
+        if re.fullmatch(r'(Genio|Mylo|Omo|Sterno|Stylo|Thyro)hyoid', label):
+            extras = {**p['extras'], 'system': 'muscular', 'card': 'muscular-system', 'tissue': 'muscle'}
+            glb.add(f'muscular-system:{label}', p['pos'], p['idx'].reshape(-1, 3), extras)
+            continue
+        if replaced_by_skeleton(p['extras']):
+            continue
+        glb.add(p['name'], p['pos'], p['idx'].reshape(-1, 3), p['extras'])
+    groups = {}
+    if discs:
+        rule = classify('intervertebral disk')
+        groups[(rule['system'], rule['card'], rule['label'], '')] = {'rule': rule, 'pieces': discs}
+    pieces = skeleton_pieces(skeleton)
+    group_skeleton(groups, pieces)
+    tris = add_groups(glb, groups)
+    size = glb.write(OUT, {**asset, 'license': 'CC BY-SA 4.0', 'skeleton': 'Z-Anatomy'}, COPYRIGHT_ZA)
+    marks = json.loads(LANDMARKS.read_text())
+    marks.update(bone_marks({name: (v, f) for name, _, v, f, _ in pieces}))
+    LANDMARKS.write_text(json.dumps(marks, indent=2) + '\n')
+    print(f'wrote {OUT.relative_to(ROOT)}: {len(glb.nodes)} meshes, the skeleton {tris:,} triangles from Z-Anatomy, {size / 1e6:.1f} MB')
+    print(f'updated the bone landmarks in {LANDMARKS.relative_to(ROOT)}')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--fetch', action='store_true', help='download the STL files first')
     ap.add_argument('--scale', type=float, default=1.0, help='multiply every triangle budget')
+    ap.add_argument('--skeleton', type=Path, help='use the Z-Anatomy bones exported by tools/zanatomy_skeleton.py')
+    ap.add_argument('--from-bundle', action='store_true', help='with --skeleton: swap the bones in the existing bundle, no BodyParts3D download needed')
     args = ap.parse_args()
+    if args.from_bundle:
+        if not args.skeleton:
+            sys.exit('--from-bundle needs --skeleton')
+        return from_bundle(args.skeleton)
     if args.fetch:
         fetch()
     names = list_names()
@@ -846,25 +960,17 @@ def main():
         groups[key]['pieces'].append(res)
         groups[key]['fma'].append(p.stem)
 
+    license = 'CC BY-SA 2.1 JP'
+    if args.skeleton:
+        groups = {k: g for k, g in groups.items() if not replaced_by_skeleton({'system': k[0], 'card': k[1], 'tissue': g['rule']['tissue']})}
+        pieces = skeleton_pieces(args.skeleton)
+        group_skeleton(groups, pieces)
+        parts.update({name: (v, f) for name, _, v, f, _ in pieces})
+        license = 'CC BY-SA 4.0'
     glb = Glb()
-    tris = 0
-    for (system, card, label, side), g in sorted(groups.items()):
-        vs, fs, off = [], [], 0
-        for v, f in g['pieces']:
-            vs.append(v)
-            fs.append(f + off)
-            off += len(v)
-        v, f = np.concatenate(vs), np.concatenate(fs)
-        rule = g['rule']
-        extras = {'system': system, 'card': card, 'label': label, 'tissue': rule['tissue'], 'fma': sorted(g['fma'])}
-        if side:
-            extras['side'] = side
-        if 'natural' in rule:
-            extras['natural'] = rule['natural']
-        glb.add(f'{card}:{label}{":" + side if side else ""}', v, f, extras)
-        tris += len(f)
+    tris = add_groups(glb, groups)
     marks = landmarks(parts)
-    size = glb.write(OUT, {'license': 'CC BY-SA 2.1 JP', 'parts': len(parts)})
+    size = glb.write(OUT, {'license': license, 'parts': len(parts)}, COPYRIGHT_ZA if args.skeleton else COPYRIGHT)
     LANDMARKS.write_text(json.dumps(marks, indent=2) + '\n')
     print(f'wrote {OUT.relative_to(ROOT)}: {len(glb.nodes)} meshes, {tris:,} triangles, {size / 1e6:.1f} MB')
     print(f'wrote {LANDMARKS.relative_to(ROOT)}')

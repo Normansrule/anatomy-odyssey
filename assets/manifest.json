@@ -3,8 +3,8 @@
   "note": "Hashes of every shipped asset. Licenses are listed per file in assets/CREDITS.md.",
   "assets": {
     "anatomy/body.glb": {
-      "sha256": "c8462f807ac8f82e960997b18fb7c897a27bff40434ca3c2512f0eaa394d3911",
-      "bytes": 10851088
+      "sha256": "09799f085710b20b9872006efcc8fab406c84c453e46ed13b42f081f533da75d",
+      "bytes": 15297988
     }
   }
 }

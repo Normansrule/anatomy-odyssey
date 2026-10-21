@@ -48,18 +48,22 @@ const add = (a, d) => a.map((x, i) => x + d[i]);
 
 // ── Materials for the measured parts, by tissue ─────────────────────────
 const SEE_THROUGH = { transparent: true, opacity: 0.5 };
-function materialFor(M, extras, { skeletonOnly }) {
+const CARTILAGE_LIFE = 0xe2e0d2;
+function materialFor(M, extras, { skeletonOnly, shaded }) {
   const { tissue, natural, card, side } = extras;
+  // Parts with baked shade (the bones) multiply their color by it.
+  const shade = shaded ? { vertexColors: true } : {};
   switch (tissue) {
     case 'skin':
       return M(COLORS.skin, { transparent: true, opacity: 0.2, depthWrite: false, roughness: 0.42, tissue: 'skin', repeat: [1, 1] });
     case 'bone':
-      if (skeletonOnly && card === 'femur' && side === 'left') return M(COLORS.bone, { roughness: 0.45, emissive: COLORS.eosin, emissiveIntensity: 0.55, tissue: 'bone', repeat: [1, 1] });
-      return M(skeletonOnly ? COLORS.boneShade : COLORS.bone, { roughness: 0.55, tissue: 'bone', repeat: [1, 1] });
+      if (skeletonOnly && card === 'femur' && side === 'left') return M(COLORS.bone, { roughness: 0.45, emissive: COLORS.eosin, emissiveIntensity: 0.55, tissue: 'bone', repeat: [1, 1], ...shade });
+      return M(skeletonOnly ? COLORS.boneShade : COLORS.bone, { roughness: 0.55, tissue: 'bone', repeat: [1, 1], ...shade });
     case 'enamel':
-      return M(0xf6f1e6, { roughness: 0.22 });
+      return M(0xf6f1e6, { roughness: 0.22, ...shade });
     case 'cartilage':
-      return M(COLORS.cartilage, { roughness: 0.35, tissue: 'cartilage', repeat: [1, 1] });
+      // Rib and joint cartilage in life is a pearly gray-white, not the diagram blue.
+      return M(COLORS.cartilage, { roughness: 0.35, tissue: 'cartilage', natural: CARTILAGE_LIFE, repeat: [1, 1], ...shade });
     case 'muscle':
       return M(COLORS.muscle, { roughness: 0.5, tissue: 'muscle', repeat: [1, 1] });
     case 'tendon':
@@ -88,7 +92,7 @@ function materialFor(M, extras, { skeletonOnly }) {
 function measuredSystems(M, parts, opts) {
   const groups = Object.fromEntries(SYSTEMS.map((s) => [s.id, new THREE.Group()]));
   for (const { geometry, extras } of parts) {
-    const mesh = new THREE.Mesh(geometry, materialFor(M, extras, opts));
+    const mesh = new THREE.Mesh(geometry, materialFor(M, extras, { ...opts, shaded: Boolean(geometry.attributes.color) }));
     pick(mesh, extras.card, extras.label);
     // The skin never blocks a click on what is inside it.
     if (extras.tissue === 'skin' && extras.card === 'skin') mesh.userData.pickPriority = -1;

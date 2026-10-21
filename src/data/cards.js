@@ -40,8 +40,8 @@ export const CARDS = [
     size: 'About 1.64 m tall in this model',
     what: 'Your body is built from organ systems that each handle a job: moving, pumping blood, breathing, sensing, defending. Each system is made of organs, organs are made of tissues, tissues of cells, and cells of molecules.',
     why: 'Every level you dive through here is inside you right now.',
-    expert: 'The dive tiers follow the standard levels of organization: organism, organ system, organ, tissue, cell, organelle, molecule. The bones, muscles, organs and skin here are real shapes, segmented from MRI scans of one adult man by the BodyParts3D project (DBCLS, Japan, CC BY-SA 2.1 Japan). Nerves, the vessels of the arms and legs, lymph nodes and the thyroid, which that atlas does not include, are drawn in.',
-    refs: ['openstax', 'bodyparts3d'],
+    expert: 'The dive tiers follow the standard levels of organization: organism, organ system, organ, tissue, cell, organelle, molecule. The bones, muscles, organs and skin here are real shapes, segmented from MRI scans of one adult man by the BodyParts3D project (DBCLS, Japan, CC BY-SA 2.1 Japan). The skeleton comes from Z-Anatomy (CC BY-SA 4.0), a finer, cleaned-up rebuild of the same atlas, fitted back onto this body to within about a millimeter. Nerves, the vessels of the arms and legs, lymph nodes and the thyroid, which that atlas does not include, are drawn in.',
+    refs: ['openstax', 'bodyparts3d', 'zanatomy'],
   },
   {
     id: 'skeletal-system',
@@ -52,8 +52,8 @@ export const CARDS = [
     size: '206 bones in a typical adult',
     what: 'Bones hold you up, protect soft organs, and act as levers that muscles pull on. They also store calcium and phosphate, and the red marrow inside some bones makes blood cells.',
     why: 'Without a skeleton, muscles would have nothing to pull against.',
-    expert: 'A newborn has closer to 300 bony elements; many fuse during growth to give the adult count of 206. Bone is living tissue that is constantly broken down and rebuilt (remodeled).',
-    refs: ['openstax-bone'],
+    expert: 'A newborn has closer to 300 bony elements; many fuse during growth to give the adult count of 206. Bone is living tissue that is constantly broken down and rebuilt (remodeled). The 258 bones and teeth here are Z-Anatomy\'s meshes, shaded with the soft shadow each bone casts on itself.',
+    refs: ['openstax-bone', 'zanatomy'],
   },
   {
     id: 'skull',

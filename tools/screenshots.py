@@ -18,7 +18,7 @@ from playwright.sync_api import sync_playwright
 STEPS = [
     ("skeletal", "body", ""), ("skeletal", "skeleton", ""), ("skeletal", "femur", ""),
     ("skeletal", "bone-tissue", ""), ("skeletal", "osteocyte", ""), ("skeletal", "nucleus", ""), ("skeletal", "dna", ""),
-    ("circulatory", "body", ""), ("circulatory", "heart", ""), ("circulatory", "blood", ""),
+    ("circulatory", "body", ""), ("circulatory", "heart-scan", ""), ("circulatory", "heart", ""), ("circulatory", "blood", ""),
     ("circulatory", "red-blood-cell", ""), ("circulatory", "hemoglobin", ""), ("circulatory", "heme", ""),
     ("muscular", "muscle", ""), ("muscular", "fascicle", ""), ("muscular", "muscle-fiber", ""),
     ("muscular", "sarcomere", ""), ("muscular", "actin-myosin", ""), ("muscular", "nucleus", "&trip=1"),

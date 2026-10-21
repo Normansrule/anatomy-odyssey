@@ -575,7 +575,7 @@ export class TierEngine {
         tw.resolve();
       }
     }
-    this.current?.built.update?.(dt, { reducedMotion: this.reducedMotion });
+    this.current?.built.update?.(dt, { reducedMotion: this.reducedMotion, camera: this.camera });
     if (this.controls.enabled) {
       this.applyZoomGoal(dt);
       this.controls.update();

@@ -6,6 +6,7 @@ import { buildFemur } from './femur.js';
 import { buildBoneTissue } from './boneTissue.js';
 import { buildOsteocyte } from './osteocyte.js';
 import { buildHeart } from './heart.js';
+import { buildHeartScan } from './heartScan.js';
 import { buildBlood } from './blood.js';
 import { buildRedBloodCell } from './redBloodCell.js';
 import { buildMuscle } from './muscle.js';
@@ -91,6 +92,7 @@ export const SCENES = {
   'bone-tissue': buildBoneTissue,
   osteocyte: buildOsteocyte,
   heart: buildHeart,
+  'heart-scan': buildHeartScan,
   blood: buildBlood,
   'red-blood-cell': buildRedBloodCell,
   muscle: buildMuscle,

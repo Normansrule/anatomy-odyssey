@@ -12,7 +12,7 @@ describe('zoom guide', () => {
       expect(ids, id).toContain(id);
     }
     const heart = anchors.find((a) => a.diveId === 'circulatory');
-    expect(heart.stepId).toBe('heart');
+    expect(heart.stepId).toBe('heart-scan'); // the circulatory dive's first plate after the body
     for (const a of anchors) expect(DIVES.find((d) => d.id === a.diveId).steps.some((s) => s.id === a.stepId)).toBe(true);
   });
 

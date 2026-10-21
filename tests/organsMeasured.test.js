@@ -19,6 +19,7 @@ import { buildDigestiveTract, GUT_STAGES } from '../src/scenes/digestiveTract.js
 import { buildUrinaryTract, ureterRoute, URINE_STAGES } from '../src/scenes/urinaryTract.js';
 import { getDive } from '../src/data/dives.js';
 import { buildHeart } from '../src/scenes/heart.js';
+import { buildHeartScan } from '../src/scenes/heartScan.js';
 import { buildMeasuredHeart, fourChamberPlane, STROKE_ML } from '../src/scenes/heartMeasured.js';
 import LANDMARKS from '../src/data/bodyLandmarks.json';
 import { getCard } from '../src/data/cards.js';
@@ -222,6 +223,43 @@ describe('the measured organ close-ups', async () => {
   });
 
   describe('heart', () => {
+    it('scans the measured heart through the four standard views, nearly all of each slice inside the fan', () => {
+      const built = buildHeartScan({ reducedMotion: true });
+      expect(built.detailed).toBe(true);
+      const ids = cardsIn(built);
+      for (const id of ['heart', 'heart-valves', 'echocardiogram']) expect(ids.has(id), id).toBe(true);
+      for (const id of ids) expect(getCard(id), id).toBeTruthy();
+      expect(built.depth).toBeGreaterThan(0.12); // an echo machine looks 12 to 20 cm deep
+      expect(built.depth).toBeLessThanOrEqual(0.2);
+      expect(built.controls.presets.map((p) => p.label)).toEqual(['Four-chamber', 'Two-chamber', 'Long axis', 'Short axis']);
+      const seen = {};
+      for (const p of built.controls.presets) {
+        expect(built.controls.set(p.value)).toMatch(/view/);
+        built.update(0.2, {});
+        const pic = built.picture();
+        expect(pic.name).toBe(p.label);
+        expect(pic.wall.length).toBeGreaterThan(1); // the outside of the heart and at least one chamber
+        const pts = pic.wall.flat();
+        for (const [, y] of pts) {
+          expect(y).toBeGreaterThan(0);
+          expect(y).toBeLessThan(built.depth);
+        }
+        expect(pts.filter(([x, y]) => Math.abs(x) > y).length / pts.length).toBeLessThan(0.05);
+        seen[p.label] = pic.labels.map((l) => l[0]);
+      }
+      expect(seen['Four-chamber']).toEqual(['RA', 'RV', 'LA', 'LV']);
+      expect(seen['Two-chamber']).toEqual(['LA', 'LV']); // the left heart only
+      expect(seen['Long axis']).toContain('Ao');
+      expect(seen['Short axis']).toEqual(['RV', 'LV']);
+      // The left ventricle shows on the right of the screen, as echo machines show it.
+      built.controls.set(0);
+      built.update(0.2, {});
+      const at = Object.fromEntries(built.picture().labels.map(([t, x]) => [t, x]));
+      expect(at.LV).toBeGreaterThan(at.RV);
+      expect(at.LA).toBeGreaterThan(at.RA);
+      built.dispose();
+    });
+
     it('finds four real chambers inside the measured wall, each a plausible size', () => {
       const C = LANDMARKS.heartChambers.chambers;
       expect(Object.keys(C)).toEqual(['rightAtrium', 'rightVentricle', 'leftAtrium', 'leftVentricle']);

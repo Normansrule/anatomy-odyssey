@@ -39,6 +39,18 @@ export function fourChamberPlane(H = LANDMARKS.heartChambers) {
   return { point: H.apex, normal: n };
 }
 
+/** The aortic valve: the middle of the lowest rim of the measured ascending aorta (meters). */
+export function aorticRootOf(parts, H = LANDMARKS.heartChambers) {
+  const aortaPart = partOf(parts, 'aorta', 'Aorta: Ascending aorta');
+  if (!aortaPart) return H.chambers.leftVentricle.center;
+  const a = aortaPart.geometry.attributes.position.array;
+  let low = Infinity;
+  for (let i = 1; i < a.length; i += 3) low = Math.min(low, a[i]);
+  const near = [];
+  for (let i = 0; i < a.length; i += 3) if (a[i + 1] < low + 0.004) near.push([a[i], a[i + 1], a[i + 2]]);
+  return [0, 1, 2].map((k) => near.reduce((s, p) => s + p[k], 0) / near.length);
+}
+
 /** Build the measured heart scene, or null when the bundle is not loaded. */
 export function buildMeasuredHeart(parts, { reducedMotion = false } = {}) {
   const wall = partOf(parts, 'heart', 'Heart');
@@ -111,17 +123,8 @@ export function buildMeasuredHeart(parts, { reducedMotion = false } = {}) {
   }
 
   // Blood moving through: in from the veins, through each atrium and valve, out of each ventricle.
-  const aortaPart = partOf(parts, 'aorta', 'Aorta: Ascending aorta');
   const flow = (name) => LANDMARKS.flow.find((r) => r.name === name)?.points ?? [];
-  let aorticRoot = H.chambers.leftVentricle.center;
-  if (aortaPart) {
-    const a = aortaPart.geometry.attributes.position.array;
-    let low = Infinity;
-    for (let i = 1; i < a.length; i += 3) low = Math.min(low, a[i]);
-    const near = [];
-    for (let i = 0; i < a.length; i += 3) if (a[i + 1] < low + 0.004) near.push([a[i], a[i + 1], a[i + 2]]);
-    aorticRoot = [0, 1, 2].map((k) => near.reduce((s, p) => s + p[k], 0) / near.length);
-  }
+  const aorticRoot = aorticRootOf(parts, H);
   const ch = (k) => H.chambers[k].center;
   const outOf = (from, to, d) => to.map((x, i) => x + unit(sub(to, from))[i] * d);
   const routes = [

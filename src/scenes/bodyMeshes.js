@@ -95,6 +95,7 @@ export function decodeGlb(bytes) {
     geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     geometry.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
     geometry.setIndex(new THREE.BufferAttribute(readAccessor(doc, bin, prim.indices, true), 1));
+    if (prim.attributes.COLOR_0 !== undefined) geometry.setAttribute('color', shadeAttribute(readAccessor(doc, bin, prim.attributes.COLOR_0)));
     addBoxUVs(geometry, node.extras?.tissue === 'skin' ? 0.09 : 0.045);
     geometry.computeBoundingSphere();
     geometry.computeBoundingBox();
@@ -103,6 +104,21 @@ export function decodeGlb(bytes) {
   });
   checkVertexBudget(vertices);
   return out;
+}
+
+/** How strongly the baked shade darkens a surface: 0 none, 1 down to black in the deepest hollows. */
+export const SHADE_STRENGTH = 0.8;
+
+/**
+ * The bones carry baked ambient occlusion (tools/zanatomy_skeleton.py) as a
+ * gray vertex color: how much open sky each point sees. Turn it into the
+ * color the material multiplies by, so hollows darken but never go black.
+ */
+export function shadeAttribute(rgba) {
+  const n = rgba.length / 4;
+  const out = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) out.fill(1 - SHADE_STRENGTH * (1 - rgba[i * 4]), i * 3, i * 3 + 3);
+  return new THREE.BufferAttribute(out, 3);
 }
 
 /**

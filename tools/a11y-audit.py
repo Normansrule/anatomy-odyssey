@@ -38,6 +38,8 @@ STATES = [
     ("nervous: cortex layers", "?dive=nervous&step=cortex", None, DESKTOP),
     ("T cells: presentation", "?dive=t-cells&step=antigen-presentation", None, DESKTOP),
     ("T cells: receptor and peptide", "?dive=t-cells&step=tcr-mhc", None, DESKTOP),
+    ("heart scan with its probe control", "?dive=circulatory&step=heart-scan", None, DESKTOP),
+    ("phone: heart scan", "?dive=circulatory&step=heart-scan", "card", PHONE),
     ("reflex: knee jerk", "?dive=reflex&step=reflex-arc", None, DESKTOP),
     ("reflex: spinal cord", "?dive=reflex&step=spinal-cord", None, DESKTOP),
     ("digestive: absorbing cell", "?dive=digestive&step=enterocyte", None, DESKTOP),
@@ -70,6 +72,7 @@ STATES = [
 DARK = [
     ("dark: first visit (intro)", "", None, DESKTOP),
     ("dark: heart with its key", "?dive=circulatory&step=heart", None, DESKTOP),
+    ("dark: heart scan", "?dive=circulatory&step=heart-scan", None, DESKTOP),
     ("dark: About dialog", "?dive=skeletal&step=femur", "#about-button", DESKTOP),
     ("dark: phone femur", "?dive=skeletal&step=femur", None, PHONE),
 ]

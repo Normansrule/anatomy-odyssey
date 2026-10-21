@@ -4,6 +4,18 @@ export const REFERENCES = {
     text: 'Mitsuhashi, N., et al. "BodyParts3D: 3D structure database for anatomical concepts." Nucleic Acids Research 37:D782–D785, 2009. Meshes © The Database Center for Life Science, CC BY-SA 2.1 Japan.',
     url: 'https://doi.org/10.1093/nar/gkn613',
   },
+  zanatomy: {
+    text: 'Vinent, L., and Kervyn, G. Z-Anatomy: an open 3D atlas of human anatomy, built on BodyParts3D. Models CC BY-SA 4.0.',
+    url: 'https://github.com/Z-Anatomy/Models-of-human-anatomy',
+  },
+  'virtual-tee': {
+    text: 'Perioperative Interactive Education (PIE), Toronto General Hospital and University of Toronto. Virtual TEE: a 3D heart for learning the standard echocardiography views.',
+    url: 'https://pie.med.utoronto.ca/TEE/',
+  },
+  'ase-views': {
+    text: 'Mitchell, C., et al. "Guidelines for Performing a Comprehensive Transthoracic Echocardiographic Examination in Adults." Journal of the American Society of Echocardiography 32(1):1–64, 2019.',
+    url: 'https://doi.org/10.1016/j.echo.2018.06.004',
+  },
   openstax: {
     text: 'Betts, J. G., et al. Anatomy and Physiology 2e. OpenStax, 2022 (CC BY 4.0).',
     url: 'https://openstax.org/details/books/anatomy-and-physiology-2e',
