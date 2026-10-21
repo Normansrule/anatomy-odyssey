@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { numberParts, leaderEnd, spread, rim } from '../src/ui/key.js';
+import { numberParts, leaderEnd, spread, rim, layoutCallouts } from '../src/ui/key.js';
 
 describe('living key', () => {
   it('numbers the structures in view from 1, in scene order', () => {
@@ -32,5 +32,28 @@ describe('leader line ends', () => {
   it('starts and stops on the rim of each number, not over it', () => {
     expect(rim({ x: 0, y: 0 }, { x: 100, y: 0 }, 12)).toEqual({ x: 12, y: 0 });
     expect(rim({ x: 0, y: 0 }, { x: 0, y: -50 }, 12)).toEqual({ x: 0, y: -12 });
+  });
+});
+
+describe('chart labels', () => {
+  const frame = { mid: 500, top: 0, bottom: 1000, row: 30 };
+
+  it("puts each label on its part's side, level with it when there is room", () => {
+    const out = layoutCallouts([{ id: 'a', x: 100, y: 200 }, { id: 'b', x: 900, y: 400 }], frame);
+    expect(out).toEqual([{ id: 'a', side: 'left', y: 200 }, { id: 'b', side: 'right', y: 400 }]);
+  });
+
+  it("stacks crowded labels a row apart, centered on their parts, in their parts' order", () => {
+    const out = layoutCallouts([{ id: 'b', x: 0, y: 310 }, { id: 'a', x: 0, y: 300 }, { id: 'c', x: 0, y: 320 }], frame);
+    expect(out.map((o) => o.id)).toEqual(['a', 'b', 'c']);
+    expect(out.map((o) => o.y)).toEqual([280, 310, 340]);
+  });
+
+  it('keeps labels inside the plate', () => {
+    const out = layoutCallouts([{ id: 'a', x: 0, y: 995 }, { id: 'b', x: 0, y: 999 }, { id: 'c', x: 0, y: -50 }], frame);
+    const ys = out.map((o) => o.y);
+    expect(Math.min(...ys)).toBeGreaterThanOrEqual(0);
+    expect(Math.max(...ys)).toBeLessThanOrEqual(1000);
+    expect(ys).toEqual([0, 970, 1000]);
   });
 });

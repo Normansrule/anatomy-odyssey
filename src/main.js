@@ -339,7 +339,41 @@ async function main() {
 
   // ── The living key ────────────────────────────────────────────────
   // Numbers on the model match the card's key; pointing at either lights both.
-  const key = createKey({ app, marksEl: $('marks'), leaderEl: $('leader'), lineEl: $('leader-line'), engine });
+  const key = createKey({ app, marksEl: $('marks'), leaderEl: $('leader'), lineEl: $('leader-line'), calloutsEl: $('callouts'), engine, frame: plateFrame });
+  /** The open part of the plate, in pixels from the sheet's corner: where chart labels may go. */
+  function plateFrame() {
+    const box = app.getBoundingClientRect();
+    const rect = (sel) => document.querySelector(sel)?.getBoundingClientRect();
+    const intro = $('intro');
+    const left = Math.max(rect('.gauge').right, intro.hidden ? 0 : intro.getBoundingClientRect().right) - box.left + 20;
+    const open = !panel.hidden;
+    const right = (open ? panel.getBoundingClientRect().left : box.right) - box.left - 20;
+    const head = rect('.scalebar');
+    const top = Math.max(rect('.topbar').bottom, head ? head.bottom : 0) - box.top + 12;
+    let bottom = rect('.track').top - box.top;
+    const chips = $('systems');
+    if (!chips.hidden && chips.childElementCount) bottom = Math.min(bottom, chips.getBoundingClientRect().top - box.top);
+    return { left, right, top, bottom: bottom - 12 };
+  }
+  // Pointing at a chart label lights its part; clicking it opens the part's card.
+  const marksEl = $('marks');
+  const calloutOf = (e) => e.target.closest?.('.mark');
+  marksEl.addEventListener('pointerover', (e) => {
+    const m = calloutOf(e);
+    if (!m) return;
+    key.setHot(m.dataset.card);
+    engine.hoverCard(m.dataset.card);
+  });
+  marksEl.addEventListener('pointerout', (e) => {
+    const m = calloutOf(e);
+    if (!m || m.contains(e.relatedTarget)) return;
+    key.setHot(null);
+    engine.setHover(null);
+  });
+  marksEl.addEventListener('click', (e) => {
+    const m = calloutOf(e);
+    if (m) openCard(m.dataset.card);
+  });
   let keyBuilt = null;
   /** Renumber the key when the model on screen changes. True if it did. */
   function syncKey() {
@@ -417,9 +451,19 @@ async function main() {
     refreshTrack();
     sceneControls.attach(engine.current?.built.controls);
     syncKey();
+    setPlateHead(s);
     announce(`${TIERS[s.tier]} tier: ${s.title}${s.sideTrip ? ', side trip' : ''}. The view is about ${formatLength(s.frameMeters).text} tall.`);
     if (thenOpen) openCard(thenOpen, { focus: !tour.active });
     else if (wide.matches && !tour.active) openCard(s.card, { focus: false });
+  }
+
+  /** The plate's heading, as a chart prints it: plate number and tier, the subject, the dive. */
+  function setPlateHead(s) {
+    const main = state.path.filter((p) => !p.sideTrip);
+    const n = main.indexOf(s);
+    $('plate-kicker').textContent = s.sideTrip ? `Side plate · ${TIERS[s.tier]} tier` : `Plate ${n + 1} of ${main.length} · ${TIERS[s.tier]} tier`;
+    $('plate-title').textContent = s.title;
+    $('plate-dive').textContent = state.dive.title;
   }
 
   async function takeBranch() {
@@ -1005,6 +1049,7 @@ async function main() {
   }, () => {});
   progress.markVisited(`${state.dive.id}:${first.id}`);
   refreshTrack();
+  setPlateHead(first);
   sceneControls.attach(engine.current?.built.controls);
   if (startIndex > 0 || startDive) {
     hideIntro();
@@ -1034,7 +1079,7 @@ async function main() {
     engine.update(dt);
     engine.render();
     if (syncKey() && state.openCard && !engine.busy) reopen();
-    key.update(dt, { busy: engine.busy, reducedMotion: reducedMotion() });
+    key.update(dt, { busy: engine.busy, reducedMotion: reducedMotion(), chart: wide.matches });
     updateHover();
     updateZoomGuide();
     sceneControls.sync();

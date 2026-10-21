@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.20.0-a3242f)
-![Tests](https://img.shields.io/badge/tests-504%20passing-276a40)
+![Tests](https://img.shields.io/badge/tests-507%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -32,7 +32,7 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 - **Fifteen dives and six modules.** Skeletal, circulatory, muscular, immune, nervous, respiratory, digestive, urinary, endocrine, skin, eye, ear, pancreas, liver and smell, plus modules on inflammation, gene to protein, body chemistry, immune memory, T cells and the knee-jerk reflex. Every one ends at a molecule.
 - **A body measured from a real one.** 411 meshes from BodyParts3D, an open anatomy atlas: every bone, muscle and organ in its true place. The heart beats, blood flows through the vessels, and the organ close-ups are the real organs cut open.
 - **One slider from 10 m to 0.1 nm.** The scale on the left is a slider. Drag it (or use the arrow keys) and the view zooms continuously, flying on to the next plate whenever you get close to its size, so a single drag can take you from your whole body to DNA.
-- **A living key.** Every part in view gets a number on the model and the same number in the card's key. Point at either one and a red leader line draws itself between them, following the part as the model turns.
+- **Labeled like a wall chart.** Every part in view is named at the edge of the plate with a line to the part, and numbered in the card's key. Point at a label, a part or a key entry and a red leader line lights up, following the part as the model turns.
 - **Zoom in anywhere.** Scroll or pinch toward any part of the body; a guide names the nearest part that has a dive and takes you there.
 - **Point, click, learn.** Hover to name a part, click to open its card: what it does, why it matters, its real size, an *Expert detail* switch and a source you can check.
 - **Light sheet or slate.** It follows your device's light or dark setting, or pick one in About.
@@ -45,7 +45,7 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 
 <table>
 <tr>
-<td align="center" colspan="2"><img src="docs/media/living-key.gif" alt="The heart plate: pointing at each entry in the key draws a red leader line from its number to the matching number on the heart" width="860" /><br /><sub><b>The living key.</b> Point at an entry and its leader line draws to the part.</sub></td>
+<td align="center" colspan="2"><img src="docs/media/living-key.gif" alt="The heart plate, labeled like a printed chart with names at the edges and lines to the parts: pointing at each entry in the key draws a red leader line to its part on the heart" width="860" /><br /><sub><b>The living key.</b> Point at an entry and its leader line draws to the part.</sub></td>
 </tr>
 <tr>
 <td align="center" width="50%"><img src="docs/media/heartbeat.gif" alt="The real heart cut open to its four chambers, beating at 72 a minute, with oxygen-poor blood (blue) and oxygen-rich blood (red) moving through the chambers and valves" width="360" /><br /><sub><b>Heartbeat.</b> The measured heart opened to its four chambers; set the rate from asleep to running.</sub></td>
@@ -210,7 +210,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 504 unit tests, plus the asset manifest check
+npm test               # 507 unit tests, plus the asset manifest check
 npm run build          # production build in dist/ (what GitHub Pages serves), with the guide in dist/guide/
 npm run build:preview  # one self-contained HTML (HyperText Markup Language) file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -286,15 +286,15 @@ Each dive is a **chain of scenes**, each built at its own scale (1 unit = 1 m fo
 
 **The idea: a classroom wall chart.** You know the ones: a pull-down anatomy chart with heavy rules, numbered leader lines running to a key, and the parts colored by a code every textbook shares. Anatomy Odyssey is that chart, with two things paper can't do: the specimen is a live 3D model, and the chart zooms.
 
-- **The sheet is ruled into cells.** The scale column on the left, the plate in the middle, the key on the right, and the plates of the dive along the bottom, all divided by 2-pixel rules like a printed chart. No floating cards, no frosted glass, no drop shadows.
+- **The sheet is ruled into cells.** The scale column on the left, the plate in the middle, the key on the right, and the plates of the dive along the bottom, all divided by 2-pixel rules like a printed chart. The plate itself sits inside a double-ruled frame, under a heading set the way a chart prints one: a red rubric ("Plate 2 of 6 · Organ tier"), the subject in huge condensed capitals, and the dive it belongs to. No floating cards, no frosted glass, no drop shadows.
 - **Every color means something anatomical.** Artery red, vein blue, nerve yellow, lymph green and bone ivory, the code anatomy charts have always used. Red also means "you are here": the scale's marker, the current plate, the one main action and the leader line you're tracing. Vein blue marks focus and links. Nothing gets a color just to decorate.
-- **Light sheet or slate.** Light mode is the printed sheet (a cool grey-green paper); dark mode is the same chart on slate. Every text color is at least 4.5 to 1 against its background in both.
+- **Light sheet or slate.** Light mode is the printed sheet: warm, uncoated paper with a fine grain. Dark mode is the same chart on slate. Every text color is at least 4.5 to 1 against its background in both.
 - **Two typefaces, each with one job.** Archivo, condensed and heavy, for plate titles and numbers, like the lettering on a chart; Atkinson Hyperlegible Next, designed for low-vision readers, for everything you read. Nothing is smaller than 12 pixels, and numbers are tabular so they don't jitter while the slider moves.
 - **One spacing rhythm.** Every gap is a multiple of 4 pixels, and every target you can press is at least 24 pixels (44 for the main controls).
 
 **The hero moment is the scale slider.** Drag it and the view follows your finger seamlessly: inside a plate the camera zooms on a spring (on a log scale, so every power of ten takes the same time), and when the size you're asking for is closer to the next plate's, the view flies on and keeps going. The flight speeds up out of one plate and slows into the next, so there's no stop in the middle where the model swaps.
 
-**The second is the living key.** The numbers on the model are projected from the 3D parts every frame and kept clear of each other, and the leader line springs out from the key to the part and follows it as you turn the model.
+**The second is the living key.** On a wide screen the plate is labeled the way a printed chart is: every part's name is set in a column at the plate's edge, with a hairline running to a dot on the part. The labels are projected from the 3D parts every frame, stacked a row apart and centered on their parts so the lines stay short, and they follow the model as you turn it. Point at a label or a key entry and its line turns red; on a phone each part carries a numbered mark instead.
 
 **Motion has a job or it doesn't happen.** Buttons answer a press with a slight 0.97 scale in 140 milliseconds, easing out so they feel immediate. Hover effects only switch on for a real mouse, so taps never leave a stuck highlight. With reduced motion on, flights become a short crossfade, the slider and leader lines jump instead of springing, and nothing slides or scales, but color and fade feedback stay so you still see what happened.
 

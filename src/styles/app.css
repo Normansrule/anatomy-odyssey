@@ -8,14 +8,14 @@
    sheet; dark mode is the same chart on slate. */
 
 :root {
-  --ground: #d5dad3;
-  --sheet: #eef0ea;
-  --raised: #f8f9f5;
-  --ink: #1b2120;
-  --muted: #4a5452;
-  --rule: #1b2120;
-  --rule-soft: #bcc3be;
-  --tint: #e1e5de;
+  --ground: #cdc4b1;
+  --sheet: #f0eadc;
+  --raised: #f8f4ea;
+  --ink: #1d1a15;
+  --muted: #50493d;
+  --rule: #1d1a15;
+  --rule-soft: #c4b9a3;
+  --tint: #e5ddcb;
   --accent: #a3242f; /* artery red: current, thumb, main action */
   --accent-ink: #ffffff;
   --vein: #2b58a5;
@@ -71,6 +71,8 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --fast: 140ms;
   --press: scale(0.97);
+  /* Paper: a fine grain, like the stock a chart is printed on. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme: light;
 }
 
@@ -94,6 +96,7 @@
     --right: #6fcf8f;
     --wrong: #ff7a72;
     --scrim: rgb(5 8 8 / 0.7);
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E");
     color-scheme: dark;
   }
 }
@@ -116,6 +119,7 @@
   --right: #6fcf8f;
   --wrong: #ff7a72;
   --scrim: rgb(5 8 8 / 0.7);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme: dark;
 }
 
@@ -191,8 +195,24 @@ button:active:not(:disabled):not([aria-disabled='true']),
   position: fixed;
   inset: var(--frame);
   overflow: hidden;
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   border: var(--rule-w) solid var(--rule);
+}
+
+/* The plate's neatline: the double rule a printed chart draws round its figure. */
+.app::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--bar-h) + var(--s-3));
+  bottom: calc(var(--track-h) + var(--s-3));
+  left: calc(var(--gauge-w) + var(--s-3));
+  right: var(--s-3);
+  border: 4px double var(--rule);
+  pointer-events: none;
+}
+
+.app:has(.panel:not([hidden]))::before {
+  right: calc(var(--key-w) + var(--s-3));
 }
 
 .view {
@@ -213,7 +233,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   place-content: center;
   gap: var(--s-3);
   padding: var(--s-5);
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   text-align: left;
 }
 
@@ -271,7 +291,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   height: var(--bar-h);
   display: flex;
   align-items: stretch;
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   border-bottom: var(--rule-w) solid var(--rule);
   z-index: 15;
 }
@@ -544,7 +564,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   bottom: var(--track-h);
   width: var(--gauge-w);
   border-right: var(--rule-w) solid var(--rule);
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   cursor: ns-resize;
   touch-action: none;
   user-select: none;
@@ -599,7 +619,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   width: 12px;
   height: 12px;
   margin-top: -6px;
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   border: var(--rule-w) solid var(--rule);
 }
 
@@ -714,15 +734,62 @@ button:active:not(:disabled):not([aria-disabled='true']),
 .system-chip--urinary { --swatch: var(--sys-urinary); }
 .system-chip--endocrine { --swatch: var(--sys-endocrine); }
 
-.scalebar {
+.plate-head {
   position: absolute;
-  left: calc(var(--gauge-w) + var(--s-4));
-  top: calc(var(--bar-h) + var(--s-4));
+  left: calc(var(--gauge-w) + var(--s-6));
+  top: calc(var(--bar-h) + var(--s-6));
+  max-width: min(46%, 560px);
+  pointer-events: none;
+  z-index: 6;
+}
+
+.plate-head p {
+  margin: 0;
+}
+
+/* The welcome panel carries its own heading. */
+.app:has(.intro:not([hidden])) .plate-head p {
+  display: none;
+}
+
+/* The heading a printed chart carries: a small rubric, the subject in huge
+   condensed capitals, the series it belongs to. */
+.plate-head__kicker {
+  font-family: var(--display);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.plate-head__title {
+  font-family: var(--display);
+  font-stretch: 62%;
+  font-weight: 900;
+  font-size: clamp(3rem, 5.2vw, 5.75rem);
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  margin-top: var(--s-1) !important;
+}
+
+.plate-head__dive {
+  margin-top: var(--s-2) !important;
+  padding-top: var(--s-2);
+  border-top: var(--rule-w) solid var(--rule);
+  font-size: var(--step-0);
+  font-style: italic;
+  color: var(--muted);
+}
+
+.scalebar {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--s-1);
-  pointer-events: none;
+  margin-top: var(--s-3);
 }
 
 .scalebar__bar {
@@ -755,7 +822,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   height: 24px;
   margin: -12px 0 0 -12px;
   border-radius: 50%;
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   border: 1.5px solid var(--ink);
   font-size: var(--step--2);
   font-weight: 700;
@@ -767,6 +834,97 @@ button:active:not(:disabled):not([aria-disabled='true']),
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-ink);
+}
+
+.mark__name {
+  display: none;
+}
+
+/* On wide screens the plate is labeled like a printed chart: names in
+   columns at its edges, a hairline from each down to a dot on its part. */
+.marks.is-chart .mark {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  width: auto;
+  height: 24px;
+  margin: 0;
+  padding-right: var(--s-1);
+  border: 0;
+  border-radius: 0;
+  background: var(--grain), var(--sheet);
+  color: var(--ink);
+  pointer-events: auto;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.marks.is-chart .mark[data-side='right'] {
+  flex-direction: row-reverse;
+  padding: 0 0 0 var(--s-1);
+}
+
+.marks.is-chart .mark__num {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  font-size: var(--step--2);
+}
+
+.marks.is-chart .mark__name {
+  display: inline;
+  font-family: var(--display);
+  font-stretch: 80%;
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.marks.is-chart .mark.is-hot {
+  background: var(--grain), var(--sheet);
+  color: var(--accent);
+}
+
+.marks.is-chart .mark.is-hot .mark__num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.callouts {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 6;
+  overflow: visible;
+}
+
+.callouts polyline {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.callouts circle {
+  fill: var(--sheet);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.callouts .is-hot polyline {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.callouts .is-hot circle {
+  fill: var(--accent);
+  stroke: var(--accent);
 }
 
 .leader {
@@ -852,7 +1010,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   top: var(--bar-h);
   bottom: var(--track-h);
   width: var(--key-w);
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   border-left: var(--rule-w) solid var(--rule);
   display: flex;
   flex-direction: column;
@@ -1169,7 +1327,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: var(--s-5);
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   border: var(--rule-w) solid var(--rule);
   z-index: 5;
 }
@@ -1248,7 +1406,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   height: var(--track-h);
   display: flex;
   align-items: stretch;
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   border-top: var(--rule-w) solid var(--rule);
   z-index: 12;
 }
@@ -1360,8 +1518,8 @@ button:active:not(:disabled):not([aria-disabled='true']),
 
 .disclaimer {
   position: absolute;
-  left: calc(var(--gauge-w) + var(--s-4));
-  bottom: calc(var(--track-h) + var(--s-2));
+  left: calc(var(--gauge-w) + var(--s-6));
+  bottom: calc(var(--track-h) + var(--s-5));
   margin: 0;
   font-size: var(--step--2);
   color: var(--muted);
@@ -1379,7 +1537,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   padding: 0;
   border: var(--rule-w) solid var(--rule);
   border-radius: 0;
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   color: var(--ink);
 }
 
@@ -1443,7 +1601,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   place-content: center;
   gap: var(--s-3);
   padding: var(--s-5);
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
 }
 
 .fatal h1 {
@@ -1493,7 +1651,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   bottom: calc(var(--track-h) + var(--s-4));
   width: min(400px, calc(100% - 2 * var(--s-4)));
   padding: var(--s-3) var(--s-4) var(--s-3);
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   border: var(--rule-w) solid var(--rule);
   display: grid;
   gap: var(--s-2);
@@ -1579,7 +1737,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
   transform: translateX(-50%);
   width: min(620px, calc(100% - 2 * var(--s-4)));
   padding: var(--s-4) var(--s-5) var(--s-2);
-  background: var(--sheet);
+  background: var(--grain), var(--sheet);
   border: var(--rule-w) solid var(--rule);
   border-top: 6px solid var(--accent);
   z-index: 12;
@@ -1849,6 +2007,27 @@ button:active:not(:disabled):not([aria-disabled='true']),
 /* ── Phones ──────────────────────────────────────────────────────── */
 /* Below the wide layout the card is a sheet along the bottom, not a column. */
 @media (max-width: 899px) {
+  .app::before {
+    display: none;
+  }
+
+  /* A smaller chart heading: the rubric and the subject, without the series line. */
+  .plate-head__dive {
+    display: none;
+  }
+
+  .plate-head {
+    max-width: calc(100% - var(--gauge-w) - var(--s-6));
+  }
+
+  .plate-head__title {
+    font-size: 2.25rem;
+  }
+
+  .scalebar {
+    margin-top: var(--s-2);
+  }
+
   .panel {
     top: auto;
     left: 0;
@@ -2102,7 +2281,7 @@ button:active:not(:disabled):not([aria-disabled='true']),
     font-size: var(--step-0);
   }
 
-  .scalebar {
+  .plate-head {
     left: calc(var(--gauge-w) + var(--s-3));
     top: calc(var(--bar-h) + var(--s-3));
   }

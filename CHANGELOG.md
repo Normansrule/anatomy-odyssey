@@ -20,11 +20,13 @@
 - **A new README.** An overview, key features, animations of the scale slider and the living key, stills of the new look, setup and usage with the keyboard keys, the project structure, and a Design section on the wall chart concept and its principles. `tools/record-hero.py` gains `--slide` and `--key`, and the accessibility audit now covers the slider, the key, dark mode and the guide (47 states, no violations).
 - **More room for the model on phones and tablets.** Below the wide layout the card is a sheet along the bottom (tablets used to get a column that covered half the model). It opens low, showing the title and first lines, and the handle on top raises it to the whole card or lowers it again (tap, swipe or keyboard; tabbing into the hidden part raises it). The model is framed in the space above the sheet; it used to be lifted out of view when a step with a control box was open.
 - **The guide's dive numbers are measured.** `tools/shoot-guide-body.py` renders the guide's body picture and projects each dive's starting point (the same points the zoom guide steers to) through the same camera, replacing positions placed by eye; the skeletal dive's number now sits on the left femur, where the dive goes. Crowded numbers in the head and chest are set clear of each other as in the app's key.
+- **Labeled like a printed chart.** On wide screens every part in view is named in a column at the plate's edge, with a hairline from the name to a dot on the part, the way a wall chart is labeled; the numbered marks stay on phones. Labels are stacked a row apart and centered on their parts, point at one to light its part (and its key entry), and click it to open its card.
+- **A chart heading and printed paper.** Each plate gets a heading: a red rubric with the plate number and tier, the subject in huge condensed capitals, and the dive, with the scale bar under it. The light sheet is now warm paper with a fine grain, and the plate sits in a double-ruled frame.
 - The dive menu and first-screen colors are set through the style object, since the Content Security Policy was blocking them as style attributes.
 - **Zoom in anywhere.** Scroll or pinch zooms toward whatever is under the pointer. Zoom far enough into the whole body and a guide names the nearest part that has a dive ("Keep zooming in to reach: the heart"), draws the view toward it and then carries you in; a "Go" button does it in one tap. Zooming out far enough goes back a step.
 - Every dive now starts from the measured position of its organ, and the model's height (1.64 m) is the measured one.
 - 1 new reference (Mitsuhashi and others 2009, the BodyParts3D paper).
-- 504 tests (from 421).
+- 507 tests (from 421).
 
 ## 0.19.0
 

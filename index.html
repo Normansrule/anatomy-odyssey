@@ -60,10 +60,16 @@
         <button class="zoom-guide__go" id="zoom-guide-go" type="button"></button>
       </div>
 
-      <div class="scalebar" id="scalebar" aria-hidden="true">
-        <div class="scalebar__bar" id="scalebar-bar"></div>
-        <span class="scalebar__label" id="scalebar-label"></span>
-      </div>
+      <header class="plate-head" id="plate-head" aria-hidden="true">
+        <p class="plate-head__kicker" id="plate-kicker"></p>
+        <p class="plate-head__title" id="plate-title"></p>
+        <p class="plate-head__dive" id="plate-dive"></p>
+        <div class="scalebar" id="scalebar">
+          <div class="scalebar__bar" id="scalebar-bar"></div>
+          <span class="scalebar__label" id="scalebar-label"></span>
+        </div>
+      </header>
+
 
       <section class="scene-controls" id="scene-controls" aria-label="Scene controls" hidden>
         <div class="scene-controls__row">
@@ -80,6 +86,7 @@
         <button class="text-button caption__stop" id="caption-stop">Stop tour</button>
       </section>
 
+      <svg class="callouts" id="callouts" hidden aria-hidden="true" focusable="false"></svg>
       <div class="marks" id="marks" aria-hidden="true"></div>
       <svg class="leader" id="leader" hidden aria-hidden="true" focusable="false"><line id="leader-line" /></svg>
 
