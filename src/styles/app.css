@@ -871,6 +871,10 @@ button:active:not(:disabled):not([aria-disabled='true']),
   text-underline-offset: 3px;
 }
 
+.panel__handle {
+  display: none;
+}
+
 .panel__body {
   overflow-y: auto;
   padding: var(--s-5) var(--s-5) var(--s-6);
@@ -1843,6 +1847,74 @@ button:active:not(:disabled):not([aria-disabled='true']),
 }
 
 /* ── Phones ──────────────────────────────────────────────────────── */
+/* Below the wide layout the card is a sheet along the bottom, not a column. */
+@media (max-width: 899px) {
+  .panel {
+    top: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    bottom: var(--track-h);
+    max-height: 76%;
+    border-left: 0;
+    border-top: var(--rule-w) solid var(--rule);
+    transition: max-height 320ms var(--ease-out);
+  }
+
+  /* Lowered, the sheet shows the title and first lines; the model keeps the rest. */
+  .panel[data-sheet='peek'] {
+    max-height: min(32%, 13.5rem);
+  }
+
+  .panel[data-sheet='peek'] .panel__body {
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, #000 62%, transparent);
+  }
+
+  /* Below the fold of a lowered card nothing can be reached until it is raised. */
+  .panel[data-sheet='peek'] .card__section {
+    visibility: hidden;
+  }
+
+  .panel__handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    align-self: center;
+    width: 112px;
+    height: 32px;
+    margin-bottom: calc(-1 * var(--s-3));
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .panel__grip {
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--muted);
+  }
+
+  .panel__handle:focus-visible .panel__grip,
+  .panel__handle:hover .panel__grip {
+    background: var(--ink);
+  }
+
+  .app:has(.panel:not([hidden])) .scene-controls {
+    display: none;
+  }
+
+  /* The sheet leaves the right edge free. */
+  .app:has(.panel:not([hidden])) .systems,
+  .app:has(.panel:not([hidden])) .notice {
+    right: var(--s-4);
+  }
+}
+
 @media (max-width: 760px) {
   :root {
     --frame: 0px;
@@ -1928,17 +2000,6 @@ button:active:not(:disabled):not([aria-disabled='true']),
 
   .gauge__hint {
     display: none;
-  }
-
-  .panel {
-    top: auto;
-    left: 0;
-    right: 0;
-    width: auto;
-    bottom: var(--track-h);
-    max-height: 50%;
-    border-left: 0;
-    border-top: var(--rule-w) solid var(--rule);
   }
 
   .card__title {
@@ -2033,10 +2094,6 @@ button:active:not(:disabled):not([aria-disabled='true']),
     min-height: 0;
   }
 
-  .app:has(.panel:not([hidden])) .scene-controls {
-    display: none;
-  }
-
   .caption {
     top: calc(var(--bar-h) + var(--s-2));
   }
@@ -2091,6 +2148,10 @@ button:active:not(:disabled):not([aria-disabled='true']),
   .loading__bar::after {
     animation: none;
     transform: scaleX(0.4);
+  }
+
+  .panel {
+    transition: none;
   }
 }
 

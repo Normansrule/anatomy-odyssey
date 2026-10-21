@@ -15,6 +15,7 @@ import { computeUsedBy, sideTripPath, routeTo } from './science/graph.js';
 import { formatLength, gaugeFraction, GAUGE_TOP_EXP, GAUGE_BOTTOM_EXP } from './science/scale.js';
 import { buildGauge, updateGauge, updateScaleBar } from './ui/gauge.js';
 import { metersAtFraction, planSlide, keyStep } from './ui/scaleSlider.js';
+import { createSheet } from './ui/sheet.js';
 import { createKey } from './ui/key.js';
 import { renderCard, renderPlanned } from './ui/panel.js';
 import { renderAbout } from './ui/about.js';
@@ -36,6 +37,7 @@ const $ = (id) => document.getElementById(id);
 const app = $('app');
 const canvas = $('view');
 const systemReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+// Wide screens show the card as a column on the right; narrower ones as a sheet along the bottom (app.css).
 const wide = window.matchMedia('(min-width: 900px)');
 
 const usedBy = computeUsedBy();
@@ -318,6 +320,8 @@ async function main() {
     else renderPlanned(panelBody, state.openCard.id, cardCtx());
   }
   function showPanel(focus) {
+    // A card that opens on a phone starts low; one already open keeps its height.
+    if (panel.hidden) sheet.set('peek');
     panel.hidden = false;
     panelBody.scrollTop = 0;
     const title = $('card-title');
@@ -331,6 +335,7 @@ async function main() {
     state.openCard = null;
   }
   $('panel-close').addEventListener('click', closePanel);
+  const sheet = createSheet({ panel, handle: $('panel-handle'), body: panelBody, isPhone: () => !wide.matches });
 
   // ── The living key ────────────────────────────────────────────────
   // Numbers on the model match the card's key; pointing at either lights both.
@@ -1046,7 +1051,12 @@ async function main() {
   });
   app.dataset.ready = 'true';
   // For automated screenshot tests.
-  window.__anatomyOdyssey = { engine, goTo, openCard, switchDive, takeBranch, startTour, backend, state, zoomHeading: () => locked?.diveId ?? null };
+  window.__anatomyOdyssey = {
+    engine, goTo, openCard, switchDive, takeBranch, startTour, backend, state,
+    zoomHeading: () => locked?.diveId ?? null,
+    // Where each dive starts on the whole body, in screen pixels (the guide's body picture).
+    bodyAnchors: () => anchors.map((a) => ({ diveId: a.diveId, ...engine.toScreen(new Vector3(...a.point)) })),
+  };
 }
 
 /** Center the subject in the uncovered part of the screen, between the gauge (or intro) and the card panel. */
@@ -1082,7 +1092,8 @@ function viewInsets() {
 function viewShiftY(bottomInset) {
   if (wide.matches) return 0;
   const controlsEl = document.getElementById('scene-controls');
-  if (!controlsEl || controlsEl.hidden) return 0;
+  // Hidden, or tucked away by CSS while the card is open.
+  if (!controlsEl || controlsEl.hidden || controlsEl.offsetParent === null) return 0;
   const covered = canvas.getBoundingClientRect().bottom - controlsEl.getBoundingClientRect().top;
   return Math.max(0, (covered - bottomInset) / 2);
 }

@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.20.0-a3242f)
-![Tests](https://img.shields.io/badge/tests-502%20passing-276a40)
+![Tests](https://img.shields.io/badge/tests-504%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -210,7 +210,7 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 502 unit tests, plus the asset manifest check
+npm test               # 504 unit tests, plus the asset manifest check
 npm run build          # production build in dist/ (what GitHub Pages serves), with the guide in dist/guide/
 npm run build:preview  # one self-contained HTML (HyperText Markup Language) file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
@@ -236,6 +236,7 @@ npm run build && npx vite preview --port 4173 &
 pip install playwright pillow && python3 -m playwright install chromium
 python3 tools/screenshots.py --mobile    # every step; fails on console errors or a blank view
 python3 tools/a11y-audit.py              # axe-core accessibility audit, WCAG 2.2 A and AA, app and guide, light and dark
+python3 tools/shoot-guide-body.py        # redraw the guide's body picture and measure where each dive starts on it
 ```
 
 **Web address options**: `?dive=nervous&step=synapse` opens a step, `&trip=1` opens a side trip, `?renderer=webgl` forces the WebGL 2 fallback, `?env=0` turns off studio reflections.
@@ -261,7 +262,7 @@ guide/         the guide website's stylesheet, script and body picture
 src-tauri/     desktop shell (Tauri 2)
 assets/        the measured body and molecule files, with credits
 tests/         Vitest suites
-tools/         guide builder and its Markdown converter, screenshots, accessibility audit,
+tools/         guide builder, its Markdown converter and body picture, screenshots, accessibility audit,
                animation recorder, mesh and molecule builders
 docs/          state of the model, equations, security model, publishing, media
 ```

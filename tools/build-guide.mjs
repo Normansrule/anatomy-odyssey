@@ -19,6 +19,7 @@ const vite = await createServer({ root, server: { middlewareMode: true }, appTyp
 const { DIVES } = await vite.ssrLoadModule('/src/data/dives.js');
 const { formatLength, gaugeFraction } = await vite.ssrLoadModule('/src/science/scale.js');
 const { getCard } = await vite.ssrLoadModule('/src/data/cards.js');
+const { spread } = await vite.ssrLoadModule('/src/ui/key.js');
 await vite.close();
 
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
@@ -39,18 +40,23 @@ for (const d of DOCS) {
 links['README.md'] = `${REPO}#readme`;
 links['../README.md'] = `${REPO}#readme`;
 
-// Where each dive starts on the body, as a share of the picture (guide/body.webp).
-const ON_BODY = {
-  skeletal: [39, 60], circulatory: [51, 29], muscular: [73, 30], immune: [63, 21], nervous: [49, 4.5],
-  respiratory: [37, 23], digestive: [57, 32.5], urinary: [44, 36.5], endocrine: [49, 13.5], skin: [20, 41],
-  eye: [43, 6], ear: [58.5, 7.5], pancreas: [53, 35], liver: [40, 31.5], smell: [46, 8.5],
-};
+// Where each dive starts on the body, as a share of the picture: measured by
+// tools/shoot-guide-body.py, which projects the zoom guide's anchors through
+// the camera that drew guide/body.webp.
+const bodyPicture = JSON.parse(readFileSync(join(root, 'guide', 'body-marks.json'), 'utf8'));
+const ON_BODY = bodyPicture.marks;
 const dives = DIVES.filter((d) => d.kind === 'dive' && d.status === 'built');
-for (const d of dives) if (!ON_BODY[d.id]) throw new Error(`build-guide: no place on the body for the ${d.id} dive`);
+for (const d of dives) if (!ON_BODY[d.id]) throw new Error(`build-guide: no place on the body for the ${d.id} dive; run tools/shoot-guide-body.py`);
+// Set crowded numbers (the head holds four dives) clear of each other, as the
+// app's key does, at the narrowest the picture is shown.
+const SHOWN_W = 260;
+const shownH = (SHOWN_W * bodyPicture.size[1]) / bodyPicture.size[0];
+const placed = spread(dives.map((d) => ({ id: d.id, x: (ON_BODY[d.id][0] / 100) * SHOWN_W, y: (ON_BODY[d.id][1] / 100) * shownH })), 30, 40);
+const at = Object.fromEntries(placed.map((m) => [m.id, [+((m.x / SHOWN_W) * 100).toFixed(1), +((m.y / shownH) * 100).toFixed(1)]]));
 
 // Per-dive positions and colors become CSS rules: the policy allows no style attributes.
 const generated = [
-  ...dives.map((d, i) => `.mark[data-n='${i + 1}'] { left: ${ON_BODY[d.id][0]}%; top: ${ON_BODY[d.id][1]}%; }`),
+  ...dives.map((d, i) => `.mark[data-n='${i + 1}'] { left: ${at[d.id][0]}%; top: ${at[d.id][1]}%; }`),
   ...dives.map((d, i) => `[data-n='${i + 1}'] { --swatch: ${d.swatch}; }`),
 ];
 
@@ -152,7 +158,7 @@ function landing() {
           </div>
           <figure class="specimen" id="specimen">
             <div class="specimen__frame">
-              <img src="body.webp" alt="The 3D body from the app: a see-through figure showing the skeleton, organs, blood vessels and lymph nodes." width="880" height="1844" fetchpriority="high" />
+              <img src="body.webp" alt="The 3D body from the app: a see-through figure showing the skeleton, organs, blood vessels and lymph nodes." width="${bodyPicture.size[0]}" height="${bodyPicture.size[1]}" fetchpriority="high" />
               <div class="marks">${marks}</div>
             </div>
             <figcaption>Plate 1. The whole body, about 1.64 m tall in this model.</figcaption>

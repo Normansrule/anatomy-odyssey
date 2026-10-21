@@ -59,6 +59,9 @@ STATES = [
     ("search results open", "?dive=skeletal&step=femur", "type:heart", DESKTOP),
     ("search with no results", "?dive=skeletal&step=femur", "type:zzzz", DESKTOP),
     ("phone: neuron", "?dive=nervous&step=neuron", None, PHONE),
+    ("phone: card lowered", "?dive=circulatory&step=heart", "card", PHONE),
+    ("phone: card raised", "?dive=circulatory&step=heart", "card:raise", PHONE),
+    ("tablet: card", "?dive=circulatory&step=heart", "card", (820, 1180)),
     ("phone: About dialog", "?dive=skeletal&step=femur", "#about-button", PHONE),
     ("heart, pointing at a key entry", "?dive=circulatory&step=heart", "hover:.key__item", DESKTOP),
     ("scale slider focused", "?dive=circulatory&step=heart", "focus:#gauge", DESKTOP),
@@ -86,13 +89,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="http://localhost:4173/")
     ap.add_argument("--json", default="", help="also write the full results to this file")
+    ap.add_argument("--browser", default=None, help="path to a Chromium executable, if Playwright's own is not installed")
     args = ap.parse_args()
     axe_src = AXE.read_text()
     failures = 0
     report = {}
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
+        browser = p.chromium.launch(executable_path=args.browser, args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
         runs = [(n, q, a, v, "light", True) for n, q, a, v in STATES]
         runs += [(n, q, a, v, "dark", True) for n, q, a, v in DARK]
         for n, path, mode, v in GUIDE:
@@ -108,7 +112,12 @@ def main():
                 page.wait_for_timeout(2500)
             else:
                 page.goto(args.url + query, wait_until="load")
-            if action == "quiz":
+            if action and action.startswith("card"):
+                # Below the wide layout cards open on a tap; open the step's card as that would.
+                page.evaluate("(() => { const a = window.__anatomyOdyssey; a.openCard(a.state.path[a.state.stepIndex].card); })()")
+                if action == "card:raise":
+                    page.click("#panel-handle")
+            elif action == "quiz":
                 page.locator(".card__quiz, button:has-text('Check yourself')").first.click()
             elif action and action.startswith("type:"):
                 page.fill("#search-input", action[5:])
