@@ -7,7 +7,8 @@ Usage:
 Checks the app against WCAG 2.2 A and AA rules (axe-core tags wcag2a,
 wcag2aa, wcag21a, wcag21aa, wcag22aa) in several states: the first visit
 with its intro, a dive step with its card open, every module, each dialog
-(About, Map, Glossary, a quiz), and a phone-sized view. Exits non-zero if
+(About, Map, Glossary, a quiz), the living key and the scale slider, a
+phone-sized view, dark mode, and the guide website's pages. Exits non-zero if
 axe reports any violation. axe-core is a pinned dev dependency (MPL-2.0); it
 is only injected by this test, never shipped with the app.
 """
@@ -59,6 +60,25 @@ STATES = [
     ("search with no results", "?dive=skeletal&step=femur", "type:zzzz", DESKTOP),
     ("phone: neuron", "?dive=nervous&step=neuron", None, PHONE),
     ("phone: About dialog", "?dive=skeletal&step=femur", "#about-button", PHONE),
+    ("heart, pointing at a key entry", "?dive=circulatory&step=heart", "hover:.key__item", DESKTOP),
+    ("scale slider focused", "?dive=circulatory&step=heart", "focus:#gauge", DESKTOP),
+]
+# The same chart on slate (dark mode).
+DARK = [
+    ("dark: first visit (intro)", "", None, DESKTOP),
+    ("dark: heart with its key", "?dive=circulatory&step=heart", None, DESKTOP),
+    ("dark: About dialog", "?dive=skeletal&step=femur", "#about-button", DESKTOP),
+    ("dark: phone femur", "?dive=skeletal&step=femur", None, PHONE),
+]
+# The guide website, in both modes and at phone width.
+GUIDE = [
+    ("guide: landing", "guide/", "light", DESKTOP),
+    ("guide: landing, pointing at a dive", "guide/", "light:hover:.key__item", DESKTOP),
+    ("guide: landing, slate", "guide/", "dark", DESKTOP),
+    ("guide: equations", "guide/equations.html", "light", DESKTOP),
+    ("guide: state of the model, slate", "guide/state-of-the-model.html", "dark", DESKTOP),
+    ("guide: changelog, phone", "guide/changelog.html", "light", PHONE),
+    ("guide: landing, phone, slate", "guide/", "dark", PHONE),
 ]
 
 
@@ -73,18 +93,30 @@ def main():
 
     with sync_playwright() as p:
         browser = p.chromium.launch(args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
-        for name, query, action, (w, h) in STATES:
+        runs = [(n, q, a, v, "light", True) for n, q, a, v in STATES]
+        runs += [(n, q, a, v, "dark", True) for n, q, a, v in DARK]
+        for n, path, mode, v in GUIDE:
+            scheme, _, action = mode.partition(":")
+            runs.append((n, path, action or None, v, scheme, False))
+        for name, query, action, (w, h), scheme, is_app in runs:
             # bypass_csp lets the audit inject axe; the app itself keeps its strict CSP.
-            page = browser.new_page(viewport={"width": w, "height": h}, bypass_csp=True)
-            # env=0 skips the studio reflections, which only slow software rendering here.
-            page.goto(args.url + query + ("&" if "?" in query else "?") + "env=0")
-            page.wait_for_function("document.getElementById('app').dataset.ready === 'true'", timeout=60000)
-            page.wait_for_timeout(2500)
+            page = browser.new_page(viewport={"width": w, "height": h}, bypass_csp=True, color_scheme=scheme)
+            if is_app:
+                # env=0 skips the studio reflections, which only slow software rendering here.
+                page.goto(args.url + query + ("&" if "?" in query else "?") + "env=0")
+                page.wait_for_function("document.getElementById('app').dataset.ready === 'true'", timeout=60000)
+                page.wait_for_timeout(2500)
+            else:
+                page.goto(args.url + query, wait_until="load")
             if action == "quiz":
                 page.locator(".card__quiz, button:has-text('Check yourself')").first.click()
             elif action and action.startswith("type:"):
                 page.fill("#search-input", action[5:])
                 page.keyboard.press("ArrowDown")
+            elif action and action.startswith("hover:"):
+                page.locator(action[6:]).nth(1).hover()
+            elif action and action.startswith("focus:"):
+                page.focus(action[6:])
             elif action:
                 page.click(action)
             page.wait_for_timeout(600)

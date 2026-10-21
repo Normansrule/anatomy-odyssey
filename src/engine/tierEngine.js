@@ -10,7 +10,51 @@ import { setOpacity } from './fade.js';
 import { lerpLog, distanceForFrame, visibleHeightMeters } from '../science/scale.js';
 
 const FOV = 40;
-const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+// A flight is one continuous move split at the model swap: it speeds up on the
+// way out of a tier and slows down into the next, so the camera never stops at
+// the swap (together the two halves make one ease-in-out).
+const easeIn = (t) => t * t * t;
+const easeOut = (t) => 1 - (1 - t) ** 3;
+
+/**
+ * The point on a structure nearest the middle of its bounds, so its number
+ * sits on the part itself rather than in the air inside a hollow or curved
+ * shape. Samples at most ~1500 vertices (or instances) per mesh.
+ */
+function surfacePointNear(root, cardId, center) {
+  const best = { d: Infinity, at: center };
+  const v = new THREE.Vector3();
+  const m = new THREE.Matrix4();
+  const consider = () => {
+    const d = v.distanceToSquared(center);
+    if (d < best.d) {
+      best.d = d;
+      best.at = v.clone();
+    }
+  };
+  root.traverse((o) => {
+    if (o.userData.hoverShell || !isVisible(o)) return;
+    let owner = o;
+    while (owner && !owner.userData.cardId) owner = owner.parent;
+    if (owner?.userData.cardId !== cardId || !o.geometry?.attributes.position) return;
+    if (o.isInstancedMesh) {
+      const step = Math.max(1, Math.ceil(o.count / 1500));
+      for (let i = 0; i < o.count; i += step) {
+        o.getMatrixAt(i, m);
+        v.setFromMatrixPosition(m).applyMatrix4(o.matrixWorld);
+        consider();
+      }
+      return;
+    }
+    const pos = o.geometry.attributes.position;
+    const step = Math.max(1, Math.ceil(pos.count / 1500));
+    for (let i = 0; i < pos.count; i += step) {
+      v.fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld);
+      consider();
+    }
+  });
+  return best.at;
+}
 
 export class TierEngine {
   constructor({ renderer, canvas, scenes, reducedMotion }) {
@@ -26,6 +70,9 @@ export class TierEngine {
     // Zooming keeps the point under the pointer fixed on screen (see zoomAt), so you
     // can zoom in anywhere, not only at the middle of the view.
     this.cursorZoom = null; // { point, ndc, until }
+    // The scale slider sets a zoom goal (a ratio of the arrival distance); update() springs toward it.
+    this.zoomGoal = null;
+    this.anchors = new Map(); // cardId → world-space center, for the numbered key
     this.current = null; // { step, built }
     this.busy = false;
     this.tweens = [];
@@ -52,7 +99,7 @@ export class TierEngine {
     const key = new THREE.DirectionalLight(0xffffff, 2.2);
     key.position.set(2, 3, 4);
     this.scene.add(key);
-    const rim = new THREE.DirectionalLight(0xf08baf, 0.9);
+    const rim = new THREE.DirectionalLight(0xfff1e0, 0.7);
     rim.position.set(-3, 1, -2);
     this.scene.add(rim);
     this.key = key;
@@ -135,6 +182,7 @@ export class TierEngine {
 
   discard(built) {
     this.clearHover();
+    this.anchors.clear();
     this.scene.remove(built.root);
     built.dispose();
   }
@@ -155,7 +203,7 @@ export class TierEngine {
    * the camera plunges toward the current focus, then the next tier
    * approaches from a distance. Going back reverses both motions.
    */
-  async transition(step, forward, { fromFocus } = {}) {
+  async transition(step, forward, { fromFocus, quick = false, onSwap } = {}) {
     if (this.busy || !this.current) return false;
     this.busy = true;
     this.controls.enabled = false;
@@ -163,7 +211,13 @@ export class TierEngine {
     const fromMeters = this.viewMeters();
     const toMeters = step.frameMeters;
     const to = this.build(step);
-    const phase = this.reducedMotion ? 0.18 : 0.85;
+    // Quick flights carry a scale-slider drag on through several steps. They
+    // dive less deep into the old plate and start the new one nearer, so
+    // there is always something on screen.
+    const phase = this.reducedMotion ? 0.18 : quick ? 0.42 : 0.85;
+    const into = quick ? 0.3 : 0.08;
+    const outOf = quick ? 1.8 : 3.5;
+    this.zoomGoal = null;
 
     // Phase A: leave the current tier.
     const camA = this.camera.position.clone();
@@ -172,10 +226,10 @@ export class TierEngine {
     const aim = fromFocus ? new THREE.Vector3(...fromFocus) : from.focusPoint;
     const tgtA2 = forward ? aim.clone() : tgtA.clone();
     const camA2 = forward
-      ? tgtA2.clone().addScaledVector(offset.clone().normalize(), offset.length() * 0.08)
-      : tgtA.clone().addScaledVector(offset.clone().normalize(), offset.length() * 3.5);
+      ? tgtA2.clone().addScaledVector(offset.clone().normalize(), offset.length() * into)
+      : tgtA.clone().addScaledVector(offset.clone().normalize(), offset.length() * outOf);
     await this.tween(phase, (t) => {
-      const e = ease(t);
+      const e = easeIn(t);
       this.camera.position.lerpVectors(camA, camA2, e);
       this.controls.target.lerpVectors(tgtA, tgtA2, e);
       setOpacity(from.root, 1 - e);
@@ -187,19 +241,20 @@ export class TierEngine {
     setOpacity(to.root, 0);
     this.scene.add(to.root);
     this.current = { step, built: to };
+    onSwap?.();
 
     // Phase B: arrive at the new tier.
     const { position: camEnd, target: tgtEnd, dir, dist } = to.pose;
     const tgtB = forward ? tgtEnd.clone() : to.focusPoint.clone();
     const camB = forward
-      ? tgtEnd.clone().addScaledVector(dir, dist * 3.5)
-      : tgtB.clone().addScaledVector(dir, dist * 0.08);
+      ? tgtEnd.clone().addScaledVector(dir, dist * outOf)
+      : tgtB.clone().addScaledVector(dir, dist * into);
     this.placeCamera(to, camB, tgtB);
     await this.tween(phase * 1.15, (t) => {
-      const e = ease(t);
+      const e = easeOut(t);
       this.camera.position.lerpVectors(camB, camEnd, e);
       this.controls.target.lerpVectors(tgtB, tgtEnd, e);
-      setOpacity(to.root, e);
+      setOpacity(to.root, quick ? Math.min(1, e / 0.6) : e);
       this.transitionMeters = lerpLog(fromMeters, toMeters, 0.5 + e * 0.5);
     });
     setOpacity(to.root, 1);
@@ -255,6 +310,86 @@ export class TierEngine {
     const shift = z.point.clone().sub(want);
     this.camera.position.add(shift);
     this.controls.target.add(shift);
+  }
+
+  /**
+   * Zoom toward a ratio of the arrival distance (the scale slider), or stop
+   * with null. The camera keeps its angle; zooming in also draws the orbit
+   * target toward the step's focus, where the next step begins.
+   */
+  setZoomGoal(ratio) {
+    this.zoomGoal = ratio;
+    if (ratio !== null) this.cursorZoom = null;
+  }
+
+  /** Spring the camera distance toward the zoom goal (on a log scale, so every power of ten takes as long). */
+  applyZoomGoal(dt) {
+    const built = this.current?.built;
+    if (this.zoomGoal === null || !built?.pose || this.busy) return;
+    const k = this.reducedMotion ? 1 : 1 - Math.exp(-dt * 10);
+    const target = this.controls.target;
+    const offset = this.camera.position.clone().sub(target);
+    const d = offset.length();
+    const goal = built.pose.dist * this.zoomGoal;
+    const next = Math.exp(Math.log(d) + (Math.log(goal) - Math.log(d)) * k);
+    const pull = Math.min(1, Math.max(0, (1 - this.zoomGoal) / 0.9));
+    const aim = built.pose.target.clone().lerp(built.focusPoint, pull);
+    target.lerp(aim, k);
+    this.camera.position.copy(target).addScaledVector(offset.normalize(), next);
+  }
+
+  /**
+   * Where a structure is, for its number on the model: the middle of the
+   * bounds of everything that carries its card (cached until the scene changes).
+   */
+  anchorOf(cardId) {
+    if (this.anchors.has(cardId)) return this.anchors.get(cardId);
+    const root = this.current?.built.root;
+    if (!root) return null;
+    const box = new THREE.Box3();
+    const part = new THREE.Box3();
+    root.updateMatrixWorld(true);
+    root.traverse((o) => {
+      if (o.userData.cardId !== cardId || !isVisible(o) || o.userData.hoverShell) return;
+      part.setFromObject(o, false);
+      if (!part.isEmpty()) box.union(part);
+    });
+    const at = box.isEmpty() ? null : surfacePointNear(root, cardId, box.getCenter(new THREE.Vector3()));
+    this.anchors.set(cardId, at);
+    return at;
+  }
+
+  /** A world point in canvas pixels (CSS), or null when it is behind the camera. */
+  toScreen(point) {
+    const size = this.renderer.getSize(new THREE.Vector2());
+    const v = point.clone().project(this.camera);
+    if (v.z > 1 || v.z < -1) return null;
+    return { x: ((v.x + 1) / 2) * size.x, y: ((1 - v.y) / 2) * size.y };
+  }
+
+  /** Light up a structure by card (the key's hover), like hovering it on the model. */
+  hoverCard(cardId) {
+    if (!cardId) {
+      this.setHover(null);
+      return;
+    }
+    let found = null;
+    this.current?.built.root.traverse((o) => {
+      if (!found && o.isMesh && !o.isInstancedMesh && !o.userData.hoverShell && isVisible(o)) {
+        let owner = o;
+        while (owner && !owner.userData.cardId) owner = owner.parent;
+        if (owner?.userData.cardId === cardId) found = o;
+      }
+    });
+    this.setHover(found ? { object: found, priority: 0 } : null);
+  }
+
+  /** The hover glow suits the sheet: an additive light glow on slate, an ink tint on the light sheet. */
+  setTheme(dark) {
+    this.hoverMaterial.color.set(dark ? 0xfff0d8 : 0x2b58a5);
+    this.hoverMaterial.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
+    this.hoverMaterial.opacity = dark ? 0.28 : 0.22;
+    this.hoverMaterial.needsUpdate = true;
   }
 
   /** How far the user has zoomed: camera distance ÷ the distance the step was framed at (1 on arrival). */
@@ -365,7 +500,8 @@ export class TierEngine {
     if (!this.current) return [];
     const seen = new Map();
     this.current.built.root.traverse((o) => {
-      if (o.userData.cardId && isVisible(o) && !seen.has(o.userData.cardId)) seen.set(o.userData.cardId, o.userData.label);
+      const empty = o.geometry && !(o.geometry.attributes.position?.count > 0); // cut away entirely
+      if (o.userData.cardId && !empty && isVisible(o) && !seen.has(o.userData.cardId)) seen.set(o.userData.cardId, o.userData.label);
     });
     return [...seen.keys()];
   }
@@ -418,6 +554,7 @@ export class TierEngine {
     }
     this.current?.built.update?.(dt, { reducedMotion: this.reducedMotion });
     if (this.controls.enabled) {
+      this.applyZoomGoal(dt);
       this.controls.update();
       this.holdCursorZoom();
     }

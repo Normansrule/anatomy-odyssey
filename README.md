@@ -2,49 +2,54 @@
 
 # Anatomy Odyssey
 
-**Zoom from your whole body down to a single molecule, one guided dive at a time.**
+**A wall chart of the human body that you can fall into, from two meters down to a single molecule.**
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/code-MIT-6d5bd0)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.20.0-f08baf)
-![Tests](https://img.shields.io/badge/tests-479%20passing-4fb38a)
+[![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
+![Version](https://img.shields.io/badge/version-0.20.0-a3242f)
+![Tests](https://img.shields.io/badge/tests-502%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
-[What's in it](#what-you-can-explore) ·
-[Run it yourself](#run-it-yourself) ·
-[How it works](#how-it-works)
+[Read the guide](https://normansrule.github.io/anatomy-odyssey/guide/) ·
+[Features](#key-features) ·
+[Setup](#setup-and-usage) ·
+[Design](#design)
 
-<img src="docs/media/hero-dive.gif" alt="The skeletal dive: whole body → skeleton → femur → bone tissue → osteocyte → nucleus → DNA, with the depth gauge sweeping down" width="860" />
+<img src="docs/media/scale-slider.gif" alt="One drag down the scale slider on the left: the view flies from the whole body to the skeleton, the femur, bone tissue, a bone cell, its nucleus and DNA, while the plates along the bottom and the key on the right follow" width="860" />
 
 </div>
 
+## What it is
+
+Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like the anatomy charts that hung in every biology classroom, except this one zooms. Grab the scale on the left and drag: the view falls from the whole body (measured from a real person) into an organ, its tissue, one of its cells and finally the molecule that does the work, every plate at its real size. It's made for curious people, students and teachers who want to *see* how the body fits together across scales, not memorize a diagram. It runs in any current browser (phones included) or as a desktop app, with no accounts and no tracking.
+
 > [!NOTE]
-> A teaching model, not medical advice. Every scene says what it is (a generalized model, drawn to scale unless its card says otherwise) and cites its sources.
+> It's a teaching model, not medical advice. Every scene says what it is (a generalized model, drawn to scale unless its card says otherwise) and cites its sources.
 
-## In one minute
+## Key features
 
-- **Pick a dive** (skeletal, circulatory, muscular, immune, nervous, respiratory, digestive, urinary, endocrine, skin, eye, ear, pancreas, liver or smell) and fall through the body one scale at a time: organ → tissue → cell → molecule.
-- **Zoom in anywhere** on the body, a model measured from a real one with every bone, muscle and organ, a beating heart and blood flowing through its vessels: the guide names the nearest part with a dive and takes you there.
-- **Point at anything** to light it up and see its name; **click** to open a card: what it is, why it matters, its real size, and a source you can check.
-- **Watch the depth gauge**: it shows how big the view is, from about 2 m down to a fraction of a nanometer, so sizes stay honest.
-- **Play with the science**: sliders run real, tested equations (oxygen binding, nerve speed, blood pH, enzyme speed-up and more).
+- **Fifteen dives and six modules.** Skeletal, circulatory, muscular, immune, nervous, respiratory, digestive, urinary, endocrine, skin, eye, ear, pancreas, liver and smell, plus modules on inflammation, gene to protein, body chemistry, immune memory, T cells and the knee-jerk reflex. Every one ends at a molecule.
+- **A body measured from a real one.** 411 meshes from BodyParts3D, an open anatomy atlas: every bone, muscle and organ in its true place. The heart beats, blood flows through the vessels, and the organ close-ups are the real organs cut open.
+- **One slider from 10 m to 0.1 nm.** The scale on the left is a slider. Drag it (or use the arrow keys) and the view zooms continuously, flying on to the next plate whenever you get close to its size, so a single drag can take you from your whole body to DNA.
+- **A living key.** Every part in view gets a number on the model and the same number in the card's key. Point at either one and a red leader line draws itself between them, following the part as the model turns.
+- **Zoom in anywhere.** Scroll or pinch toward any part of the body; a guide names the nearest part that has a dive and takes you there.
+- **Point, click, learn.** Hover to name a part, click to open its card: what it does, why it matters, its real size, an *Expert detail* switch and a source you can check.
+- **Light sheet or slate.** It follows your device's light or dark setting, or pick one in About.
+- **Science you can play with.** Sliders run real, tested equations (oxygen binding, nerve speed, blood acidity, how fast an enzyme works, how much blood the heart pumps).
+- **A map by scale, a tour, quizzes and a glossary.** The map (press M) lays out every dive on one size axis; the tour narrates a dive with captions you can have read aloud.
+- **A guide website.** A landing page drawn as the same chart, plus the docs as a printed booklet, at [/guide/](https://normansrule.github.io/anatomy-odyssey/guide/).
+- **Private and accessible.** No network calls after loading, full keyboard control, screen-reader announcements, a reduced-motion mode, and an automated Web Content Accessibility Guidelines (WCAG) 2.2 audit with zero violations in 47 states, light and dark.
 
-No accounts, no tracking. Two ways to use it:
-
-| Version | Where | Notes |
-|---|---|---|
-| **Web** | [normansrule.github.io/anatomy-odyssey](https://normansrule.github.io/anatomy-odyssey/) | Any current browser, phones included. Nothing to install. |
-| **Desktop** | [Latest release](https://github.com/Normansrule/anatomy-odyssey/releases/latest) | Windows `.exe`/`.msi`, macOS `.dmg`, Linux `.AppImage`/`.deb`. Not code-signed yet, so the first launch shows a warning. |
-
-## Progress
-
-Version 0.20 (in progress) swaps the drawn body for one **measured from a real person**: 411 meshes from BodyParts3D, with every bone, muscle and organ in its true place. It beats, its blood flows, and the organ close-ups are the real organs cut open. Everything below is from the current build.
+## See it
 
 <table>
 <tr>
+<td align="center" colspan="2"><img src="docs/media/living-key.gif" alt="The heart plate: pointing at each entry in the key draws a red leader line from its number to the matching number on the heart" width="860" /><br /><sub><b>The living key.</b> Point at an entry and its leader line draws to the part.</sub></td>
+</tr>
+<tr>
 <td align="center" width="50%"><img src="docs/media/heartbeat.gif" alt="The real heart cut open to its four chambers, beating at 72 a minute, with oxygen-poor blood (blue) and oxygen-rich blood (red) moving through the chambers and valves" width="360" /><br /><sub><b>Heartbeat.</b> The measured heart opened to its four chambers; set the rate from asleep to running.</sub></td>
-<td align="center" width="50%"><img src="docs/media/zoom-anywhere.gif" alt="Zooming in on the chest of the measured body while the guide names the nearest part with a dive and offers to go there" width="400" /><br /><sub><b>Zoom anywhere.</b> Zoom into the measured body; the guide names the nearest dive and takes you there.</sub></td>
+<td align="center" width="50%"><img src="docs/media/guide.webp" alt="The guide website's landing page: the body as a chart plate with fifteen numbered dives and a key, a leader line drawn to the heart" width="400" /><br /><sub><b>The guide.</b> The same chart as a website, with the docs as its booklet.</sub></td>
 </tr>
 <tr>
 <td align="center"><img src="docs/media/digestive-tract.gif" alt="The real digestive tract from the esophagus to the rectum, a glowing mouthful moving through it while the organ it is in lights up" width="360" /><br /><sub><b>Digestion.</b> One meal through the real gut, with how long each part takes.</sub></td>
@@ -55,94 +60,42 @@ Version 0.20 (in progress) swaps the drawn body for one **measured from a real p
 <table>
 <tr>
 <td><img src="docs/screenshots/body.webp" alt="The whole measured body: the skeleton with the organs inside and see-through skin" /><br /><sub>Whole body</sub></td>
-<td><img src="docs/screenshots/skeleton.webp" alt="The measured skeleton with the femur glowing" /><br /><sub>Skeleton</sub></td>
-<td><img src="docs/screenshots/heart.webp" alt="The real heart cut open to its four chambers" /><br /><sub>Heart</sub></td>
+<td><img src="docs/screenshots/heart.webp" alt="The real heart cut open to its four chambers, with its card and the heart rate control" /><br /><sub>Heart</sub></td>
 <td><img src="docs/screenshots/brain.webp" alt="The real brain, every fold where it was in that person" /><br /><sub>Brain</sub></td>
-</tr>
-<tr>
 <td><img src="docs/screenshots/lungs.webp" alt="The real lungs, five lobes around the bronchial tree" /><br /><sub>Lungs</sub></td>
-<td><img src="docs/screenshots/liver.webp" alt="The real liver, see-through, with its veins and bile ducts and a lobule magnifier" /><br /><sub>Liver</sub></td>
-<td><img src="docs/screenshots/pancreas.webp" alt="The real pancreas, see-through, with its duct, islets and the spleen" /><br /><sub>Pancreas</sub></td>
-<td><img src="docs/screenshots/kidney.webp" alt="The real left kidney cut in half, the drawn inside fitted to its outline" /><br /><sub>Kidney</sub></td>
 </tr>
 <tr>
+<td><img src="docs/screenshots/liver.webp" alt="The real liver, see-through, with its veins and bile ducts and a lobule magnifier" /><br /><sub>Liver</sub></td>
+<td><img src="docs/screenshots/kidney.webp" alt="The real left kidney cut in half, the drawn inside fitted to its outline" /><br /><sub>Kidney</sub></td>
 <td><img src="docs/screenshots/femur.webp" alt="The real femur cut lengthwise: compact bone, marrow and spongy bone" /><br /><sub>Femur</sub></td>
-<td><img src="docs/screenshots/digestive-tract.webp" alt="The real digestive tract with the liver, gallbladder and pancreas" /><br /><sub>Digestive tract</sub></td>
-<td><img src="docs/screenshots/urinary-tract.webp" alt="The real urinary tract: kidneys, ureters and bladder with the vessels behind" /><br /><sub>Urinary tract</sub></td>
-<td></td>
+<td><img src="docs/screenshots/atlas.webp" alt="The map: every dive laid out by scale, from a meter down to a nanometer" /><br /><sub>Map by scale</sub></td>
 </tr>
 </table>
 
-### Progress tracker
+### Progress
 
-**Real organs at the organ tier: 8 of 15 dives**
+<p align="center"><img src="docs/media/progress.svg" alt="Progress: the real, measured organ is up close in 8 of 15 dives (skeletal, circulatory, respiratory, nervous, digestive, urinary, pancreas, liver); immune, muscular, skin and smell have the measured body with a drawn close-up; endocrine, eye and ear wait on better atlas meshes" width="820" /></p>
 
-`████████████████░░░░░░░░░░░░░░` 53%
-
-| Dive | Whole body | Organ tier | Moving | State |
-|---|---|---|---|---|
-| 🦴 Skeletal | measured skeleton | measured femur, cut open | | ✅ Done |
-| ❤️ Circulatory | measured vessels | measured heart, four chambers | heartbeat, blood flow, heart rate | ✅ Done |
-| 🫁 Respiratory | measured | measured lungs and bronchial tree | breathing | ✅ Done |
-| 🧠 Nervous | measured | measured brain, lobes and inside | | ✅ Done |
-| 🍽️ Digestive | measured | measured tract, esophagus to rectum | a meal moving through | ✅ Done |
-| 💧 Urinary | measured | measured kidneys, ureters, bladder; kidney cut open | urine flow, bladder filling | ✅ Done |
-| 🍬 Pancreas | measured | measured pancreas with duct and islets | | ✅ Done |
-| 🟤 Liver | measured | measured liver with veins and bile ducts | blood and bile flow | ✅ Done |
-| 🛡️ Immune | measured, with a cut on the forearm | lymph node drawn | infection to the armpit nodes | 🟡 Body done, close-up drawn |
-| 💪 Muscular | measured muscles | biceps drawn, cut across | | 🟡 Next candidate |
-| ☀️ Skin | measured skin | skin block drawn | heat and cold | 🟡 Drawn close-up |
-| 👃 Smell | measured | nasal cavity drawn | sniff | 🟡 Drawn close-up |
-| 🦋 Endocrine | measured | thyroid drawn | | ⬜ The atlas has no thyroid |
-| 👁️ Eye | measured | eye drawn | light focusing | ⬜ Atlas eye too coarse |
-| 👂 Ear | measured | ear drawn | sound | ⬜ Atlas ear outer only |
-
-| Feature | State |
-|---|---|
-| Body measured from a real one (411 meshes), every bone, muscle and organ | ✅ Done |
-| Zoom in anywhere, with a guide to the nearest dive | ✅ Done |
-| Beating heart and blood flow timed to the beat | ✅ Done |
-| Immune response on the body: cut, infection, lymph nodes | ✅ Done |
-| Web app on GitHub Pages and desktop app (Windows, macOS, Linux) | ✅ Built |
-| Code-signed desktop releases | ⬜ Later |
-
-## What you can explore
-
-### Fifteen dives
-
-| Dive | The path down | Ends at |
-|---|---|---|
-| 🦴 **Skeletal** | body → skeleton → femur → bone tissue → bone cell → nucleus | DNA |
-| ❤️ **Circulatory** | body → heart → blood → red blood cell → hemoglobin | the iron atom in heme |
-| 💪 **Muscular** | body → biceps → fascicle → muscle fiber → sarcomere | actin and myosin |
-| 🛡️ **Immune** | body fighting an infection, from a cut to cleared → lymph node → follicle → plasma cell → antibody | amino acids |
-| 🧠 **Nervous** | body → brain → cortex → neuron → synapse | glutamate |
-| 🫁 **Respiratory** | body → lungs → alveoli → air–blood barrier → hemoglobin | O₂ and CO₂ |
-| 🍽️ **Digestive** | body → digestive tract → small intestine → villi → absorbing cell | glucose |
-| 💧 **Urinary** | body → urinary tract → kidney → nephron → the filtration barrier | urea |
-| 🦋 **Endocrine** | body → thyroid gland → follicles → hormone-making cell | thyroxine (T4) and T3 |
-| ☀️ **Skin** | body → a block of skin → the epidermis → a skin cell in sunlight | vitamin D3 |
-| 👁️ **Eye** | body → eye → retina → light becoming a signal in a rod | retinal (11-cis and all-trans) |
-| 👂 **Ear** | body → ear → a turn of the cochlea → a hair cell | glutamate |
-| 🍬 **Pancreas** | body → pancreas → an islet of Langerhans → a beta cell | ATP |
-| 🟤 **Liver** | body → liver → a lobule → liver cells clearing an old red cell | bilirubin |
-| 👃 **Smell** | body → nasal cavity → olfactory epithelium → a neuron's cilia | vanillin |
-
-### Six modules
-
-| Module | What happens |
-|---|---|
-| **Inflammatory response** | A splinter wound from the first alarm to healing, the mast cell that sounds it, and histamine |
-| **From gene to protein** | The β-globin gene is transcribed, exported and translated into protein |
-| **Chemistry of life** | Your body sorted by element, an enzyme ten million times faster than chemistry alone, and the blood's pH buffer |
-| **Immune response and memory** | Immune cells side by side at true size, a first and a second infection, then the antibody and its amino acids |
-| **T cells** | Antigen presentation, a killer T cell at work, a receptor reading one peptide, and its amino acids |
-| **Reflex arc** | The knee jerk in about 18 ms, the wiring inside a slice of the spinal cord, the nerve–muscle junction, and acetylcholine |
-
-Side trips branch into a **shared library** of building blocks (nucleus, nucleosome, DNA, RNA, nucleotides, amino acids, ATP, membranes and more). Each is built once and reused by every dive that reaches it, and each card links up to what it is part of and down to what it is made of.
+| Dive | Organ step | What moves | State |
+|---|---|---|---|
+| Skeletal | measured femur, cut open | | Done |
+| Circulatory | measured heart, four chambers | heartbeat, blood flow, heart rate | Done |
+| Respiratory | measured lungs and bronchial tree | breathing | Done |
+| Nervous | measured brain, lobes and inside | | Done |
+| Digestive | measured tract, esophagus to rectum | a meal moving through | Done |
+| Urinary | measured kidneys, ureters and bladder; kidney cut open | urine flow, bladder filling | Done |
+| Pancreas | measured pancreas with duct and islets | | Done |
+| Liver | measured liver with veins and bile ducts | blood and bile flow | Done |
+| Immune | lymph node, drawn | an infection from a cut to the armpit nodes | Body done, close-up drawn |
+| Muscular | biceps, drawn and cut across | | Next candidate |
+| Skin | skin block, drawn | heat and cold | Drawn close-up |
+| Smell | nasal cavity, drawn | a sniff | Drawn close-up |
+| Endocrine | thyroid, drawn | | The atlas has no thyroid |
+| Eye | eye, drawn | light focusing | The atlas eye is too coarse |
+| Ear | ear, drawn | sound | The atlas has the outer ear only |
 
 <details>
-<summary><b>Screenshots</b> (click to open)</summary>
+<summary><b>More screenshots</b>: every organ, cell and molecule step</summary>
 
 <table>
 <tr>
@@ -223,29 +176,28 @@ Side trips branch into a **shared library** of building blocks (nucleus, nucleos
 
 </details>
 
-## Highlights
+## Setup and usage
 
-**See it**
-- **Realistic tissue surfaces.** Organs and tissues have physically based materials: color, bumps and roughness generated in code for bone, muscle, heart, brain, lung, cartilage, marrow, vessels and more, with a wet sheen where tissue is wet and soft studio reflections. Switch between **natural colors** and **stain colors** in About.
-- **Real molecule shapes.** The 20 amino acids, nucleotides, ATP and lipids come from their chemical structures (RDKit), checked for formula, charge and handedness.
-- **A map by scale** (press M) of every dive and building block on one log scale.
+### Just use it
 
-<p align="center"><img src="docs/media/looks.webp" alt="The femur and the heart, each shown in natural colors and then in stain colors" width="820" /><br /><sub>Femur and heart: natural colors, then stain colors.</sub></p>
+| Version | Where | Notes |
+|---|---|---|
+| **Web** | [normansrule.github.io/anatomy-odyssey](https://normansrule.github.io/anatomy-odyssey/) | Any current browser, phones included. Nothing to install. |
+| **Desktop** | [Latest release](https://github.com/Normansrule/anatomy-odyssey/releases/latest) | Windows `.exe`/`.msi`, macOS `.dmg`, Linux `.AppImage`/`.deb`. Not code-signed yet, so the first launch shows a warning. |
 
-**Learn from it**
-- Cards with an *Expert detail* switch, cited sources and "made of / part of" links.
-- A guided tour with captions (optionally read aloud), four-question quizzes per dive, and a glossary.
-- Every equation has a worked example and a passing test: see [Equations](docs/EQUATIONS.md).
+Pick a dive from the menu at the top (or a part of you on the first screen). Then either drag the scale on the left, or use **Dive deeper** and **Zoom out** on the row of plates at the bottom. Scroll or pinch to zoom, drag the view to turn it, and point at a number in the key to see where that part is. Press **M** for the map, and try **Play tour** for a narrated run-through.
 
-**Trust it**
-- Honesty labels on every scene; simplifications listed in [State of the model](docs/STATE_OF_THE_MODEL.md).
-- Private by design: no accounts, analytics or network calls; a strict Content Security Policy (CSP).
-- Accessible: full keyboard control, screen-reader announcements, reduced-motion support, and an automated WCAG 2.2 audit with zero violations.
-- Adapts to your device: a first-launch check tunes picture quality, and slow devices get lighter materials.
+| Key | What it does |
+|---|---|
+| Arrow keys or Page Up and Page Down on the scale | Zoom by a quarter (or a whole) power of ten |
+| Home and End on the scale | Jump to 10 m or to 0.1 nm |
+| Left and right arrows elsewhere | The previous or next plate |
+| `/` | Search |
+| `M`, `G`, `T` | The map, the glossary, the tour |
 
-## Run it yourself
+### Run it yourself
 
-You need [Node.js](https://nodejs.org) 20 or newer.
+You'll need [Node.js](https://nodejs.org) 20 or newer.
 
 ```bash
 git clone https://github.com/Normansrule/anatomy-odyssey.git
@@ -258,15 +210,14 @@ npm run dev          # then open http://localhost:5173
 <summary><b>More commands</b>: tests, builds, desktop app, screenshots</summary>
 
 ```bash
-npm test               # 479 unit tests
-npm run build          # production build in dist/ (what GitHub Pages serves)
-npm run build:preview  # one self-contained HTML file in dist-preview/
+npm test               # 502 unit tests, plus the asset manifest check
+npm run build          # production build in dist/ (what GitHub Pages serves), with the guide in dist/guide/
+npm run build:preview  # one self-contained HTML (HyperText Markup Language) file in dist-preview/
 npm run molecules      # regenerate molecule geometry (needs: pip install rdkit)
-python3 tools/record-hero.py --dive circulatory --step heart --live 3 --crop 0.08,0.1,0.7,0.9 --width 440 --out docs/media/heartbeat.gif
+python3 tools/record-hero.py --dive skeletal --slide 1e-8 --width 860 --out docs/media/scale-slider.gif
                        # record a README animation (see the file for the other modes; needs Playwright)
 python3 tools/build_body_meshes.py --fetch && python3 tools/build_body_meshes.py && npm run manifest
                        # rebuild the body anatomy from BodyParts3D (needs: pip install numpy fast-simplification)
-npm run a11y           # accessibility audit against a running preview (needs Playwright)
 ```
 
 **Desktop app** (needs [Rust](https://rustup.rs); on Linux also `sudo apt install libwebkit2gtk-4.1-dev build-essential libssl-dev libayatana-appindicator3-dev librsvg2-dev`):
@@ -276,63 +227,89 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.20.0 && git push origin v0.20.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release, which the "Download the desktop app" links point to. They are not code-signed yet.
+Pushing a version tag (`git tag v0.20.0 && git push origin v0.20.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release. They aren't code-signed yet.
 
-**Headless checks** (software rendering, no GPU needed):
+**Headless checks** (software rendering, no graphics card needed):
 
 ```bash
 npm run build && npx vite preview --port 4173 &
 pip install playwright pillow && python3 -m playwright install chromium
 python3 tools/screenshots.py --mobile    # every step; fails on console errors or a blank view
-python3 tools/a11y-audit.py              # axe-core, WCAG 2.2 A and AA
+python3 tools/a11y-audit.py              # axe-core accessibility audit, WCAG 2.2 A and AA, app and guide, light and dark
 ```
 
-**URL options**: `?dive=nervous&step=synapse` opens a step, `&trip=1` opens a side trip, `?renderer=webgl` forces the WebGL 2 fallback, `?env=0` turns off studio reflections.
+**Web address options**: `?dive=nervous&step=synapse` opens a step, `&trip=1` opens a side trip, `?renderer=webgl` forces the WebGL 2 fallback, `?env=0` turns off studio reflections.
 
 **Publishing**: [docs/PUBLISHING.md](docs/PUBLISHING.md) has the exact terminal commands to apply a change, push it, turn on GitHub Pages and publish the desktop apps.
 
 </details>
 
-## How it works
+## Project structure
 
-The body-to-molecule gap is about a billion-fold, too big for one continuous model. So each dive is a **chain of scenes**, each built at its own scale (1 unit = 1 m for the body, 1 cm for organs, 1 µm for cells, 1 nm or 1 Å for molecules). The engine frames each scene by its real size and flies between them while the gauge sweeps on a log scale.
+```
+src/
+  main.js      app start-up: wires the engine, the scenes and the interface together
+  engine/      renderer (WebGPU, with a WebGL 2 fallback), tier engine, lighting, device check
+    textures/  tissue surfaces generated in code: tileable noise, tissue recipes, materials
+  scenes/      one builder per step (body, femur, heart, neuron, lungs, …) plus the registry
+  library/     shared building blocks (nucleus, DNA, hemoglobin, ATP, …) and molecule data
+  data/        dives, library graph, cards, quizzes, references: all the content lives here
+  science/     pure, tested math: scale, equations, chemistry, immune model, T cells, reflexes
+  ui/          scale slider, living key, cards, search, controls, tour, quiz, glossary, map, about
+  styles/      app.css, the whole visual system (tokens at the top)
+guide/         the guide website's stylesheet, script and body picture
+src-tauri/     desktop shell (Tauri 2)
+assets/        the measured body and molecule files, with credits
+tests/         Vitest suites
+tools/         guide builder and its Markdown converter, screenshots, accessibility audit,
+               animation recorder, mesh and molecule builders
+docs/          state of the model, equations, security model, publishing, media
+```
+
+Each dive is a **chain of scenes**, each built at its own scale (1 unit = 1 m for the body, 1 cm for organs, 1 µm for cells, 1 nm or 1 Å for molecules), because the gap from body to molecule is about a billion-fold. The engine frames each scene by its real size and flies between them while the scale slider sweeps on a log scale.
 
 <p align="center"><img src="docs/media/powers-of-ten.svg" alt="Powers of ten across the skeletal dive" width="720" /></p>
 
 <details>
-<summary><b>Project layout and adding a dive</b></summary>
+<summary><b>Adding a dive</b></summary>
 
-```
-src/
-  engine/      renderer (WebGPU, WebGL 2 fallback), tier engine, lighting, device check
-    textures/  tissue surface framework: tileable noise, tissue recipes, materials
-  scenes/      one builder per step (body, femur, heart, neuron, lungs, …) + registry
-  library/     shared building blocks (nucleus, DNA, hemoglobin, ATP, …) and molecule data
-  data/        dives, library graph, cards, quizzes, references (all content lives here)
-  science/     pure, tested math: scale, equations, chemistry, immune model, T cells, reflexes
-  ui/          gauge, cards, search, controls, tour, quiz, glossary, map, about
-src-tauri/     desktop shell (Tauri 2)
-tests/         Vitest suites
-tools/         screenshots, accessibility audit, GIF recorder, molecule generator
-docs/          state of the model, equations, security model, publishing
-```
-
-**Adding a dive:**
 1. Write scene builders in `src/scenes/` (return `root`, `metersPerUnit`, `view`, `focus`, `dispose`; optionally `controls`, `update`, `branchFocus`).
 2. Register them in `src/scenes/registry.js` and add the dive to `src/data/dives.js`.
-3. Tag tissue materials for realistic surfaces: `M(color, { tissue: 'muscle' })` (kinds are in `src/engine/textures/tissues.js`).
+3. Tag tissue materials for realistic surfaces: `M(color, { tissue: 'muscle' })` (the kinds are in `src/engine/textures/tissues.js`).
 4. Write cards with sources, narration for each step, and four quiz questions.
 5. `npm test` checks that frames shrink and tiers rise, every clickable part has a card, and shared steps reuse the library.
 
 </details>
 
+## Design
+
+**The idea: a classroom wall chart.** You know the ones: a pull-down anatomy chart with heavy rules, numbered leader lines running to a key, and the parts colored by a code every textbook shares. Anatomy Odyssey is that chart, with two things paper can't do: the specimen is a live 3D model, and the chart zooms.
+
+- **The sheet is ruled into cells.** The scale column on the left, the plate in the middle, the key on the right, and the plates of the dive along the bottom, all divided by 2-pixel rules like a printed chart. No floating cards, no frosted glass, no drop shadows.
+- **Every color means something anatomical.** Artery red, vein blue, nerve yellow, lymph green and bone ivory, the code anatomy charts have always used. Red also means "you are here": the scale's marker, the current plate, the one main action and the leader line you're tracing. Vein blue marks focus and links. Nothing gets a color just to decorate.
+- **Light sheet or slate.** Light mode is the printed sheet (a cool grey-green paper); dark mode is the same chart on slate. Every text color is at least 4.5 to 1 against its background in both.
+- **Two typefaces, each with one job.** Archivo, condensed and heavy, for plate titles and numbers, like the lettering on a chart; Atkinson Hyperlegible Next, designed for low-vision readers, for everything you read. Nothing is smaller than 12 pixels, and numbers are tabular so they don't jitter while the slider moves.
+- **One spacing rhythm.** Every gap is a multiple of 4 pixels, and every target you can press is at least 24 pixels (44 for the main controls).
+
+**The hero moment is the scale slider.** Drag it and the view follows your finger seamlessly: inside a plate the camera zooms on a spring (on a log scale, so every power of ten takes the same time), and when the size you're asking for is closer to the next plate's, the view flies on and keeps going. The flight speeds up out of one plate and slows into the next, so there's no stop in the middle where the model swaps.
+
+**The second is the living key.** The numbers on the model are projected from the 3D parts every frame and kept clear of each other, and the leader line springs out from the key to the part and follows it as you turn the model.
+
+**Motion has a job or it doesn't happen.** Buttons answer a press with a slight 0.97 scale in 140 milliseconds, easing out so they feel immediate. Hover effects only switch on for a real mouse, so taps never leave a stuck highlight. With reduced motion on, flights become a short crossfade, the slider and leader lines jump instead of springing, and nothing slides or scales, but color and fade feedback stay so you still see what happened.
+
+**States are designed too.** Loading shows a ruled "Drawing the plate" title card while the 11 megabyte body loads; if the measured body can't load, a notice says the simplified figure is showing; a browser without 3D graphics gets a plain explanation instead of a blank page; and an empty search suggests what to try.
+
+The whole visual system is the token block at the top of [`src/styles/app.css`](src/styles/app.css), and the guide website reads its tokens from the same file.
+
 ## Documentation
+
+All of these are also on the [guide website](https://normansrule.github.io/anatomy-odyssey/guide/), set as the chart's booklet.
 
 | Document | What's inside |
 |---|---|
 | [State of the model](docs/STATE_OF_THE_MODEL.md) | Every step, where it honestly stops, and what is simplified |
 | [Equations](docs/EQUATIONS.md) | 29 worked examples, each with symbols, units and its test |
-| [Security model](docs/SECURITY_MODEL.md) | Trust boundaries, privacy, supply chain |
+| [Security model](docs/SECURITY_MODEL.md) | Trust boundaries, privacy (a strict Content Security Policy, no analytics), supply chain |
 | [Publishing](docs/PUBLISHING.md) | Apply a change, push it, turn on the website, publish the desktop apps |
 | [Changelog](CHANGELOG.md) | What changed in each version |
 | [Asset credits](assets/CREDITS.md) | Sources and licenses |
@@ -342,16 +319,16 @@ docs/          state of the model, equations, security model, publishing
 - [x] Fifteen dives, six modules and a complete shared library; every dive and every module ends at a molecule
 - [x] Desktop app, device check, accessibility audit
 - [x] Realistic tissue surfaces with natural and stain looks
-- [x] The spinal cord, through the knee-jerk reflex
-- [x] A body measured from a real one (BodyParts3D, CC BY-SA), and real organs for the heart, brain, lungs, liver, pancreas, kidney, femur and the digestive and urinary tracts
+- [x] A body measured from a real one, and real organs for the heart, brain, lungs, liver, pancreas, kidney, femur and the digestive and urinary tracts
+- [x] A wall chart redesign: the scale slider, the living key, light and dark sheets, and a guide website
 - [ ] Measured thyroid, eye and ear
 - [ ] Real atomic structures from the Protein Data Bank for the large molecules
 - [ ] Code-signed desktop releases
 
 ## License
 
-- **Code**: [MIT](LICENSE).
-- **Anatomy assets** in `assets/anatomy/`: derived from BodyParts3D, CC BY-SA 2.1 Japan (see [assets/CREDITS.md](assets/CREDITS.md)). ShareAlike covers those files only.
+- **Code**: [MIT License](LICENSE).
+- **Anatomy assets** in `assets/anatomy/`: derived from BodyParts3D, Creative Commons Attribution-ShareAlike 2.1 Japan (CC BY-SA 2.1 JP); see [assets/CREDITS.md](assets/CREDITS.md). ShareAlike covers those files only.
 - **Molecular assets**: each file's own license, listed in [assets/CREDITS.md](assets/CREDITS.md).
-- **Fonts**: Atkinson Hyperlegible Next and Literata, SIL Open Font License 1.1.
-- Tissue textures are generated in code and covered by the MIT license.
+- **Fonts**: Archivo and Atkinson Hyperlegible Next, SIL Open Font License 1.1, served from the app itself.
+- Tissue textures are generated in code and covered by the MIT License.

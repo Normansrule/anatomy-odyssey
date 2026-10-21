@@ -8,6 +8,8 @@ export function el(tag, props = {}, ...children) {
     else if (k === 'text') node.textContent = v;
     else if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2), v);
     else if (k === 'dataset') Object.assign(node.dataset, v);
+    // CSS variables go through the style object: the Content Security Policy blocks style attributes.
+    else if (k === 'vars') for (const [name, value] of Object.entries(v)) node.style.setProperty(name, value);
     else node.setAttribute(k, v === true ? '' : String(v));
   }
   for (const c of children.flat()) {

@@ -1,7 +1,6 @@
 import '@fontsource/atkinson-hyperlegible-next/latin-400.css';
 import '@fontsource/atkinson-hyperlegible-next/latin-700.css';
-import '@fontsource/literata/latin-400.css';
-import '@fontsource/literata/latin-600.css';
+import '@fontsource-variable/archivo/standard.css';
 import './styles/app.css';
 
 import { createRenderer, applySize } from './engine/renderer.js';
@@ -13,8 +12,10 @@ import { DIVES, TIERS, getDive, locateStep } from './data/dives.js';
 import { getCard } from './data/cards.js';
 import { getLibraryEntry } from './data/library.js';
 import { computeUsedBy, sideTripPath, routeTo } from './science/graph.js';
-import { formatLength } from './science/scale.js';
+import { formatLength, gaugeFraction, GAUGE_TOP_EXP, GAUGE_BOTTOM_EXP } from './science/scale.js';
 import { buildGauge, updateGauge, updateScaleBar } from './ui/gauge.js';
+import { metersAtFraction, planSlide, keyStep } from './ui/scaleSlider.js';
+import { createKey } from './ui/key.js';
 import { renderCard, renderPlanned } from './ui/panel.js';
 import { renderAbout } from './ui/about.js';
 import { buildIndex, search, normalizeQuery } from './ui/search.js';
@@ -46,7 +47,16 @@ const settings = {
   speak: Boolean(progress.pref('speak', false)),
   benchmark: validMeasurement(progress.pref('benchmark', null)) ? progress.pref('benchmark', null) : null,
   look: ['natural', 'stain'].includes(progress.pref('look')) ? progress.pref('look') : 'natural',
+  theme: ['system', 'light', 'dark'].includes(progress.pref('theme')) ? progress.pref('theme') : 'system',
 };
+// Light sheet or slate: the setting wins, otherwise the device's preference.
+const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+const isDark = () => (settings.theme === 'system' ? systemDark.matches : settings.theme === 'dark');
+function applyTheme() {
+  if (settings.theme === 'system') delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = settings.theme;
+}
+applyTheme();
 let applySurfaces = () => setSurfaceOptions({ look: settings.look, detail: detailFor(settings.quality, settings.benchmark?.tier) });
 applySurfaces();
 const reducedMotion = () => (settings.motion === 'system' ? systemReduce.matches : settings.motion === 'reduce');
@@ -75,7 +85,10 @@ function tierOf(stepId) {
 async function main() {
   // The detailed body anatomy downloads while the renderer starts.
   const anatomy = loadBodyParts();
-  anatomy.catch((err) => console.warn('Detailed anatomy unavailable; showing the simplified figure.', err));
+  anatomy.catch((err) => {
+    console.warn('Detailed anatomy unavailable; showing the simplified figure.', err);
+    app.append(el('p', { class: 'notice', role: 'status', text: 'Showing the simplified figure: the measured body could not load.' }));
+  });
   let renderer;
   let backend;
   try {
@@ -102,6 +115,8 @@ async function main() {
   resize();
   new ResizeObserver(resize).observe(canvas);
   systemReduce.addEventListener('change', () => (engine.reducedMotion = reducedMotion()));
+  engine.setTheme(isDark());
+  systemDark.addEventListener('change', () => engine.setTheme(isDark()));
 
   const currentStep = () => state.path[state.stepIndex];
   const onSideTrip = () => state.path.some((s) => s.sideTrip);
@@ -117,7 +132,7 @@ async function main() {
     const list = clear($('track-steps'));
     trackItems = path.map((s, i) => {
       const btn = el('button', { class: `track__step${s.sideTrip ? ' track__step--side' : ''}`, onclick: () => goTo(i) },
-        el('span', { class: 'track__num', text: String(s.tier) }),
+        el('span', { class: 'track__num', text: String(i + 1) }),
         el('span', { class: 'track__title', text: s.title }),
       );
       list.append(el('li', {}, btn));
@@ -191,6 +206,68 @@ async function main() {
     readout: $('scene-readout'),
   });
 
+  // ── Scale slider ──────────────────────────────────────────────────
+  // The scale column is one slider from 10 m to 0.1 nm: drag it (or use the
+  // arrow and Page keys) and the view zooms there, flying plate to plate.
+  const gaugeEl = $('gauge');
+  const slider = { target: null, dragging: false };
+  const railFraction = (e) => {
+    const r = $('gauge-rail').getBoundingClientRect();
+    return (e.clientY - r.top) / r.height;
+  };
+  function startSlide(meters) {
+    if (slider.target === null) {
+      tour.stop();
+      hideIntro();
+    }
+    slider.target = meters;
+  }
+  function stopSlide() {
+    slider.target = null;
+    slider.dragging = false;
+    delete gaugeEl.dataset.dragging;
+    engine.setZoomGoal(null);
+  }
+  /** Each frame: zoom within this plate, or fly on to the neighbor nearer the size asked for. */
+  function slide() {
+    if (slider.target === null || engine.busy) return;
+    const plan = planSlide(state.path, state.stepIndex, slider.target);
+    if (plan.kind === 'step') {
+      engine.setZoomGoal(null);
+      goTo(plan.index, { quick: true });
+      return;
+    }
+    engine.setZoomGoal(plan.ratio);
+    if (!slider.dragging && Math.abs(Math.log(engine.zoomRatio() / plan.ratio)) < 0.01) stopSlide();
+  }
+  gaugeEl.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    gaugeEl.setPointerCapture(e.pointerId);
+    slider.dragging = true;
+    gaugeEl.dataset.dragging = 'true';
+    startSlide(metersAtFraction(railFraction(e)));
+    e.preventDefault();
+  });
+  gaugeEl.addEventListener('pointermove', (e) => {
+    if (slider.dragging) slider.target = metersAtFraction(railFraction(e));
+  });
+  for (const type of ['pointerup', 'pointercancel']) {
+    gaugeEl.addEventListener(type, () => {
+      slider.dragging = false;
+      delete gaugeEl.dataset.dragging;
+    });
+  }
+  gaugeEl.addEventListener('keydown', (e) => {
+    const ends = { Home: GAUGE_TOP_EXP, End: GAUGE_BOTTOM_EXP };
+    const decades = keyStep(e.key);
+    if (!decades && !(e.key in ends)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const from = Math.log10(slider.target ?? engine.viewMeters());
+    const to = e.key in ends ? ends[e.key] : Math.min(GAUGE_TOP_EXP, Math.max(GAUGE_BOTTOM_EXP, from + decades));
+    startSlide(10 ** to);
+  });
+
   // ── Card panel ────────────────────────────────────────────────────
   const panel = $('panel');
   const panelBody = $('panel-body');
@@ -202,7 +279,7 @@ async function main() {
     expert: state.expert,
     tierOf,
     hasQuiz: hasQuiz(state.dive.id),
-    structures: () => engine.structures(),
+    keyParts: () => key.parts(),
     onDive: () => goTo(state.stepIndex + 1),
     onBranch: () => takeBranch(),
     onQuiz: () => startQuiz(),
@@ -255,8 +332,42 @@ async function main() {
   }
   $('panel-close').addEventListener('click', closePanel);
 
+  // ── The living key ────────────────────────────────────────────────
+  // Numbers on the model match the card's key; pointing at either lights both.
+  const key = createKey({ app, marksEl: $('marks'), leaderEl: $('leader'), lineEl: $('leader-line'), engine });
+  let keyBuilt = null;
+  /** Renumber the key when the model on screen changes. True if it did. */
+  function syncKey() {
+    const built = engine.current?.built ?? null;
+    if (built === keyBuilt) return false;
+    keyBuilt = built;
+    key.setParts(engine.structures());
+    return true;
+  }
+  const keyItem = (e) => e.target.closest?.('.key__item');
+  const lightKey = (e) => {
+    const b = keyItem(e);
+    if (!b) return;
+    key.setHot(b.dataset.card, b);
+    engine.hoverCard(b.dataset.card);
+  };
+  const dimKey = (e) => {
+    const b = keyItem(e);
+    if (!b || b.contains(e.relatedTarget)) return;
+    key.setHot(null);
+    engine.setHover(null);
+  };
+  panelBody.addEventListener('pointerover', lightKey);
+  panelBody.addEventListener('focusin', lightKey);
+  panelBody.addEventListener('pointerout', dimKey);
+  panelBody.addEventListener('focusout', dimKey);
+  panelBody.addEventListener('click', (e) => {
+    const b = keyItem(e);
+    if (b) openCard(b.dataset.card, { focus: e.detail === 0 });
+  });
+
   // ── Navigation ────────────────────────────────────────────────────
-  async function goTo(i, { thenOpen, fromFocus, keepTour = false } = {}) {
+  async function goTo(i, { thenOpen, fromFocus, keepTour = false, quick = false } = {}) {
     if (i < 0 || i >= state.path.length) return false;
     if (!keepTour) tour.stop();
     if (i === state.stepIndex) {
@@ -267,14 +378,22 @@ async function main() {
     const forward = i > state.stepIndex;
     state.stepIndex = i;
     beginMove();
-    await engine.transition(state.path[i], forward, { fromFocus });
+    // Mid-drag, the key turns to the new plate as its model appears, not after the flight.
+    const onSwap = quick && !panel.hidden && wide.matches
+      ? () => {
+          syncKey();
+          openCard(state.path[i].card, { focus: false });
+        }
+      : undefined;
+    await engine.transition(state.path[i], forward, { fromFocus, quick, onSwap });
     arrive(thenOpen);
     return true;
   }
 
   function beginMove() {
     app.dataset.busy = 'true';
-    closePanel();
+    // While the scale slider drives, the key stays put (it refreshes on arrival), so the view doesn't shift sideways mid-drag.
+    if (slider.target === null) closePanel();
     sceneControls.hide();
     hideIntro();
     refreshTrack();
@@ -292,6 +411,7 @@ async function main() {
     progress.markVisited(`${state.dive.id}:${s.id}`);
     refreshTrack();
     sceneControls.attach(engine.current?.built.controls);
+    syncKey();
     announce(`${TIERS[s.tier]} tier: ${s.title}${s.sideTrip ? ', side trip' : ''}. The view is about ${formatLength(s.frameMeters).text} tall.`);
     if (thenOpen) openCard(thenOpen, { focus: !tour.active });
     else if (wide.matches && !tour.active) openCard(s.card, { focus: false });
@@ -382,7 +502,7 @@ async function main() {
       const item = el('button', {
         class: 'menu__item',
         role: 'menuitem',
-        style: `--swatch: ${d.swatch ?? 'var(--eosin)'}`,
+        vars: { '--swatch': d.swatch ?? 'var(--accent)' },
         'aria-disabled': d.status === 'planned' ? 'true' : null,
         onclick: () => {
           if (d.status !== 'built') return;
@@ -582,6 +702,10 @@ async function main() {
         settings[name] = value;
         progress.setPref(name, value);
         if (name === 'motion') engine.reducedMotion = reducedMotion();
+        if (name === 'theme') {
+          applyTheme();
+          engine.setTheme(isDark());
+        }
         if (name === 'quality') resize();
         if (name === 'look' || name === 'quality') {
           applySurfaces();
@@ -629,7 +753,7 @@ async function main() {
   for (const d of DIVES.filter((x) => x.kind === 'dive' && x.id !== 'skeletal')) {
     introDives.append(el('button', {
       class: 'intro__dive',
-      style: `--swatch: ${d.swatch}`,
+      vars: { '--swatch': d.swatch },
       onclick: () => {
         hideIntro();
         switchDive(d.id);
@@ -699,7 +823,7 @@ async function main() {
   }
 
   function updateZoomGuide() {
-    const t = !engine.busy && !tour.active && engine.current ? zoomTarget() : null;
+    const t = !engine.busy && !tour.active && slider.target === null && engine.current ? zoomTarget() : null;
     if (!t) {
       if (guide) {
         guideEl.hidden = true;
@@ -730,7 +854,10 @@ async function main() {
     const r = canvas.getBoundingClientRect();
     return new Vector2(((x - r.left) / r.width) * 2 - 1, -((y - r.top) / r.height) * 2 + 1);
   };
-  canvas.addEventListener('pointerdown', (e) => pressed.set(e.pointerId, [e.clientX, e.clientY]));
+  canvas.addEventListener('pointerdown', (e) => {
+    pressed.set(e.pointerId, [e.clientX, e.clientY]);
+    stopSlide();
+  });
   canvas.addEventListener('pointermove', (e) => {
     if (!pressed.has(e.pointerId)) return;
     pressed.set(e.pointerId, [e.clientX, e.clientY]);
@@ -748,6 +875,7 @@ async function main() {
   canvas.addEventListener(
     'wheel',
     (e) => {
+      stopSlide();
       aimNdc = ndcVector(e.clientX, e.clientY);
       engine.zoomAt(aimNdc);
       if (e.deltaY >= 0 || engine.busy || currentStep().scene !== 'body') return;
@@ -779,6 +907,7 @@ async function main() {
     hoverQueued = null;
     tooltip.hidden = true;
     engine.setHover(null);
+    key.setHot(null);
   });
   function updateHover() {
     if (!hoverQueued) return;
@@ -792,6 +921,7 @@ async function main() {
     const hit = engine.pickAt(ndcOf(e));
     canvas.style.cursor = hit ? 'pointer' : '';
     engine.setHover(hit);
+    key.setHot(hit?.cardId ?? null);
     if (!hit) {
       tooltip.hidden = true;
       return;
@@ -895,8 +1025,11 @@ async function main() {
     const insets = viewInsets();
     engine.setViewInsets(insets.top, insets.bottom);
     engine.setViewShift(viewShift(), viewShiftY(insets.bottom));
+    slide();
     engine.update(dt);
     engine.render();
+    if (syncKey() && state.openCard && !engine.busy) reopen();
+    key.update(dt, { busy: engine.busy, reducedMotion: reducedMotion() });
     updateHover();
     updateZoomGuide();
     sceneControls.sync();
@@ -905,7 +1038,11 @@ async function main() {
       lastMeters = meters;
       updateGauge(gauge, meters);
       updateScaleBar(scaleBar, engine.metersPerPixel());
+      gaugeEl.setAttribute('aria-valuenow', Math.log10(meters).toFixed(2));
+      gaugeEl.setAttribute('aria-valuetext', formatLength(meters, 2).text);
     }
+    // While dragging, the marker stays under the finger; the view catches up.
+    if (slider.dragging) gauge.marker.style.top = `${gaugeFraction(slider.target) * 100}%`;
   });
   app.dataset.ready = 'true';
   // For automated screenshot tests.
@@ -933,7 +1070,9 @@ function viewInsets() {
   const topbar = document.querySelector('.topbar');
   const top = visible(topbar) ? topbar.getBoundingClientRect().bottom - box.top + 6 : 0;
   let bottomEdge = box.bottom;
-  for (const node of [document.querySelector('.track'), document.getElementById('systems')]) {
+  // On phones the card is a sheet over the lower screen, so the view frames above it.
+  const sheet = wide.matches ? null : document.getElementById('panel');
+  for (const node of [document.querySelector('.track'), document.getElementById('systems'), sheet]) {
     if (visible(node) && node.childElementCount > 0) bottomEdge = Math.min(bottomEdge, node.getBoundingClientRect().top - 6);
   }
   return { top, bottom: box.bottom - bottomEdge };

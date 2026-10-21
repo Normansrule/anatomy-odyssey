@@ -9,6 +9,33 @@ function section(title, ...content) {
   return el('section', { class: 'card__section' }, el('h3', { class: 'card__heading', text: title }), ...content);
 }
 
+/** How many key entries a card lists; the rest are a search away. */
+export const KEY_SHOWN = 12;
+
+/**
+ * The numbered key: every structure in the view, numbered like its mark on
+ * the model. Pointing at an entry draws a leader line to the part (see key.js).
+ */
+function keySection(parts, cardId) {
+  if (!parts.length) return null;
+  const shown = parts.slice(0, KEY_SHOWN);
+  return section(
+    'Key: in this view',
+    el('ol', { class: 'key' },
+      shown.map((p) => el('li', {}, el('button', {
+        class: 'key__item',
+        type: 'button',
+        dataset: { card: p.id },
+        'aria-current': p.id === cardId ? 'true' : null,
+        'aria-label': `${p.n}: ${p.title}`,
+      }, el('span', { class: 'key__num', 'aria-hidden': 'true', text: String(p.n) }), p.title))),
+      parts.length > shown.length
+        ? el('li', { class: 'key__more', text: `And ${parts.length - shown.length} more here: point at the model, or search by name.` })
+        : null,
+    ),
+  );
+}
+
 function references(ids) {
   const items = ids.map((id) => REFERENCES[id]).filter(Boolean);
   if (!items.length) return null;
@@ -61,13 +88,14 @@ export function renderCard(container, cardId, ctx) {
   const isSideTripFocus = ctx.nextStep?.sideTrip && step.focusCard === cardId;
   const branch = step.branch && !ctx.onSideTrip && (cardId === step.branch.card || cardId === step.card) ? step.branch : null;
   const isBottom = !ctx.nextStep && cardId === step.card;
-  const structures = ctx.structures().filter((id) => id !== cardId).map(getCard).filter(Boolean);
 
   const parts = [
-    el('p', { class: 'card__tier', text: tierText }),
     el('h2', { class: 'card__title', id: 'card-title', text: card.title }),
     el('p', { class: 'card__size', text: card.size }),
-    el('ul', { class: 'card__labels', 'aria-label': 'About this view' }, labels.map((l) => el('li', { class: 'tag', text: l }))),
+    el('ul', { class: 'card__labels', 'aria-label': 'About this view' }, [
+      el('li', { class: 'tag tag--tier', text: tierText }),
+      ...labels.map((l) => el('li', { class: 'tag', text: l })),
+    ]),
     isFocus || isSideTripFocus
       ? el('button', { class: 'primary-button card__dive', text: `Dive into the ${ctx.nextStep.title.toLowerCase()}`, onclick: ctx.onDive })
       : null,
@@ -77,6 +105,7 @@ export function renderCard(container, cardId, ctx) {
     isBottom && ctx.hasQuiz
       ? el('button', { class: 'secondary-button card__dive', text: 'Check yourself: 4 questions', onclick: ctx.onQuiz })
       : null,
+    keySection(ctx.keyParts?.() ?? [], cardId),
     section('What it does', el('p', { class: 'card__text', text: card.what })),
     section('Why it matters', el('p', { class: 'card__text', text: card.why })),
     el(
@@ -94,9 +123,6 @@ export function renderCard(container, cardId, ctx) {
     card.related?.length
       ? section('Related', el('ul', { class: 'card__links' }, card.related.map((r) => el('li', {}, el('button', { class: 'link-button', text: r.label, onclick: () => ctx.onRelated(r.dive) })))))
       : null,
-    structures.length
-      ? section('In this view', el('ul', { class: 'card__links card__links--inline' }, structures.map((c) => el('li', {}, el('button', { class: 'link-button', text: c.title, onclick: () => ctx.onOpenCard(c.id) })))))
-      : null,
     references(card.refs ?? []),
   ];
   container.append(...parts.filter(Boolean));
@@ -113,9 +139,11 @@ export function renderPlanned(container, libraryId, ctx) {
   }
   const users = ctx.usedBy.get(libraryId) ?? [];
   container.append(
-    el('p', { class: 'card__tier', text: 'Shared library' }),
     el('h2', { class: 'card__title', id: 'card-title', text: entry.title }),
-    el('ul', { class: 'card__labels' }, el('li', { class: 'tag tag--planned', text: 'Not built yet' })),
+    el('ul', { class: 'card__labels' }, [
+      el('li', { class: 'tag tag--tier', text: 'Shared library' }),
+      el('li', { class: 'tag tag--planned', text: 'Not built yet' }),
+    ]),
     section('What it is', el('p', { class: 'card__text', text: PLANNED_CARDS[libraryId] ?? '' })),
     section(
       'Where it will appear',

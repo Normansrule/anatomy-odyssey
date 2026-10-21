@@ -36,7 +36,7 @@ function versionsSection(desktop) {
     el('h3', { text: 'Web and desktop versions' }),
     desktop
       ? el('p', { text: `You are using the desktop app. The same app runs in any current browser at ${WEB_URL.replace('https://', '').replace(/\/$/, '')}, and new versions are posted on the project’s GitHub Releases page.` })
-      : el('p', {}, 'You are using the web version. It is also available as a desktop app for Windows, macOS and Linux: ', link(RELEASES_URL, 'download the desktop app'), '. The source code is on ', link(SOURCE_URL, 'GitHub'), '.'),
+      : el('p', {}, 'You are using the web version. It is also available as a desktop app for Windows, macOS and Linux: ', link(RELEASES_URL, 'download the desktop app'), '. The source code is on ', link(SOURCE_URL, 'GitHub'), ', and the ', link(`${WEB_URL}guide/`, 'guide'), ' explains how the model is built.'),
   ];
 }
 
@@ -62,6 +62,7 @@ export function renderAbout(container, { backend, settings, onSetting, onReset, 
 
     el('h3', { text: 'Settings' }),
     radioGroup('motion', 'Motion', [['system', 'Follow my device'], ['reduce', 'Reduce motion'], ['full', 'Full motion']], settings.motion, (v) => onSetting('motion', v)),
+    radioGroup('theme', 'Sheet', [['system', 'Follow my device'], ['light', 'Light chart'], ['dark', 'Slate']], settings.theme, (v) => onSetting('theme', v)),
     radioGroup('look', 'Look', [['natural', 'Natural colors'], ['stain', 'Stain colors']], settings.look, (v) => onSetting('look', v)),
     el('p', { class: 'setting__note', text: 'Natural shows organs and tissues in the colors they have in life, with textured, wet-looking surfaces. Stain uses the colors of a stained microscope slide. Cells and molecules always use stain colors: real ones are nearly colorless.' }),
     radioGroup('quality', 'Picture quality', [['low', 'Battery saver'], ['auto', 'Balanced'], ['high', 'Sharp']], settings.quality, (v) => onSetting('quality', v)),
@@ -77,7 +78,8 @@ export function renderAbout(container, { backend, settings, onSetting, onReset, 
     el('h3', { text: 'How to move around' }),
     el('ul', {},
       el('li', { text: 'Drag to orbit, scroll or pinch to zoom, right-drag or two-finger drag to pan.' }),
-      el('li', { text: 'Click any structure to open its card. The card also lists everything in view, so you can pick parts with the keyboard.' }),
+      el('li', { text: 'Drag the scale on the left to zoom from 10 m down to 0.1 nm; the view flies on to the next plate when you get close. With the scale focused, the arrow keys zoom by a quarter of a power of ten, Page Up and Page Down by a whole one, Home and End to either end.' }),
+      el('li', { text: 'Click any structure to open its card. Its key numbers everything in view: point at a number to see where that part is, or pick it with the keyboard.' }),
       el('li', { text: 'Keyboard: → or Page Down dives deeper, ← or Page Up zooms out, / jumps to search, M opens the map, G opens the glossary, T plays the tour, Esc closes cards and stops the tour.' }),
     ),
 
@@ -107,7 +109,7 @@ export function renderAbout(container, { backend, settings, onSetting, onReset, 
     el('h3', { text: 'Credits' }),
     el('ul', {},
       el('li', { text: 'Rendering: three.js (MIT license).' }),
-      el('li', { text: 'Type: Atkinson Hyperlegible Next and Literata (SIL Open Font License 1.1).' }),
+      el('li', { text: 'Type: Archivo and Atkinson Hyperlegible Next (SIL Open Font License 1.1).' }),
       el('li', { text: 'Content sources are cited on every card.' }),
     ),
     el('p', { class: 'about__meta', text: `Renderer in use: ${backend}.` }),

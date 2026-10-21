@@ -15,7 +15,7 @@ Each equation follows the same pattern: intuition, equation, symbols with units,
 
 **Worked example.** Body height 1.75 m against DNA width 2 nm: log₁₀(1.75 / 2 × 10⁻⁹) = log₁₀(8.75 × 10⁸) ≈ 8.94. The body is almost a billion times wider than the DNA helix.
 
-**Where you see it.** The depth gauge, which maps log₁₀ of the view height from 10 m (top) to 0.1 nm (bottom).
+**Where you see it.** The scale slider on the left, which maps log₁₀ of the view height from 10 m (top) to 0.1 nm (bottom).
 
 **Test.** `tests/scale.test.js` → "whole body to DNA width is about a billion-fold".
 
