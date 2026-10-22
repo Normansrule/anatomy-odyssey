@@ -74,9 +74,10 @@ describe('the eye', () => {
     b.dispose();
   });
   it('the body’s eyes sit in front of the brain at eye level', () => {
-    expect(EYES.x[0]).toBeCloseTo(-EYES.x[1], 6);
-    expect(EYES.x[1]).toBeGreaterThan(0.025); // pupils about 6 cm apart
-    expect(EYES.x[1]).toBeLessThan(0.04);
+    expect(Math.abs(EYES.x[0] + EYES.x[1])).toBeLessThan(0.002); // a face is symmetric to within a couple of millimetres
+    expect(EYES.x[1] - EYES.x[0]).toBeGreaterThan(0.05); // pupils about 6 cm apart
+    expect(EYES.x[1] - EYES.x[0]).toBeLessThan(0.07);
+    expect(EYES.radius * 2000).toBeCloseTo(EYE_MM.axial, 0); // the body's eyeballs are a real eye's size, not BodyParts3D's 31 mm
     expect(EYES.y).toBeGreaterThan(LANDMARKS.height - 0.16); // about 11 cm below the top of the head
     expect(EYES.y).toBeLessThan(LANDMARKS.height - 0.08);
     expect(EYES.z).toBeGreaterThan(LANDMARKS.brain[2] + 0.05);

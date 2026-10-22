@@ -150,7 +150,7 @@ function buildNerves(M) {
   }
   // Smell: the olfactory patch in the roof of the nasal cavity, and the bulbs above it.
   g.add(pick(ellipsoid([0, NOSE.y, NOSE.z], [0.008, 0.0035, 0.011], M(0xe8c45a, { roughness: 0.45 }), 14), 'nasal-cavity', 'Roof of the nasal cavity (olfactory epithelium)'));
-  for (const x of [-0.006, 0.006]) g.add(pick(ellipsoid([x, NOSE.y + 0.008, NOSE.z - 0.018], [0.0025, 0.0018, 0.008], M(0xf0d050, { roughness: 0.45 }), 10), 'olfactory-bulb', 'Olfactory bulb'));
+  for (const x of [-0.006, 0.006]) g.add(pick(ellipsoid([x, NOSE.y + 0.0072, NOSE.z - 0.002], [0.0025, 0.0018, 0.008], M(0xf0d050, { roughness: 0.45 }), 10), 'olfactory-bulb', 'Olfactory bulb'));
   // Inner ears, with their nerves to the brainstem.
   for (const x of INNER_EARS.x) {
     const coil = new THREE.Mesh(new THREE.TorusGeometry(0.0035, 0.0014, 8, 20), M(0xf2e4c0, { roughness: 0.4 }));
@@ -159,8 +159,8 @@ function buildNerves(M) {
     g.add(pick(coil, 'ear', 'Inner ear (cochlea)'));
     nerve([[x, INNER_EARS.y, INNER_EARS.z], [x * 0.5, INNER_EARS.y - 0.004, INNER_EARS.z - 0.008], [0, INNER_EARS.y - 0.014, INNER_EARS.z - 0.014]], 0.0012, 'vestibulocochlear-nerve', 'Vestibulocochlear nerve');
   }
-  // The iris and pupil on the front of each eye.
-  for (const x of EYES.x) g.add(pick(ellipsoid([x, EYES.y, EYES.z + 0.0118], [0.0058, 0.0058, 0.0016], M(0x3f5f80, { roughness: 0.2 }), 18), 'eye', 'Iris and pupil'));
+  // The iris and pupil, a domed disc just proud of the front of each eye.
+  for (const x of EYES.x) g.add(pick(ellipsoid([x, EYES.y, EYES.front - 0.0013], [0.0058, 0.0058, 0.0016], M(0x3f5f80, { roughness: 0.2 }), 18), 'eye', 'Iris and pupil'));
   return g;
 }
 

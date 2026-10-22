@@ -84,6 +84,7 @@ RULES = [
     (r'^ear$', dict(system='skin', card='ear', label='Outer ear (auricle)', tissue='skin', budget=6000)),
     # Skeleton
     (r'tooth', dict(system='skeletal', card='skull', label='Teeth (32 in an adult)', tissue='enamel', budget=300)),
+    (r'nasal cartilage', dict(system='skeletal', card='skull', label='Nose cartilages (the nose past its bones)', tissue='cartilage', budget=2500)),
     (SKULL, dict(system='skeletal', card='skull', label='{name}', tissue='bone', budget=7000)),
     (r'intervertebral disk', dict(system='skeletal', card='intervertebral-disc', label='Intervertebral discs', tissue='cartilage', budget=500)),
     (r'^(atlas|axis)$', dict(system='skeletal', card='vertebral-column', label='{name} (vertebra)', tissue='bone', budget=2500)),
@@ -760,9 +761,8 @@ def landmarks(parts):
         i = v[:, 1].argmin() if pick == 'low' else np.abs(v[:, 0]).argmax()
         return v[i].round(4).tolist()
 
-    eye_lo, eye_hi = box('eyeball')
-    eye_y, eye_z = (eye_lo[1] + eye_hi[1]) / 2, (eye_lo[2] + eye_hi[2]) / 2
-    eye_x = (eye_hi[0] - eye_lo[0]) / 2 - 0.012  # each eye is about 24 mm across
+    eyes = eye_marks(parts['eyeball'][0])
+    eye_y, eye_z = eyes['y'], eyes['z']
     ear_lo, ear_hi = box('ear')
     trachea = parts['trachea'][0]
     larynx_lo, larynx_hi = box('thyroid cartilage')
@@ -770,12 +770,12 @@ def landmarks(parts):
     out = {
         'source': 'Measured from BodyParts3D meshes by tools/build_body_meshes.py',
         'height': round(float(parts['skin'][0][:, 1].max()), 4),
-        'eyes': {'x': [-round(eye_x, 4), round(eye_x, 4)], 'y': round(float(eye_y), 4), 'z': round(float(eye_z), 4)},
+        'eyes': eyes,
         # The cochlea sits deep in the temporal bone, about 3 cm in from the ear canal.
         'innerEars': {'x': [-round(float(ear_hi[0]) - 0.05, 4), round(float(ear_hi[0]) - 0.05, 4)],
                       'y': round(float(eye_y) - 0.012, 4), 'z': round(float((ear_lo[2] + ear_hi[2]) / 2) + 0.004, 4)},
         # The olfactory patch: the roof of the nasal cavity, between and just behind the eyes.
-        'nose': {'y': round(float(eye_y) + 0.004, 4), 'z': round(float(eye_z) - 0.006, 4)},
+        'nose': nose_marks(eyes),
         # The thyroid wraps the windpipe just below the voice box.
         'thyroid': {'center': [0.0, round(float(larynx_lo[1]) - 0.022, 4), round(float(top[:, 2].max()) + 0.006, 4)],
                     'lobeX': 0.02},
@@ -869,6 +869,8 @@ def add_groups(glb, groups):
             extras['side'] = side
         if 'natural' in rule:
             extras['natural'] = rule['natural']
+        if card == 'eye':
+            v = true_size_eyes(v)
         glb.add(f'{card}:{label}{":" + side if side else ""}', v, f, extras, shade)
         tris += len(f)
     return tris
@@ -881,6 +883,40 @@ def group_skeleton(groups, pieces):
         groups[key]['pieces'].append((v, f, shade))
 
 
+EYE_DIAMETER = 0.024  # an adult eyeball is about 24 mm across (Bekerman et al., 2014)
+
+
+def true_size_eyes(v):
+    """BodyParts3D's eyeballs are 31 mm across, which pushes them out of their sockets;
+    shrink each one about its own center to an adult eye's 24 mm. Already true-sized
+    eyes are left as they are."""
+    v = v.copy()
+    for side in (v[:, 0] > 0, v[:, 0] <= 0):
+        lo, hi = v[side].min(0), v[side].max(0)
+        k = EYE_DIAMETER / (hi - lo).mean()
+        if k < 0.98:
+            c = (lo + hi) / 2
+            v[side] = c + (v[side] - c) * k
+    return v
+
+
+def eye_marks(v):
+    """Where the eyes are: the middle of each eyeball, and how far forward the corneas reach."""
+    right = v[v[:, 0] > 0]
+    c = (right.min(0) + right.max(0)) / 2
+    left = v[v[:, 0] <= 0]
+    cl = (left.min(0) + left.max(0)) / 2
+    return {'x': [round(float(cl[0]), 4), round(float(c[0]), 4)], 'y': round(float((c[1] + cl[1]) / 2), 4),
+            'z': round(float((c[2] + cl[2]) / 2), 4), 'radius': EYE_DIAMETER / 2,
+            'front': round(float((right[:, 2].max() + left[:, 2].max()) / 2), 4)}
+
+
+def nose_marks(eyes):
+    """The smell patch lines the roof of the nose, just under the ethmoid's cribriform plate:
+    level with the top of the eyes' middle and about 12 mm behind it (measured on the ethmoid)."""
+    return {'y': round(eyes['y'] + 0.002, 4), 'z': round(eyes['z'] - 0.012, 4)}
+
+
 def from_bundle(skeleton):
     """Rebuild the bundle from itself with the Z-Anatomy skeleton, without the BodyParts3D sources."""
     sys.path.insert(0, str(ROOT / 'tools'))
@@ -890,7 +926,8 @@ def from_bundle(skeleton):
     discs = []
     for p in old:
         label = p['extras'].get('label', '')
-        # Older bundles filed the spinal discs and the hyoid's muscles as bone; file them as the rules now do.
+        # Older bundles filed the spinal discs and the hyoid's muscles as bone, and the nose's cartilage as
+        # muscle; file them as the rules now do.
         if label.startswith(('Intervertebral disk', 'Intervertebral discs')):
             discs.append((p['pos'], p['idx'].reshape(-1, 3)))
             continue
@@ -898,8 +935,16 @@ def from_bundle(skeleton):
             extras = {**p['extras'], 'system': 'muscular', 'card': 'muscular-system', 'tissue': 'muscle'}
             glb.add(f'muscular-system:{label}', p['pos'], p['idx'].reshape(-1, 3), extras)
             continue
+        if label in ('Nasal cartilages', 'Nose cartilages (the nose past its bones)'):
+            rule = classify('nasal cartilages')
+            extras = {**p['extras'], **{k: rule[k] for k in ('system', 'card', 'label', 'tissue')}}
+            glb.add(f"skull:{rule['label']}", p['pos'], p['idx'].reshape(-1, 3), extras)
+            continue
         if replaced_by_skeleton(p['extras']):
             continue
+        if p['extras'].get('card') == 'eye':
+            p['pos'] = true_size_eyes(p['pos'])
+            eyes = eye_marks(p['pos'])
         glb.add(p['name'], p['pos'], p['idx'].reshape(-1, 3), p['extras'])
     groups = {}
     if discs:
@@ -911,6 +956,8 @@ def from_bundle(skeleton):
     size = glb.write(OUT, {**asset, 'license': 'CC BY-SA 4.0', 'skeleton': 'Z-Anatomy'}, COPYRIGHT_ZA)
     marks = json.loads(LANDMARKS.read_text())
     marks.update(bone_marks({name: (v, f) for name, _, v, f, _ in pieces}))
+    marks['eyes'] = eyes
+    marks['nose'] = nose_marks(eyes)
     LANDMARKS.write_text(json.dumps(marks, indent=2) + '\n')
     print(f'wrote {OUT.relative_to(ROOT)}: {len(glb.nodes)} meshes, the skeleton {tris:,} triangles from Z-Anatomy, {size / 1e6:.1f} MB')
     print(f'updated the bone landmarks in {LANDMARKS.relative_to(ROOT)}')

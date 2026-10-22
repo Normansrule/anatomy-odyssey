@@ -6,7 +6,7 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.20.0-a3242f)
+![Version](https://img.shields.io/badge/version-0.20.1-a3242f)
 ![Tests](https://img.shields.io/badge/tests-528%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
@@ -251,7 +251,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.20.0 && git push origin v0.20.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release. They aren't code-signed yet.
+Pushing a version tag (`git tag v0.20.1 && git push origin v0.20.1`) builds Windows, macOS and Linux installers and publishes them as a GitHub release. They aren't code-signed yet.
 
 **Headless checks** (software rendering, no graphics card needed):
 

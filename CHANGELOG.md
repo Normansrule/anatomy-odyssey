@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.20.1
+
+- **Eyes the right size, in their sockets.** BodyParts3D's eyeballs are 31 mm across, a third bigger than a real adult eye (about 24 mm), so they bulged out of the skull and read as googly. `tools/build_body_meshes.py` now shrinks each one about its own center to 24 mm: the corneas sit about 14 mm in front of the outer rim of the orbit (a normal Hertel reading is 12 to 20 mm), about 2.6 mm clear of the orbit's bones and just behind the eyelids. The iris used to be drawn inside the oversized ball and a few millimetres off its axis, showing as a crescent; it now sits domed on the front of each eye on that eye's own axis (`eyes.front` in the landmarks), so both eyes look straight ahead.
+- **The nose on the skull.** The nose's cartilages were filed as muscle, so the skeleton showed only the bony hole of the nose. They are now filed with the skull as cartilage, so the skeleton has its nose and it shows on every skeletal view.
+- **The smell patch under the cribriform plate.** The olfactory epithelium and the olfactory bulbs were placed from the eyes by rule and sat a few millimetres forward of the ethmoid; they are now measured onto it: the patch lines the roof of the nose just under the cribriform plate, and the bulbs rest on top of the plate either side of the crista galli.
+
 ## 0.20.0
 
 - **A realistic skeleton.** The bones and teeth are now Z-Anatomy's (Lluís Vinent and Gauthier Kervyn, CC BY-SA 4.0), a cleaned-up, detailed rebuild of the same BodyParts3D body: 258 bones with their sutures, foramina, ridges and joint faces (the femur alone went from 662 points to about 1,900). `tools/zanatomy_skeleton.py` reads Z-Anatomy's Blender file, decimates each bone to a budget, fits the whole skeleton onto the BodyParts3D one (a similarity fit on matched bone centers, mean error about 1 mm, so every organ still sits where it did) and bakes ambient occlusion into each vertex, so eye sockets, the gaps between vertebrae and the inside of the pelvis darken like real bone. `tools/build_body_meshes.py --skeleton … --from-bundle` swaps them into the bundle (now 15.3 MB), and the app shades bone, teeth and cartilage with it. The intervertebral discs and the muscles of the hyoid, which the old rules filed as bone, are filed correctly.
