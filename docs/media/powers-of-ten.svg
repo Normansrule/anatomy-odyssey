@@ -2,16 +2,16 @@
   <title id="t">Powers of ten across the skeletal dive</title>
   <desc id="d">A logarithmic axis from 10 meters to 0.1 nanometers with the seven stops of the skeletal dive: whole body 2.1 m, skeleton 1.9 m, femur 55 cm, bone tissue 1.6 mm, osteocyte 45 micrometers, nucleus 9 micrometers, DNA 11 nanometers.</desc>
   <style>
-    .bg { fill: #1a1533; }
-    .axis { stroke: #8a78e8; stroke-width: 2; }
-    .tick { stroke: #8a78e8; stroke-width: 1.5; }
-    .tl { fill: #aaa3c9; font-size: 12px; }
-    .stop { fill: #f08baf; }
-    .sl { fill: #eeecf6; font-size: 13px; font-weight: 700; }
-    .sv { fill: #aaa3c9; font-size: 12px; }
-    .note { fill: #aaa3c9; font-size: 13px; }
+    .bg { fill: #eef0ea; }
+    .axis { stroke: #1b2120; stroke-width: 2; }
+    .tick { stroke: #1b2120; stroke-width: 1.5; }
+    .tl { fill: #4a5452; font-size: 12px; }
+    .stop { fill: #a3242f; }
+    .sl { fill: #1b2120; font-size: 13px; font-weight: 700; }
+    .sv { fill: #4a5452; font-size: 12px; }
+    .note { fill: #4a5452; font-size: 13px; }
   </style>
-  <rect class="bg" width="880" height="250" rx="16" />
+  <rect class="bg" x="1" y="1" width="878" height="248" stroke="#1b2120" stroke-width="2" />
   <!-- x = 60 + (1 - log10(m)) * 70 ; 10 m → 60, 0.1 nm → 830 -->
   <line class="axis" x1="60" y1="130" x2="830" y2="130" />
   <g class="tick">

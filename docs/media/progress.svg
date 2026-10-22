@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -8 928 266" role="img" aria-labelledby="t d" font-family="Atkinson Hyperlegible Next, system-ui, sans-serif">
+  <title id="t">Progress: real organs up close in 8 of 15 dives</title>
+  <desc id="d">Done, with the real measured organ at the organ step: skeletal, circulatory, respiratory, nervous, digestive, urinary, pancreas, liver. Measured body but a drawn close-up: immune, muscular, skin, smell. Not possible from the atlas yet: endocrine, eye, ear.</desc>
+  <style>
+    .bg { fill: #eef0ea; }
+    .head { fill: #1b2120; font-size: 20px; font-weight: 700; }
+    .sub { fill: #4a5452; font-size: 15px; }
+    text { font-size: 15px; }
+    .done rect { fill: #f3dcdc; stroke: #a3242f; }
+    .done circle { fill: #a3242f; }
+    .done text { fill: #1b2120; }
+    .part rect { fill: #e1e5de; stroke: #2b58a5; }
+    .part circle { fill: none; stroke: #2b58a5; stroke-width: 2; }
+    .part text { fill: #1b2120; }
+    .todo rect { fill: none; stroke: #8a948f; stroke-dasharray: 4 4; }
+    .todo circle { fill: none; stroke: #4a5452; stroke-width: 1.5; }
+    .todo text { fill: #4a5452; }
+    .legend { fill: #4a5452; font-size: 14px; }
+  </style>
+  <rect class="bg" x="-23" y="-7" width="926" height="264" stroke="#1b2120" stroke-width="2"/>
+  <text class="head" x="10" y="36">8 of 15 dives have the real organ up close</text>
+  <text class="sub" x="870" y="36" text-anchor="end">53%</text>
+  <g class="done"><rect x="10" y="64" width="164" height="38"/><circle cx="30" cy="83" r="6"/><text x="46" y="88">Skeletal</text></g>
+  <g class="done"><rect x="184" y="64" width="164" height="38"/><circle cx="204" cy="83" r="6"/><text x="220" y="88">Circulatory</text></g>
+  <g class="done"><rect x="358" y="64" width="164" height="38"/><circle cx="378" cy="83" r="6"/><text x="394" y="88">Respiratory</text></g>
+  <g class="done"><rect x="532" y="64" width="164" height="38"/><circle cx="552" cy="83" r="6"/><text x="568" y="88">Nervous</text></g>
+  <g class="done"><rect x="706" y="64" width="164" height="38"/><circle cx="726" cy="83" r="6"/><text x="742" y="88">Digestive</text></g>
+  <g class="done"><rect x="10" y="112" width="164" height="38"/><circle cx="30" cy="131" r="6"/><text x="46" y="136">Urinary</text></g>
+  <g class="done"><rect x="184" y="112" width="164" height="38"/><circle cx="204" cy="131" r="6"/><text x="220" y="136">Pancreas</text></g>
+  <g class="done"><rect x="358" y="112" width="164" height="38"/><circle cx="378" cy="131" r="6"/><text x="394" y="136">Liver</text></g>
+  <g class="part"><rect x="532" y="112" width="164" height="38"/><circle cx="552" cy="131" r="6"/><text x="568" y="136">Immune</text></g>
+  <g class="part"><rect x="706" y="112" width="164" height="38"/><circle cx="726" cy="131" r="6"/><text x="742" y="136">Muscular</text></g>
+  <g class="part"><rect x="10" y="160" width="164" height="38"/><circle cx="30" cy="179" r="6"/><text x="46" y="184">Skin</text></g>
+  <g class="part"><rect x="184" y="160" width="164" height="38"/><circle cx="204" cy="179" r="6"/><text x="220" y="184">Smell</text></g>
+  <g class="todo"><rect x="358" y="160" width="164" height="38"/><circle cx="378" cy="179" r="6"/><text x="394" y="184">Endocrine</text></g>
+  <g class="todo"><rect x="532" y="160" width="164" height="38"/><circle cx="552" cy="179" r="6"/><text x="568" y="184">Eye</text></g>
+  <g class="todo"><rect x="706" y="160" width="164" height="38"/><circle cx="726" cy="179" r="6"/><text x="742" y="184">Ear</text></g>
+  <g class="done"><circle cx="16" cy="225" r="6"/></g><text class="legend" x="28" y="230">Real organ, measured</text>
+  <g class="part"><circle cx="216" cy="225" r="6"/></g><text class="legend" x="228" y="230">Measured body, drawn close-up</text>
+  <g class="todo"><circle cx="476" cy="225" r="6"/></g><text class="legend" x="488" y="230">Not in the atlas yet</text>
+</svg>

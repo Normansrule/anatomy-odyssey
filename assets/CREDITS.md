@@ -4,7 +4,7 @@ Every shipped asset gets one row in the table at the end of this file: file, wha
 
 ## Rules
 
-- **Anatomy** (`assets/anatomy/`): derived from Z-Anatomy (CC BY-SA 4.0), which derives from BodyParts3D (CC BY-SA 2.1 Japan). Derivatives stay CC BY-SA and credit both projects. ShareAlike applies to these files, not to the code.
+- **Anatomy** (`assets/anatomy/`): derived from BodyParts3D (CC BY-SA 2.1 Japan), directly or through Z-Anatomy (CC BY-SA 4.0). Derivatives stay CC BY-SA and credit every project they come through. ShareAlike applies to these files, not to the code.
 - **Molecular** (`assets/molecular/`): prefer CC0 or public-domain files from NIH 3D, RCSB PDB and PubChem. Record each file's license individually, and cite every PDB ID.
 - **Never** add a NonCommercial (NC) asset, such as many AnatomyTOOL models or the CC BY-NC-SA copies of BodyParts3D.
 
@@ -30,7 +30,8 @@ Every shipped asset gets one row in the table at the end of this file: file, wha
 
 ## Shipped assets
 
-The app ships no downloaded 3D assets or texture images. All geometry is generated in code (`src/scenes/`, `src/library/`), and tissue textures are generated in code from seeded noise (`src/engine/textures/`); both are covered by the MIT license.
+The whole-body anatomy is the one downloaded 3D asset. Every other scene's geometry is generated in code (`src/scenes/`, `src/library/`), and tissue textures are generated in code from seeded noise (`src/engine/textures/`); both are covered by the MIT license.
 
 | File | Description | Source / author | License | Link |
 |---|---|---|---|---|
+| `anatomy/body.glb` | 390 labeled meshes: BodyParts3D parts (skin, muscles, heart, vessels, lungs, brain, gut, kidneys, glands) smoothed, simplified, moved into the app's frame and quantized by `tools/build_body_meshes.py`, and Z-Anatomy's 258 bones and teeth (`tools/zanatomy_skeleton.py`: decimated, fitted onto the BodyParts3D skeleton with a similarity transform, mean error about 1 mm, with baked ambient occlusion in a vertex color). `src/data/bodyLandmarks.json` holds positions measured from the same meshes. | BodyParts3D release 3.0, © The Database Center for Life Science (DBCLS), Japan; Mitsuhashi et al., Nucleic Acids Research 2009; via the mirror by Kevin Mattheus Moerman. Z-Anatomy by Lluís Vinent and Gauthier Kervyn. | CC BY-SA 2.1 Japan (BodyParts3D parts); CC BY-SA 4.0 (Z-Anatomy bones, and the bundle as a whole) | https://lifesciencedb.jp/bp3d/ , https://github.com/Kevin-Mattheus-Moerman/BodyParts3D , https://github.com/Z-Anatomy/Models-of-human-anatomy |

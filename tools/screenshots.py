@@ -18,7 +18,7 @@ from playwright.sync_api import sync_playwright
 STEPS = [
     ("skeletal", "body", ""), ("skeletal", "skeleton", ""), ("skeletal", "femur", ""),
     ("skeletal", "bone-tissue", ""), ("skeletal", "osteocyte", ""), ("skeletal", "nucleus", ""), ("skeletal", "dna", ""),
-    ("circulatory", "body", ""), ("circulatory", "heart", ""), ("circulatory", "blood", ""),
+    ("circulatory", "body", ""), ("circulatory", "heart-scan", ""), ("circulatory", "heart", ""), ("circulatory", "blood", ""),
     ("circulatory", "red-blood-cell", ""), ("circulatory", "hemoglobin", ""), ("circulatory", "heme", ""),
     ("muscular", "muscle", ""), ("muscular", "fascicle", ""), ("muscular", "muscle-fiber", ""),
     ("muscular", "sarcomere", ""), ("muscular", "actin-myosin", ""), ("muscular", "nucleus", "&trip=1"),
@@ -36,8 +36,8 @@ STEPS = [
     ("t-cells", "antigen-presentation", ""), ("t-cells", "killer-t-cell", ""), ("t-cells", "tcr-mhc", ""),
     ("t-cells", "amino-acids", "&trip=1"),
     ("reflex", "reflex-arc", ""), ("reflex", "spinal-cord", ""), ("reflex", "neuromuscular-junction", ""), ("reflex", "acetylcholine", ""),
-    ("digestive", "body", ""), ("digestive", "small-intestine", ""), ("digestive", "villi", ""), ("digestive", "enterocyte", ""), ("digestive", "glucose", ""),
-    ("urinary", "body", ""), ("urinary", "kidney", ""), ("urinary", "nephron", ""), ("urinary", "filtration-barrier", ""), ("urinary", "urea", ""),
+    ("digestive", "body", ""), ("digestive", "digestive-tract", ""), ("digestive", "small-intestine", ""), ("digestive", "villi", ""), ("digestive", "enterocyte", ""), ("digestive", "glucose", ""),
+    ("urinary", "body", ""), ("urinary", "urinary-tract", ""), ("urinary", "kidney", ""), ("urinary", "nephron", ""), ("urinary", "filtration-barrier", ""), ("urinary", "urea", ""),
     ("endocrine", "body", ""), ("endocrine", "thyroid", ""), ("endocrine", "thyroid-follicles", ""), ("endocrine", "follicle-cell", ""), ("endocrine", "thyroxine", ""),
     ("skin", "body", ""), ("skin", "skin-block", ""), ("skin", "epidermis", ""), ("skin", "sun-and-skin", ""), ("skin", "vitamin-d3", ""),
     ("eye", "body", ""), ("eye", "eye", ""), ("eye", "retina", ""), ("eye", "phototransduction", ""), ("eye", "retinal", ""),
@@ -56,13 +56,14 @@ def main():
     ap.add_argument("--height", type=int, default=900)
     ap.add_argument("--mobile", action="store_true", help="also capture a 390x844 phone view")
     ap.add_argument("--only", default="", help="only capture dives or steps whose id contains this text")
+    ap.add_argument("--browser", default=None, help="path to a Chromium executable, if Playwright's own is not installed")
     args = ap.parse_args()
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     errors = []
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
+        browser = p.chromium.launch(executable_path=args.browser, args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
         sizes = [("desktop", args.width, args.height)]
         if args.mobile:
             sizes.append(("phone", 390, 844))

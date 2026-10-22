@@ -1,4 +1,5 @@
-// Tier 3: the liver, seen from the front. 1 scene unit = 1 mm.
+// Tier 3: the liver, drawn (the fallback for liverMeasured.js until the
+// anatomy bundle loads), seen from the front. 1 scene unit = 1 mm.
 // The body's largest gland, about 1.4 kg (three pounds): a large right lobe
 // and a smaller left lobe split by the falciform ligament, the gallbladder
 // (8–10 cm) beneath. At the porta hepatis the hepatic portal vein (nutrient-
@@ -10,6 +11,8 @@
 import * as THREE from 'three/webgpu';
 import { materialBank, pick, tubeThrough, ellipsoid, seeded, disposeTree, COLORS } from './kit.js';
 import { stagedControls, ramp } from './stages.js';
+import { bodyParts } from './bodyMeshes.js';
+import { buildMeasuredLiver } from './liverMeasured.js';
 
 export const LIVER_KG = 1.4;
 export const GALLBLADDER_MM = 90;
@@ -25,6 +28,8 @@ export const LIVER_STAGES = [
 ];
 
 export function buildLiver({ reducedMotion = false } = {}) {
+  const measured = buildMeasuredLiver(bodyParts(), { reducedMotion });
+  if (measured) return measured;
   const M = materialBank();
   const root = new THREE.Group();
   const rand = seeded(2323);

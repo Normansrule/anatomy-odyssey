@@ -1,5 +1,10 @@
 {
   "generated": "tools/build-asset-manifest.mjs",
   "note": "Hashes of every shipped asset. Licenses are listed per file in assets/CREDITS.md.",
-  "assets": {}
+  "assets": {
+    "anatomy/body.glb": {
+      "sha256": "09799f085710b20b9872006efcc8fab406c84c453e46ed13b42f081f533da75d",
+      "bytes": 15297988
+    }
+  }
 }

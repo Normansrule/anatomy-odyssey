@@ -1,10 +1,10 @@
 {
   "name": "anatomy-odyssey",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "A guided journey through the human body, from whole body to molecule.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node tools/build-guide.mjs",
     "build:preview": "vite build --mode preview",
     "preview": "vite preview",
     "test": "vitest run && node tools/build-asset-manifest.mjs --check",
@@ -21,8 +21,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@fontsource-variable/archivo": "5.3.0",
     "@fontsource/atkinson-hyperlegible-next": "5.3.0",
-    "@fontsource/literata": "5.3.0",
     "three": "0.186.1"
   },
   "devDependencies": {

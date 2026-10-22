@@ -3,7 +3,9 @@ import { DIVES } from '../src/data/dives.js';
 import { isDesktopApp, WEB_URL, RELEASES_URL } from '../src/ui/about.js';
 
 const step = (dive, id) => DIVES.find((d) => d.id === dive).steps.find((s) => s.id === id);
-const FIGURE_HEIGHT_M = 1.75; // the whole-body model, head to feet
+import LANDMARKS from '../src/data/bodyLandmarks.json';
+
+const FIGURE_HEIGHT_M = LANDMARKS.height; // the whole-body model, head to feet
 
 describe('whole-body framing', () => {
   it('the whole body and the whole skeleton fit in view, with a margin', () => {
@@ -29,7 +31,7 @@ describe('web and desktop versions', () => {
 });
 
 describe('skeleton detail', async () => {
-  const { vertebraLayout, SPINE_CURVE } = await import('../src/scenes/body.js');
+  const { vertebraLayout, SPINE_CURVE } = await import('../src/scenes/bodySimple.js');
   const { buildSkeletonScene } = await import('../src/scenes/body.js');
   it('has 7 neck, 12 chest and 5 lower-back vertebrae, top to bottom, with bodies widening downward', () => {
     const v = vertebraLayout();

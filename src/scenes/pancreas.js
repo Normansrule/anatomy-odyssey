@@ -1,4 +1,5 @@
-// Tier 3: the pancreas, seen from the front. 1 scene unit = 1 mm.
+// Tier 3: the pancreas, drawn (the fallback for pancreasMeasured.js until the
+// anatomy bundle loads), seen from the front. 1 scene unit = 1 mm.
 // Its head sits in the C-shaped curve of the duodenum and its body runs about
 // 15 cm to the left, its tail reaching the spleen (OpenStax 23.6). Drawn
 // see-through so the main pancreatic duct shows inside, joining the common
@@ -10,12 +11,16 @@
 import * as THREE from 'three/webgpu';
 import { materialBank, pick, tubeThrough, taperedTube, ellipsoid, seeded, disposeTree, COLORS } from './kit.js';
 import { ramp } from './stages.js';
+import { bodyParts } from './bodyMeshes.js';
+import { buildMeasuredPancreas } from './pancreasMeasured.js';
 
 export const PANCREAS_MM = { length: 152 };
 const AXIS = [[-52, -6, 0], [-34, 8, 2], [-8, 16, 0], [30, 26, -4], [70, 36, -8], [100, 44, -12]];
 const AMPULLA = new THREE.Vector3(-76, -10, 2);
 
 export function buildPancreas({ reducedMotion = false } = {}) {
+  const measured = buildMeasuredPancreas(bodyParts(), { reducedMotion });
+  if (measured) return measured;
   const M = materialBank();
   const root = new THREE.Group();
   const rand = seeded(1919);

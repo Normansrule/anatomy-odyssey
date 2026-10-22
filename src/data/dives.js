@@ -14,6 +14,29 @@
 //   narration    the caption the guided tour shows at this step
 
 import { libStep } from './library.js';
+import LM from './bodyLandmarks.json';
+
+/** Where each dive enters the whole body: points measured from the anatomy meshes (tools/build_body_meshes.py). */
+const humerusTop = LM.bones['left humerus'][0];
+const radius = LM.bones['left radius'];
+export const AT = {
+  heart: LM.heart,
+  biceps: LM.biceps,
+  armpit: [humerusTop[0] - 0.05, humerusTop[1] - 0.05, humerusTop[2]], // the armpit lymph nodes
+  brain: LM.brain,
+  lungs: LM.lungs,
+  smallIntestine: LM.smallIntestine,
+  kidney: LM.kidneys.left,
+  thyroid: LM.thyroid.center,
+  forearmSkin: radius[0].map((x, i) => x + (radius[1][i] - x) * 0.45 + (i === 2 ? 0.03 : 0)), // the skin over the forearm
+  eye: [LM.eyes.x[1], LM.eyes.y, LM.eyes.z],
+  ear: [LM.innerEars.x[1], LM.innerEars.y, LM.innerEars.z],
+  pancreas: LM.pancreas,
+  liver: LM.liver,
+  nose: [0, LM.nose.y, LM.nose.z],
+  femur: LM.bones['left femur'][0].map((x, i) => (x + LM.bones['left femur'][1][i]) / 2),
+  knee: LM.bones['left femur'][1].map((x, i) => x + [0, 0, 0.04][i]), // the front of the left knee
+};
 
 export const TIERS = {
   1: 'Whole body',
@@ -25,7 +48,7 @@ export const TIERS = {
   7: 'Molecule',
 };
 
-const BODY = { id: 'body', tier: 1, scene: 'body', title: 'Whole body', card: 'body', frameMeters: 2.1 };
+const BODY = { id: 'body', tier: 1, scene: 'body', title: 'Whole body', card: 'body', frameMeters: 1.95 };
 
 export const DIVES = [
   {
@@ -36,8 +59,8 @@ export const DIVES = [
     status: 'built',
     summary: 'From your whole body down to the DNA inside a bone cell.',
     steps: [
-      { ...BODY, focusCard: 'femur', systems: ['skeletal'], narration: 'This is you, drawn as a teaching model. We will follow the thigh bone all the way down to the molecule that tells its cells what to do.' },
-      { id: 'skeleton', tier: 2, scene: 'skeleton', title: 'Skeleton', card: 'skeletal-system', frameMeters: 1.9, focusCard: 'femur', narration: 'Strip away everything else and 206 bones remain. The glowing one is the femur, the longest bone in your body.' },
+      { ...BODY, focusCard: 'femur', focus: AT.femur, systems: ['skeletal'], narration: 'This is you, a teaching model measured from a real body. We will follow the thigh bone all the way down to the molecule that tells its cells what to do.' },
+      { id: 'skeleton', tier: 2, scene: 'skeleton', title: 'Skeleton', card: 'skeletal-system', frameMeters: 1.85, focusCard: 'femur', narration: 'Strip away everything else and 206 bones remain. The glowing one is the femur, the longest bone in your body.' },
       { id: 'femur', tier: 3, scene: 'femur', title: 'Femur', card: 'femur', frameMeters: 0.55, focusCard: 'compact-bone', narration: 'Cut open, the femur is a hard outer wall around yellow marrow, with spongy bone and red marrow at each end.' },
       { id: 'bone-tissue', tier: 4, scene: 'bone-tissue', title: 'Bone tissue', card: 'compact-bone', frameMeters: 1.6e-3, focusCard: 'lacuna', narration: 'Now at millimeter scale. The wall is built from osteons: rings of hard matrix around a canal carrying a blood vessel.' },
       { id: 'osteocyte', tier: 5, scene: 'osteocyte', title: 'Osteocyte', card: 'osteocyte', frameMeters: 4.5e-5, focusCard: 'osteocyte-nucleus', narration: 'Each tiny pocket holds a living bone cell. Its branches reach out to touch its neighbors and sense how the bone is loaded.' },
@@ -53,8 +76,9 @@ export const DIVES = [
     status: 'built',
     summary: 'Heart → blood → a red blood cell → hemoglobin → the iron that holds oxygen.',
     steps: [
-      { ...BODY, focusCard: 'heart', focus: [0.02, 1.25, 0.04], systems: ['circulatory'], narration: 'Your heart sits just left of center in your chest. We will follow the blood it pumps down to a single oxygen molecule.' },
-      { id: 'heart', tier: 3, scene: 'heart', title: 'Heart', card: 'heart', frameMeters: 0.2, focusCard: 'blood', narration: 'Opened from the front, the heart has four chambers. The thick-walled left ventricle pushes blood out to your whole body.' },
+      { ...BODY, focusCard: 'heart', focus: AT.heart, systems: ['circulatory'], narration: 'Your heart sits just left of center in your chest. Red cells stream out through the arteries with each beat (drawn red) and back through the veins (drawn blue). We will follow that blood down to a single oxygen molecule.' },
+      { id: 'heart-scan', tier: 3, scene: 'heart-scan', title: 'Heart scan', card: 'echocardiogram', frameMeters: 0.32, focusCard: 'heart', narration: 'This is how doctors look inside a beating heart: an ultrasound probe on the chest sends a thin fan of sound through it, and the screen shows the slice that fan cuts. Turn the probe through the four standard views and match each flat, grainy picture to the real heart beside it.' },
+      { id: 'heart', tier: 3, scene: 'heart', title: 'Heart', card: 'heart', frameMeters: 0.2, focusCard: 'blood', narration: 'A real heart, opened through its tip and both of its inflow valves to show its four chambers: blue, oxygen-poor blood on the right, red, oxygen-rich blood on the left. The thick-walled left ventricle pushes blood out to your whole body. Change the heart rate and watch it pump.' },
       { id: 'blood', tier: 4, scene: 'blood', title: 'Blood', card: 'blood', frameMeters: 6e-5, focusCard: 'red-blood-cell', narration: 'Blood is a tissue: cells carried in liquid plasma. Most of the cells are red blood cells, tumbling through a small vessel.' },
       { id: 'red-blood-cell', tier: 5, scene: 'red-blood-cell', title: 'Red blood cell', card: 'red-blood-cell', frameMeters: 1.25e-5, focusCard: 'hemoglobin', branch: { label: 'Side trip into its membrane', card: 'cell-membrane', via: ['lipid-bilayer', 'phospholipids'] }, narration: 'A red blood cell is a flexible disc with a dimple on each side. It has no nucleus; it is packed with hemoglobin instead.' },
       libStep('hemoglobin', { narration: 'Hemoglobin: four protein chains, each holding one heme group. Try the oxygen slider to see how it loads in the lungs and unloads in your tissues.' }),
@@ -69,7 +93,7 @@ export const DIVES = [
     status: 'built',
     summary: 'Biceps → fascicle → muscle fiber → sarcomere → the actin and myosin that pull.',
     steps: [
-      { ...BODY, focusCard: 'biceps', focus: [0.229, 1.255, 0.022], systems: ['muscular'], narration: 'Bend your elbow and your biceps shortens. We will follow that pull down to the molecules that make it.' },
+      { ...BODY, focusCard: 'biceps', focus: AT.biceps, systems: ['muscular'], narration: 'Bend your elbow and your biceps shortens. We will follow that pull down to the molecules that make it.' },
       { id: 'muscle', tier: 3, scene: 'muscle', title: 'Biceps', card: 'biceps', frameMeters: 0.46, focusCard: 'fascicle', narration: 'Cut across, a muscle is bundles inside bundles. Each bundle is a fascicle, wrapped in its own connective tissue.' },
       { id: 'fascicle', tier: 4, scene: 'fascicle', title: 'Fascicle', card: 'fascicle', frameMeters: 2.2e-3, focusCard: 'muscle-fiber', narration: 'A fascicle holds dozens of muscle fibers, each one a single, very long cell, with capillaries threaded between them.' },
       { id: 'muscle-fiber', tier: 5, scene: 'muscle-fiber', title: 'Muscle fiber', card: 'muscle-fiber', frameMeters: 1.9e-4, focusCard: 'myofibril', branch: { label: 'Side trip into a muscle nucleus', card: 'muscle-nucleus', via: ['nucleus', 'dna'] }, narration: 'One fiber has many nuclei along its edge, and it is packed with striped rods called myofibrils.' },
@@ -85,7 +109,7 @@ export const DIVES = [
     status: 'built',
     summary: 'Lymph node → follicle → plasma cell → the antibodies it makes.',
     steps: [
-      { ...BODY, focusCard: 'immune-system', focus: [0.15, 1.33, 0.0], systems: ['immune'], narration: 'Hundreds of lymph nodes sit along your lymph vessels. We will enter one in the armpit and find where antibodies are made.' },
+      { ...BODY, frameMeters: 0.7, options: { infection: true }, focusCard: 'immune-system', focus: AT.armpit, systems: ['immune'], narration: 'A cut on the forearm, and the whole body answers. Step through the infection with the control: the alarm at the wound, germ pieces carried to the armpit lymph nodes, and the antibodies sent back. Then we will enter one of those nodes.' },
       { id: 'lymph-node', tier: 3, scene: 'lymph-node', title: 'Lymph node', card: 'lymph-node', frameMeters: 0.026, focusCard: 'lymph-follicle', narration: 'A lymph node is a filter about the size of a bean. Fluid flows in, past crowds of immune cells, and out again.' },
       { id: 'follicle', tier: 4, scene: 'follicle', title: 'Follicle', card: 'lymph-follicle', frameMeters: 3e-4, focusCard: 'plasma-cell', narration: 'In the outer layer, B cells gather in follicles. In the pale center they compete to make better and better antibodies.' },
       { id: 'plasma-cell', tier: 5, scene: 'plasma-cell', title: 'Plasma cell', card: 'plasma-cell', frameMeters: 2.4e-5, focusCard: 'antibody', branch: { label: 'Side trip into its nucleus', card: 'plasma-nucleus', via: ['nucleus', 'dna'] }, narration: 'A winning B cell becomes a plasma cell: an antibody factory, full of protein-building membranes.' },
@@ -182,8 +206,8 @@ export const DIVES = [
     status: 'built',
     summary: 'Brain → the layered cortex → a neuron → a synapse → the glutamate molecule that carries the signal.',
     steps: [
-      { ...BODY, focusCard: 'brain', focus: [0, 1.655, -0.005], systems: ['nervous'], narration: 'Everything you are thinking right now runs on electrical and chemical signals. We will follow one from the brain down to a single molecule.' },
-      { id: 'brain', tier: 3, scene: 'brain', title: 'Brain', card: 'brain', frameMeters: 0.21, focusCard: 'cerebral-cortex', narration: 'Sliced front to back, the brain has a thin folded rind of gray matter, the cortex, over a core of white matter wiring.' },
+      { ...BODY, focusCard: 'brain', focus: AT.brain, systems: ['nervous'], narration: 'Everything you are thinking right now runs on electrical and chemical signals. We will follow one from the brain down to a single molecule.' },
+      { id: 'brain', tier: 3, scene: 'brain', title: 'Brain', card: 'brain', frameMeters: 0.21, focusCard: 'cerebral-cortex', narration: 'A real adult brain, measured: its folds are the cortex, a rind of gray matter only 2 to 4 mm thick. Use the control to color the lobes or look inside.' },
       { id: 'cortex', tier: 4, scene: 'cortex', title: 'Cortex', card: 'cortex-layers', frameMeters: 4.2e-3, focusCard: 'pyramidal-neuron', narration: 'Cut a block out of that rind and it has six layers. Inputs arrive in the middle; the big pyramidal neurons in layer V send commands out. Pick a layer to see what lives there.' },
       { id: 'neuron', tier: 5, scene: 'neuron', title: 'Neuron', card: 'neuron', frameMeters: 3.9e-4, focusCard: 'axon-terminal', branch: { label: 'Side trip into its nucleus', card: 'neuron-nucleus', via: ['nucleus', 'dna'] }, narration: 'One neuron from the cortex. Dendrites collect signals, and a wrapped axon sends a spike out. Change the axon width to see how fast the spike travels.' },
       { id: 'synapse', tier: 6, scene: 'synapse', title: 'Synapse', card: 'synapse', frameMeters: 2.1e-6, focusCard: 'neurotransmitter', branch: { label: 'Side trip into the membrane', card: 'neuron-membrane', via: ['lipid-bilayer', 'phospholipids'] }, narration: 'Where the axon meets the next cell, a gap only twenty nanometers wide. Step through the stages to watch a vesicle release its cargo.' },
@@ -198,8 +222,8 @@ export const DIVES = [
     status: 'built',
     summary: 'Lungs → alveoli → the air–blood barrier → hemoglobin → oxygen itself.',
     steps: [
-      { ...BODY, focusCard: 'respiratory-system', focus: [0, 1.3, 0.02], systems: ['respiratory'], narration: 'You take about twenty thousand breaths a day. We will follow one breath down to the oxygen molecule your cells burn.' },
-      { id: 'lungs', tier: 3, scene: 'lungs', title: 'Lungs', card: 'lungs', frameMeters: 0.37, focusCard: 'bronchiole', narration: 'The windpipe splits again and again into a tree of airways inside two spongy lungs. Press play to breathe.' },
+      { ...BODY, focusCard: 'respiratory-system', focus: AT.lungs, systems: ['respiratory'], narration: 'You take about twenty thousand breaths a day. We will follow one breath down to the oxygen molecule your cells burn.' },
+      { id: 'lungs', tier: 3, scene: 'lungs', title: 'Lungs', card: 'lungs', frameMeters: 0.37, focusCard: 'bronchiole', narration: 'A real pair of lungs, measured: five lobes around a tree of airways that splits again and again. Press play to breathe.' },
       { id: 'alveoli', tier: 4, scene: 'alveoli', title: 'Alveoli', card: 'alveolus', frameMeters: 1.15e-3, focusCard: 'alveolus', narration: 'Every airway ends in grape-like clusters of tiny air sacs, alveoli, each wrapped in a net of capillaries.' },
       { id: 'gas-exchange', tier: 5, scene: 'gas-exchange', title: 'Gas exchange', card: 'air-blood-barrier', frameMeters: 2.2e-5, focusCard: 'hemoglobin', narration: 'Here air and blood are less than a micrometer apart. Play the transit to watch a red blood cell load oxygen as it passes.' },
       libStep('hemoglobin', { focusCard: 'oxygen-binding', narration: 'Inside every red blood cell, hemoglobin grabs the oxygen. The same shared scene the circulatory dive reaches.' }),
@@ -212,9 +236,10 @@ export const DIVES = [
     kind: 'dive',
     title: 'Digestive dive',
     status: 'built',
-    summary: 'Small intestine → villi → an absorbing cell → the glucose molecule it takes in.',
+    summary: 'The digestive tract → small intestine → villi → an absorbing cell → the glucose molecule it takes in.',
     steps: [
-      { ...BODY, focusCard: 'small-intestine', focus: [0, 0.92, 0.04], systems: ['digestive'], narration: 'Everything you eat ends up as molecules small enough to cross into your blood. We will follow one sugar molecule from the gut into you.' },
+      { ...BODY, focusCard: 'small-intestine', focus: AT.smallIntestine, systems: ['digestive'], narration: 'Everything you eat ends up as molecules small enough to cross into your blood. We will follow one sugar molecule from the gut into you.' },
+      { id: 'digestive-tract', tier: 2, scene: 'digestive-tract', title: 'Digestive tract', card: 'digestive-system', frameMeters: 0.72, focusCard: 'small-intestine', narration: 'The real digestive tract, about 7.5 m from mouth to end in a living person. Follow one meal through it: down the esophagus, churned in the stomach, digested and absorbed in the small intestine, dried out in the large intestine.' },
       { id: 'small-intestine', tier: 3, scene: 'small-intestine', title: 'Small intestine', card: 'small-intestine', frameMeters: 0.06, focusCard: 'intestinal-villus', narration: 'Cut open, the small intestine is not smooth: circular folds run around the inside, and every surface is velvet with villi.' },
       { id: 'villi', tier: 4, scene: 'villi', title: 'Villi', card: 'intestinal-villus', frameMeters: 1.6e-3, focusCard: 'enterocyte', narration: 'Each villus is a finger of tissue under a millimeter tall, with a net of capillaries and a lymph vessel inside. One is cut open in front.' },
       { id: 'enterocyte', tier: 5, scene: 'enterocyte', title: 'Absorbing cell', card: 'enterocyte', frameMeters: 4.2e-5, focusCard: 'glucose', narration: 'The villus is covered by a single layer of absorbing cells, each topped with a brush of microvilli. Step through how one glucose molecule gets from the gut into the blood.' },
@@ -227,9 +252,10 @@ export const DIVES = [
     kind: 'dive',
     title: 'Urinary dive',
     status: 'built',
-    summary: 'Kidney → a nephron → the filter where blood becomes urine → urea, the waste it removes.',
+    summary: 'The urinary tract → kidney → a nephron → the filter where blood becomes urine → urea, the waste it removes.',
     steps: [
-      { ...BODY, focusCard: 'kidney', focus: [0.066, 1.1, -0.045], systems: ['urinary'], narration: 'Your kidneys filter all your blood plasma dozens of times a day. We will follow it into a kidney and down to the waste molecule it is there to remove.' },
+      { ...BODY, focusCard: 'kidney', focus: AT.kidney, systems: ['urinary'], narration: 'Your kidneys filter all your blood plasma dozens of times a day. We will follow it into a kidney and down to the waste molecule it is there to remove.' },
+      { id: 'urinary-tract', tier: 2, scene: 'urinary-tract', title: 'Urinary tract', card: 'urinary-system', frameMeters: 0.42, focusCard: 'kidney', narration: 'The real urinary tract: two kidneys, two ureters and the bladder, with the arteries that feed the kidneys. Follow one batch of urine from the blood, down the ureters, into the bladder as it fills, and out.' },
       { id: 'kidney', tier: 3, scene: 'kidney', title: 'Kidney', card: 'kidney', frameMeters: 0.14, focusCard: 'renal-cortex', narration: 'Cut in half, a kidney has a pale outer cortex, striped pyramids inside, and a funnel that gathers urine into the ureter. Arteries arch along the pyramid bases and climb into the cortex.' },
       { id: 'nephron', tier: 4, scene: 'nephron', title: 'Nephron', card: 'nephron', frameMeters: 3e-3, focusCard: 'glomerulus', narration: 'In the cortex sit about a million of these: a filter, the glomerulus, and a long folded tube. Step through to follow the filtrate and watch the tube take most of it back.' },
       { id: 'filtration-barrier', tier: 6, scene: 'filtration-barrier', title: 'The filter', card: 'filtration-barrier', frameMeters: 1.9e-6, focusCard: 'urea', narration: 'The wall between blood and filtrate has three layers: a lining full of pores, a protein mesh, and interlocking podocyte feet. Step through to see what gets through and what is held back.' },
@@ -244,7 +270,7 @@ export const DIVES = [
     status: 'built',
     summary: 'Thyroid gland → its follicles → a hormone-making cell → thyroxine, the hormone that sets your metabolic rate.',
     steps: [
-      { ...BODY, focusCard: 'thyroid-gland', focus: [0, 1.468, 0.04], systems: ['endocrine'], narration: 'Hormones are messages carried in the blood. We will follow one from the gland in your neck that makes it down to the molecule itself.' },
+      { ...BODY, focusCard: 'thyroid-gland', focus: AT.thyroid, systems: ['endocrine'], narration: 'Hormones are messages carried in the blood. We will follow one from the gland in your neck that makes it down to the molecule itself.' },
       { id: 'thyroid', tier: 3, scene: 'thyroid', title: 'Thyroid gland', card: 'thyroid-gland', frameMeters: 0.13, focusCard: 'thyroid-follicle', narration: 'The thyroid wraps the front of the windpipe just below the Adam’s apple. One lobe is cut open: it is packed with tiny follicles.' },
       { id: 'thyroid-follicles', tier: 4, scene: 'thyroid-follicles', title: 'Follicles', card: 'thyroid-follicle', frameMeters: 8e-4, focusCard: 'follicular-cell', narration: 'Each follicle is a hollow ball of cells around a store of colloid, wrapped in capillaries. Turn up TSH, the pituitary’s signal, and watch the cells get to work.' },
       { id: 'follicle-cell', tier: 5, scene: 'follicle-cell', title: 'Follicle cell', card: 'follicular-cell', frameMeters: 4.4e-5, focusCard: 'thyroxine', narration: 'One follicle cell between the blood and the colloid. Step through how it turns iodine from your food into hormone.' },
@@ -259,7 +285,7 @@ export const DIVES = [
     status: 'built',
     summary: 'A block of skin → the layers of the epidermis → sunlight on a skin cell → vitamin D3, which the skin makes in the sun.',
     steps: [
-      { ...BODY, focusCard: 'skin', focus: [0.272, 0.99, 0.036], systems: ['skin', 'skeletal'], narration: 'Your skin is the organ you see. We will zoom into a patch of forearm, through its layers, down to a molecule it makes from sunlight.' },
+      { ...BODY, focusCard: 'skin', focus: AT.forearmSkin, systems: ['skin', 'skeletal'], narration: 'Your skin is the organ you see. We will zoom into a patch of forearm, through its layers, down to a molecule it makes from sunlight.' },
       { id: 'skin-block', tier: 3, scene: 'skin-block', title: 'Skin', card: 'skin', frameMeters: 6e-3, focusCard: 'epidermis', narration: 'A block of skin a few millimeters across: the thin epidermis on top, the dermis with its hairs, glands, vessels and nerves, and fat below. Change the temperature and watch the skin respond.' },
       { id: 'epidermis', tier: 4, scene: 'epidermis', title: 'Epidermis', card: 'epidermis', frameMeters: 2.2e-4, focusCard: 'keratinocyte', narration: 'The epidermis is a stack of cells, born at the bottom and dead by the time they reach the top. Follow one cell on its journey.' },
       { id: 'sun-and-skin', tier: 5, scene: 'sun-and-skin', title: 'Sunlight', card: 'keratinocyte', frameMeters: 6.6e-5, focusCard: 'vitamin-d3', narration: 'One basal cell in the sun. Step through how melanin shields its DNA, and how ultraviolet light turns part of its membrane into vitamin D.' },
@@ -274,7 +300,7 @@ export const DIVES = [
     status: 'built',
     summary: 'The eye → the retina → inside a rod, where light becomes a signal → retinal, the molecule a photon flips.',
     steps: [
-      { ...BODY, focusCard: 'eye', focus: [0.032, 1.632, 0.077], systems: ['nervous'], narration: 'Everything you see starts as light hitting a molecule at the back of your eye. We will follow it there.' },
+      { ...BODY, focusCard: 'eye', focus: AT.eye, systems: ['nervous'], narration: 'Everything you see starts as light hitting a molecule at the back of your eye. We will follow it there.' },
       { id: 'eye', tier: 3, scene: 'eye', title: 'Eye', card: 'eye', frameMeters: 0.046, focusCard: 'fovea', narration: 'The eye, cut in half and seen from above. The cornea and lens focus light onto the retina; change the light level and watch the pupil respond.' },
       { id: 'retina', tier: 4, scene: 'retina', title: 'Retina', card: 'retina', frameMeters: 3e-4, focusCard: 'rod-cell', narration: 'A slice of retina. Light comes in from the top and must cross every layer before it reaches the rods and cones at the back. Step through one signal on its way out.' },
       { id: 'phototransduction', tier: 6, scene: 'phototransduction', title: 'Light to signal', card: 'rhodopsin', frameMeters: 1.1e-7, focusCard: 'retinal', narration: 'Inside a rod’s outer segment: stacked discs full of rhodopsin. Step through how one photon closes sodium channels in the rod’s membrane.' },
@@ -289,7 +315,7 @@ export const DIVES = [
     status: 'built',
     summary: 'The ear → a turn of the cochlea → a hair cell → glutamate, the messenger it releases onto the nerve.',
     steps: [
-      { ...BODY, focusCard: 'ear', focus: [0.062, 1.612, -0.004], systems: ['nervous'], narration: 'Every sound you hear is a pressure wave in the air. We will follow one into your ear, down to the molecule a single hair cell releases.' },
+      { ...BODY, focusCard: 'ear', focus: AT.ear, systems: ['nervous'], narration: 'Every sound you hear is a pressure wave in the air. We will follow one into your ear, down to the molecule a single hair cell releases.' },
       { id: 'ear', tier: 3, scene: 'ear', title: 'Ear', card: 'ear', frameMeters: 0.07, focusCard: 'cochlea', narration: 'The ear cut open from the front. Sound passes the ear canal, the eardrum and three tiny bones into the snail-shaped cochlea. Change the pitch and see where along the cochlea it is sensed.' },
       { id: 'cochlear-duct', tier: 4, scene: 'cochlear-duct', title: 'Inside the cochlea', card: 'cochlear-duct', frameMeters: 1.5e-3, focusCard: 'inner-hair-cell', narration: 'One turn of the cochlea cut across: three fluid-filled channels and, on the basilar membrane, the organ of Corti with its rows of hair cells. Step through how a sound wave bends them.' },
       { id: 'hair-cell', tier: 5, scene: 'hair-cell', title: 'Hair cell', card: 'inner-hair-cell', frameMeters: 4.2e-5, focusCard: 'neurotransmitter', narration: 'One inner hair cell. Its stereocilia are tied tip to side; step through how bending them opens channels and makes the cell release glutamate onto a nerve fiber.' },
@@ -304,7 +330,7 @@ export const DIVES = [
     status: 'built',
     summary: 'The pancreas → an islet of Langerhans → a beta cell sensing glucose → ATP, the signal that releases insulin.',
     steps: [
-      { ...BODY, focusCard: 'pancreas', focus: [0.03, 1.0, -0.005], systems: ['digestive', 'endocrine'], narration: 'After every meal your blood sugar rises, and within minutes a gland behind your stomach answers. We will follow how.' },
+      { ...BODY, focusCard: 'pancreas', focus: AT.pancreas, systems: ['digestive', 'endocrine'], narration: 'After every meal your blood sugar rises, and within minutes a gland behind your stomach answers. We will follow how.' },
       { id: 'pancreas', tier: 3, scene: 'pancreas', title: 'Pancreas', card: 'pancreas', frameMeters: 0.24, focusCard: 'islet', narration: 'The pancreas lies behind the stomach, its head in the curve of the duodenum. Most of it makes digestive juice; scattered through it are islets of hormone cells, drawn far larger here.' },
       { id: 'islet', tier: 4, scene: 'islet', title: 'Islet', card: 'islet', frameMeters: 3.4e-4, focusCard: 'beta-cell', narration: 'One islet, cut in half, among the enzyme-making acini. Change the blood glucose and watch which cells answer.' },
       { id: 'beta-cell', tier: 5, scene: 'beta-cell', title: 'Beta cell', card: 'beta-cell', frameMeters: 3.4e-5, focusCard: 'atp', narration: 'A beta cell beside a capillary. Step through how it turns a rise in glucose into a burst of insulin, with ATP as the go-between.' },
@@ -319,8 +345,8 @@ export const DIVES = [
     status: 'built',
     summary: 'The liver → a lobule → two liver cells clearing an old red cell’s pigment → bilirubin.',
     steps: [
-      { ...BODY, focusCard: 'liver', focus: [-0.06, 1.095, 0.035], systems: ['digestive'], narration: 'Every day you replace billions of red blood cells. We will follow what happens to the old ones, through your largest gland, down to a yellow pigment.' },
-      { id: 'liver', tier: 3, scene: 'liver', title: 'Liver', card: 'liver', frameMeters: 0.3, focusCard: 'hepatic-lobule', narration: 'The liver from the front, with the gallbladder beneath and the vessels at its gate. The right lobe is cut open to show its lobules. Step through how blood flows in and out, and bile flows away.' },
+      { ...BODY, focusCard: 'liver', focus: AT.liver, systems: ['digestive'], narration: 'Every day you replace billions of red blood cells. We will follow what happens to the old ones, through your largest gland, down to a yellow pigment.' },
+      { id: 'liver', tier: 3, scene: 'liver', title: 'Liver', card: 'liver', frameMeters: 0.3, focusCard: 'hepatic-lobule', narration: 'The liver from the front, see-through, with the gallbladder beneath and the vessels at its gate. A magnifier on the right lobe shows its lobules. Step through how blood flows in and out, and bile flows away.' },
       { id: 'lobule', tier: 4, scene: 'lobule', title: 'Lobule', card: 'hepatic-lobule', frameMeters: 1.9e-3, focusCard: 'hepatocyte', narration: 'One lobule: plates of liver cells radiating from a central vein, with portal triads at its corners. Blood flows in; bile flows out.' },
       { id: 'hepatocyte', tier: 5, scene: 'hepatocyte', title: 'Liver cells', card: 'hepatocyte', frameMeters: 5.6e-5, focusCard: 'bilirubin', narration: 'Two liver cells beside a sinusoid, with a Kupffer cell on its wall. Step through the journey of bilirubin from an old red blood cell into bile.' },
       libStep('bilirubin', { narration: 'Bilirubin: four rings in a chain, folded on itself by its own hydrogen bonds. Its yellow is the yellow of a healing bruise.' }),
@@ -334,7 +360,7 @@ export const DIVES = [
     status: 'built',
     summary: 'The nose → the olfactory epithelium → a neuron’s cilia, where a receptor catches a scent → vanillin.',
     steps: [
-      { ...BODY, focusCard: 'nasal-cavity', focus: [0, 1.626, 0.086], systems: ['nervous'], narration: 'Take a sniff of vanilla. We will follow the scent up your nose to the molecule that carries it.' },
+      { ...BODY, focusCard: 'nasal-cavity', focus: AT.nose, systems: ['nervous'], narration: 'Take a sniff of vanilla. We will follow the scent up your nose to the molecule that carries it.' },
       { id: 'nasal-cavity', tier: 3, scene: 'nasal-cavity', title: 'Nasal cavity', card: 'nasal-cavity', frameMeters: 0.12, focusCard: 'olfactory-epithelium', narration: 'The nose cut down the middle. Most air flows low, to the throat; a sniff sends it up to a small patch in the roof, right under the brain.' },
       { id: 'olfactory-epithelium', tier: 4, scene: 'olfactory-epithelium', title: 'Olfactory epithelium', card: 'olfactory-epithelium', frameMeters: 1.5e-4, focusCard: 'olfactory-neuron', narration: 'The smell patch up close: neurons reach the surface and spread cilia into the mucus. Step through how a scent becomes a nerve signal.' },
       { id: 'olfactory-cilium', tier: 5, scene: 'olfactory-cilium', title: 'Cilia and receptors', card: 'odor-receptor', frameMeters: 1e-5, focusCard: 'vanillin', narration: 'One neuron’s knob and its cilia, studded with receptors. Watch a carrier protein hand an odor molecule to a receptor.' },

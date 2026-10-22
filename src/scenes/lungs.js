@@ -1,4 +1,5 @@
-// Tier 3: the lungs and airways. 1 scene unit = 1 cm; the body faces +z.
+// Tier 3: the lungs and airways, drawn (the fallback for lungsMeasured.js until
+// the anatomy bundle loads). 1 scene unit = 1 cm; the body faces +z.
 // The trachea (with its C-shaped cartilage rings) splits at the carina into
 // two main bronchi, which keep splitting into a tree of airways inside two
 // translucent lungs. The body's right lung (viewer's left, −x) has three
@@ -8,6 +9,8 @@
 import * as THREE from 'three/webgpu';
 import { materialBank, pick, cylinderBetween, seeded, disposeTree, tubeThrough, ellipsoid } from './kit.js';
 import { minuteVentilation } from '../science/equations.js';
+import { bodyParts } from './bodyMeshes.js';
+import { buildMeasuredLungs } from './lungsMeasured.js';
 
 const LUNG = {
   right: { c: new THREE.Vector3(-6.4, -4.2, 0), r: [5.6, 10.8, 7.2] },
@@ -45,6 +48,9 @@ function inside(lung, p, margin = 0.85) {
 }
 
 export function buildLungs({ reducedMotion = false } = {}) {
+  // The measured lungs (lungsMeasured.js) once the anatomy bundle has loaded; these drawn ones until then.
+  const measured = buildMeasuredLungs(bodyParts(), { reducedMotion });
+  if (measured) return measured;
   const M = materialBank();
   const root = new THREE.Group();
   const breathing = new THREE.Group(); // everything below the trachea expands together

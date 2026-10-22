@@ -8,7 +8,7 @@ Surfaces (new in v0.8.0): organ and tissue steps use physically based materials 
 
 ## Dives
 
-Frame is the height of the view on arrival, which the depth gauge shows.
+Frame is the height of the view on arrival, which the scale slider on the left shows.
 
 ### Skeletal dive
 | Tier | Step | Frame | Honest stopping point and simplifications |

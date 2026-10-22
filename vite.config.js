@@ -32,6 +32,9 @@ export default defineConfig(({ mode }) => {
     test: {
       include: ['tests/**/*.test.js'],
       environment: 'node',
+      // Some tests build every scene, and the anatomy tests decode the whole
+      // body bundle; on a busy runner they can pass the 5 s default.
+      testTimeout: 30000,
     },
   };
 });

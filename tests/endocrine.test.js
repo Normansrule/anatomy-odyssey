@@ -39,8 +39,8 @@ describe('thyroid geometry', () => {
     expect(LOBE.height).toBeLessThanOrEqual(60);
   });
   it('the body thyroid sits on the neck below the brain, in front of the spine', () => {
-    expect(THYROID.center[1]).toBeGreaterThan(1.4);
-    expect(THYROID.center[1]).toBeLessThan(1.52);
+    expect(THYROID.center[1]).toBeGreaterThan(1.3); // the neck of a 1.64 m body
+    expect(THYROID.center[1]).toBeLessThan(1.45);
     expect(THYROID.center[2]).toBeGreaterThan(0);
   });
   it('follicle cells grow from flat to tall as TSH rises', () => {

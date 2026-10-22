@@ -65,6 +65,35 @@ function s(tag, attrs = {}, ...children) {
   return node;
 }
 
+// Rough label box at the map's 12px label size, for collision checks.
+const labelBox = (n, dy) => {
+  const w = n.title.length * 6.8 + 10;
+  return { x0: n.x - w / 2, x1: n.x + w / 2, y0: n.y + dy - 10, y1: n.y + dy + 3 };
+};
+const overlap = (a, b) => Math.max(0, Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0)) * Math.max(0, Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0));
+
+/**
+ * Put each label above or below its point, left to right, choosing the side
+ * that clears every label already placed (or overlaps it least). `options`
+ * gives each node its two offsets, preferred side first.
+ */
+export function placeLabels(nodes, options) {
+  const placed = [];
+  const out = new Map();
+  [...nodes].sort((a, b) => a.x - b.x).forEach((n) => {
+    let best = null;
+    for (const dy of options(n)) {
+      const box = labelBox(n, dy);
+      const cost = placed.reduce((sum, p) => sum + overlap(box, p), 0);
+      if (!best || cost < best.cost) best = { dy, box, cost };
+      if (cost === 0) break;
+    }
+    placed.push(best.box);
+    out.set(n, best.dy);
+  });
+  return out;
+}
+
 /** A focusable SVG button. */
 function nodeButton(n, label, cls, onActivate, { r = 6, labelDy = -12 } = {}) {
   const g = s('g', { class: `atlas__node ${cls}`, tabindex: 0, role: 'button', 'aria-label': label },
@@ -96,6 +125,14 @@ export function renderAtlas(dialog, body, { current, onStep, onTrip, onLibrary }
     );
   }
 
+  // Label sides for the whole map at once, so a side trip's labels also clear the next row's.
+  const tripNodes = new Set(L.rows.flatMap((row) => row.trips.flatMap((t) => t.nodes)));
+  const dy = placeLabels(L.rows.flatMap((row) => [...row.nodes, ...row.trips.flatMap((t) => t.nodes)]), (n) => {
+    if (tripNodes.has(n)) return n.index % 2 ? [-9, 16] : [16, -9];
+    const i = L.rows.find((row) => row.nodes.includes(n)).nodes.indexOf(n);
+    return i % 2 ? [18, -12, -25] : [-12, 18, -25]; // a second line up when both sides are taken
+  });
+
   for (const row of L.rows) {
     const isHere = current.diveId === row.dive.id;
     svg.append(s('text', { class: `atlas__row-title${isHere ? ' is-here' : ''}`, x: 12, y: row.y + 4 }, row.dive.title));
@@ -104,19 +141,19 @@ export function renderAtlas(dialog, body, { current, onStep, onTrip, onLibrary }
       const pts = [trip.from, ...trip.nodes].map((n) => `${n.x},${n.y}`).join(' ');
       svg.append(s('polyline', { class: 'atlas__path atlas__path--trip', points: pts }));
     }
-    row.nodes.forEach((n, i) => {
+    row.nodes.forEach((n) => {
       const here = isHere && current.stepId === n.stepId;
       svg.append(nodeButton(n, `${row.dive.title}: ${n.title}`, `${n.shared ? 'is-shared' : ''}${here ? ' is-here' : ''}`, () => {
         close();
         onStep(row.dive.id, n.stepId);
-      }, { labelDy: i % 2 ? 18 : -12 }));
+      }, { labelDy: dy.get(n) }));
     });
     for (const trip of row.trips) {
       for (const n of trip.nodes) {
         svg.append(nodeButton(n, `${row.dive.title}, side trip: ${n.title}`, 'is-shared is-trip', () => {
           close();
           onTrip(row.dive.id, n.stepId);
-        }, { r: 4.5, labelDy: n.index % 2 ? -9 : 16 })); // alternate so neighbors' labels don't collide
+        }, { r: 4.5, labelDy: dy.get(n) }));
       }
     }
   }
@@ -137,7 +174,7 @@ export function renderAtlas(dialog, body, { current, onStep, onTrip, onLibrary }
       el('h2', { id: 'atlas-title', text: 'Map of the body by scale' }),
       el('button', { class: 'icon-button', text: 'Close', onclick: close }),
     ),
-    el('p', { class: 'atlas__lede', text: 'Each row is a dive, left to right from large to small. Violet points are shared building blocks, reused by every dive that reaches them; dashed branches are side trips. Choose any point to fly there.' }),
+    el('p', { class: 'atlas__lede', text: 'Each row is a dive, left to right from large to small. Blue points are shared building blocks, reused by every dive that reaches them; dashed branches are side trips. Choose any point to fly there.' }),
     el('div', { class: 'atlas__scroll' }, svg),
   );
   dialog.showModal();

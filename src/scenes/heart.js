@@ -1,9 +1,12 @@
-// Tier 3: the heart, opened from the front. 1 scene unit = 1 cm.
+// Tier 3: the heart, drawn (the fallback for heartMeasured.js until the
+// anatomy bundle loads), opened from the front. 1 scene unit = 1 cm.
 // A frontal cutaway (the front half removed) shows four chambers, the
 // septum between left and right, the valve plane, and the great vessels.
 // By convention oxygen-poor blood is drawn blue and oxygen-rich blood red.
 import * as THREE from 'three/webgpu';
 import { COLORS, materialBank, pick, ellipsoid, tubeThrough, disposeTree } from './kit.js';
+import { bodyParts } from './bodyMeshes.js';
+import { buildMeasuredHeart } from './heartMeasured.js';
 
 // Outer profile [radius, height], apex at the bottom.
 const OUTER = [
@@ -21,6 +24,8 @@ function radiusAt(y) {
 }
 
 export function buildHeart({ reducedMotion = false } = {}) {
+  const measured = buildMeasuredHeart(bodyParts(), { reducedMotion });
+  if (measured) return measured;
   const M = materialBank();
   const root = new THREE.Group();
   const heart = new THREE.Group();
