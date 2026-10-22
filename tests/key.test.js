@@ -56,4 +56,9 @@ describe('chart labels', () => {
     expect(Math.max(...ys)).toBeLessThanOrEqual(1000);
     expect(ys).toEqual([0, 970, 1000]);
   });
+
+  it("starts the left column below the plate's headline figure, the right one at the top", () => {
+    const out = layoutCallouts([{ id: 'a', x: 0, y: 100 }, { id: 'b', x: 900, y: 100 }], { ...frame, topLeft: 300 });
+    expect(out).toEqual([{ id: 'a', side: 'left', y: 300 }, { id: 'b', side: 'right', y: 100 }]);
+  });
 });

@@ -65,19 +65,21 @@ export function spread(marks, gap = MARK_GAP, rounds = 6) {
 /**
  * Set chart labels in two columns. Each part goes to the side of the plate
  * it sits on; down each side the labels keep their parts' order and height,
- * pushed apart to at least `row` and kept between `top` and `bottom`.
+ * pushed apart to at least `row` and kept between `top` and `bottom`
+ * (`topLeft` for the left column, which starts below the plate's headline figure).
  * Returns { id, side, y } for each point ({ id, x, y }).
  */
-export function layoutCallouts(points, { mid, top, bottom, row = CALLOUT_ROW }) {
+export function layoutCallouts(points, { mid, top, topLeft = top, bottom, row = CALLOUT_ROW }) {
   const out = [];
   for (const side of ['left', 'right']) {
+    const first = side === 'left' ? topLeft : top;
     const col = points.filter((p) => (p.x < mid) === (side === 'left')).sort((a, b) => a.y - b.y);
     // Labels that would touch merge into a block centered on their parts, as a
     // chart setter stacks them, so the lines stay short and don't fan out.
     let blocks = col.map((p) => ({ want: p.y, n: 1, y: p.y }));
     for (let merged = true; merged; ) {
       merged = false;
-      for (const b of blocks) b.y = Math.min(bottom - (b.n - 1) * row, Math.max(top, b.want - ((b.n - 1) * row) / 2));
+      for (const b of blocks) b.y = Math.min(bottom - (b.n - 1) * row, Math.max(first, b.want - ((b.n - 1) * row) / 2));
       for (let i = 1; i < blocks.length; i++) {
         const a = blocks[i - 1];
         const b = blocks[i];
@@ -186,7 +188,7 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
   function placeCallouts(shown, f) {
     // Split at the middle of the parts themselves, so a subject off to one side still gets labels on both.
     const mid = shown.reduce((sum, s) => sum + s.x, 0) / (shown.length || 1);
-    const placed = layoutCallouts(shown, { mid, top: f.top + 16, bottom: f.bottom - 16 });
+    const placed = layoutCallouts(shown, { mid, top: f.top + 16, topLeft: (f.topLeft ?? f.top) + 16, bottom: f.bottom - 16 });
     for (const s of shown) s.w = s.p.mark.offsetWidth; // read every width before moving any label
     for (const { id, side, y } of placed) {
       const s = shown.find((x) => x.id === id);

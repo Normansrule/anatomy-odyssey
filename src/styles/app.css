@@ -692,6 +692,20 @@ button:active:not(:disabled):not([aria-disabled='true']),
   right: calc(var(--key-w) + var(--s-4));
 }
 
+/* While the welcome card is open the chips sit beside it, not behind it. */
+@media (min-width: 900px) {
+  .app:has(.intro:not([hidden])) .systems {
+    left: calc(var(--gauge-w) + 2 * var(--s-5) + min(520px, calc(100% - var(--gauge-w) - 2 * var(--s-5))));
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 899px) {
+  .app:has(.intro:not([hidden])) .systems {
+    visibility: hidden;
+  }
+}
+
 .system-chip {
   flex: 0 0 auto;
   display: inline-flex;
@@ -782,6 +796,38 @@ button:active:not(:disabled):not([aria-disabled='true']),
   font-size: var(--step-0);
   font-style: italic;
   color: var(--muted);
+}
+
+.plate-head__fact {
+  margin-top: var(--s-5) !important;
+  max-width: 300px;
+  font-size: var(--step--1);
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.plate-head__fact[hidden] {
+  display: none;
+}
+
+.plate-head__fact-value {
+  display: block;
+  font-family: var(--display);
+  font-stretch: 72%;
+  font-weight: 800;
+  font-size: var(--step-4);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.plate-head__fact-unit {
+  font-family: var(--display);
+  font-stretch: 85%;
+  font-weight: 700;
+  font-size: var(--step-1);
+  color: var(--accent);
 }
 
 .scalebar {
@@ -2324,6 +2370,10 @@ button:active:not(:disabled):not([aria-disabled='true']),
   animation: set-wipe 700ms var(--ease-out) 240ms backwards;
 }
 
+:root[data-motion='full'] .plate-head.is-set .plate-head__fact {
+  animation: set-rise 620ms var(--ease-out) 420ms backwards;
+}
+
 :root[data-motion='full'] .callouts circle {
   transform-box: fill-box;
   transform-origin: center;
@@ -2509,5 +2559,69 @@ button:active:not(:disabled):not([aria-disabled='true']),
 
   .atlas__node:hover text {
     fill: var(--ink);
+  }
+}
+
+/* ── By the numbers: a card's headline figures, set like a product page's specs ── */
+.card__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: var(--s-4) var(--s-4);
+  margin: var(--s-4) 0 var(--s-2);
+  padding: var(--s-4) 0;
+  border-top: var(--rule-w) solid var(--rule);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.card__stat {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: var(--s-1);
+  margin: 0;
+}
+
+.card__stat-figure {
+  margin: 0;
+  line-height: 0.95;
+  font-family: var(--display);
+  font-stretch: 72%;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.card__stat-figure {
+  container-type: inline-size;
+}
+
+.card__stat-value {
+  display: block;
+  /* As big as the column allows, up to the display size: condensed digits run just under 0.5 em wide. */
+  font-size: min(var(--step-3), calc(100cqi / (var(--chars, 3) * 0.5)));
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.card__stat-unit {
+  display: block;
+  margin-top: var(--s-1);
+  font-size: var(--step-0);
+  font-weight: 700;
+  font-stretch: 85%;
+  color: var(--accent);
+}
+
+.card__stat-label {
+  font-size: var(--step--1);
+  line-height: 1.35;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Phones and short windows keep the plate for the model; the figure is on the card. */
+@media (max-width: 899px), (max-height: 640px) {
+  .plate-head__fact {
+    display: none;
   }
 }

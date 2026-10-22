@@ -10,6 +10,7 @@ import { SYSTEMS, DEFAULT_SYSTEMS } from './scenes/body.js';
 import { loadBodyParts } from './scenes/bodyMeshes.js';
 import { DIVES, TIERS, getDive, locateStep } from './data/dives.js';
 import { getCard } from './data/cards.js';
+import { statsFor } from './data/stats.js';
 import { getLibraryEntry } from './data/library.js';
 import { computeUsedBy, sideTripPath, routeTo } from './science/graph.js';
 import { formatLength, gaugeFraction, GAUGE_TOP_EXP, GAUGE_BOTTOM_EXP } from './science/scale.js';
@@ -361,7 +362,11 @@ async function main() {
     let bottom = rect('.track').top - box.top;
     const chips = $('systems');
     if (!chips.hidden && chips.childElementCount) bottom = Math.min(bottom, chips.getBoundingClientRect().top - box.top);
-    return { left, right, top, bottom: bottom - 12 };
+    // The left column of labels starts below the plate's headline figure.
+    const fact = $('plate-fact');
+    const factBox = fact.hidden || !fact.offsetHeight ? null : fact.getBoundingClientRect();
+    const topLeft = factBox ? Math.max(top, factBox.bottom - box.top + 12) : top;
+    return { left, right, top, topLeft, bottom: bottom - 12 };
   }
   // Pointing at a chart label lights its part; clicking it opens the part's card.
   const marksEl = $('marks');
@@ -473,6 +478,14 @@ async function main() {
     $('plate-kicker').textContent = s.sideTrip ? `Side plate · ${TIERS[s.tier]} tier` : `Plate ${n + 1} of ${main.length} · ${TIERS[s.tier]} tier`;
     $('plate-title').textContent = s.title;
     $('plate-dive').textContent = state.dive.title;
+    // The plate's headline number, printed under the heading like a chart's key figure.
+    const [fact] = statsFor(s.card);
+    $('plate-fact').hidden = !fact;
+    if (fact) {
+      $('plate-fact-value').textContent = fact.value;
+      $('plate-fact-unit').textContent = fact.unit;
+      $('plate-fact-label').textContent = fact.label.replace(/\s*\([^)]*\d{4}\)$/, ''); // the card cites the source
+    }
     // A new subject sets itself in type again: the heading rises out of its baseline.
     if (changed) restartAnimation($('plate-head'), 'is-set');
   }

@@ -4,6 +4,7 @@ import { getCard, DEFAULT_LABELS, PLANNED_CARDS } from '../data/cards.js';
 import { REFERENCES } from '../data/references.js';
 import { getLibraryEntry, LIBRARY } from '../data/library.js';
 import { TIERS } from '../data/dives.js';
+import { statsFor, countTo } from '../data/stats.js';
 
 function section(title, ...content) {
   return el('section', { class: 'card__section' }, el('h3', { class: 'card__heading', text: title }), ...content);
@@ -76,6 +77,45 @@ function sharedBlock(libraryId, ctx) {
   );
 }
 
+/** "By the numbers": the card's headline figures, set large like a product page's specs. */
+function statsBlock(cardId) {
+  const stats = statsFor(cardId);
+  if (!stats.length) return null;
+  // All three figures share one size, set by the longest: --chars is its length.
+  const chars = Math.max(3, ...stats.map((s) => s.value.length));
+  return el('dl', { class: 'card__stats', 'aria-label': 'By the numbers', vars: { '--chars': String(chars) } }, stats.map((s) => el('div', { class: 'card__stat' },
+    el('dt', { class: 'card__stat-label', text: s.label }),
+    el('dd', { class: 'card__stat-figure' },
+      el('span', { class: 'card__stat-value', 'data-value': s.value, text: s.value }),
+      el('span', { class: 'card__stat-unit', text: s.unit })),
+  )));
+}
+
+let lastCounted = null;
+
+/** Count each figure up from zero, once, when full motion is on; the final text is there from the start. */
+export function countUp(root, ms = 900) {
+  if (document.documentElement.dataset.motion !== 'full') return;
+  const figures = [...root.querySelectorAll('.card__stat-value')]
+    .map((node) => ({ node, final: node.dataset.value, to: countTo(node.dataset.value) }))
+    .filter((f) => f.to !== null && f.to > 0);
+  if (!figures.length) return;
+  const start = performance.now();
+  const show = (f, k) => {
+    const decimals = (f.final.split('.')[1] ?? '').length;
+    const n = f.to * k;
+    f.node.textContent = k >= 1 ? f.final : n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  };
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / ms);
+    const k = 1 - (1 - t) ** 4; // ease out
+    for (const f of figures) if (f.node.isConnected) show(f, t >= 1 ? 1 : k);
+    if (t < 1) requestAnimationFrame(tick);
+  };
+  for (const f of figures) show(f, 0);
+  requestAnimationFrame(tick);
+}
+
 export function renderCard(container, cardId, ctx) {
   const card = getCard(cardId);
   clear(container);
@@ -96,6 +136,7 @@ export function renderCard(container, cardId, ctx) {
       el('li', { class: 'tag tag--tier', text: tierText }),
       ...labels.map((l) => el('li', { class: 'tag', text: l })),
     ]),
+    statsBlock(cardId),
     isFocus || isSideTripFocus
       ? el('button', { class: 'primary-button card__dive', text: `Dive into the ${ctx.nextStep.title.toLowerCase()}`, onclick: ctx.onDive })
       : null,
@@ -126,6 +167,9 @@ export function renderCard(container, cardId, ctx) {
     references(card.refs ?? []),
   ];
   container.append(...parts.filter(Boolean));
+  // Count up when a card opens, not each time it is redrawn (the expert switch, a new key).
+  if (cardId !== lastCounted) countUp(container);
+  lastCounted = cardId;
 }
 
 /** A card for a planned library entry, reached from search or a "made of" link. */

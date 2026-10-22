@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.21.0
+
+- **By the numbers.** Every card for a whole-body, system or organ plate, and many below them, now opens on three headline figures set large like a product page's specs: the heart's 100,000 beats a day, 5 L a minute and 300 g; the brain's 86 billion neurons, 2 percent of body weight and 20 percent of its energy; the lungs' 480 million alveoli and 70 m² of surface. 53 cards have them (`src/data/stats.js`), typical adult values from each card's sources and standard physiology texts, with the study named where a count comes from one. With full motion each figure counts up from zero as the card opens (once per card, not on every redraw); the final number is in the page from the start for screen readers and reduced motion. All three figures on a card share one size, as large as the longest allows.
+- **The plate's key figure.** Under each plate's heading the chart now prints that plate's first figure in big condensed type with its unit in red, rising into place after the heading. The left column of labels starts below it so nothing overlaps; phones and short windows leave it on the card.
+- **The welcome card no longer hides the system buttons.** On wide screens the row of body-system buttons sat behind the welcome card; it now sits beside it, and on phones it waits until the card is closed.
+
 ## 0.20.1
 
 - **Eyes the right size, in their sockets.** BodyParts3D's eyeballs are 31 mm across, a third bigger than a real adult eye (about 24 mm), so they bulged out of the skull and read as googly. `tools/build_body_meshes.py` now shrinks each one about its own center to 24 mm: the corneas sit about 14 mm in front of the outer rim of the orbit (a normal Hertel reading is 12 to 20 mm), about 2.6 mm clear of the orbit's bones and just behind the eyelids. The iris used to be drawn inside the oversized ball and a few millimetres off its axis, showing as a crescent; it now sits domed on the front of each eye on that eye's own axis (`eyes.front` in the landmarks), so both eyes look straight ahead.
