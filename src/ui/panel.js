@@ -11,7 +11,7 @@ function section(title, ...content) {
 }
 
 /** How many key entries a card lists; the rest are a search away. */
-export const KEY_SHOWN = 12;
+export const KEY_SHOWN = 24;
 
 /**
  * The numbered key: every structure in the view, numbered like its mark on

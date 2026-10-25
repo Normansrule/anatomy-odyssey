@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { numberParts, leaderEnd, spread, rim, layoutCallouts } from '../src/ui/key.js';
+import { numberParts, leaderEnd, spread, rim, layoutCallouts, calloutRoom, MAX_MARKS, MAX_CALLOUTS } from '../src/ui/key.js';
 
 describe('living key', () => {
   it('numbers the structures in view from 1, in scene order', () => {
@@ -57,8 +57,28 @@ describe('chart labels', () => {
     expect(ys).toEqual([0, 970, 1000]);
   });
 
+  it('hands parts across when a column is full, nearest the middle first', () => {
+    const pts = Array.from({ length: 6 }, (_, i) => ({ id: `l${i}`, x: 100 + i * 10, y: 100 + i * 50 }));
+    const out = layoutCallouts(pts, { mid: 500, top: 0, bottom: 120, row: 30 }); // 5 rows a side
+    expect(out.filter((o) => o.side === 'left').length).toBe(5);
+    expect(out.find((o) => o.side === 'right').id).toBe('l5');
+  });
+
+  it('labels a part beside the heading on the right', () => {
+    const out = layoutCallouts([{ id: 'skull', x: 400, y: 50 }, { id: 'hip', x: 400, y: 500 }], { mid: 450, top: 0, topLeft: 300, bottom: 1000, row: 30 });
+    expect(out.find((o) => o.id === 'skull').side).toBe('right');
+    expect(out.find((o) => o.id === 'hip').side).toBe('left');
+  });
+
+  it('labels as many parts as fit down both edges, a row apart', () => {
+    expect(calloutRoom({ top: 0, bottom: 332 }, 30)).toBe(22); // 11 rows a side
+    expect(calloutRoom({ top: 0, bottom: 2000 }, 30)).toBe(MAX_CALLOUTS);
+    expect(calloutRoom({ top: 0, bottom: 100 }, 30)).toBe(MAX_MARKS); // never fewer than the marks
+    expect(calloutRoom({ top: 0, topLeft: 300, bottom: 632 }, 30)).toBe(22); // the shorter column decides
+  });
+
   it("starts the left column below the plate's headline figure, the right one at the top", () => {
-    const out = layoutCallouts([{ id: 'a', x: 0, y: 100 }, { id: 'b', x: 900, y: 100 }], { ...frame, topLeft: 300 });
+    const out = layoutCallouts([{ id: 'a', x: 0, y: 290 }, { id: 'b', x: 900, y: 100 }], { ...frame, topLeft: 300 });
     expect(out).toEqual([{ id: 'a', side: 'left', y: 300 }, { id: 'b', side: 'right', y: 100 }]);
   });
 });

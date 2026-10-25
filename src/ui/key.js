@@ -10,11 +10,19 @@ import { getCard } from '../data/cards.js';
 
 /** Up to this many structures, every mark shows; past it (the whole body) only the one you point at. */
 export const MAX_MARKS = 12;
+/** A chart labels up to this many parts, as many as fit down its two edges a row apart. */
+export const MAX_CALLOUTS = 24;
 /** Closest two marks may sit, center to center (the marks are 24 px circles). */
 const MARK_GAP = 28;
 const MARK_R = 12;
 /** Callout rows: the closest two labels on one side may sit, baseline to baseline. */
 export const CALLOUT_ROW = 30;
+
+/** How many labels a chart has room for: a column down each edge, a row apart, up to MAX_CALLOUTS. */
+export function calloutRoom(f, row = CALLOUT_ROW) {
+  const rows = Math.max(0, Math.floor((f.bottom - Math.max(f.top, f.topLeft ?? f.top) - 32) / row) + 1);
+  return Math.max(MAX_MARKS, Math.min(MAX_CALLOUTS, 2 * rows));
+}
 const SVG = 'http://www.w3.org/2000/svg';
 
 /** The point on a number's circle (radius r around a) facing b. */
@@ -64,16 +72,28 @@ export function spread(marks, gap = MARK_GAP, rounds = 6) {
 
 /**
  * Set chart labels in two columns. Each part goes to the side of the plate
- * it sits on; down each side the labels keep their parts' order and height,
+ * it sits on, unless that column is full or starts below it; down each side the labels keep their parts' order and height,
  * pushed apart to at least `row` and kept between `top` and `bottom`
  * (`topLeft` for the left column, which starts below the plate's headline figure).
  * Returns { id, side, y } for each point ({ id, x, y }).
  */
 export function layoutCallouts(points, { mid, top, topLeft = top, bottom, row = CALLOUT_ROW }) {
   const out = [];
+  const cols = { left: points.filter((p) => p.x < mid), right: points.filter((p) => p.x >= mid) };
+  const room = { left: Math.floor((bottom - topLeft) / row) + 1, right: Math.floor((bottom - top) / row) + 1 };
+  const move = (from, to, pick) => {
+    const i = cols[from].indexOf(pick(cols[from]));
+    cols[to].push(...cols[from].splice(i, 1));
+  };
+  const nearest = (side) => (col) => col.reduce((a, b) => ((side === 'left' ? b.x > a.x : b.x < a.x) ? b : a));
+  // A part high beside the heading is labeled on the right, whose column starts higher.
+  if (topLeft > top) for (const p of cols.left.filter((q) => q.y < topLeft - row)) if (cols.right.length < room.right) move('left', 'right', () => p);
+  // A column with more labels than rows hands the parts nearest the middle to the other side.
+  while (cols.left.length > room.left && cols.right.length < room.right) move('left', 'right', nearest('left'));
+  while (cols.right.length > room.right && cols.left.length < room.left) move('right', 'left', nearest('right'));
   for (const side of ['left', 'right']) {
     const first = side === 'left' ? topLeft : top;
-    const col = points.filter((p) => (p.x < mid) === (side === 'left')).sort((a, b) => a.y - b.y);
+    const col = cols[side].sort((a, b) => a.y - b.y);
     // Labels that would touch merge into a block centered on their parts, as a
     // chart setter stacks them, so the lines stay short and don't fan out.
     let blocks = col.map((p) => ({ want: p.y, n: 1, y: p.y }));
@@ -120,7 +140,7 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
       const g = document.createElementNS(SVG, 'g');
       g.append(p.line, p.dot);
       // Callouts draw in one after another, the first part first.
-      for (const node of [g, p.mark]) node.style.setProperty('--i', String(Math.min(i, MAX_MARKS)));
+      for (const node of [g, p.mark]) node.style.setProperty('--i', String(Math.min(i, MAX_CALLOUTS)));
       p.callout = g;
       calloutsEl.append(g);
     }
@@ -145,14 +165,15 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
     const box = app.getBoundingClientRect();
     const f = chart ? frame() : { left: 0, right: box.width, top: 0, bottom: box.height };
     const all = parts.length <= MAX_MARKS;
+    const room = chart ? calloutRoom(f) : MAX_MARKS;
     const shown = [];
     let listed = 0;
     for (const p of parts) {
       const anchor = busy ? null : engine.anchorOf(p.id);
       const at = anchor && engine.toScreen(anchor);
       const inside = at && at.x > f.left && at.y > f.top && at.x < f.right && at.y < f.bottom;
-      // A chart labels the first dozen parts (the whole body has more); numbers show only all or the one pointed at.
-      const show = inside && (chart ? listed < MAX_MARKS || p.id === hot : all || p.id === hot);
+      // A chart labels as many parts as fit down its edges (the whole body has more); numbers show only all or the one pointed at.
+      const show = inside && (chart ? listed < room || p.id === hot : all || p.id === hot);
       if (show) listed++;
       p.mark.hidden = !show;
       p.callout.toggleAttribute('hidden', !show || !chart);

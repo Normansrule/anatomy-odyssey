@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.21.0-a3242f)
-![Tests](https://img.shields.io/badge/tests-532%20passing-276a40)
+![Version](https://img.shields.io/badge/version-0.22.0-a3242f)
+![Tests](https://img.shields.io/badge/tests-535%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -42,7 +42,8 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 - **Labeled like a wall chart.** Every part in view is named at the edge of the plate with a line to the part, and numbered in the card's key. Point at a label, a part or a key entry and a red leader line lights up, following the part as the model turns.
 - **Zoom in anywhere.** Scroll or pinch toward any part of the body; a guide names the nearest part that has a dive and takes you there.
 - **Point, click, learn.** Hover to name a part, click to open its card: what it does, why it matters, its real size, an *Expert detail* switch and a source you can check.
-- **By the numbers.** Every whole-body, system and organ plate prints its headline figure under the heading (100,000 heartbeats a day, 86 billion neurons, 480 million alveoli), and the card opens on three big figures that count up as it appears, 53 cards in all, each a typical adult value from the card's sources.
+- **Labeled like a lecture-hall chart.** The skeleton names every major bone (skull, jaw, collarbone and shoulder blade, breastbone, humerus, radius, ulna, femur, kneecap, tibia, fibula and the bones of the hand and foot), and the muscular dive names twelve big muscles, from the deltoid and pectoralis major to the sartorius and calf. Each has its own card, and a chart holds up to 24 labels, set in two balanced columns.
+- **By the numbers.** Every whole-body, system and organ plate prints its headline figure under the heading (100,000 heartbeats a day, 86 billion neurons, 480 million alveoli), and the card opens on three big figures that count up as it appears, 64 cards in all, each a typical adult value from the card's sources.
 - **Light sheet or slate.** It follows your device's light or dark setting, or pick one in About.
 - **Science you can play with.** Sliders run real, tested equations (oxygen binding, nerve speed, blood acidity, how fast an enzyme works, how much blood the heart pumps).
 - **A map by scale, a tour, quizzes and a glossary.** The map (press M) lays out every dive on one size axis; the tour narrates a dive with captions you can have read aloud.
@@ -53,6 +54,10 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 ## See it
 
 <table>
+<tr>
+<td align="center" width="50%"><img src="docs/media/skeleton-chart.webp" alt="The skeleton plate labeled like a lecture-hall chart: skull, lower jaw, shoulder girdle, breastbone, humerus, vertebral column, rib cage, discs, ulna, radius, the bones of the hand, pelvis, femur, kneecap, tibia, fibula and the bones of the foot, each with a line to its bone" width="420" /><br /><sub><b>A labeled skeleton.</b> Every major bone named at the plate's edge, the arm and leg bones each with its own card.</sub></td>
+<td align="center" width="50%"><img src="docs/media/muscle-chart.webp" alt="The whole body in the muscular dive, labeled like a muscle chart: sternocleidomastoid, deltoid, trapezius, pectoralis major, biceps, triceps, latissimus dorsi, external oblique, rectus abdominis, gluteus maximus, sartorius, tibialis anterior and the calf muscles" width="420" /><br /><sub><b>A labeled muscle chart.</b> Twelve big muscles named on the real body, each with its own card.</sub></td>
+</tr>
 <tr>
 <td align="center" colspan="2"><img src="docs/media/by-the-numbers.webp" alt="The heart plate: under the HEART heading the plate prints 100,000 beats a day in big condensed type, and the card on the right opens on three figures, 100,000 beats a day, 5 L of blood pumped a minute at rest and 300 g, above the numbered key" width="860" /><br /><sub><b>By the numbers.</b> Each plate prints its headline figure, and each card opens on three.</sub></td>
 </tr>
@@ -255,7 +260,7 @@ npm run desktop:dev      # native window with live reload
 npm run desktop:build    # installers in src-tauri/target/release/bundle/
 ```
 
-Pushing a version tag (`git tag v0.21.0 && git push origin v0.21.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release. They aren't code-signed yet.
+Pushing a version tag (`git tag v0.22.0 && git push origin v0.22.0`) builds Windows, macOS and Linux installers and publishes them as a GitHub release. They aren't code-signed yet.
 
 **Headless checks** (software rendering, no graphics card needed):
 

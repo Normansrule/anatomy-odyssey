@@ -69,7 +69,7 @@ function buildSkeleton(M, highlightFemur) {
     jaw.push(tubeThrough([[s * 0.05, 1.592, -0.004], [s * 0.049, 1.565, -0.002], [s * 0.046, 1.543, 0.01], [s * 0.032, 1.536, 0.048], [s * 0.012, 1.533, 0.064], [0, 1.533, 0.067]], 0.0062, dim, 24, 8));
   }
   jaw.push(ellipsoid([0, 1.532, 0.066], [0.016, 0.011, 0.008], dim, 14));
-  add(mergedMesh(jaw, dim), 'skull', 'Lower jaw (mandible)');
+  add(mergedMesh(jaw, dim), 'mandible', 'Lower jaw (mandible)');
   const teeth = [];
   for (const [y, rr] of [[1.556, 1], [1.549, 0.96]]) {
     for (let i = 0; i < 16; i++) {
@@ -163,7 +163,7 @@ function buildSkeleton(M, highlightFemur) {
   const sternumBody = capsuleBetween([0, 1.355, 0.115], [0, 1.215, 0.118], 0.01, dim, 10);
   sternumBody.scale.x = 1.55;
   const xiphoid = capsuleBetween([0, 1.205, 0.117], [0, 1.18, 0.112], 0.0045, dim, 8);
-  add(mergedMesh([manubrium, sternumBody, xiphoid], dim), 'rib-cage', 'Breastbone (sternum)');
+  add(mergedMesh([manubrium, sternumBody, xiphoid], dim), 'sternum', 'Breastbone (sternum)');
 
   for (const s of SIDES) {
     // ── Shoulder girdle: collarbone and shoulder blade ──
@@ -182,10 +182,10 @@ function buildSkeleton(M, highlightFemur) {
     add(ellipsoid([s * 0.172, 1.448, -0.012], [0.016, 0.006, 0.014], dim, 12), 'shoulder-girdle', 'Acromion (tip of the shoulder)');
 
     // ── Arm ──
-    add(ellipsoid([s * 0.185, 1.42, 0], [0.024, 0.024, 0.024], dim), 'skeletal-system', 'Humerus (head)');
-    add(longBone([s * 0.188, 1.435, 0], [s * 0.25, 1.11, -0.01], 0.0105, 0.022, dim), 'skeletal-system', 'Humerus');
-    add(longBone([s * 0.25, 1.115, 0.012], [s * 0.29, 0.855, 0.012], 0.0065, 0.011, dim), 'skeletal-system', 'Radius');
-    add(longBone([s * 0.255, 1.125, -0.012], [s * 0.295, 0.858, -0.008], 0.0062, 0.012, dim), 'skeletal-system', 'Ulna');
+    add(ellipsoid([s * 0.185, 1.42, 0], [0.024, 0.024, 0.024], dim), 'humerus', 'Humerus (head)');
+    add(longBone([s * 0.188, 1.435, 0], [s * 0.25, 1.11, -0.01], 0.0105, 0.022, dim), 'humerus', 'Humerus (upper arm bone)');
+    add(longBone([s * 0.25, 1.115, 0.012], [s * 0.29, 0.855, 0.012], 0.0065, 0.011, dim), 'radius', 'Radius');
+    add(longBone([s * 0.255, 1.125, -0.012], [s * 0.295, 0.858, -0.008], 0.0062, 0.012, dim), 'ulna', 'Ulna');
 
     // ── Hand: 8 wrist bones, 5 palm bones, 14 finger bones ──
     const carpals = [];
@@ -263,12 +263,12 @@ function buildSkeleton(M, highlightFemur) {
     g.add(femur);
 
     // ── Knee and lower leg ──
-    add(ellipsoid([s * 0.1, 0.5, 0.035], [0.018, 0.022, 0.01], dim), 'skeletal-system', 'Kneecap (patella)');
-    add(ellipsoid([s * 0.1, 0.478, 0.002], [0.034, 0.011, 0.028], dim, 18), 'skeletal-system', 'Tibia (top, the tibial plateau)');
-    add(longBone([s * 0.099, 0.49, 0], [s * 0.092, 0.07, 0], 0.012, 0.028, dim), 'skeletal-system', 'Tibia (shin bone)');
-    add(ellipsoid([s * 0.078, 0.068, 0.004], [0.008, 0.016, 0.01], dim, 10), 'skeletal-system', 'Inner ankle bone (medial malleolus)');
-    add(longBone([s * 0.126, 0.47, -0.014], [s * 0.118, 0.07, -0.01], 0.0055, 0.01, dim), 'skeletal-system', 'Fibula');
-    add(ellipsoid([s * 0.12, 0.062, -0.008], [0.007, 0.017, 0.009], dim, 10), 'skeletal-system', 'Outer ankle bone (lateral malleolus)');
+    add(ellipsoid([s * 0.1, 0.5, 0.035], [0.018, 0.022, 0.01], dim), 'patella', 'Kneecap (patella)');
+    add(ellipsoid([s * 0.1, 0.478, 0.002], [0.034, 0.011, 0.028], dim, 18), 'tibia', 'Tibia (top, the tibial plateau)');
+    add(longBone([s * 0.099, 0.49, 0], [s * 0.092, 0.07, 0], 0.012, 0.028, dim), 'tibia', 'Tibia (shin bone)');
+    add(ellipsoid([s * 0.078, 0.068, 0.004], [0.008, 0.016, 0.01], dim, 10), 'tibia', 'Inner ankle bone (medial malleolus)');
+    add(longBone([s * 0.126, 0.47, -0.014], [s * 0.118, 0.07, -0.01], 0.0055, 0.01, dim), 'fibula', 'Fibula');
+    add(ellipsoid([s * 0.12, 0.062, -0.008], [0.007, 0.017, 0.009], dim, 10), 'fibula', 'Outer ankle bone (lateral malleolus)');
 
     // ── Foot: 7 ankle bones, 5 long bones, 14 toe bones ──
     const tarsals = [

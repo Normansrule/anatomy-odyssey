@@ -20,6 +20,46 @@ export const STATS = {
     { value: '3', unit: '× body weight', label: 'pressing on the hip with each step when walking' },
     { value: '26', unit: '%', label: 'of body height, so a femur predicts stature' },
   ],
+  humerus: [
+    { value: '33', unit: 'cm', label: 'long in an adult man' },
+    { value: '180', unit: '°', label: 'the arm swings up at the shoulder, the most mobile joint' },
+    { value: '3', unit: 'nerves', label: 'run close along it: axillary, radial and ulnar' },
+  ],
+  radius: [
+    { value: '24', unit: 'cm', label: 'long' },
+    { value: '160–180', unit: '°', label: 'of turn from palm down to palm up' },
+    { value: '1', unit: 'in 6', label: 'of the fractures seen in emergency rooms is at its wrist end' },
+  ],
+  ulna: [
+    { value: '26', unit: 'cm', label: 'long' },
+    { value: '150', unit: '°', label: 'the elbow bends on it, a hinge with the humerus' },
+    { value: '2', unit: 'joints', label: 'with the radius, at the elbow and at the wrist' },
+  ],
+  tibia: [
+    { value: '38', unit: 'cm', label: 'long: the second-longest bone' },
+    { value: '83–94', unit: '%', label: 'of the load on the lower leg passes through it' },
+    { value: '2', unit: 'plateaus', label: 'on top, where the femur rests on the menisci' },
+  ],
+  fibula: [
+    { value: '6–17', unit: '%', label: 'of the lower leg’s load is all it carries' },
+    { value: '36', unit: 'cm', label: 'long' },
+    { value: '1.5', unit: 'cm', label: 'thick, about a finger’s width' },
+  ],
+  patella: [
+    { value: '5', unit: 'cm', label: 'tall: the largest bone that grows inside a tendon' },
+    { value: '5', unit: 'mm', label: 'of cartilage on its back, the thickest in the body' },
+    { value: '3', unit: '× body weight', label: 'pressing it into the femur as you climb stairs' },
+  ],
+  sternum: [
+    { value: '17', unit: 'cm', label: 'long' },
+    { value: '7', unit: 'pairs', label: 'of ribs join it by their cartilage' },
+    { value: '5–6', unit: 'cm', label: 'deep is how far CPR pushes it, 100 to 120 times a minute' },
+  ],
+  mandible: [
+    { value: '16', unit: 'teeth', label: 'in the lower jaw of an adult' },
+    { value: '600–700', unit: 'N', label: 'of bite at the back teeth in an adult man, roughly' },
+    { value: '1', unit: 'year', label: 'old: when its two halves fuse at the chin' },
+  ],
   'compact-bone': [
     { value: '80', unit: '%', label: 'of the skeleton’s mass is compact bone' },
     { value: '10', unit: '%', label: 'of the skeleton is rebuilt every year' },
@@ -79,6 +119,30 @@ export const STATS = {
     { value: '2', unit: 'heads', label: 'that join into one tendon at the elbow' },
     { value: '600', unit: 'muscles', label: 'skeletal muscles in the body, give or take' },
     { value: '40', unit: '%', label: 'of body weight is skeletal muscle' },
+  ],
+  deltoid: [
+    { value: '3', unit: 'parts', label: 'front, middle and back, each swinging the arm a different way' },
+    { value: '15', unit: '°', label: 'of lift the supraspinatus gives before the middle part takes over' },
+  ],
+  'pectoralis-major': [
+    { value: '3', unit: 'parts', label: 'from the collarbone, the breastbone and ribs, and the belly wall' },
+    { value: '20', unit: 'cm', label: 'across the chest' },
+  ],
+  'rectus-abdominis': [
+    { value: '3–4', unit: 'tendon bands', label: 'across each strap, making the six-pack' },
+    { value: '30–40', unit: 'cm', label: 'from the ribs to the pubic bone' },
+  ],
+  'external-oblique': [
+    { value: '3', unit: 'layers', label: 'of flat muscle in the belly wall, their fibers crossing like plywood' },
+  ],
+  sartorius: [
+    { value: '50', unit: 'cm', label: 'long: the longest muscle in the body' },
+  ],
+  'calf-muscles': [
+    { value: '2', unit: 'muscles', label: 'share one tendon, the Achilles, the strongest in the body' },
+  ],
+  triceps: [
+    { value: '3', unit: 'heads', label: 'long, lateral and medial, joining at the point of the elbow' },
   ],
   sarcomere: [
     { value: '2.5', unit: 'µm', label: 'long at rest' },

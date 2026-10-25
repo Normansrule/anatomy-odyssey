@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.22.0
+
+- **A skeleton labeled like a lecture-hall chart.** The humerus, radius, ulna, tibia, fibula, kneecap, breastbone and lower jaw each have their own card now (they used to open the whole skeletal system's, or the skull's and rib cage's), so the skeleton plate names every major bone at its edge, each with a line to the bone: what it does, its size, the joints and nerves around it and the clinical facts students meet first (the funny bone, a Colles fracture, why the fibula can be borrowed for a graft, where CPR pushes). `tools/build_body_meshes.py` files them by the rules, and `--from-bundle` refiles an older bundle the same way.
+- **A muscle chart.** Twelve big superficial muscles have their own cards and labels on the real body: sternocleidomastoid, deltoid, trapezius, pectoralis major, triceps, latissimus dorsi, external oblique, rectus abdominis, gluteus maximus, sartorius, tibialis anterior and the calf muscles. On a dive's whole-body plate, that dive's own parts are named first, so the muscular dive opens on a muscle chart.
+- **More labels, better set.** A chart now names as many parts as fit down its two edges a row apart, up to 24 (it was 12), and the card's key lists up to 24. A column that would overflow hands the parts nearest the middle to the other side, and parts beside the heading (the skull, the jaw) are labeled on the right, whose column starts higher, instead of being left out.
+- **By the numbers for the new cards.** The new bones and muscles get their headline figures: 64 cards have them now.
+
 ## 0.21.0
 
 - **By the numbers.** Every card for a whole-body, system or organ plate, and many below them, now opens on three headline figures set large like a product page's specs: the heart's 100,000 beats a day, 5 L a minute and 300 g; the brain's 86 billion neurons, 2 percent of body weight and 20 percent of its energy; the lungs' 480 million alveoli and 70 m² of surface. 53 cards have them (`src/data/stats.js`), typical adult values from each card's sources and standard physiology texts, with the study named where a count comes from one. With full motion each figure counts up from zero as the card opens (once per card, not on every redraw); the final number is in the page from the start for screen readers and reduced motion. All three figures on a card share one size, as large as the longest allows.

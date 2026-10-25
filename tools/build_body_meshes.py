@@ -85,6 +85,7 @@ RULES = [
     # Skeleton
     (r'tooth', dict(system='skeletal', card='skull', label='Teeth (32 in an adult)', tissue='enamel', budget=300)),
     (r'nasal cartilage', dict(system='skeletal', card='skull', label='Nose cartilages (the nose past its bones)', tissue='cartilage', budget=2500)),
+    (r'^mandible$', dict(system='skeletal', card='mandible', label='Lower jaw (mandible)', tissue='bone', budget=7000)),
     (SKULL, dict(system='skeletal', card='skull', label='{name}', tissue='bone', budget=7000)),
     (r'intervertebral disk', dict(system='skeletal', card='intervertebral-disc', label='Intervertebral discs', tissue='cartilage', budget=500)),
     (r'^(atlas|axis)$', dict(system='skeletal', card='vertebral-column', label='{name} (vertebra)', tissue='bone', budget=2500)),
@@ -94,12 +95,17 @@ RULES = [
     (r'hip bone', dict(system='skeletal', card='pelvis', label='Hip bone', tissue='bone', budget=9000)),
     (r'costal cartilage', dict(system='skeletal', card='rib-cage', label='Rib cartilage (costal cartilage)', tissue='cartilage', budget=900)),
     (r' rib$', dict(system='skeletal', card='rib-cage', label='{name}', tissue='bone', budget=1800)),
-    (r'manubrium|body of sternum|xiphoid', dict(system='skeletal', card='rib-cage', label='Breastbone (sternum): {name}', tissue='bone', budget=1500)),
+    (r'manubrium|body of sternum|xiphoid', dict(system='skeletal', card='sternum', label='Breastbone (sternum): {name}', tissue='bone', budget=1500)),
     (r'clavicle', dict(system='skeletal', card='shoulder-girdle', label='Collarbone (clavicle)', tissue='bone', budget=2500)),
     (r'scapula', dict(system='skeletal', card='shoulder-girdle', label='Shoulder blade (scapula)', tissue='bone', budget=5000)),
     (r'^femur$', dict(system='skeletal', card='femur', label='Femur (thigh bone)', tissue='bone', budget=7000, side=True)),
-    (r'^patella$', dict(system='skeletal', card='skeletal-system', label='Kneecap (patella)', tissue='bone', budget=1500)),
-    (r'^(humerus|radius|ulna|tibia|fibula)$', dict(system='skeletal', card='skeletal-system', label='{name}', tissue='bone', budget=5000)),
+    (r'^patella$', dict(system='skeletal', card='patella', label='Kneecap (patella)', tissue='bone', budget=1500)),
+    # The long bones of the limbs each open their own card, as a classroom skeleton labels them.
+    (r'^humerus$', dict(system='skeletal', card='humerus', label='Humerus (upper arm bone)', tissue='bone', budget=5000)),
+    (r'^radius$', dict(system='skeletal', card='radius', label='Radius', tissue='bone', budget=5000)),
+    (r'^ulna$', dict(system='skeletal', card='ulna', label='Ulna', tissue='bone', budget=5000)),
+    (r'^tibia$', dict(system='skeletal', card='tibia', label='Tibia (shin bone)', tissue='bone', budget=5000)),
+    (r'^fibula$', dict(system='skeletal', card='fibula', label='Fibula', tissue='bone', budget=5000)),
     (CARPALS, dict(system='skeletal', card='hand-bones', label='Wrist bones (8 carpals)', tissue='bone', budget=500)),
     (r'metacarpal', dict(system='skeletal', card='hand-bones', label='Palm bones (5 metacarpals)', tissue='bone', budget=700)),
     (r'phalanx of .*(finger|thumb)', dict(system='skeletal', card='hand-bones', label='Finger bones (14 phalanges)', tissue='bone', budget=350)),
@@ -153,6 +159,19 @@ RULES = [
     (r'calcaneal tendon', dict(system='muscular', card='tendon', label='Achilles tendon (the strongest tendon)', tissue='tendon', budget=900)),
     (r'ligament|retinaculum|interosseous membrane|iliotibial|linea alba|aponeurosis|intermediate tendon', dict(system='muscular', card='muscular-system', label='{name}', tissue='tendon', budget=1200)),
     # Muscles with their own cards, then every other muscle
+    # The big superficial muscles each open their own card, as a muscle chart labels them.
+    (r'deltoid$', dict(system='muscular', card='deltoid', label='{name}', tissue='muscle', budget=2500)),
+    (r'pectoralis major$', dict(system='muscular', card='pectoralis-major', label='{name}', tissue='muscle', budget=2500)),
+    (r'trapezius$', dict(system='muscular', card='trapezius', label='{name}', tissue='muscle', budget=2500)),
+    (r'^latissimus dorsi$', dict(system='muscular', card='latissimus-dorsi', label='{name}', tissue='muscle', budget=2500)),
+    (r'^rectus abdominis$', dict(system='muscular', card='rectus-abdominis', label='{name}', tissue='muscle', budget=2500)),
+    (r'^external oblique$', dict(system='muscular', card='external-oblique', label='{name}', tissue='muscle', budget=2500)),
+    (r'^gluteus maximus$', dict(system='muscular', card='gluteus-maximus', label='{name}', tissue='muscle', budget=2500)),
+    (r'^sartorius$', dict(system='muscular', card='sartorius', label='{name}', tissue='muscle', budget=2500)),
+    (r'gastrocnemius$|^soleus$', dict(system='muscular', card='calf-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'^tibialis anterior$', dict(system='muscular', card='tibialis-anterior', label='{name}', tissue='muscle', budget=2500)),
+    (r'^sternocleidomastoid$', dict(system='muscular', card='sternocleidomastoid', label='{name}', tissue='muscle', budget=2500)),
+    (r'triceps brachii$', dict(system='muscular', card='triceps', label='{name}', tissue='muscle', budget=2500)),
     (r'biceps brachii', dict(system='muscular', card='biceps', label='Biceps ({name})', tissue='muscle', budget=3500)),
     (r'rectus femoris|vastus', dict(system='muscular', card='quadriceps', label='Quadriceps: {name}', tissue='muscle', budget=4500)),
     (r'biceps femoris|semitendinosus|semimembranosus', dict(system='muscular', card='hamstrings', label='Hamstrings: {name}', tissue='muscle', budget=3500)),
@@ -940,6 +959,12 @@ def from_bundle(skeleton):
             extras = {**p['extras'], **{k: rule[k] for k in ('system', 'card', 'label', 'tissue')}}
             glb.add(f"skull:{rule['label']}", p['pos'], p['idx'].reshape(-1, 3), extras)
             continue
+        if p['extras'].get('card') == 'muscular-system':
+            # Older bundles filed every muscle under one card; give the named ones their own, as the rules now do.
+            rule = classify(label.lower())
+            if rule and rule['card'] != 'muscular-system':
+                p['extras'] = {**p['extras'], 'card': rule['card']}
+                p['name'] = f"{rule['card']}:{label}"
         if replaced_by_skeleton(p['extras']):
             continue
         if p['extras'].get('card') == 'eye':

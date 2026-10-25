@@ -357,15 +357,17 @@ async function main() {
     const left = Math.max(rect('.gauge').right, intro.hidden ? 0 : intro.getBoundingClientRect().right) - box.left + 20;
     const open = !panel.hidden;
     const right = (open ? panel.getBoundingClientRect().left : box.right) - box.left - 20;
+    // The heading sits in the plate's top left corner: parts beside or below it are labeled, and the
+    // left column of labels starts under the heading and its key figure.
     const head = rect('.scalebar');
-    const top = Math.max(rect('.topbar').bottom, head ? head.bottom : 0) - box.top + 12;
+    const top = rect('.topbar').bottom - box.top + 12 + 16;
+    const headBottom = Math.max(top, (head ? head.bottom : 0) - box.top + 12);
     let bottom = rect('.track').top - box.top;
     const chips = $('systems');
     if (!chips.hidden && chips.childElementCount) bottom = Math.min(bottom, chips.getBoundingClientRect().top - box.top);
-    // The left column of labels starts below the plate's headline figure.
     const fact = $('plate-fact');
     const factBox = fact.hidden || !fact.offsetHeight ? null : fact.getBoundingClientRect();
-    const topLeft = factBox ? Math.max(top, factBox.bottom - box.top + 12) : top;
+    const topLeft = factBox ? Math.max(headBottom, factBox.bottom - box.top + 12) : headBottom;
     return { left, right, top, topLeft, bottom: bottom - 12 };
   }
   // Pointing at a chart label lights its part; clicking it opens the part's card.
@@ -393,7 +395,10 @@ async function main() {
     const built = engine.current?.built ?? null;
     if (built === keyBuilt) return false;
     keyBuilt = built;
-    key.setParts(engine.structures());
+    // A dive's own parts come first, so the muscular dive's chart names muscles before bones.
+    const own = (id) => getCard(id)?.system === state.dive.id;
+    const ids = engine.structures();
+    key.setParts([...ids.filter(own), ...ids.filter((id) => !own(id))]);
     return true;
   }
   const keyItem = (e) => e.target.closest?.('.key__item');
