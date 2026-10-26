@@ -72,6 +72,10 @@ export const REFERENCES = {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 10: Muscle Tissue.',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/10-introduction',
   },
+  'openstax-muscles': {
+    text: 'OpenStax Anatomy and Physiology 2e, chapter 11: The Muscular System (11.3 to 11.6, the axial and appendicular muscles).',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/11-introduction',
+  },
   'openstax-immune': {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 21: The Lymphatic and Immune System.',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/21-introduction',

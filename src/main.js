@@ -398,7 +398,9 @@ async function main() {
     // A dive's own parts come first, so the muscular dive's chart names muscles before bones.
     const own = (id) => getCard(id)?.system === state.dive.id;
     const ids = engine.structures();
-    const mine = ids.filter(own);
+    // Muscles that lie under others (a card marked deep) come after the ones you can see.
+    const deep = (id) => getCard(id)?.deep === true;
+    const mine = [...ids.filter((id) => own(id) && !deep(id)), ...ids.filter((id) => own(id) && deep(id))];
     // A dive's chart labels its own parts and only a few others; the whole body labels as many as fit.
     key.setParts([...mine, ...ids.filter((id) => !own(id))], { lead: mine.length });
     return true;

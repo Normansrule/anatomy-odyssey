@@ -64,6 +64,12 @@ describe('chart labels', () => {
     expect(out.find((o) => o.side === 'right').id).toBe('l5');
   });
 
+  it('keeps a part beside the headline figure on the left when the right column is longer', () => {
+    const right = [100, 200, 300, 400].map((y, i) => ({ id: `r${i}`, x: 500, y }));
+    const out = layoutCallouts([...right, { id: 'arm', x: 400, y: 250 }], { mid: 450, top: 0, topLeft: 300, bottom: 1000, row: 30 });
+    expect(out.find((o) => o.id === 'arm').side).toBe('left');
+  });
+
   it('labels a part beside the heading on the right', () => {
     const out = layoutCallouts([{ id: 'skull', x: 400, y: 50 }, { id: 'hip', x: 400, y: 500 }], { mid: 450, top: 0, topLeft: 300, bottom: 1000, row: 30 });
     expect(out.find((o) => o.id === 'skull').side).toBe('right');

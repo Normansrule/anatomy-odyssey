@@ -18,21 +18,12 @@ const easeIn = (t) => t * t * t;
 const easeOut = (t) => 1 - (1 - t) ** 3;
 
 /**
- * The point on a structure nearest the middle of its bounds, so its number
- * sits on the part itself rather than in the air inside a hollow or curved
- * shape. Samples at most ~1500 vertices (or instances) per mesh.
+ * Up to ~1500 points (vertices, or instance positions) from each mesh that carries a card,
+ * in world space.
  */
-function surfacePointNear(root, cardId, center) {
-  const best = { d: Infinity, at: center };
-  const v = new THREE.Vector3();
+function samplePoints(root, cardId) {
+  const pts = [];
   const m = new THREE.Matrix4();
-  const consider = () => {
-    const d = v.distanceToSquared(center);
-    if (d < best.d) {
-      best.d = d;
-      best.at = v.clone();
-    }
-  };
   root.traverse((o) => {
     if (o.userData.hoverShell || !isVisible(o)) return;
     let owner = o;
@@ -42,19 +33,58 @@ function surfacePointNear(root, cardId, center) {
       const step = Math.max(1, Math.ceil(o.count / 1500));
       for (let i = 0; i < o.count; i += step) {
         o.getMatrixAt(i, m);
-        v.setFromMatrixPosition(m).applyMatrix4(o.matrixWorld);
-        consider();
+        pts.push(new THREE.Vector3().setFromMatrixPosition(m).applyMatrix4(o.matrixWorld));
       }
       return;
     }
     const pos = o.geometry.attributes.position;
     const step = Math.max(1, Math.ceil(pos.count / 1500));
-    for (let i = 0; i < pos.count; i += step) {
-      v.fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld);
-      consider();
-    }
+    for (let i = 0; i < pos.count; i += step) pts.push(new THREE.Vector3().fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld));
   });
-  return best.at;
+  return pts;
+}
+
+/**
+ * Which side to label a mirrored pair on (both hands' muscles, both lungs), given each point's
+ * distance across the midline: +1 or -1, or 0 for a part that crosses the midline or is not a
+ * pair. Labeled at the middle between its two halves, a pair's nearest point could be anywhere.
+ * The side is fixed per card and alternates between cards, so a chart's labels fall on both sides.
+ */
+export function pairedSide(xs, cardId) {
+  let min = Infinity;
+  let max = -Infinity;
+  for (const x of xs) {
+    min = Math.min(min, x);
+    max = Math.max(max, x);
+  }
+  if (!(min < 0 && max > 0)) return 0;
+  if (xs.some((x) => Math.abs(x) < 0.04 * (max - min))) return 0;
+  const reach = (sign) => {
+    const side = xs.filter((x) => Math.sign(x) === sign);
+    return side.reduce((sum, x) => sum + Math.abs(x), 0) / side.length;
+  };
+  if (Math.abs(reach(1) - reach(-1)) > 0.3 * Math.max(reach(1), reach(-1))) return 0;
+  let hash = 0;
+  for (const c of cardId) hash = (hash * 31 + c.charCodeAt(0)) >>> 0;
+  return hash % 2 ? 1 : -1;
+}
+
+/**
+ * Where a structure's number sits: the point on it nearest the middle of its bounds, so the
+ * number is on the part itself rather than in the air inside a hollow or curved shape. A
+ * mirrored pair uses one half.
+ */
+export function anchorPoint(root, cardId) {
+  let pts = samplePoints(root, cardId);
+  if (!pts.length) return null;
+  const inv = new THREE.Matrix4().copy(root.matrixWorld).invert();
+  const xs = pts.map((p) => p.clone().applyMatrix4(inv).x);
+  const side = pairedSide(xs, cardId);
+  if (side) pts = pts.filter((_, i) => Math.sign(xs[i]) === side);
+  const center = new THREE.Box3().setFromPoints(pts).getCenter(new THREE.Vector3());
+  let best = pts[0];
+  for (const p of pts) if (p.distanceToSquared(center) < best.distanceToSquared(center)) best = p;
+  return best;
 }
 
 export class TierEngine {
@@ -369,15 +399,8 @@ export class TierEngine {
     if (this.anchors.has(cardId)) return this.anchors.get(cardId);
     const root = this.current?.built.root;
     if (!root) return null;
-    const box = new THREE.Box3();
-    const part = new THREE.Box3();
     root.updateMatrixWorld(true);
-    root.traverse((o) => {
-      if (o.userData.cardId !== cardId || !isVisible(o) || o.userData.hoverShell) return;
-      part.setFromObject(o, false);
-      if (!part.isEmpty()) box.union(part);
-    });
-    const at = box.isEmpty() ? null : surfacePointNear(root, cardId, box.getCenter(new THREE.Vector3()));
+    const at = anchorPoint(root, cardId);
     this.anchors.set(cardId, at);
     return at;
   }

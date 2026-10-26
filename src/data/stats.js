@@ -334,6 +334,71 @@ export const STATS = {
     { value: '120', unit: 'mmHg', label: 'a typical top (systolic) blood pressure, taken over the brachial artery' },
     { value: '8', unit: 'mm', label: 'across the femoral artery at the groin' },
   ],
+  'facial-muscles': [
+    { value: '20', unit: 'muscles', label: 'on each side of the face, about' },
+    { value: '1', unit: 'nerve', label: 'works them all: the facial nerve' },
+  ],
+  'chewing-muscles': [
+    { value: '4', unit: 'muscles', label: 'on each side move the jaw' },
+    { value: '700', unit: 'N', label: 'the most the molars can bite with, about' },
+  ],
+  'hyoid-muscles': [
+    { value: '8', unit: 'muscles', label: 'on each side hang the hyoid: four above it, four below' },
+    { value: '0', unit: 'bones', label: 'touch the hyoid; it hangs in muscle' },
+  ],
+  'deep-neck-muscles': [
+    { value: '3', unit: 'scalenes', label: 'on each side, down to the first two ribs' },
+    { value: '5', unit: 'kg', label: 'of head balanced on the neck, about' },
+  ],
+  'back-muscles': [
+    { value: '3', unit: 'columns', label: 'in the erector spinae: iliocostalis, longissimus and spinalis' },
+    { value: '60', unit: 'cm', label: 'long, from the pelvis to the skull, about' },
+  ],
+  'intercostal-muscles': [
+    { value: '11', unit: 'gaps', label: 'between the ribs on each side' },
+    { value: '3', unit: 'layers', label: 'of muscle in each gap' },
+  ],
+  'abdominal-wall': [
+    { value: '3', unit: 'layers', label: 'of muscle, their fibers at three angles like plywood' },
+  ],
+  'rotator-cuff': [
+    { value: '4', unit: 'muscles', label: 'around the ball of the shoulder' },
+    { value: '15', unit: '°', label: 'the first of lifting the arm out, started by supraspinatus, about' },
+  ],
+  'shoulder-blade-muscles': [
+    { value: '17', unit: 'muscles', label: 'attach to each shoulder blade' },
+    { value: '2', unit: 'to 1', label: 'arm to shoulder-blade turn as you raise the arm' },
+  ],
+  'forearm-flexors': [
+    { value: '9', unit: 'tendons', label: 'share the carpal tunnel with the median nerve' },
+    { value: '14', unit: '%', label: 'of people have no palmaris longus, about' },
+  ],
+  'forearm-extensors': [
+    { value: '3', unit: 'thumb tendons', label: 'outline the anatomical snuffbox' },
+  ],
+  'hand-muscles': [
+    { value: '20', unit: 'muscles', label: 'start and end in each hand, about' },
+  ],
+  'hip-muscles': [
+    { value: '6', unit: 'small rotators', label: 'across the back of each hip joint' },
+  ],
+  'hip-adductors': [
+    { value: '5', unit: 'muscles', label: 'in the inner thigh' },
+  ],
+  'psoas': [
+    { value: '30', unit: 'cm', label: 'long, about' },
+    { value: '6', unit: 'vertebrae', label: 'it starts from: the last thoracic and all five lumbar' },
+  ],
+  'deep-calf-muscles': [
+    { value: '10', unit: '%', label: 'of people have no plantaris, about' },
+  ],
+  'fibularis-muscles': [
+    { value: '2', unit: 'muscles', label: 'with tendons behind the outer ankle' },
+  ],
+  'foot-muscles': [
+    { value: '20', unit: 'muscles', label: 'start and end in each foot, about' },
+    { value: '4', unit: 'layers', label: 'of muscle on the sole' },
+  ],
 };
 
 /** The headline figures for a card, or an empty list. */

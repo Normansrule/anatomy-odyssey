@@ -22,6 +22,7 @@ import { EAR_CARDS } from './cards-ear.js';
 import { PANCREAS_CARDS } from './cards-pancreas.js';
 import { LIVER_CARDS } from './cards-liver.js';
 import { SMELL_CARDS } from './cards-smell.js';
+import { MUSCLE_GROUP_CARDS } from './cards-muscle-groups.js';
 
 const humanDiploidBp = 6.4e9;
 const dnaPerCell = formatLength(dnaLength(humanDiploidBp)).text; // ≈ 2.2 m
@@ -565,6 +566,7 @@ export const CARDS = [
     refs: ['openstax'],
   },
   ...MORE_CARDS,
+  ...MUSCLE_GROUP_CARDS,
   ...SIGNAL_CARDS,
   ...MOLECULE_CARDS,
   ...CHEM_IMMUNE_CARDS,

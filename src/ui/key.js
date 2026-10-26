@@ -97,8 +97,16 @@ export function layoutCallouts(points, { mid, top, topLeft = top, bottom, row = 
     cols[to].push(...cols[from].splice(i, 1));
   };
   const nearest = (side) => (col) => col.reduce((a, b) => ((side === 'left' ? b.x > a.x : b.x < a.x) ? b : a));
-  // A part high beside the heading is labeled on the right, whose column starts higher.
-  if (topLeft > top) for (const p of cols.left.filter((q) => q.y < topLeft - row)) if (cols.right.length < room.right) move('left', 'right', () => p);
+  // A part beside the heading is labeled on the right, whose column starts higher. One lower
+  // down, beside the headline figure, crosses over if it is near the middle anyway or while the
+  // right column is the shorter: a line that slants down from an arm to the left crosses less
+  // of the body than one that runs right across it.
+  const beside = (top + topLeft) / 2;
+  if (topLeft > top) {
+    for (const p of cols.left.filter((q) => q.y < topLeft - row).sort((a, b) => a.y - b.y)) {
+      if (cols.right.length < room.right && (p.y < beside || mid - p.x < row || cols.right.length < cols.left.length)) move('left', 'right', () => p);
+    }
+  }
   // A column with more labels than rows hands the parts nearest the middle to the other side.
   while (cols.left.length > room.left && cols.right.length < room.right) move('left', 'right', nearest('left'));
   while (cols.right.length > room.right && cols.left.length < room.left) move('right', 'left', nearest('right'));

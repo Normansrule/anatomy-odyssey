@@ -179,6 +179,27 @@ RULES = [
     (r'biceps brachii', dict(system='muscular', card='biceps', label='Biceps ({name})', tissue='muscle', budget=3500)),
     (r'rectus femoris|vastus', dict(system='muscular', card='quadriceps', label='Quadriceps: {name}', tissue='muscle', budget=4500)),
     (r'biceps femoris|semitendinosus|semimembranosus', dict(system='muscular', card='hamstrings', label='Hamstrings: {name}', tissue='muscle', budget=3500)),
+    # Every other muscle by its group, as an atlas's regional plates name them.
+    (r'frontalis|occipitalis|temporoparietalis|orbicularis|corrugator|procerus|nasalis|depressor septi|levator labii|levator anguli|zygomaticus|risorius|buccinator|depressor anguli|depressor labii|mentalis|platysma', dict(system='muscular', card='facial-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'masseter|^temporalis$|pterygoid', dict(system='muscular', card='chewing-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'digastric|(genio|mylo|omo|sterno|stylo|thyro)hyoid|sternothyroid', dict(system='muscular', card='hyoid-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'scalenus|longus colli|longus capitis|rectus capitis|obliquus capitis|cervical intertransversarii', dict(system='muscular', card='deep-neck-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'iliocostalis|longissimus|spinalis|multifidus|rotator$|interspinales|intertransversari|semispinalis|splenius|levatores costarum|serratus posterior', dict(system='muscular', card='back-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'intercostal|transversus thoracis', dict(system='muscular', card='intercostal-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'internal oblique|transversus abdominis|pyramidalis|quadratus lumborum', dict(system='muscular', card='abdominal-wall', label='{name}', tissue='muscle', budget=2500)),
+    (r'supraspinatus|infraspinatus|teres minor|subscapularis', dict(system='muscular', card='rotator-cuff', label='{name}', tissue='muscle', budget=2500)),
+    (r'rhomboid|serratus anterior|pectoralis minor|subclavius|teres major|levator scapulae', dict(system='muscular', card='shoulder-blade-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'^brachialis$|coracobrachialis', dict(system='muscular', card='brachialis', label='{name}', tissue='muscle', budget=2500)),
+    (r'extensor carpi|^extensor digitorum$|extensor digiti minimi|extensor indicis|extensor pollicis|abductor pollicis longus|brachioradialis|supinator|anconeus', dict(system='muscular', card='forearm-extensors', label='{name}', tissue='muscle', budget=2500)),
+    (r'flexor carpi|flexor digitorum (superficialis|profundus)|flexor pollicis longus|palmaris longus|pronator', dict(system='muscular', card='forearm-flexors', label='{name}', tissue='muscle', budget=2500)),
+    (r'of the hand$|pollicis brevis|opponens pollicis|adductor pollicis', dict(system='muscular', card='hand-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'of the foot$|hallucis brevis|abductor hallucis|adductor hallucis|flexor digitorum brevis|extensor digitorum brevis|flexor accessorius', dict(system='muscular', card='foot-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'adductor (longus|brevis|magnus|minimus)|gracilis|pectineus', dict(system='muscular', card='hip-adductors', label='{name}', tissue='muscle', budget=2500)),
+    (r'gluteus (medius|minimus)|piriformis|gemellus|obturator|quadratus femoris|tensor fasciae latae', dict(system='muscular', card='hip-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'psoas|iliacus', dict(system='muscular', card='psoas', label='{name}', tissue='muscle', budget=2500)),
+    (r'tibialis posterior|flexor digitorum longus|flexor hallucis longus|popliteus|plantaris', dict(system='muscular', card='deep-calf-muscles', label='{name}', tissue='muscle', budget=2500)),
+    (r'extensor digitorum longus|extensor hallucis longus|fibularis tertius', dict(system='muscular', card='toe-extensors', label='{name}', tissue='muscle', budget=2500)),
+    (r'fibularis (longus|brevis)', dict(system='muscular', card='fibularis-muscles', label='{name}', tissue='muscle', budget=2500)),
     (r'.', dict(system='muscular', card='muscular-system', label='{name}', tissue='muscle', budget=2500)),
 ]
 
@@ -955,8 +976,9 @@ def from_bundle(skeleton):
             discs.append((p['pos'], p['idx'].reshape(-1, 3)))
             continue
         if re.fullmatch(r'(Genio|Mylo|Omo|Sterno|Stylo|Thyro)hyoid', label):
-            extras = {**p['extras'], 'system': 'muscular', 'card': 'muscular-system', 'tissue': 'muscle'}
-            glb.add(f'muscular-system:{label}', p['pos'], p['idx'].reshape(-1, 3), extras)
+            card = classify(label.lower())['card']
+            extras = {**p['extras'], 'system': 'muscular', 'card': card, 'tissue': 'muscle'}
+            glb.add(f'{card}:{label}', p['pos'], p['idx'].reshape(-1, 3), extras)
             continue
         if label in ('Nasal cartilages', 'Nose cartilages (the nose past its bones)'):
             rule = classify('nasal cartilages')

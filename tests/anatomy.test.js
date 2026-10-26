@@ -58,6 +58,20 @@ describe('the measured body anatomy', async () => {
     expect(card('Internal jugular vein')).toBe('carotid-artery');
   });
 
+  it('files every muscle under its group, leaving only tendons and sheets on the catch-all', () => {
+    const card = (label) => parts.find((p) => p.extras.label === label)?.extras.card;
+    for (const p of parts.filter((q) => q.extras.card === 'muscular-system')) expect(p.extras.tissue, p.extras.label).toBe('tendon');
+    expect(card('Supraspinatus')).toBe('rotator-cuff');
+    expect(card('Zygomaticus major')).toBe('facial-muscles');
+    expect(card('Superficial part of masseter')).toBe('chewing-muscles');
+    expect(card('Geniohyoid')).toBe('hyoid-muscles');
+    expect(card('Flexor digitorum profundus')).toBe('forearm-flexors');
+    expect(card('Extensor digitorum')).toBe('forearm-extensors');
+    expect(card('Flexor digitorum longus')).toBe('deep-calf-muscles');
+    expect(card('Extensor digitorum brevis')).toBe('foot-muscles');
+    expect(card('Psoas major')).toBe('psoas');
+  });
+
   it('has smooth surfaces: unit normals and texture coordinates on every vertex', () => {
     for (const p of parts.slice(0, 40)) {
       const n = p.geometry.attributes.normal;
