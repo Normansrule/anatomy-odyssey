@@ -509,6 +509,7 @@ export const CARDS = [
     aliases: ['muscles', 'skeletal muscle'],
     home: 'body',
     system: 'muscular',
+    chart: false, // its parts are every muscle without a card of its own, so no one spot to label
     size: 'More than 600 skeletal muscles',
     what: 'Muscles contract to move bones, hold your posture and make heat. They can only pull, never push, so they work in opposing pairs.',
     why: 'Every movement you make starts here.',

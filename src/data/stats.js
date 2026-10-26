@@ -314,6 +314,26 @@ export const STATS = {
     { value: '400', unit: 'kinds', label: 'of odor receptor' },
     { value: '30–60', unit: 'days', label: 'for a smell neuron to be replaced' },
   ],
+  'subclavian-vessels': [
+    { value: '1', unit: 'brachiocephalic artery', label: 'on the right only; the left vessels branch straight off the aortic arch' },
+    { value: '2', unit: 'brachiocephalic veins', label: 'join to form the superior vena cava' },
+    { value: '1', unit: 'cm', label: 'across, arching over the first rib' },
+  ],
+  'iliac-vessels': [
+    { value: '2', unit: 'common iliac arteries', label: 'from the aorta’s fork at the fourth lumbar vertebra, level with the navel' },
+    { value: '2', unit: 'branches each', label: 'external for the leg, internal for the pelvis' },
+    { value: '1', unit: 'cm', label: 'across the common iliac artery' },
+  ],
+  'gut-vessels': [
+    { value: '3', unit: 'unpaired arteries', label: 'leave the front of the aorta for the gut' },
+    { value: '25', unit: '%', label: 'of the heart’s output at rest; more after a meal' },
+    { value: '75', unit: '%', label: 'of the liver’s blood arrives through the portal vein' },
+  ],
+  'limb-vessels': [
+    { value: '6', unit: 'pulse points', label: 'on each side: wrist, elbow, groin, behind the knee, ankle and top of the foot' },
+    { value: '120', unit: 'mmHg', label: 'a typical top (systolic) blood pressure, taken over the brachial artery' },
+    { value: '8', unit: 'mm', label: 'across the femoral artery at the groin' },
+  ],
 };
 
 /** The headline figures for a card, or an empty list. */

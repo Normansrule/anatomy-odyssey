@@ -103,8 +103,8 @@ export function buildUrinaryTract({ reducedMotion = false } = {}) {
     ['kidney', 'Renal vein', vein, 'Renal veins (cleaned blood back to the vena cava)'],
     ['aorta', /Descending/, artery, 'Aorta (the body’s main artery)', true],
     ['great-vessels', 'Inferior vena cava', vein, 'Inferior vena cava (blood back to the heart)', true],
-    ['circulatory-system', 'Common iliac artery', artery, 'Common iliac arteries (to the legs and pelvis)'],
-    ['circulatory-system', 'Common iliac vein', vein, 'Common iliac veins (from the legs and pelvis)'],
+    ['iliac-vessels', 'Common iliac artery', artery, 'Common iliac arteries (to the legs and pelvis)'],
+    ['iliac-vessels', 'Common iliac vein', vein, 'Common iliac veins (from the legs and pelvis)'],
   ]) {
     const p = partOf(parts, card, label);
     if (p) add(trim ? below(p.geometry) : p.geometry, mat, card, text);

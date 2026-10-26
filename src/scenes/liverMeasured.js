@@ -34,7 +34,7 @@ export function buildMeasuredLiver(parts, { reducedMotion = false } = {}) {
   if (gallbladder) group.add(pick(new THREE.Mesh(gallbladder.geometry, M(0x6f9a3f, { roughness: 0.3, tissue: 'organ', natural: 0x6f9a3f, repeat: [1, 1] })), 'gallbladder', 'Gallbladder (stores and concentrates bile)'));
   const ivcPart = partOf(parts, 'great-vessels', 'Inferior vena cava');
   if (ivcPart) group.add(pick(new THREE.Mesh(ivcPart.geometry, M(COLORS.vein, { roughness: 0.45, tissue: 'vein', repeat: [1, 1] })), 'liver-vessels', 'Inferior vena cava'));
-  const arteryPart = partOf(parts, 'circulatory-system', 'Common hepatic artery');
+  const arteryPart = partOf(parts, 'gut-vessels', 'Common hepatic artery');
   if (arteryPart) group.add(pick(new THREE.Mesh(arteryPart.geometry, M(COLORS.artery, { roughness: 0.4, tissue: 'vessel', repeat: [1, 1] })), 'liver-vessels', 'Hepatic artery (oxygen-rich blood from the heart)'));
   for (const v of partsWhere(parts, (p) => p.extras.card === 'duodenum')) {
     group.add(pick(new THREE.Mesh(v.geometry, M(0xe6a08a, { roughness: 0.5, tissue: 'organ', natural: 0xd89480, repeat: [1, 1] })), 'duodenum', 'Duodenum (where bile enters the gut)'));

@@ -172,7 +172,7 @@ function buildLimbVessels(M) {
   const vein = M(COLORS.vein, { roughness: 0.4, tissue: 'vein', ...SEE_THROUGH });
   // Every route below starts at the trunk: blood runs down an artery and back up a vein.
   const vessel = (pts, r, material, label) => {
-    g.add(pick(tubeThrough(pts, r, material, 64, 8), 'circulatory-system', label));
+    g.add(pick(tubeThrough(pts, r, material, 64, 8), 'limb-vessels', label));
     const kind = material === art ? 'artery' : 'vein';
     routes.push({ kind, points: kind === 'artery' ? pts : [...pts].reverse(), radius: r });
   };

@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.22.0-a3242f)
-![Tests](https://img.shields.io/badge/tests-535%20passing-276a40)
+![Tests](https://img.shields.io/badge/tests-538%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -42,7 +42,7 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 - **Labeled like a wall chart.** Every part in view is named at the edge of the plate with a line to the part, and numbered in the card's key. Point at a label, a part or a key entry and a red leader line lights up, following the part as the model turns.
 - **Zoom in anywhere.** Scroll or pinch toward any part of the body; a guide names the nearest part that has a dive and takes you there.
 - **Point, click, learn.** Hover to name a part, click to open its card: what it does, why it matters, its real size, an *Expert detail* switch and a source you can check.
-- **Labeled like a lecture-hall chart.** The skeleton names every major bone (skull, jaw, collarbone and shoulder blade, breastbone, humerus, radius, ulna, femur, kneecap, tibia, fibula and the bones of the hand and foot), and the muscular dive names twelve big muscles, from the deltoid and pectoralis major to the sartorius and calf. Each has its own card, and a chart holds up to 24 labels, set in two balanced columns.
+- **Labeled like a lecture-hall chart.** The skeleton names every major bone (skull, jaw, collarbone and shoulder blade, breastbone, humerus, radius, ulna, femur, kneecap, tibia, fibula and the bones of the hand and foot), and the muscular dive names twelve big muscles, from the deltoid and pectoralis major to the sartorius and calf. The circulatory dive names the vessels by region: the carotid and jugular, subclavian, gut, iliac and limb vessels. Each has its own card, and a chart holds up to 24 labels, set in two balanced columns; an organ dive's chart names its own organs and only a few landmarks around them.
 - **By the numbers.** Every whole-body, system and organ plate prints its headline figure under the heading (100,000 heartbeats a day, 86 billion neurons, 480 million alveoli), and the card opens on three big figures that count up as it appears, 64 cards in all, each a typical adult value from the card's sources.
 - **Light sheet or slate.** It follows your device's light or dark setting, or pick one in About.
 - **Science you can play with.** Sliders run real, tested equations (oxygen binding, nerve speed, blood acidity, how fast an enzyme works, how much blood the heart pumps).

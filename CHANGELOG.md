@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.23.0
+
+- **Every vessel named.** Nineteen of the body's measured vessels sat under one "Circulatory system" card, so the circulatory chart had a single label pointing at the groin. They now have cards by region, with their sizes, what they feed and the clinical facts students meet first: **Subclavian and brachiocephalic vessels** (why only the right side has a brachiocephalic artery, how the two brachiocephalic veins make the superior vena cava), **Iliac arteries and veins** (the aorta's fork at the navel, where the femoral artery begins), **Celiac and mesenteric vessels** (the gut's three arteries, and how the portal vein sends what you swallow through the liver first) and **Arteries and veins of the limbs** (pulse points, where blood pressure is taken). The internal jugular vein joins the carotid's card. `tools/build_body_meshes.py` files them by the rules, `--from-bundle` refiles an older bundle the same way, and the liver, pancreas and urinary tract close-ups take their hepatic, splenic, mesenteric and iliac vessels from the new cards.
+- **Charts that keep to the subject.** A dive's whole-body plate now labels that dive's own parts and only enough neighbors to reach twelve labels, instead of filling every free row with bones: the digestive chart names its eight organs and four landmarks, the circulatory chart its vessels and the heart. The skeleton and the whole body still fill the chart.
+- **No label on a catch-all.** "Muscular system" covers every muscle without a card of its own, so it has no one place to point; it stays in the card's key but no longer pins a label to the groin (`chart: false` on a card).
+- **By the numbers for the new cards.** 68 cards have headline figures now.
+
 ## 0.22.0
 
 - **A skeleton labeled like a lecture-hall chart.** The humerus, radius, ulna, tibia, fibula, kneecap, breastbone and lower jaw each have their own card now (they used to open the whole skeletal system's, or the skull's and rib cage's), so the skeleton plate names every major bone at its edge, each with a line to the bone: what it does, its size, the joints and nerves around it and the clinical facts students meet first (the funny bone, a Colles fracture, why the fibula can be borrowed for a graft, where CPR pushes). `tools/build_body_meshes.py` files them by the rules, and `--from-bundle` refiles an older bundle the same way.

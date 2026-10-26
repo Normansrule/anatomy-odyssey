@@ -23,6 +23,16 @@ export function calloutRoom(f, row = CALLOUT_ROW) {
   const rows = Math.max(0, Math.floor((f.bottom - Math.max(f.top, f.topLeft ?? f.top) - 32) / row) + 1);
   return Math.max(MAX_MARKS, Math.min(MAX_CALLOUTS, 2 * rows));
 }
+
+/**
+ * How many labels a chart sets when `lead` parts belong to the subject (a dive's own system):
+ * those, topped up to MAX_MARKS with their neighbors, so a digestive plate names its organs
+ * and a few landmarks, not every rib. With no lead the chart fills its room.
+ */
+export function chartRoom(f, lead = 0) {
+  const room = calloutRoom(f);
+  return lead > 0 ? Math.min(room, Math.max(MAX_MARKS, lead)) : room;
+}
 const SVG = 'http://www.w3.org/2000/svg';
 
 /** The point on a number's circle (radius r around a) facing b. */
@@ -33,7 +43,8 @@ export function rim(a, b, r) {
 
 /** Number the structures in view, in the order the scene lists them. */
 export function numberParts(ids) {
-  return ids.map((id, i) => ({ id, n: i + 1, title: getCard(id)?.title ?? id }));
+  // A card marked chart: false (a catch-all with no one place) stays in the key but gets no label on the plate.
+  return ids.map((id, i) => ({ id, n: i + 1, title: getCard(id)?.title ?? id, chart: getCard(id)?.chart !== false }));
 }
 
 /**
@@ -123,8 +134,10 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
   let hot = null; // the card lit up
   let source = null; // the key entry the leader line starts from
   let draw = 0;
+  let lead = 0; // how many of the parts, from the first, are the subject's own
 
-  function setParts(ids) {
+  function setParts(ids, opts = {}) {
+    lead = opts.lead ?? 0;
     clear(marksEl);
     clear(calloutsEl);
     parts = numberParts(ids);
@@ -165,7 +178,7 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
     const box = app.getBoundingClientRect();
     const f = chart ? frame() : { left: 0, right: box.width, top: 0, bottom: box.height };
     const all = parts.length <= MAX_MARKS;
-    const room = chart ? calloutRoom(f) : MAX_MARKS;
+    const room = chart ? chartRoom(f, lead) : MAX_MARKS;
     const shown = [];
     let listed = 0;
     for (const p of parts) {
@@ -173,7 +186,7 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
       const at = anchor && engine.toScreen(anchor);
       const inside = at && at.x > f.left && at.y > f.top && at.x < f.right && at.y < f.bottom;
       // A chart labels as many parts as fit down its edges (the whole body has more); numbers show only all or the one pointed at.
-      const show = inside && (chart ? listed < room || p.id === hot : all || p.id === hot);
+      const show = inside && (chart ? (listed < room && p.chart) || p.id === hot : all || p.id === hot);
       if (show) listed++;
       p.mark.hidden = !show;
       p.callout.toggleAttribute('hidden', !show || !chart);

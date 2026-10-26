@@ -122,6 +122,10 @@ RULES = [
     (r'common carotid', dict(system='circulatory', card='carotid-artery', label='Carotid artery', tissue='vessel', budget=1500)),
     (r'vena cava|pulmonary artery|pulmonary vein', dict(system='circulatory', card='great-vessels', label='{name}', tissue='{vessel}', budget=3000)),
     (r'renal artery|renal vein', dict(system='urinary', card='kidney', label='{name}', tissue='{vessel}', budget=800)),
+    (r'internal jugular vein', dict(system='circulatory', card='carotid-artery', label='{name}', tissue='vein', budget=1500)),
+    (r'subclavian|brachiocephalic', dict(system='circulatory', card='subclavian-vessels', label='{name}', tissue='{vessel}', budget=1500)),
+    (r'iliac', dict(system='circulatory', card='iliac-vessels', label='{name}', tissue='{vessel}', budget=1500)),
+    (r'celiac|gastric artery|hepatic artery|splenic|mesenteric', dict(system='circulatory', card='gut-vessels', label='{name}', tissue='{vessel}', budget=1500)),
     (r'artery|arteries|vein', dict(system='circulatory', card='circulatory-system', label='{name}', tissue='{vessel}', budget=1500)),
     # Breathing
     (r'diaphragm', dict(system='respiratory', card='diaphragm', label='Diaphragm (the main breathing muscle)', tissue='muscle', budget=8000)),
@@ -959,8 +963,8 @@ def from_bundle(skeleton):
             extras = {**p['extras'], **{k: rule[k] for k in ('system', 'card', 'label', 'tissue')}}
             glb.add(f"skull:{rule['label']}", p['pos'], p['idx'].reshape(-1, 3), extras)
             continue
-        if p['extras'].get('card') == 'muscular-system':
-            # Older bundles filed every muscle under one card; give the named ones their own, as the rules now do.
+        if p['extras'].get('card') in ('muscular-system', 'circulatory-system'):
+            # Older bundles filed every muscle and most vessels under one card; give the named ones their own, as the rules now do.
             rule = classify(label.lower())
             if rule and rule['card'] != 'muscular-system':
                 p['extras'] = {**p['extras'], 'card': rule['card']}

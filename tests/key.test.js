@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { numberParts, leaderEnd, spread, rim, layoutCallouts, calloutRoom, MAX_MARKS, MAX_CALLOUTS } from '../src/ui/key.js';
+import { numberParts, leaderEnd, spread, rim, layoutCallouts, calloutRoom, chartRoom, MAX_MARKS, MAX_CALLOUTS } from '../src/ui/key.js';
 
 describe('living key', () => {
   it('numbers the structures in view from 1, in scene order', () => {
@@ -75,6 +75,20 @@ describe('chart labels', () => {
     expect(calloutRoom({ top: 0, bottom: 2000 }, 30)).toBe(MAX_CALLOUTS);
     expect(calloutRoom({ top: 0, bottom: 100 }, 30)).toBe(MAX_MARKS); // never fewer than the marks
     expect(calloutRoom({ top: 0, topLeft: 300, bottom: 632 }, 30)).toBe(22); // the shorter column decides
+  });
+
+  it("labels a dive's own parts and only a few neighbors", () => {
+    const tall = { top: 0, bottom: 2000 };
+    expect(chartRoom(tall)).toBe(MAX_CALLOUTS); // the whole body fills the chart
+    expect(chartRoom(tall, 5)).toBe(MAX_MARKS); // five organs, topped up with landmarks
+    expect(chartRoom(tall, 18)).toBe(18);
+    expect(chartRoom(tall, 200)).toBe(MAX_CALLOUTS); // never more than fit
+  });
+
+  it('keeps catch-all cards in the key but off the plate', () => {
+    const [muscles, deltoid] = numberParts(['muscular-system', 'deltoid']);
+    expect(muscles.chart).toBe(false);
+    expect(deltoid.chart).toBe(true);
   });
 
   it("starts the left column below the plate's headline figure, the right one at the top", () => {

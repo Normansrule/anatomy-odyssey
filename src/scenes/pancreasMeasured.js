@@ -34,7 +34,7 @@ export function buildMeasuredPancreas(parts, { reducedMotion = false } = {}) {
   const gallbladder = partOf(parts, 'gallbladder');
   if (gallbladder) group.add(pick(new THREE.Mesh(gallbladder.geometry, M(0x6f9a3f, { roughness: 0.3, tissue: 'organ', natural: 0x6f9a3f, repeat: [1, 1] })), 'gallbladder', 'Gallbladder (stores bile)'));
   const vessel = (label, color, tissue, text) => {
-    const v = partOf(parts, 'circulatory-system', label);
+    const v = partOf(parts, 'gut-vessels', label);
     if (v) group.add(pick(new THREE.Mesh(v.geometry, M(color, { roughness: 0.4, tissue, repeat: [1, 1] })), 'pancreas', text));
   };
   vessel('Splenic artery', 0xd9434f, 'vessel', 'Splenic artery (also feeds the pancreas)');

@@ -47,6 +47,17 @@ describe('the measured body anatomy', async () => {
     }
   });
 
+  it('files every named vessel under a card of its own, none under the catch-all', () => {
+    const card = (label) => parts.find((p) => p.extras.label === label)?.extras.card;
+    expect(parts.filter((p) => p.extras.card === 'circulatory-system')).toEqual([]);
+    expect(card('Subclavian artery')).toBe('subclavian-vessels');
+    expect(card('Brachiocephalic vein')).toBe('subclavian-vessels');
+    expect(card('Common iliac artery')).toBe('iliac-vessels');
+    expect(card('Superior mesenteric artery')).toBe('gut-vessels');
+    expect(card('Splenic vein')).toBe('gut-vessels');
+    expect(card('Internal jugular vein')).toBe('carotid-artery');
+  });
+
   it('has smooth surfaces: unit normals and texture coordinates on every vertex', () => {
     for (const p of parts.slice(0, 40)) {
       const n = p.geometry.attributes.normal;
