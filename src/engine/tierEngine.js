@@ -16,6 +16,7 @@ const FOV = 40;
 // the swap (together the two halves make one ease-in-out).
 const easeIn = (t) => t * t * t;
 const easeOut = (t) => 1 - (1 - t) ** 3;
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
 
 /**
  * Up to ~1500 points (vertices, or instance positions) from each mesh that carries a card,
@@ -70,11 +71,13 @@ export function pairedSide(xs, cardId) {
 }
 
 /**
- * Where a structure's number sits: the point on it nearest the middle of its bounds, so the
- * number is on the part itself rather than in the air inside a hollow or curved shape. A
- * mirrored pair uses one half.
+ * Where a structure's number sits: on the part itself, not in the air inside a hollow or curved
+ * shape. Seen from `toward` (a direction from the subject to the camera), it is the nearest
+ * point of the surface facing the camera, on the line of sight through the middle of the part's
+ * bounds, so the dot is on what you see whichever way the body is turned; without a direction,
+ * the point nearest the middle. A mirrored pair uses one half.
  */
-export function anchorPoint(root, cardId) {
+export function anchorPoint(root, cardId, toward = null) {
   let pts = samplePoints(root, cardId);
   if (!pts.length) return null;
   const inv = new THREE.Matrix4().copy(root.matrixWorld).invert();
@@ -82,6 +85,18 @@ export function anchorPoint(root, cardId) {
   const side = pairedSide(xs, cardId);
   if (side) pts = pts.filter((_, i) => Math.sign(xs[i]) === side);
   const center = new THREE.Box3().setFromPoints(pts).getCenter(new THREE.Vector3());
+  if (toward) {
+    // The tenth of the points nearest the line of sight through the middle, and of those the one nearest the camera.
+    const v = new THREE.Vector3();
+    const scored = pts.map((p) => {
+      v.subVectors(p, center);
+      const depth = v.dot(toward);
+      return { p, depth, side: v.lengthSq() - depth * depth };
+    });
+    scored.sort((a, b) => a.side - b.side);
+    const near = scored.slice(0, Math.max(1, Math.ceil(scored.length / 10)));
+    return near.reduce((a, b) => (b.depth > a.depth ? b : a)).p;
+  }
   let best = pts[0];
   for (const p of pts) if (p.distanceToSquared(center) < best.distanceToSquared(center)) best = p;
   return best;
@@ -103,7 +118,7 @@ export class TierEngine {
     this.cursorZoom = null; // { point, ndc, until }
     // The scale slider sets a zoom goal (a ratio of the arrival distance); update() springs toward it.
     this.zoomGoal = null;
-    this.anchors = new Map(); // cardId → world-space center, for the numbered key
+    this.anchors = new Map(); // 'cardId:facing' → where its number sits, for the numbered key
     this.current = null; // { step, built }
     this.busy = false;
     this.tweens = [];
@@ -396,13 +411,44 @@ export class TierEngine {
    * bounds of everything that carries its card (cached until the scene changes).
    */
   anchorOf(cardId) {
-    if (this.anchors.has(cardId)) return this.anchors.get(cardId);
     const root = this.current?.built.root;
     if (!root) return null;
+    // One anchor for each side the subject is seen from, on the surface that faces that way.
+    const facing = this.facing();
+    const cached = `${cardId}:${facing}`;
+    if (this.anchors.has(cached)) return this.anchors.get(cached);
     root.updateMatrixWorld(true);
-    const at = anchorPoint(root, cardId);
-    this.anchors.set(cardId, at);
+    const toward = this.current.built.pose.dir.clone().multiplyScalar(facing === 'back' ? -1 : 1);
+    const at = anchorPoint(root, cardId, toward);
+    this.anchors.set(cached, at);
     return at;
+  }
+
+  /** Which side of the subject the camera is on: 'front' (as the plate opens) or 'back'. */
+  facing() {
+    const built = this.current?.built;
+    if (!built) return 'front';
+    return this.camera.position.clone().sub(this.controls.target).dot(built.pose.dir) < 0 ? 'back' : 'front';
+  }
+
+  /** Swing the camera half a turn around the subject, as you would walk round a statue. */
+  async turnAround() {
+    if (this.busy || !this.current) return false;
+    this.busy = true;
+    this.controls.enabled = false;
+    this.zoomGoal = null;
+    const target = this.controls.target.clone();
+    const offset = this.camera.position.clone().sub(target);
+    const axis = this.camera.up.clone().normalize();
+    const turn = new THREE.Quaternion();
+    await this.tween(this.reducedMotion ? 0 : 1.2, (t) => {
+      turn.setFromAxisAngle(axis, Math.PI * easeInOut(t));
+      this.camera.position.copy(target).add(offset.clone().applyQuaternion(turn));
+      this.camera.lookAt(target);
+    });
+    this.controls.enabled = true;
+    this.busy = false;
+    return true;
   }
 
   /** A world point in canvas pixels (CSS), or null when it is behind the camera. */

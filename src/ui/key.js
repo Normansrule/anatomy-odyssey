@@ -149,6 +149,7 @@ export function createKey({ app, marksEl, leaderEl, lineEl, calloutsEl, engine, 
     clear(marksEl);
     clear(calloutsEl);
     parts = numberParts(ids);
+    for (const p of parts) if (opts.offChart?.includes(p.id)) p.chart = false;
     for (const [i, p] of parts.entries()) {
       p.mark = el('span', { class: 'mark', dataset: { card: p.id } },
         el('span', { class: 'mark__num', text: String(p.n) }),

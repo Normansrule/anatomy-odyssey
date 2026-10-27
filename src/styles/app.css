@@ -737,6 +737,19 @@ button:active:not(:disabled):not([aria-disabled='true']),
   border-color: var(--ink);
 }
 
+/* Turning the model is an action, not a layer: set apart from the system toggles in ink. */
+.system-chip--turn {
+  color: var(--ink);
+  border-color: var(--ink);
+  font-weight: 700;
+  margin-right: var(--s-3);
+}
+
+.system-chip__turn {
+  font-size: 1.1em;
+  line-height: 1;
+}
+
 .system-chip--skin { --swatch: var(--sys-skin); }
 .system-chip--skeletal { --swatch: var(--sys-skeletal); }
 .system-chip--muscular { --swatch: var(--sys-muscular); }

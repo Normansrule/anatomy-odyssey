@@ -180,6 +180,17 @@ async function main() {
     app.dataset.module = state.dive.kind === 'module' ? 'true' : 'false';
   }
 
+  // ── Turn around (whole-body tier) ──────────────────────────────────
+  // A wall chart of the body comes as a front plate and a back plate; this turns the model to show the other.
+  const turnButton = el('button', { class: 'system-chip system-chip--turn', type: 'button', onclick: () => engine.turnAround() },
+    el('span', { class: 'system-chip__turn', 'aria-hidden': 'true', text: '↻' }), el('span', { class: 'system-chip__label', text: 'See the back' }));
+  $('systems').append(turnButton);
+  /** Say which side is in view: on the turn button, and under the plate's heading. */
+  function showFacing(facing) {
+    turnButton.querySelector('.system-chip__label').textContent = facing === 'back' ? 'See the front' : 'See the back';
+    $('plate-dive').textContent = facing === 'back' ? `${state.dive.title} · seen from behind` : state.dive.title;
+  }
+
   // ── Systems toggles (whole-body tier) ─────────────────────────────
   for (const sys of SYSTEMS) {
     const b = el('button', {
@@ -390,19 +401,29 @@ async function main() {
     if (m) openCard(m.dataset.card);
   });
   let keyBuilt = null;
-  /** Renumber the key when the model on screen changes. True if it did. */
+  let keyFacing = 'front';
+  /** Renumber the key when the model on screen changes, or is turned to show its other side. True if it did. */
   function syncKey() {
     const built = engine.current?.built ?? null;
-    if (built === keyBuilt) return false;
+    const facing = engine.busy ? keyFacing : engine.facing();
+    if (built === keyBuilt && facing === keyFacing) return false;
     keyBuilt = built;
+    keyFacing = facing;
+    showFacing(facing);
     // A dive's own parts come first, so the muscular dive's chart names muscles before bones.
     const own = (id) => getCard(id)?.system === state.dive.id;
     const ids = engine.structures();
-    // Muscles that lie under others (a card marked deep) come after the ones you can see.
-    const deep = (id) => getCard(id)?.deep === true;
-    const mine = [...ids.filter((id) => own(id) && !deep(id)), ...ids.filter((id) => own(id) && deep(id))];
+    // Then the ones in view from this side: a card seen from one side only (seen: 'back') ranks
+    // first from that side and last from the other, and muscles under others (deep) come last.
+    const inView = (id) => {
+      const c = getCard(id);
+      return c?.seen ? c.seen === facing : !c?.deep;
+    };
+    const mine = [...ids.filter((id) => own(id) && inView(id)), ...ids.filter((id) => own(id) && !inView(id))];
+    // A part seen only from the other side, or buried under others, stays in the key but gets no label on the chart.
+    const behind = ids.filter((id) => !inView(id));
     // A dive's chart labels its own parts and only a few others; the whole body labels as many as fit.
-    key.setParts([...mine, ...ids.filter((id) => !own(id))], { lead: mine.length });
+    key.setParts([...mine, ...ids.filter((id) => !own(id))], { lead: mine.filter((id) => !behind.includes(id)).length, offChart: behind });
     return true;
   }
   const keyItem = (e) => e.target.closest?.('.key__item');

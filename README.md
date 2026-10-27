@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.22.0-a3242f)
-![Tests](https://img.shields.io/badge/tests-543%20passing-276a40)
+![Tests](https://img.shields.io/badge/tests-545%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -47,6 +47,7 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 - **Light sheet or slate.** It follows your device's light or dark setting, or pick one in About.
 - **Science you can play with.** Sliders run real, tested equations (oxygen binding, nerve speed, blood acidity, how fast an enzyme works, how much blood the heart pumps).
 - **A map by scale, a tour, quizzes and a glossary.** The map (press M) lays out every dive on one size axis; the tour narrates a dive with captions you can have read aloud.
+- **Front and back plates.** A button under the whole body turns it round, as a wall chart comes as a front and a back plate: the labels move to the parts seen from behind (trapezius, latissimus dorsi, the deep back muscles, the rotator cuff, gluteus maximus, the hamstrings), and each sits on the surface that faces you.
 - **Made to move.** After every flight the plate sets itself like a printed chart: the heading rises out of its baseline and each label's line draws out from its part. The studio light follows your pointer across the model, and the guide's landing page falls through the body as you scroll.
 - **A guide website.** A landing page drawn as the same chart, plus the docs as a printed booklet, at [/guide/](https://normansrule.github.io/anatomy-odyssey/guide/).
 - **Private and accessible.** No network calls after loading, full keyboard control, screen-reader announcements, a reduced-motion mode, and an automated Web Content Accessibility Guidelines (WCAG) 2.2 audit with zero violations in 55 states, light and dark.
@@ -57,6 +58,9 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 <tr>
 <td align="center" width="50%"><img src="docs/media/skeleton-chart.webp" alt="The skeleton plate labeled like a lecture-hall chart: skull, lower jaw, shoulder girdle, breastbone, humerus, vertebral column, rib cage, discs, ulna, radius, the bones of the hand, pelvis, femur, kneecap, tibia, fibula and the bones of the foot, each with a line to its bone" width="420" /><br /><sub><b>A labeled skeleton.</b> Every major bone named at the plate's edge, the arm and leg bones each with its own card.</sub></td>
 <td align="center" width="50%"><img src="docs/media/muscle-chart.webp" alt="The whole body in the muscular dive, labeled like a muscle chart: the muscles of chewing and facial expression, sternocleidomastoid, the hyoid muscles, trapezius, deltoid, the shoulder-blade muscles, pectoralis major, biceps, triceps, latissimus dorsi, external oblique, rectus abdominis, the forearm flexors and extensors, the hand muscles, gluteus maximus, sartorius, the thigh adductors, the calf muscles, the fibularis muscles and the long toe extensors" width="420" /><br /><sub><b>A labeled muscle chart.</b> Every muscle on the real body opens a card: the big ones their own, the rest their group's.</sub></td>
+</tr>
+<tr>
+<td align="center" colspan="2"><img src="docs/media/muscle-chart-back.webp" alt="The muscle chart turned to show the back: trapezius, rotator cuff, the shoulder-blade muscles, deep back muscles, triceps, latissimus dorsi, gluteus maximus, the deep hip muscles, hamstrings and the calf muscles, each labeled at the plate's edge" width="420" /><br /><sub><b>The back plate.</b> Turn the body round and the chart names what you see from behind.</sub></td>
 </tr>
 <tr>
 <td align="center" colspan="2"><img src="docs/media/by-the-numbers.webp" alt="The heart plate: under the HEART heading the plate prints 100,000 beats a day in big condensed type, and the card on the right opens on three figures, 100,000 beats a day, 5 L of blood pumped a minute at rest and 300 g, above the numbered key" width="860" /><br /><sub><b>By the numbers.</b> Each plate prints its headline figure, and each card opens on three.</sub></td>
