@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.22.0-a3242f)
-![Tests](https://img.shields.io/badge/tests-552%20passing-276a40)
+![Tests](https://img.shields.io/badge/tests-554%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -48,7 +48,7 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 - **Science you can play with.** Sliders run real, tested equations (oxygen binding, nerve speed, blood acidity, how fast an enzyme works, how much blood the heart pumps).
 - **A map by scale, a tour, quizzes and a glossary.** The map (press M) lays out every dive on one size axis; the tour narrates a dive with captions you can have read aloud.
 - **Front and back plates.** A button under the whole body turns it round, as a wall chart comes as a front and a back plate: the labels move to the parts seen from behind (trapezius, latissimus dorsi, the deep back muscles, the rotator cuff, gluteus maximus, the hamstrings), and each sits on the surface that faces you.
-- **Take it apart.** "Take apart" lifts each body system out of the whole and stands them in a row, skin first, then muscle, bone, nerves, blood vessels, lungs, gut, kidneys, glands and the immune system, each on its own floor shadow with its name underneath, the way an exploded diagram lays out a machine. Each figure steps out on a spring, a beat after the one before; "Put together" walks them back in reverse. The row turns round with "See the back" too.
+- **Take it apart.** "Take apart" lifts each body system out of the whole and stands them in a row, skin first, then muscle, bone, nerves, blood vessels, lungs, gut, kidneys, glands and the immune system, each on its own floor shadow with its name underneath, the way an exploded diagram lays out a machine. Each figure steps out on a spring, a beat after the one before; "Put together" walks them back in reverse. The row turns round with "See the back" too. Point at a system in the row and it lifts off the floor; each caption gives the system's headline figure and opens its card.
 - **Made to move.** After every flight the plate sets itself like a printed chart: the heading rises out of its baseline and each label's line draws out from its part. The studio light follows your pointer across the model, and the guide's landing page falls through the body as you scroll.
 - **A guide website.** A landing page drawn as the same chart, plus the docs as a printed booklet, at [/guide/](https://normansrule.github.io/anatomy-odyssey/guide/).
 - **Private and accessible.** No network calls after loading, full keyboard control, screen-reader announcements, a reduced-motion mode, and an automated Web Content Accessibility Guidelines (WCAG) 2.2 audit with zero violations in 55 states, light and dark.

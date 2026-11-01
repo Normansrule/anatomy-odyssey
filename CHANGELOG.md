@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.27.0
+
+- **Pick a system out of the row.** With the body taken apart, pointing at any part of a system lifts that whole figure a few centimeters off the floor on a quick spring, its shadow spreading and paling under it the way a model lifted off a table casts a softer shadow, and its caption turns red. Pointing at a caption (or tabbing to it) does the same, and clicking it opens that system's card. A part still opens its own card.
+- **A figure under every name.** Each caption in the row now carries the system's headline number: skin 2 m², skeleton 206 bones, muscles 600, nerves 86 billion neurons, blood 5 L, lungs 11,000 L of air a day, the immune system's 600 lymph nodes. The plate's own big figure steps aside while the systems are apart so it no longer sits on the skin. On narrow windows the numbers drop and the names stagger.
+- **By the numbers for every system.** The muscular, circulatory, nervous, respiratory, immune and endocrine system cards now open on three figures each, like the others (92 cards).
+
 ## 0.26.0
 
 - **Take the body apart.** A new "Take apart" button under the whole body lifts each system out and stands them side by side, outside in: skin, muscles, skeleton, nerves, heart and vessels, lungs, gut, kidneys and bladder, glands and the immune system, only those switched on. Each figure steps out on a damped spring, a beat after its neighbor, and settles on its own soft floor shadow with its name in capitals underneath, like the exploded plates of an anatomy atlas or an engineer's exploded view. The camera turns square-on and steps back just far enough to fit the row inside the plate; "Put together" brings them back in reverse order, and with reduced motion they move at once. The plate's heading reads "systems apart", the row turns round with "See the back" (captions stay on your side), and switching a system on or off while apart closes up the gap. Chart lines are left off while apart so they do not cross the row; pointing at a part still names it.

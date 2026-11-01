@@ -36,6 +36,9 @@ export const DEFAULT_SYSTEMS = ['skin', 'skeletal', 'circulatory', 'nervous', 'r
  */
 export const APART_ORDER = ['skin', 'muscular', 'skeletal', 'nervous', 'circulatory', 'respiratory', 'digestive', 'urinary', 'endocrine', 'immune'];
 export const APART_SPACING = 0.54;
+/** How far (meters) a system rises off the floor while the pointer is on it, and how briskly. */
+export const APART_LIFT = 0.06;
+export const LIFT_SPRING = { stiffness: 160, damping: 20 };
 
 /** Where each shown system stands when taken apart: x offsets, centred on the body's own place. */
 export function apartSlots(shown) {
@@ -367,7 +370,8 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
   // its own shadow under its feet that fades in as the shared one fades out.
   let apart = false;
   let shown = skeletonOnly ? ['skeletal'] : [...systems];
-  const springs = Object.fromEntries(Object.keys(groups).map((id) => [id, { x: 0, v: 0, delay: 0 }]));
+  const springs = Object.fromEntries(Object.keys(groups).map((id) => [id, { x: 0, v: 0, delay: 0, y: 0, vy: 0 }]));
+  let lifted = null; // the system the pointer is on, raised off the floor like a plate picked up
   const shadows = {};
   for (const [id, grp] of Object.entries(groups)) {
     const shadow = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 0.45), M.basic(0x07051a, { map: softShadowTexture(), transparent: true, opacity: 0, depthWrite: false }));
@@ -396,6 +400,7 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
       groups[id].position.x = sp.x;
     }
   }
+  const liftOf = (id) => (apart && id === lifted ? APART_LIFT : 0);
   const spread = () => {
     const xs = Object.values(springs).map((sp) => Math.abs(sp.x));
     return Math.min(1, Math.max(0, ...xs) / APART_SPACING);
@@ -434,6 +439,7 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
     setApart(on, { instant = false } = {}) {
       if (skeletonOnly) return;
       apart = on;
+      if (!on) lifted = null;
       place(true);
       if (instant) settle();
     },
@@ -450,10 +456,26 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
       return Object.values(springs).some((sp) => sp.delay > 0 || Math.abs(sp.x - (sp.to ?? 0)) > 0.0005 || Math.abs(sp.v) > 0.002);
     },
     settle,
+    /** Which system a picked mesh belongs to (null for none). */
+    systemOf(object) {
+      let o = object;
+      while (o && o.parent !== root) o = o.parent;
+      return o && groups[o.name] === o ? o.name : null;
+    },
+    /** Raise one system off the floor while the body is apart (null lowers it again). */
+    lift(id) {
+      lifted = apart ? id : null;
+    },
+    get lifted() {
+      return lifted;
+    },
     /** Each system standing in the row, and the point under its feet, for its caption. */
     layers() {
       if (!apart) return [];
-      return Object.entries(apartSlots(shown)).map(([id, x]) => ({ id, label: SYSTEMS.find((s) => s.id === id)?.label ?? id, at: [x, 0, 0.18] }));
+      return Object.entries(apartSlots(shown)).map(([id, x]) => {
+        const sys = SYSTEMS.find((s) => s.id === id);
+        return { id, label: sys?.label ?? id, card: sys?.card ?? null, at: [x, 0, 0.18] };
+      });
     },
     update(dt, { reducedMotion: still = reducedMotion } = {}) {
       for (const [id, sp] of Object.entries(springs)) {
@@ -467,9 +489,19 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
         } else [sp.x, sp.v] = springStep(sp.x, sp.v, sp.to ?? 0, Math.min(dt, 0.05));
         groups[id].position.x = sp.x;
       }
+      for (const [id, sp] of Object.entries(springs)) {
+        if (still) [sp.y, sp.vy] = [liftOf(id), 0];
+        else [sp.y, sp.vy] = springStep(sp.y, sp.vy, liftOf(id), Math.min(dt, 0.05), LIFT_SPRING);
+        groups[id].position.y = sp.y;
+        // The shadow stays on the floor and spreads and pales as its figure rises.
+        const k = sp.y / APART_LIFT;
+        shadows[id].position.y = 0.002 - sp.y;
+        shadows[id].scale.setScalar(1 + 0.35 * k);
+        shadows[id].userData.lift = k;
+      }
       const t = spread();
       floor.material.opacity = 0.75 * (1 - t);
-      for (const sh of Object.values(shadows)) sh.material.opacity = 0.75 * t;
+      for (const sh of Object.values(shadows)) sh.material.opacity = 0.75 * t * (1 - 0.45 * (sh.userData.lift ?? 0));
       beat = (beat + dt * BEATS_PER_SECOND) % 1;
       heart?.scale.setScalar(still ? 1 : heartbeatScale(beat));
       if (flow && groups.circulatory.visible) flow.update(dt, beat, still);

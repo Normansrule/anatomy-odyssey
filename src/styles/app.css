@@ -879,15 +879,57 @@ button:active:not(:disabled):not([aria-disabled='true']),
   position: absolute;
   left: 0;
   top: 0;
-  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 6px 4px;
+  border: 0;
   border-top: 1.5px solid var(--ink);
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: border-color 160ms ease, color 160ms ease;
+  animation: caption-rise 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.is-tucked {
+  visibility: hidden;
+}
+
+.layer-caption[hidden] {
+  display: none;
+}
+
+.layer-caption__name {
   font-size: var(--step--1);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink);
-  white-space: nowrap;
-  animation: caption-rise 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.layer-caption__fact {
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.layer-captions--tight .layer-caption__fact {
+  display: none;
+}
+
+.layer-caption:hover,
+.layer-caption.is-lifted {
+  border-top-color: var(--accent);
+  color: var(--accent);
+}
+
+.layer-caption:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 @keyframes caption-rise {

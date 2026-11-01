@@ -15,6 +15,36 @@ export const STATS = {
     { value: '15', unit: '%', label: 'of body weight' },
     { value: '2', unit: 'million', label: 'red blood cells made by the marrow every second' },
   ],
+  'muscular-system': [
+    { value: '600', unit: 'muscles', label: 'and more in the skeleton’s grip' },
+    { value: '40', unit: '%', label: 'of an adult man’s weight; about a third of a woman’s' },
+    { value: '3', unit: 'kinds', label: 'of muscle: skeletal, cardiac and smooth' },
+  ],
+  'circulatory-system': [
+    { value: '5', unit: 'L', label: 'of blood in an adult' },
+    { value: '100,000', unit: 'km', label: 'of blood vessels, mostly capillaries' },
+    { value: '1', unit: 'minute', label: 'for blood to go once round the body at rest' },
+  ],
+  'nervous-system': [
+    { value: '86', unit: 'billion neurons', label: 'in the brain (Azevedo et al., 2009)' },
+    { value: '31', unit: 'pairs', label: 'of spinal nerves, with 12 pairs of cranial nerves' },
+    { value: '120', unit: 'm/s', label: 'along the fastest nerve fibers' },
+  ],
+  'respiratory-system': [
+    { value: '11,000', unit: 'L', label: 'of air breathed in a day at rest' },
+    { value: '12–20', unit: 'breaths', label: 'a minute at rest' },
+    { value: '6', unit: 'L', label: 'that an adult man’s lungs hold when full' },
+  ],
+  'immune-system': [
+    { value: '600', unit: 'lymph nodes', label: 'about, along the lymph vessels' },
+    { value: '7,000', unit: 'white cells', label: 'in each microliter of blood, normally 4,000 to 11,000' },
+    { value: '2', unit: 'trillion', label: 'lymphocytes in an adult' },
+  ],
+  'endocrine-system': [
+    { value: '50', unit: 'hormones', label: 'and more, carried in the blood' },
+    { value: '0.5', unit: 'g', label: 'the pituitary, which steers most of the other glands' },
+    { value: '4', unit: 'parathyroids', label: 'each the size of a grain of rice, set calcium' },
+  ],
   femur: [
     { value: '45', unit: 'cm', label: 'long: the longest bone in the body' },
     { value: '3', unit: '× body weight', label: 'pressing on the hip with each step when walking' },

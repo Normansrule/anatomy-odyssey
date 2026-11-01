@@ -46,3 +46,18 @@ describe('captions under the row', () => {
     expect(captionRows([0, null, 200]).gap).toBe('one');
   });
 });
+
+describe('the row is interactive', () => {
+  it('lifts a pointed-at system briskly and settles it back', async () => {
+    const { APART_LIFT, LIFT_SPRING } = await import('../src/scenes/body.js');
+    let y = 0, v = 0;
+    for (let i = 0; i < 30; i++) [y, v] = springStep(y, v, APART_LIFT, 1 / 60, LIFT_SPRING);
+    expect(y).toBeGreaterThan(APART_LIFT * 0.9); // within half a second
+    expect(APART_LIFT).toBeLessThan(0.1); // a lift, not a jump
+  });
+
+  it('gives every system in the row a headline figure for its caption', async () => {
+    const { statsFor } = await import('../src/data/stats.js');
+    for (const s of SYSTEMS) expect(statsFor(s.card).length, s.id).toBeGreaterThan(0);
+  });
+});

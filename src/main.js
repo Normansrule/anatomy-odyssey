@@ -207,13 +207,31 @@ async function main() {
     apartButton.querySelector('.system-chip__label').textContent = apart ? 'Put together' : 'Take apart';
     const notes = [facing === 'back' && 'seen from behind', apart && 'systems apart'].filter(Boolean);
     $('plate-dive').textContent = [state.dive.title, ...notes].join(' · ');
+    // Apart, each system's caption carries its own figure, so the plate's steps aside.
+    $('plate-fact').classList.toggle('is-tucked', apart);
   }
   /** Under each system standing in the row, its name, as an atlas captions its plates. */
   const captionsEl = $('layer-captions');
+  // Each caption is a button: its name, the system's headline figure under it, and
+  // pointing at it lifts that system off the floor, as pointing at the figure does.
+  function layerCaption(l) {
+    const [fact] = statsFor(l.card);
+    const lift = (id) => engine.current?.built.lift?.(id);
+    return el('button', {
+      type: 'button',
+      class: 'layer-caption',
+      dataset: { id: l.id },
+      onclick: () => l.card && openCard(l.card),
+      onpointerenter: () => lift(l.id),
+      onpointerleave: () => lift(null),
+      onfocus: () => lift(l.id),
+      onblur: () => lift(null),
+    }, el('span', { class: 'layer-caption__name', text: l.label }), fact && el('span', { class: 'layer-caption__fact', text: `${fact.value} ${fact.unit}` }));
+  }
   function placeLayerCaptions() {
     const layers = engine.busy ? [] : (engine.current?.built.layers?.() ?? []);
     if (captionsEl.childElementCount !== layers.length || [...captionsEl.children].some((c, i) => c.dataset.id !== layers[i].id)) {
-      captionsEl.replaceChildren(...layers.map((l) => el('span', { class: 'layer-caption', dataset: { id: l.id }, text: l.label })));
+      captionsEl.replaceChildren(...layers.map(layerCaption));
     }
     const root = engine.current?.built.root;
     const back = engine.facing?.() === 'back';
@@ -223,10 +241,13 @@ async function main() {
     // onto two rows; closer still (a phone), drop them and let the colored
     // system chips below serve as the legend.
     const { gap, drop } = captionRows(points.map((p) => p?.x));
+    captionsEl.classList.toggle('layer-captions--tight', gap !== 'one');
+    const lifted = engine.current?.built.lifted ?? null;
     layers.forEach((l, i) => {
       const at = points[i];
       const c = captionsEl.children[i];
       c.hidden = !at || gap === 'none';
+      c.classList.toggle('is-lifted', l.id === lifted);
       if (at) c.style.transform = `translate(${at.x.toFixed(1)}px, ${(at.y + (drop && i % 2 ? drop : 0)).toFixed(1)}px) translate(-50%, 0)`;
     });
   }
@@ -1055,6 +1076,7 @@ async function main() {
   });
   canvas.addEventListener('pointerleave', () => {
     engine.setLightAim(0, 0);
+    engine.current?.built.lift?.(null);
     hoverQueued = null;
     tooltip.hidden = true;
     engine.setHover(null);
@@ -1070,6 +1092,8 @@ async function main() {
       return;
     }
     const hit = engine.pickAt(ndcOf(e));
+    const built = engine.current?.built;
+    if (built?.apart) built.lift(hit ? built.systemOf(hit.object) : null);
     canvas.style.cursor = hit ? 'pointer' : '';
     engine.setHover(hit);
     key.setHot(hit?.cardId ?? null);
