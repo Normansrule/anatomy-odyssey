@@ -30,6 +30,7 @@ import { openQuiz, hasQuiz } from './ui/quiz.js';
 import { openGlossary } from './ui/glossary.js';
 import { renderAtlas } from './ui/atlas.js';
 import { el, clear } from './ui/dom.js';
+import { captionRows } from './ui/layerCaptions.js';
 import { progress } from './storage/progress.js';
 import { FrameBenchmark, validMeasurement } from './engine/benchmark.js';
 import { setSurfaceOptions, detailFor } from './engine/textures/surfaces.js';
@@ -184,11 +185,50 @@ async function main() {
   // A wall chart of the body comes as a front plate and a back plate; this turns the model to show the other.
   const turnButton = el('button', { class: 'system-chip system-chip--turn', type: 'button', onclick: () => engine.turnAround() },
     el('span', { class: 'system-chip__turn', 'aria-hidden': 'true', text: '↻' }), el('span', { class: 'system-chip__label', text: 'See the back' }));
-  $('systems').append(turnButton);
-  /** Say which side is in view: on the turn button, and under the plate's heading. */
+  // Taking the body apart stands its systems in a row, like the plates of an anatomy atlas side by side.
+  const apartButton = el('button', {
+    class: 'system-chip system-chip--turn system-chip--apart',
+    type: 'button',
+    onclick: async () => {
+      // Fit the row between the scale and the card, the part of the screen the plate shows.
+      const f = plateFrame();
+      const widthFraction = Math.min(1, Math.max(0.3, (f.right - f.left) / app.getBoundingClientRect().width));
+      if (await engine.setApart(!engine.current?.built.apart, { widthFraction })) {
+        keyBuilt = null; // renumber for the new layout
+        showFacing(engine.facing());
+      }
+    },
+  }, el('span', { class: 'system-chip__turn', 'aria-hidden': 'true', text: '⇹' }), el('span', { class: 'system-chip__label', text: 'Take apart' }));
+  $('systems').append(turnButton, apartButton);
+  /** Say which side is in view and whether the body is apart: on the buttons, and under the plate's heading. */
   function showFacing(facing) {
+    const apart = !!engine.current?.built.apart;
     turnButton.querySelector('.system-chip__label').textContent = facing === 'back' ? 'See the front' : 'See the back';
-    $('plate-dive').textContent = facing === 'back' ? `${state.dive.title} · seen from behind` : state.dive.title;
+    apartButton.querySelector('.system-chip__label').textContent = apart ? 'Put together' : 'Take apart';
+    const notes = [facing === 'back' && 'seen from behind', apart && 'systems apart'].filter(Boolean);
+    $('plate-dive').textContent = [state.dive.title, ...notes].join(' · ');
+  }
+  /** Under each system standing in the row, its name, as an atlas captions its plates. */
+  const captionsEl = $('layer-captions');
+  function placeLayerCaptions() {
+    const layers = engine.busy ? [] : (engine.current?.built.layers?.() ?? []);
+    if (captionsEl.childElementCount !== layers.length || [...captionsEl.children].some((c, i) => c.dataset.id !== layers[i].id)) {
+      captionsEl.replaceChildren(...layers.map((l) => el('span', { class: 'layer-caption', dataset: { id: l.id }, text: l.label })));
+    }
+    const root = engine.current?.built.root;
+    const back = engine.facing?.() === 'back';
+    // Captions stand on the floor in front of each figure, on the viewer's side.
+    const points = layers.map(({ at: [x, y, z] }) => (root ? engine.toScreen(root.localToWorld(new Vector3(x, y, back ? -z : z))) : null));
+    // Neighbouring figures closer than a caption is wide: stagger the captions
+    // onto two rows; closer still (a phone), drop them and let the colored
+    // system chips below serve as the legend.
+    const { gap, drop } = captionRows(points.map((p) => p?.x));
+    layers.forEach((l, i) => {
+      const at = points[i];
+      const c = captionsEl.children[i];
+      c.hidden = !at || gap === 'none';
+      if (at) c.style.transform = `translate(${at.x.toFixed(1)}px, ${(at.y + (drop && i % 2 ? drop : 0)).toFixed(1)}px) translate(-50%, 0)`;
+    });
   }
 
   // ── Systems toggles (whole-body tier) ─────────────────────────────
@@ -421,7 +461,8 @@ async function main() {
     };
     const mine = [...ids.filter((id) => own(id) && inView(id)), ...ids.filter((id) => own(id) && !inView(id))];
     // A part seen only from the other side, or buried under others, stays in the key but gets no label on the chart.
-    const behind = ids.filter((id) => !inView(id));
+    // Taken apart, each system's caption names it and the parts are named when pointed at, so lines don't cross the row.
+    const behind = engine.current?.built.apart ? ids : ids.filter((id) => !inView(id));
     // A dive's chart labels its own parts and only a few others; the whole body labels as many as fit.
     key.setParts([...mine, ...ids.filter((id) => !own(id))], { lead: mine.filter((id) => !behind.includes(id)).length, offChart: behind });
     return true;
@@ -1142,6 +1183,7 @@ async function main() {
     if (syncKey() && state.openCard && !engine.busy) reopen();
     key.update(dt, { busy: engine.busy, reducedMotion: reducedMotion(), chart: wide.matches });
     updateHover();
+    placeLayerCaptions();
     updateZoomGuide();
     sceneControls.sync();
     const meters = engine.viewMeters();

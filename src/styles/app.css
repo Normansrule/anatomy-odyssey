@@ -742,6 +742,9 @@ button:active:not(:disabled):not([aria-disabled='true']),
   color: var(--ink);
   border-color: var(--ink);
   font-weight: 700;
+}
+
+.system-chip--apart {
   margin-right: var(--s-3);
 }
 
@@ -864,6 +867,42 @@ button:active:not(:disabled):not([aria-disabled='true']),
 }
 
 /* ── The living key: numbers on the model, lines to the key ──────── */
+/* Each system's name under its feet when the body is taken apart, set like a plate's caption. */
+.layer-captions {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.layer-caption {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 6px;
+  border-top: 1.5px solid var(--ink);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  animation: caption-rise 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes caption-rise {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer-caption {
+    animation: none;
+  }
+}
+
 .marks {
   position: absolute;
   inset: 0;

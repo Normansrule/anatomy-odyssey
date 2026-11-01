@@ -431,6 +431,49 @@ export class TierEngine {
     return this.camera.position.clone().sub(this.controls.target).dot(built.pose.dir) < 0 ? 'back' : 'front';
   }
 
+  /**
+   * Take the whole body apart into a row of systems (or put it back), as an exploded drawing
+   * does: each system springs to its place a beat after the last, and the camera pulls back
+   * to frame the row.
+   */
+  async setApart(on, { widthFraction = 1 } = {}) {
+    const built = this.current?.built;
+    if (this.busy || !built?.setApart || built.apart === on) return false;
+    this.busy = true;
+    this.controls.enabled = false;
+    this.zoomGoal = null;
+    built.setApart(on, { instant: this.reducedMotion });
+    const target0 = this.controls.target.clone();
+    const offset = this.camera.position.clone().sub(target0);
+    const dist0 = offset.length();
+    const dir0 = offset.normalize();
+    // Apart, the row is seen square on, like plates hung side by side; together, from the plate's own angle.
+    const back = this.facing() === 'back' ? -1 : 1;
+    const dir1 = on ? new THREE.Vector3(0, 0.06, back).normalize() : built.pose.dir.clone().multiplyScalar(back);
+    if (!on && back < 0) dir1.y = -dir1.y;
+    // Frame the row's width in the band the scene is drawn in, never closer than the plate's own framing.
+    const across = visibleHeightMeters(built.pose.dist, FOV, built.metersPerUnit) * this.bandAspect();
+    const dist1 = built.pose.dist * Math.max(1, (built.apartWidth() * 1.08) / (across * widthFraction));
+    // Apart, aim a little above the middle so the row stands clear of the plate's heading, its captions under it.
+    const target1 = on ? new THREE.Vector3(0, built.pose.target.y + 0.22 * (dist1 / built.pose.dist), built.pose.target.z) : built.pose.target.clone();
+    this.controls.maxDistance = Math.max(built.pose.dist * 3.2, dist1 * 1.6);
+    const target = new THREE.Vector3();
+    const dir = new THREE.Vector3();
+    await this.tween(this.reducedMotion ? 0 : 1.6, (t) => {
+      const e = easeInOut(t);
+      target.lerpVectors(target0, target1, e);
+      dir.lerpVectors(dir0, dir1, e).normalize();
+      this.controls.target.copy(target);
+      this.camera.position.copy(target).addScaledVector(dir, dist0 + (dist1 - dist0) * e);
+      this.camera.lookAt(target);
+    });
+    built.settle();
+    this.anchors.clear();
+    this.controls.enabled = true;
+    this.busy = false;
+    return true;
+  }
+
   /** Swing the camera half a turn around the subject, as you would walk round a statue. */
   async turnAround() {
     if (this.busy || !this.current) return false;
@@ -525,6 +568,11 @@ export class TierEngine {
   setSystems(list) {
     this.systems = list;
     this.current?.built.setSystems?.(list);
+    // Taken apart, the row closes up or opens out to fit: settle it at once so the labels stay true.
+    if (this.current?.built.apart) {
+      this.current.built.settle();
+      this.anchors.clear();
+    }
   }
 
   /** Return the clickable structure under a normalized device coordinate, if any. */

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.26.0
+
+- **Take the body apart.** A new "Take apart" button under the whole body lifts each system out and stands them side by side, outside in: skin, muscles, skeleton, nerves, heart and vessels, lungs, gut, kidneys and bladder, glands and the immune system, only those switched on. Each figure steps out on a damped spring, a beat after its neighbor, and settles on its own soft floor shadow with its name in capitals underneath, like the exploded plates of an anatomy atlas or an engineer's exploded view. The camera turns square-on and steps back just far enough to fit the row inside the plate; "Put together" brings them back in reverse order, and with reduced motion they move at once. The plate's heading reads "systems apart", the row turns round with "See the back" (captions stay on your side), and switching a system on or off while apart closes up the gap. Chart lines are left off while apart so they do not cross the row; pointing at a part still names it.
+- **Captions that fit.** On a narrow window the system names stagger onto two rows, and on a phone they give way to the colored system buttons, which act as the legend.
+
 ## 0.25.0
 
 - **See the back.** A wall chart of the body comes as a front plate and a back plate; the whole body now has both. "See the back", beside the system buttons, swings the camera half a turn round the body (instantly with reduced motion), and the plate's heading reads "seen from behind". Dragging the body round past side-on does the same. Each side labels what you can see from it: cards seen from one side only (`seen: 'front'` or `'back'`) are labeled on that side's chart and kept in the key on the other, so the back plate names the trapezius, latissimus dorsi, deep back muscles, rotator cuff, triceps, gluteus maximus, deep hip muscles and hamstrings, and the front plate the face, pectoralis major, biceps, rectus abdominis, quadriceps and shin. Muscles buried under others (psoas, the intercostals, the deep calf) stay in the key but no longer pin labels through the skin.

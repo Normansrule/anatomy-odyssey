@@ -30,6 +30,34 @@ export const SYSTEMS = [
 
 export const DEFAULT_SYSTEMS = ['skin', 'skeletal', 'circulatory', 'nervous', 'respiratory', 'immune'];
 
+/**
+ * Taken apart, the systems stand in a row like a set of anatomy plates, from the outside in:
+ * skin, muscle, bone, then the systems they hold. Each stands this far (meters) from the next.
+ */
+export const APART_ORDER = ['skin', 'muscular', 'skeletal', 'nervous', 'circulatory', 'respiratory', 'digestive', 'urinary', 'endocrine', 'immune'];
+export const APART_SPACING = 0.54;
+
+/** Where each shown system stands when taken apart: x offsets, centred on the body's own place. */
+export function apartSlots(shown) {
+  const row = APART_ORDER.filter((id) => shown.includes(id));
+  return Object.fromEntries(row.map((id, i) => [id, (i - (row.length - 1) / 2) * APART_SPACING]));
+}
+
+/**
+ * One step of a damped spring toward `to` (each system springs to its place a beat after the
+ * one before, like the parts of an exploded drawing). Slightly underdamped, so it settles with
+ * a small overshoot; returns the new [x, v].
+ */
+export function springStep(x, v, to, dt, { stiffness = 70, damping = 13 } = {}) {
+  const steps = Math.max(1, Math.ceil(dt / (1 / 120)));
+  const h = dt / steps;
+  for (let i = 0; i < steps; i++) {
+    v += (stiffness * (to - x) - damping * v) * h;
+    x += v * h;
+  }
+  return [x, v];
+}
+
 export { LANDMARKS };
 /** Eye centres, in their sockets. */
 export const EYES = LANDMARKS.eyes;
@@ -335,6 +363,44 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
     root.add(grp);
   }
 
+  // Taking the body apart: each system's group springs sideways to its place in the row, with
+  // its own shadow under its feet that fades in as the shared one fades out.
+  let apart = false;
+  let shown = skeletonOnly ? ['skeletal'] : [...systems];
+  const springs = Object.fromEntries(Object.keys(groups).map((id) => [id, { x: 0, v: 0, delay: 0 }]));
+  const shadows = {};
+  for (const [id, grp] of Object.entries(groups)) {
+    const shadow = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 0.45), M.basic(0x07051a, { map: softShadowTexture(), transparent: true, opacity: 0, depthWrite: false }));
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.y = 0.002;
+    shadow.raycast = () => {}; // a shadow is never picked
+    grp.add(shadow);
+    shadows[id] = shadow;
+  }
+  const targets = () => (apart ? apartSlots(shown) : {});
+  function place(stagger) {
+    const to = targets();
+    // Outermost first going apart, innermost first coming back together.
+    const row = APART_ORDER.filter((id) => shown.includes(id));
+    for (const [id, sp] of Object.entries(springs)) {
+      sp.to = to[id] ?? 0;
+      const i = row.indexOf(id);
+      sp.delay = stagger && i >= 0 ? (apart ? i : row.length - 1 - i) * 0.07 : 0;
+    }
+  }
+  function settle() {
+    for (const [id, sp] of Object.entries(springs)) {
+      sp.x = sp.to ?? 0;
+      sp.v = 0;
+      sp.delay = 0;
+      groups[id].position.x = sp.x;
+    }
+  }
+  const spread = () => {
+    const xs = Object.values(springs).map((sp) => Math.abs(sp.x));
+    return Math.min(1, Math.max(0, ...xs) / APART_SPACING);
+  };
+
   // A soft contact shadow so the figure stands on something.
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 0.6), M.basic(0x07051a, { map: softShadowTexture(), transparent: true, opacity: 0.75, depthWrite: false }));
   floor.rotation.x = -Math.PI / 2;
@@ -360,9 +426,50 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
     infection,
     setSystems(list) {
       if (skeletonOnly) return;
+      shown = [...list];
       for (const [id, grp] of Object.entries(groups)) grp.visible = list.includes(id);
+      place(false);
+    },
+    /** Take the systems apart into a row (true) or put them back together (false). */
+    setApart(on, { instant = false } = {}) {
+      if (skeletonOnly) return;
+      apart = on;
+      place(true);
+      if (instant) settle();
+    },
+    get apart() {
+      return apart;
+    },
+    /** How wide the row is when apart, in meters, for framing it. */
+    apartWidth() {
+      const n = Object.keys(apartSlots(shown)).length;
+      return apart ? (n - 1) * APART_SPACING + 0.7 : 0.7;
+    },
+    /** True while any system is still springing to its place. */
+    moving() {
+      return Object.values(springs).some((sp) => sp.delay > 0 || Math.abs(sp.x - (sp.to ?? 0)) > 0.0005 || Math.abs(sp.v) > 0.002);
+    },
+    settle,
+    /** Each system standing in the row, and the point under its feet, for its caption. */
+    layers() {
+      if (!apart) return [];
+      return Object.entries(apartSlots(shown)).map(([id, x]) => ({ id, label: SYSTEMS.find((s) => s.id === id)?.label ?? id, at: [x, 0, 0.18] }));
     },
     update(dt, { reducedMotion: still = reducedMotion } = {}) {
+      for (const [id, sp] of Object.entries(springs)) {
+        if (sp.delay > 0) {
+          sp.delay = Math.max(0, sp.delay - dt);
+          continue;
+        }
+        if (still) {
+          sp.x = sp.to ?? 0;
+          sp.v = 0;
+        } else [sp.x, sp.v] = springStep(sp.x, sp.v, sp.to ?? 0, Math.min(dt, 0.05));
+        groups[id].position.x = sp.x;
+      }
+      const t = spread();
+      floor.material.opacity = 0.75 * (1 - t);
+      for (const sh of Object.values(shadows)) sh.material.opacity = 0.75 * t;
       beat = (beat + dt * BEATS_PER_SECOND) % 1;
       heart?.scale.setScalar(still ? 1 : heartbeatScale(beat));
       if (flow && groups.circulatory.visible) flow.update(dt, beat, still);
