@@ -23,6 +23,7 @@ import { PANCREAS_CARDS } from './cards-pancreas.js';
 import { LIVER_CARDS } from './cards-liver.js';
 import { SMELL_CARDS } from './cards-smell.js';
 import { MUSCLE_GROUP_CARDS } from './cards-muscle-groups.js';
+import { NERVE_CARDS } from './cards-nerves.js';
 
 const humanDiploidBp = 6.4e9;
 const dnaPerCell = formatLength(dnaLength(humanDiploidBp)).text; // ≈ 2.2 m
@@ -567,6 +568,7 @@ export const CARDS = [
   },
   ...MORE_CARDS,
   ...MUSCLE_GROUP_CARDS,
+  ...NERVE_CARDS,
   ...SIGNAL_CARDS,
   ...MOLECULE_CARDS,
   ...CHEM_IMMUNE_CARDS,

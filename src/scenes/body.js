@@ -40,6 +40,8 @@ export const APART_SPACING = 0.54;
 export const APART_LIFT = 0.06;
 /** How opaque the skin becomes standing alone in the row. */
 export const SKIN_ALONE = 0.94;
+/** Nerves on the whole body take the atlas's yellow. */
+export const ATLAS_NERVE = 0xe0b83a;
 const SKIN_TONE = 0xcfb29f;
 export const LIFT_SPRING = { stiffness: 160, damping: 20 };
 
@@ -150,37 +152,66 @@ function along(name, t, [dx, dy, dz] = [0, 0, 0]) {
 
 function buildNerves(M) {
   const g = new THREE.Group();
-  const n = M(COLORS.nerve, { roughness: 0.45, emissive: COLORS.nerve, emissiveIntensity: 0.15, tissue: 'nerve' });
+  // In life a nerve is a creamy white cord, nearly the color of bone; atlases print nerves yellow so
+  // they stand out from the bones and vessels beside them, and so does the whole-body plate.
+  const n = M(COLORS.nerve, { roughness: 0.45, emissive: COLORS.nerve, emissiveIntensity: 0.22, tissue: 'nerve', natural: ATLAS_NERVE });
   const nerve = (pts, r, card, label) => g.add(pick(tubeThrough(pts, r, n, 64, 8), card, label));
   const spine = L.spine; // atlas, T3, T8, L1, L5, sacrum (vertebra centres)
   // The cord runs in the canal behind the vertebral bodies and ends near L1; below it, the nerve roots (cauda equina).
   const canal = (p, dy = 0) => [p[0], p[1] + dy, p[2] - 0.004];
   nerve([[0, spine[0][1] + 0.035, spine[0][2] + 0.004], canal(spine[0]), canal(spine[1]), canal(spine[2]), canal(spine[3])], 0.0055, 'spinal-cord', 'Spinal cord');
   nerve([canal(spine[3]), canal(spine[4]), canal(spine[5], 0.02)], 0.003, 'spinal-cord', 'Nerve roots below the cord (cauda equina)');
+  // The vagus nerve (cranial nerve X), each side: from the brainstem out through the skull's base,
+  // down the neck in the sheath beside the carotid artery, behind the heart along the gullet, and
+  // through the diaphragm to the stomach.
+  for (const s of [1, -1]) {
+    nerve([
+      [s * 0.01, spine[0][1] + 0.02, spine[0][2] + 0.006],
+      [s * 0.024, spine[0][1] - 0.01, spine[0][2] + 0.012],
+      [s * 0.028, THYROID.center[1] + 0.02, THYROID.center[2] - 0.016],
+      [s * 0.024, THYROID.center[1] - 0.035, THYROID.center[2] - 0.018],
+      [s * 0.014, spine[2][1] + 0.04, spine[2][2] + 0.036],
+      [s * 0.012, spine[3][1] + 0.05, spine[3][2] + 0.034],
+      [s * 0.02 + 0.018, spine[3][1] + 0.01, spine[3][2] + 0.05],
+    ], 0.0018, 'vagus-nerve', s > 0 ? 'Left vagus nerve' : 'Right vagus nerve');
+  }
   for (const side of ['left', 'right']) {
     const s = side === 'left' ? 1 : -1;
     const femur = `${side} femur`;
     const tibia = `${side} tibia`;
     const humerus = `${side} humerus`;
     const radius = `${side} radius`;
-    // Sciatic nerve: out of the pelvis behind the hip, down the back of the thigh, then on behind the shin.
+    // Leg. The sciatic nerve leaves the pelvis behind the hip, runs down the back of the thigh and
+    // splits above the knee: the tibial nerve goes on behind the knee and the shin to the sole, and
+    // the common fibular nerve winds round the neck of the fibula to the front of the leg.
+    const split = along(femur, 0.84, [0, 0, -0.034]);
+    nerve([[s * 0.03, spine[5][1] + 0.01, spine[5][2] - 0.005], along(femur, 0.08, [-0.01, 0, -0.05]), along(femur, 0.5, [0, 0, -0.036]), split], 0.0045, 'sciatic-nerve', 'Sciatic nerve (the longest nerve)');
+    nerve([split, along(femur, 0.97, [-0.004, 0, -0.036]), along(tibia, 0.5, [0, 0, -0.034]), along(tibia, 0.97, [-0.022, 0, -0.02])], 0.0032, 'sciatic-nerve', 'Tibial nerve');
+    nerve([split, along(femur, 0.97, [0.024, 0, -0.03]), along(tibia, 0.1, [0.04, 0, -0.006]), along(tibia, 0.22, [0.034, 0, 0.02]), along(tibia, 0.6, [0.02, 0, 0.03]), along(tibia, 0.98, [0.008, 0, 0.034])], 0.0024, 'sciatic-nerve', 'Common fibular nerve');
+    // The femoral nerve comes down beside the psoas, under the groin crease just outside the femoral
+    // artery, into the front of the thigh; its saphenous branch carries on down the inside of the leg.
     nerve([
-      [s * 0.03, spine[5][1] + 0.01, spine[5][2] - 0.005],
-      along(femur, 0.08, [-0.01, 0, -0.05]),
-      along(femur, 0.5, [0, 0, -0.035]),
-      along(femur, 0.95, [0, 0, -0.03]),
-      along(tibia, 0.5, [0, 0, -0.03]),
-      along(tibia, 0.97, [-0.01, 0, -0.025]),
-    ], 0.0045, 'nervous-system', 'Sciatic nerve (the longest nerve)');
-    // Arm nerves: from the neck under the collarbone and down the inside of the arm to the hand.
-    nerve([
-      [s * 0.03, spine[0][1] - 0.06, spine[0][2]],
-      add(L.vessels.subclavianArtery[side], [s * 0.01, 0.005, -0.012]),
-      along(humerus, 0.2, [-0.018, 0, 0.012]),
-      along(humerus, 0.92, [-0.016, 0, 0.02]),
-      along(radius, 0.5, [-0.012, 0, 0.012]),
-      along(radius, 1, [-0.008, -0.03, 0.012]),
-    ], 0.0032, 'nervous-system', 'Arm nerves (the median nerve)');
+      [s * 0.045, spine[4][1], spine[4][2] + 0.01],
+      add(L.vessels.externalIliacArtery[side], [s * 0.014, -0.012, 0.004]),
+      along(femur, 0.18, [-0.012, -0.01, 0.046]),
+      along(femur, 0.45, [-0.022, 0, 0.04]),
+      along(femur, 0.95, [-0.042, 0, -0.004]),
+      along(tibia, 0.5, [-0.034, 0, 0.002]),
+      along(tibia, 0.98, [-0.03, 0, 0.012]),
+    ], 0.003, 'femoral-nerve', 'Femoral nerve and its saphenous branch');
+    // Arm. The brachial plexus gathers the roots C5 to T1 in the neck, passes over the first rib
+    // behind the collarbone and splits in the armpit into the arm's nerves.
+    const armpit = along(humerus, 0.1, [-0.026, 0, 0.008]);
+    nerve([[s * 0.03, spine[0][1] - 0.06, spine[0][2]], add(L.vessels.subclavianArtery[side], [s * 0.01, 0.006, -0.012]), armpit], 0.0042, 'brachial-plexus', 'Brachial plexus');
+    // Median: down the inside of the arm beside the artery, through the crook of the elbow and the
+    // middle of the forearm, into the palm through the carpal tunnel.
+    nerve([armpit, along(humerus, 0.5, [-0.02, 0, 0.018]), along(humerus, 0.95, [-0.008, 0, 0.026]), along(radius, 0.5, [-0.016, 0, 0.012]), along(radius, 1, [-0.016, -0.026, 0.014])], 0.0028, 'median-nerve', 'Median nerve');
+    // Ulnar: down the inside of the arm, behind the inner knob of the elbow (the funny bone), and
+    // along the little-finger side of the forearm.
+    nerve([armpit, along(humerus, 0.5, [-0.028, 0, -0.004]), along(humerus, 1, [-0.04, 0, -0.018]), along(radius, 0.5, [-0.035, 0, 0]), along(radius, 1, [-0.034, -0.022, 0.006])], 0.0024, 'ulnar-nerve', 'Ulnar nerve');
+    // Radial: round the back of the humerus in its spiral groove, out to the outer side of the elbow
+    // and down the thumb side of the forearm.
+    nerve([armpit, along(humerus, 0.3, [-0.006, 0, -0.026]), along(humerus, 0.55, [0.012, 0, -0.022]), along(humerus, 0.85, [0.02, 0, 0.004]), along(humerus, 1, [0.014, 0, 0.016]), along(radius, 0.4, [0.01, 0, 0.008]), along(radius, 0.95, [0.008, -0.01, 0.006])], 0.0024, 'radial-nerve', 'Radial nerve');
   }
   // Smell: the olfactory patch in the roof of the nasal cavity, and the bulbs above it.
   g.add(pick(ellipsoid([0, NOSE.y, NOSE.z], [0.008, 0.0035, 0.011], M(0xe8c45a, { roughness: 0.45 }), 14), 'nasal-cavity', 'Roof of the nasal cavity (olfactory epithelium)'));

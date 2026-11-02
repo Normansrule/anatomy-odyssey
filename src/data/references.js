@@ -72,6 +72,10 @@ export const REFERENCES = {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 10: Muscle Tissue.',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/10-introduction',
   },
+  'openstax-pns': {
+    text: 'OpenStax Anatomy and Physiology 2e, chapter 13.4: The Peripheral Nervous System.',
+    url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/13-4-the-peripheral-nervous-system',
+  },
   'openstax-muscles': {
     text: 'OpenStax Anatomy and Physiology 2e, chapter 11: The Muscular System (11.3 to 11.6, the axial and appendicular muscles).',
     url: 'https://openstax.org/books/anatomy-and-physiology-2e/pages/11-introduction',

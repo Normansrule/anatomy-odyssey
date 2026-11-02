@@ -69,3 +69,17 @@ describe('the skin standing alone', () => {
     expect(SKIN_ALONE).toBeLessThanOrEqual(1);
   });
 });
+
+describe('the named nerves', () => {
+  it('each has a card on the nervous system with a figure and a source', async () => {
+    const { NERVE_CARDS } = await import('../src/data/cards-nerves.js');
+    const { statsFor } = await import('../src/data/stats.js');
+    const { REFERENCES } = await import('../src/data/references.js');
+    expect(NERVE_CARDS.map((c) => c.id)).toEqual(['sciatic-nerve', 'femoral-nerve', 'brachial-plexus', 'median-nerve', 'ulnar-nerve', 'radial-nerve', 'vagus-nerve']);
+    for (const c of NERVE_CARDS) {
+      expect(c.system, c.id).toBe('nervous');
+      expect(statsFor(c.id).length, c.id).toBeGreaterThan(0);
+      for (const r of c.refs) expect(REFERENCES[r], `${c.id} ${r}`).toBeTruthy();
+    }
+  });
+});

@@ -45,6 +45,34 @@ export const STATS = {
     { value: '0.5', unit: 'g', label: 'the pituitary, which steers most of the other glands' },
     { value: '4', unit: 'parathyroids', label: 'each the size of a grain of rice, set calcium' },
   ],
+  'sciatic-nerve': [
+    { value: '2', unit: 'cm', label: 'wide where it leaves the pelvis, the thickest nerve' },
+    { value: '5', unit: 'roots', label: 'L4 to S3, from the lower spine' },
+    { value: '2', unit: 'branches', label: 'above the knee: tibial and common fibular' },
+  ],
+  'femoral-nerve': [
+    { value: '3', unit: 'roots', label: 'L2 to L4' },
+    { value: '4', unit: 'muscles', label: 'of the quadriceps, which straighten the knee' },
+  ],
+  'brachial-plexus': [
+    { value: '5', unit: 'roots', label: 'C5 to T1, from the neck and upper chest' },
+    { value: '5', unit: 'nerves', label: 'leave it for the arm' },
+  ],
+  'median-nerve': [
+    { value: '3', unit: 'fingers', label: 'thumb, index and middle, plus half the ring finger, feel through it' },
+    { value: '9', unit: 'tendons', label: 'share the carpal tunnel with it' },
+  ],
+  'ulnar-nerve': [
+    { value: '14', unit: 'muscles', label: 'of the hand’s 19 small muscles it works' },
+    { value: '1', unit: 'finger', label: 'and half the ring finger feel through it: the little finger' },
+  ],
+  'radial-nerve': [
+    { value: '4', unit: 'mm', label: 'wide where it crosses the humerus' },
+  ],
+  'vagus-nerve': [
+    { value: '80', unit: '%', label: 'of its fibers carry signals up to the brain' },
+    { value: '2', unit: 'nerves', label: 'one on each side, the tenth of the 12 cranial pairs' },
+  ],
   femur: [
     { value: '45', unit: 'cm', label: 'long: the longest bone in the body' },
     { value: '3', unit: '× body weight', label: 'pressing on the hip with each step when walking' },

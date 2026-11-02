@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.29.0
+
+- **The nerves you learn by name.** The whole body had a spinal cord, one sciatic nerve and a single arm nerve per side. It now draws the nerves an anatomy course names first, each with its own card from OpenStax's chapter on the peripheral nervous system: the **sciatic nerve** behind the thigh, splitting above the knee into the **tibial** nerve (on behind the calf to the sole) and the **common fibular** nerve (round the neck of the fibula to the front of the leg: foot drop); the **femoral nerve** under the groin crease just outside the femoral artery (nerve, artery, vein: NAVeL) into the front of the thigh, with its saphenous branch down the inside of the leg; the **brachial plexus** from the neck over the first rib to the armpit (Erb's palsy); the **median** nerve through the crook of the elbow to the carpal tunnel; the **ulnar** nerve behind the elbow's inner knob, the funny bone; the **radial** nerve round the back of the humerus in its spiral groove (wrist drop); and both **vagus** nerves from the brainstem down the neck beside the carotid, behind the heart and through the diaphragm to the stomach. Each card has its headline figures, and the front and back charts label the ones seen from that side.
+- **Nerves in atlas yellow.** A living nerve is a creamy cord, almost the color of bone, so on the whole body the nerves disappeared against the skeleton. They now take the yellow anatomy atlases print them in.
+
 ## 0.28.0
 
 - **The skin stands as a figure of its own.** Over the body the skin is a see-through film so you can look at what it holds; taken apart, it has nothing inside to show, so it fills in to a solid, sculpted figure, the surface-anatomy plate an atlas opens with. Solid, it drops the mottled tint made for the film (which read as blotches) and keeps its pores and creases on an even skin tone. Put together, it turns see-through again.
