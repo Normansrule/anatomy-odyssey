@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.28.0
+
+- **The skin stands as a figure of its own.** Over the body the skin is a see-through film so you can look at what it holds; taken apart, it has nothing inside to show, so it fills in to a solid, sculpted figure, the surface-anatomy plate an atlas opens with. Solid, it drops the mottled tint made for the film (which read as blotches) and keeps its pores and creases on an even skin tone. Put together, it turns see-through again.
+- **Two new keys.** A takes the whole body apart or puts it together; B turns it round to see the back or the front. The About page lists them with the others, and the buttons announce them to screen readers.
+
 ## 0.27.0
 
 - **Pick a system out of the row.** With the body taken apart, pointing at any part of a system lifts that whole figure a few centimeters off the floor on a quick spring, its shadow spreading and paling under it the way a model lifted off a table casts a softer shadow, and its caption turns red. Pointing at a caption (or tabbing to it) does the same, and clicking it opens that system's card. A part still opens its own card.

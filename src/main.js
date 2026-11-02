@@ -183,11 +183,12 @@ async function main() {
 
   // ── Turn around (whole-body tier) ──────────────────────────────────
   // A wall chart of the body comes as a front plate and a back plate; this turns the model to show the other.
-  const turnButton = el('button', { class: 'system-chip system-chip--turn', type: 'button', onclick: () => engine.turnAround() },
+  const turnButton = el('button', { class: 'system-chip system-chip--turn', type: 'button', 'aria-keyshortcuts': 'B', onclick: () => engine.turnAround() },
     el('span', { class: 'system-chip__turn', 'aria-hidden': 'true', text: '↻' }), el('span', { class: 'system-chip__label', text: 'See the back' }));
   // Taking the body apart stands its systems in a row, like the plates of an anatomy atlas side by side.
   const apartButton = el('button', {
     class: 'system-chip system-chip--turn system-chip--apart',
+    'aria-keyshortcuts': 'A',
     type: 'button',
     onclick: async () => {
       // Fit the row between the scale and the card, the part of the screen the plate shows.
@@ -1132,6 +1133,10 @@ async function main() {
       $('atlas-button').click();
     } else if (e.key === 't' || e.key === 'T') {
       startTour();
+    } else if ((e.key === 'a' || e.key === 'A') && apartButton.isConnected && !apartButton.closest('[hidden]')) {
+      apartButton.click(); // take the body apart, or put it together
+    } else if ((e.key === 'b' || e.key === 'B') && turnButton.isConnected && !turnButton.closest('[hidden]')) {
+      turnButton.click(); // see the back, or the front again
     }
   });
   document.addEventListener('click', (e) => {

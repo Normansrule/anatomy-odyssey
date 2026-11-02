@@ -38,6 +38,9 @@ export const APART_ORDER = ['skin', 'muscular', 'skeletal', 'nervous', 'circulat
 export const APART_SPACING = 0.54;
 /** How far (meters) a system rises off the floor while the pointer is on it, and how briskly. */
 export const APART_LIFT = 0.06;
+/** How opaque the skin becomes standing alone in the row. */
+export const SKIN_ALONE = 0.94;
+const SKIN_TONE = 0xcfb29f;
 export const LIFT_SPRING = { stiffness: 160, damping: 20 };
 
 /** Where each shown system stands when taken apart: x offsets, centred on the body's own place. */
@@ -371,6 +374,12 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
   let apart = false;
   let shown = skeletonOnly ? ['skeletal'] : [...systems];
   const springs = Object.fromEntries(Object.keys(groups).map((id) => [id, { x: 0, v: 0, delay: 0, y: 0, vy: 0 }]));
+  // Standing alone, the skin has nothing inside it to show through, so it fills in
+  // to a solid figure, as an atlas draws the surface plate.
+  const skinFades = [];
+  groups.skin?.traverse((o) => {
+    if (o.isMesh && o.material?.transparent && o.material.opacity < 0.6) skinFades.push({ mat: o.material, base: o.material.opacity, map: o.material.map, color: o.material.color.clone() });
+  });
   let lifted = null; // the system the pointer is on, raised off the floor like a plate picked up
   const shadows = {};
   for (const [id, grp] of Object.entries(groups)) {
@@ -501,6 +510,20 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
       }
       const t = spread();
       floor.material.opacity = 0.75 * (1 - t);
+      for (const f of skinFades) {
+        const { mat, base } = f;
+        mat.opacity = base + (SKIN_ALONE - base) * t;
+        const solid = t > 0.5;
+        if (mat.depthWrite !== solid) {
+          // Solid, the skin's mottled color map (made to tint a see-through film) would read
+          // as blotches; it keeps its pores and creases (the normal map) on an even skin tone.
+          mat.depthWrite = solid;
+          mat.map = solid ? null : f.map;
+          if (solid) mat.color.set(SKIN_TONE);
+          else mat.color.copy(f.color);
+          mat.needsUpdate = true;
+        }
+      }
       for (const sh of Object.values(shadows)) sh.material.opacity = 0.75 * t * (1 - 0.45 * (sh.userData.lift ?? 0));
       beat = (beat + dt * BEATS_PER_SECOND) % 1;
       heart?.scale.setScalar(still ? 1 : heartbeatScale(beat));

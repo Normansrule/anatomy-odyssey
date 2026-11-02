@@ -61,3 +61,11 @@ describe('the row is interactive', () => {
     for (const s of SYSTEMS) expect(statsFor(s.card).length, s.id).toBeGreaterThan(0);
   });
 });
+
+describe('the skin standing alone', () => {
+  it('fills in to a nearly solid figure', async () => {
+    const { SKIN_ALONE } = await import('../src/scenes/body.js');
+    expect(SKIN_ALONE).toBeGreaterThan(0.8);
+    expect(SKIN_ALONE).toBeLessThanOrEqual(1);
+  });
+});
