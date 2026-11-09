@@ -13,6 +13,7 @@ import { bodyParts } from './bodyMeshes.js';
 import { buildSimpleSystems, SIMPLE_FIGURE } from './bodySimple.js';
 import { buildBloodFlow } from './bloodFlow.js';
 import { buildInfection, skinPointNear } from './bodyInfection.js';
+import { buildStage } from './bodyStage.js';
 import LANDMARKS from '../data/bodyLandmarks.json';
 
 export const SYSTEMS = [
@@ -40,6 +41,13 @@ export const APART_SPACING = 0.54;
 export const APART_LIFT = 0.06;
 /** How opaque the skin becomes standing alone in the row. */
 export const SKIN_ALONE = 0.94;
+/** One breath at rest: about 14 a minute. */
+export const BREATH_SECONDS = 60 / 14;
+/** How full the lungs are through one breath (0 empty, 1 full): in for about 2 parts, out for 3. */
+export function breathFill(phase) {
+  const p = ((phase % 1) + 1) % 1;
+  return p < 0.4 ? Math.sin((p / 0.4) * (Math.PI / 2)) ** 2 : Math.cos(((p - 0.4) / 0.6) * (Math.PI / 2)) ** 2;
+}
 /** Nerves on the whole body take the atlas's yellow. */
 export const ATLAS_NERVE = 0xe0b83a;
 const SKIN_TONE = 0xcfb29f;
@@ -91,7 +99,9 @@ function materialFor(M, extras, { skeletonOnly, shaded }) {
   const shade = shaded ? { vertexColors: true } : {};
   switch (tissue) {
     case 'skin':
-      return M(COLORS.skin, { transparent: true, opacity: 0.2, depthWrite: false, roughness: 0.42, tissue: 'skin', repeat: [1, 1] });
+      // A glass-figure skin: a faint film, with a sheen that lights its edges so the outline of the
+      // body reads clearly while what is inside shows through.
+      return M(COLORS.skin, { transparent: true, opacity: 0.2, depthWrite: false, roughness: 0.42, tissue: 'skin', repeat: [1, 1], sheen: 1, sheenRoughness: 0.32, sheenColor: 0xfff0dc });
     case 'bone':
       if (skeletonOnly && card === 'femur' && side === 'left') return M(COLORS.bone, { roughness: 0.45, emissive: COLORS.eosin, emissiveIntensity: 0.55, tissue: 'bone', repeat: [1, 1], ...shade });
       return M(skeletonOnly ? COLORS.boneShade : COLORS.bone, { roughness: 0.55, tissue: 'bone', repeat: [1, 1], ...shade });
@@ -453,6 +463,19 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
   root.add(floor);
 
   const height = parts ? L.height : SIMPLE_FIGURE.height;
+  // The figure stands on a plinth beside a measuring rod (not for the skeleton dive's own plate).
+  const stage = skeletonOnly ? null : buildStage(M, { height });
+  if (stage) root.add(stage.group);
+  // Breathing: the lungs fill and empty about 14 times a minute, swelling most at the base as the
+  // diaphragm pulls them down, so the figure is alive.
+  const breathing = [];
+  groups.respiratory?.traverse((o) => {
+    if (!o.isMesh || !/lung/.test(o.userData.cardId ?? o.parent?.userData.cardId ?? '')) return;
+    o.geometry.computeBoundingBox();
+    const b = o.geometry.boundingBox;
+    breathing.push({ mesh: o, apex: new THREE.Vector3((b.min.x + b.max.x) / 2, b.max.y, (b.min.z + b.max.z) / 2) });
+  });
+  let breath = 0;
   // Focus: the left femur (viewer's right), which the skeletal dive enters next.
   const femurCenter = parts ? lerp(...bone('left femur'), 0.5) : SIMPLE_FIGURE.femurCenter;
   let beat = 0;
@@ -541,6 +564,15 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
       }
       const t = spread();
       floor.material.opacity = 0.75 * (1 - t);
+      stage?.fade(t);
+      breath = (breath + dt / BREATH_SECONDS) % 1;
+      const b = still ? 0 : breathFill(breath);
+      for (const { mesh, apex } of breathing) {
+        const sx = 1 + 0.03 * b;
+        const sy = 1 + 0.05 * b;
+        mesh.scale.set(sx, sy, sx);
+        mesh.position.set(apex.x * (1 - sx), apex.y * (1 - sy), apex.z * (1 - sx));
+      }
       for (const f of skinFades) {
         const { mat, base } = f;
         mat.opacity = base + (SKIN_ALONE - base) * t;

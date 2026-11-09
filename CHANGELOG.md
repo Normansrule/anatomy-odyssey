@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.31.0
+
+- **A stage for the body.** The whole body used to float on a soft shadow. It now stands on a low turntable plinth, like an anatomical model on its stand in a museum case, with a dial engraved round the rim (a tick every 5 degrees, a long one every 30) that shows the turn when you see the back. Beside it stands a stadiometer, the measuring rod a clinic stands you against: a centimeter scale numbered every 10 cm, with its headboard resting on the crown at 1.64 m. Taking the body apart fades the stage away, so the row has the floor to itself, and the skeleton dive's own plate keeps its bare floor.
+- **It breathes.** The lungs fill and empty about 14 times a minute, in for two parts and out for three, swelling most at the base as the diaphragm pulls them down. With reduced motion they stay still.
+- **A clearer outline.** The see-through skin catches a soft sheen at its edges, so the body's outline reads like a glass figure while what is inside still shows through.
+
 ## 0.30.0
 
 - **Sound you can turn on.** A new Sound button in the top bar (or the S key) turns on quiet sound cues; it is off until you ask for it, and remembers your choice in this browser. A toggle ticks, a card opens with a soft pop, the body coming apart or turning round moves a breath of air (rising as it opens, falling as it closes), and lifting a figure out of the row clicks. Each new plate rings a chime whose pitch falls as you go down the scale, from a high A for the whole body to an F♯ an octave and more below for the molecule, so you can hear how deep you are. Every sound is synthesized in the browser with the Web Audio API: the app ships no sound files and still makes no network requests.
