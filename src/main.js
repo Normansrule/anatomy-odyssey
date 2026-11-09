@@ -31,6 +31,7 @@ import { openGlossary } from './ui/glossary.js';
 import { renderAtlas } from './ui/atlas.js';
 import { el, clear } from './ui/dom.js';
 import { captionRows } from './ui/layerCaptions.js';
+import { createSound } from './ui/sound.js';
 import { progress } from './storage/progress.js';
 import { FrameBenchmark, validMeasurement } from './engine/benchmark.js';
 import { setSurfaceOptions, detailFor } from './engine/textures/surfaces.js';
@@ -183,7 +184,21 @@ async function main() {
 
   // ── Turn around (whole-body tier) ──────────────────────────────────
   // A wall chart of the body comes as a front plate and a back plate; this turns the model to show the other.
-  const turnButton = el('button', { class: 'system-chip system-chip--turn', type: 'button', 'aria-keyshortcuts': 'B', onclick: () => engine.turnAround() },
+  // ── Sound (off until turned on; nothing is loaded, every cue is synthesized) ──
+  const sound = createSound({ enabled: progress.pref('sound', false) === true });
+  const soundButton = $('sound-button');
+  const showSound = () => soundButton.setAttribute('aria-pressed', String(sound.enabled));
+  showSound();
+  soundButton.addEventListener('click', () => {
+    sound.enabled = !sound.enabled;
+    progress.setPref('sound', sound.enabled);
+    showSound();
+    sound.tick();
+  });
+  const turnButton = el('button', { class: 'system-chip system-chip--turn', type: 'button', 'aria-keyshortcuts': 'B', onclick: () => {
+    if (!engine.busy) sound.whoosh(false);
+    engine.turnAround();
+  } },
     el('span', { class: 'system-chip__turn', 'aria-hidden': 'true', text: '↻' }), el('span', { class: 'system-chip__label', text: 'See the back' }));
   // Taking the body apart stands its systems in a row, like the plates of an anatomy atlas side by side.
   const apartButton = el('button', {
@@ -194,6 +209,7 @@ async function main() {
       // Fit the row between the scale and the card, the part of the screen the plate shows.
       const f = plateFrame();
       const widthFraction = Math.min(1, Math.max(0.3, (f.right - f.left) / app.getBoundingClientRect().width));
+      if (!engine.busy) sound.whoosh(!engine.current?.built.apart);
       if (await engine.setApart(!engine.current?.built.apart, { widthFraction })) {
         keyBuilt = null; // renumber for the new layout
         showFacing(engine.facing());
@@ -222,7 +238,11 @@ async function main() {
       type: 'button',
       class: 'layer-caption',
       dataset: { id: l.id },
-      onclick: () => l.card && openCard(l.card),
+      onclick: () => {
+        if (!l.card) return;
+        sound.pop();
+        openCard(l.card);
+      },
       onpointerenter: () => lift(l.id),
       onpointerleave: () => lift(null),
       onfocus: () => lift(l.id),
@@ -262,6 +282,7 @@ async function main() {
         const on = state.systems.includes(sys.id);
         state.systems = on ? state.systems.filter((x) => x !== sys.id) : [...state.systems, sys.id];
         b.setAttribute('aria-pressed', String(!on));
+        sound.tick();
         engine.setSystems(state.systems);
         progress.setPref('systems', state.systems);
         if (state.openCard) reopen();
@@ -531,6 +552,7 @@ async function main() {
         }
       : undefined;
     await engine.transition(state.path[i], forward, { fromFocus, quick, onSwap });
+    if (!quick) sound.step(state.path[i].tier, forward); // each plate's note, lower the deeper you go
     arrive(thenOpen);
     return true;
   }
@@ -1066,7 +1088,10 @@ async function main() {
     if (!down || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) return;
     down = null;
     const hit = engine.pickAt(ndcOf(e));
-    if (hit) openCard(hit.cardId, { focus: false });
+    if (hit) {
+      sound.pop();
+      openCard(hit.cardId, { focus: false });
+    }
   });
   let hoverQueued = null;
   canvas.addEventListener('pointermove', (e) => {
@@ -1094,7 +1119,11 @@ async function main() {
     }
     const hit = engine.pickAt(ndcOf(e));
     const built = engine.current?.built;
-    if (built?.apart) built.lift(hit ? built.systemOf(hit.object) : null);
+    if (built?.apart) {
+      const was = built.lifted;
+      built.lift(hit ? built.systemOf(hit.object) : null);
+      if (built.lifted && built.lifted !== was) sound.tick(); // a figure picked up
+    }
     canvas.style.cursor = hit ? 'pointer' : '';
     engine.setHover(hit);
     key.setHot(hit?.cardId ?? null);
@@ -1133,6 +1162,8 @@ async function main() {
       $('atlas-button').click();
     } else if (e.key === 't' || e.key === 'T') {
       startTour();
+    } else if (e.key === 's' || e.key === 'S') {
+      soundButton.click();
     } else if ((e.key === 'a' || e.key === 'A') && apartButton.isConnected && !apartButton.closest('[hidden]')) {
       apartButton.click(); // take the body apart, or put it together
     } else if ((e.key === 'b' || e.key === 'B') && turnButton.isConnected && !turnButton.closest('[hidden]')) {

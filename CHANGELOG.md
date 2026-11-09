@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.30.0
+
+- **Sound you can turn on.** A new Sound button in the top bar (or the S key) turns on quiet sound cues; it is off until you ask for it, and remembers your choice in this browser. A toggle ticks, a card opens with a soft pop, the body coming apart or turning round moves a breath of air (rising as it opens, falling as it closes), and lifting a figure out of the row clicks. Each new plate rings a chime whose pitch falls as you go down the scale, from a high A for the whole body to an F♯ an octave and more below for the molecule, so you can hear how deep you are. Every sound is synthesized in the browser with the Web Audio API: the app ships no sound files and still makes no network requests.
+
 ## 0.29.0
 
 - **The nerves you learn by name.** The whole body had a spinal cord, one sciatic nerve and a single arm nerve per side. It now draws the nerves an anatomy course names first, each with its own card from OpenStax's chapter on the peripheral nervous system: the **sciatic nerve** behind the thigh, splitting above the knee into the **tibial** nerve (on behind the calf to the sole) and the **common fibular** nerve (round the neck of the fibula to the front of the leg: foot drop); the **femoral nerve** under the groin crease just outside the femoral artery (nerve, artery, vein: NAVeL) into the front of the thigh, with its saphenous branch down the inside of the leg; the **brachial plexus** from the neck over the first rib to the armpit (Erb's palsy); the **median** nerve through the crook of the elbow to the carpal tunnel; the **ulnar** nerve behind the elbow's inner knob, the funny bone; the **radial** nerve round the back of the humerus in its spiral groove (wrist drop); and both **vagus** nerves from the brainstem down the neck beside the carotid, behind the heart and through the diaphragm to the stomach. Each card has its headline figures, and the front and back charts label the ones seen from that side.

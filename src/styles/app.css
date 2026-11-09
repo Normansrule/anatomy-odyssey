@@ -2249,17 +2249,18 @@ button:active:not(:disabled):not([aria-disabled='true']),
   /* Two rows of cells: navigation on top, search with reference dialogs below. */
   .topbar {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto;
     grid-template-rows: 52px 52px;
     grid-template-areas:
-      'logo dive tour map'
-      'search search glossary about';
+      'logo dive dive tour map'
+      'search search sound glossary about';
   }
 
   .topbar .wordmark { grid-area: logo; }
   .topbar .dive-picker { grid-area: dive; min-width: 0; }
   .topbar #tour-button { grid-area: tour; }
   .topbar #atlas-button { grid-area: map; }
+  .topbar #sound-button { grid-area: sound; border-top: var(--rule-w) solid var(--rule); border-left: var(--rule-w) solid var(--rule); border-right: var(--rule-w) solid var(--rule); }
   .topbar .search { grid-area: search; border-left: 0; border-top: var(--rule-w) solid var(--rule); }
   .topbar #glossary-button { grid-area: glossary; border-top: var(--rule-w) solid var(--rule); }
   .topbar #about-button { grid-area: about; border-top: var(--rule-w) solid var(--rule); }
@@ -2717,5 +2718,50 @@ button:active:not(:disabled):not([aria-disabled='true']),
 @media (max-width: 899px), (max-height: 640px) {
   .plate-head__fact {
     display: none;
+  }
+}
+
+/* Sound toggle in the top bar: a note, struck through while sound is off. */
+.sound-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.sound-button__icon {
+  position: relative;
+  display: inline-block;
+  min-width: 1em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.sound-button[aria-pressed='false'] .sound-button__icon {
+  color: var(--muted);
+}
+
+.sound-button[aria-pressed='false'] .sound-button__icon::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  top: 50%;
+  border-top: 2px solid currentColor;
+  transform: rotate(-40deg);
+}
+
+.sound-button[aria-pressed='true'] {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+  .sound-button__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }

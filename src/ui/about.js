@@ -80,7 +80,7 @@ export function renderAbout(container, { backend, settings, onSetting, onReset, 
       el('li', { text: 'Drag to orbit, scroll or pinch to zoom, right-drag or two-finger drag to pan.' }),
       el('li', { text: 'Drag the scale on the left to zoom from 10 m down to 0.1 nm; the view flies on to the next plate when you get close. With the scale focused, the arrow keys zoom by a quarter of a power of ten, Page Up and Page Down by a whole one, Home and End to either end.' }),
       el('li', { text: 'Click any structure to open its card. Its key numbers everything in view: point at a number to see where that part is, or pick it with the keyboard.' }),
-      el('li', { text: 'Keyboard: → or Page Down dives deeper, ← or Page Up zooms out, / jumps to search, M opens the map, G opens the glossary, T plays the tour, A takes the whole body apart or puts it together, B turns it to see the back, Esc closes cards and stops the tour.' }),
+      el('li', { text: 'Keyboard: → or Page Down dives deeper, ← or Page Up zooms out, / jumps to search, M opens the map, G opens the glossary, T plays the tour, A takes the whole body apart or puts it together, B turns it to see the back, S turns sound on or off, Esc closes cards and stops the tour.' }),
     ),
 
     ...versionsSection(isDesktopApp()),
