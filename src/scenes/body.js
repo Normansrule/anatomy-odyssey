@@ -8,6 +8,7 @@
 // (src/data/bodyLandmarks.json). Until the anatomy bundle has loaded, the
 // simplified figure from bodySimple.js stands in.
 import * as THREE from 'three/webgpu';
+import { abs, dot, float, materialColor, materialOpacity, mix, normalView, positionViewDirection, pow, vec3 } from 'three/tsl';
 import { COLORS, materialBank, pick, tubeThrough, ellipsoid, disposeTree, softShadowTexture } from './kit.js';
 import { bodyParts } from './bodyMeshes.js';
 import { buildSimpleSystems, SIMPLE_FIGURE } from './bodySimple.js';
@@ -93,6 +94,26 @@ const add = (a, d) => a.map((x, i) => x + d[i]);
 // ── Materials for the measured parts, by tissue ─────────────────────────
 const SEE_THROUGH = { transparent: true, opacity: 0.5 };
 const CARTILAGE_LIFE = 0xe2e0d2;
+// How much the skin thickens toward the outline, and how sharply (a higher power keeps the
+// front of the body clear and puts the film's density in a narrower band at the edge).
+export const GLASS_EDGE = { gain: 0.9, power: 1.2, tint: [0.62, 0.4, 0.32] };
+/**
+ * Make the see-through skin read like the glass figures in a museum: where the surface turns
+ * away from you, you look through more of the film, so it grows denser toward the outline.
+ * The edge also deepens toward a warm flesh tone, so the outline reads against the pale page.
+ * Both add to what the material already has, so taking the body apart still turns the skin
+ * solid and evenly colored.
+ */
+function glassEdge(mat) {
+  if (!mat.opacityNode) {
+    const facing = abs(dot(normalView, positionViewDirection));
+    const thin = float(1).sub(materialOpacity); // 0.8 as a film, near 0 once solid
+    const edge = pow(float(1).sub(facing), GLASS_EDGE.power).mul(GLASS_EDGE.gain).mul(thin);
+    mat.opacityNode = materialOpacity.add(edge);
+    mat.colorNode = materialColor.mul(mix(vec3(1, 1, 1), vec3(...GLASS_EDGE.tint), edge));
+  }
+  return mat;
+}
 function materialFor(M, extras, { skeletonOnly, shaded }) {
   const { tissue, natural, card, side } = extras;
   // Parts with baked shade (the bones) multiply their color by it.
@@ -101,7 +122,7 @@ function materialFor(M, extras, { skeletonOnly, shaded }) {
     case 'skin':
       // A glass-figure skin: a faint film, with a sheen that lights its edges so the outline of the
       // body reads clearly while what is inside shows through.
-      return M(COLORS.skin, { transparent: true, opacity: 0.2, depthWrite: false, roughness: 0.42, tissue: 'skin', repeat: [1, 1], sheen: 1, sheenRoughness: 0.32, sheenColor: 0xfff0dc });
+      return glassEdge(M(COLORS.skin, { transparent: true, opacity: 0.2, depthWrite: false, roughness: 0.42, tissue: 'skin', repeat: [1, 1], sheen: 1, sheenRoughness: 0.32, sheenColor: 0xfff0dc }));
     case 'bone':
       if (skeletonOnly && card === 'femur' && side === 'left') return M(COLORS.bone, { roughness: 0.45, emissive: COLORS.eosin, emissiveIntensity: 0.55, tissue: 'bone', repeat: [1, 1], ...shade });
       return M(skeletonOnly ? COLORS.boneShade : COLORS.bone, { roughness: 0.55, tissue: 'bone', repeat: [1, 1], ...shade });

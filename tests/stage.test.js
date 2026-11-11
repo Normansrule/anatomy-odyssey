@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { dialTicks, rodMarks, PLINTH, ROD } from '../src/scenes/bodyStage.js';
+import { dialTicks, rodMarks, plaqueLines, PLAQUE, PLINTH, ROD } from '../src/scenes/bodyStage.js';
 import { breathFill, BREATH_SECONDS } from '../src/scenes/body.js';
 
 describe('the stage', () => {
@@ -19,6 +19,21 @@ describe('the stage', () => {
   it('stands the rod on the plinth, taller than the figure', () => {
     expect(Math.abs(ROD.x)).toBeLessThan(PLINTH.radius);
     expect(ROD.height).toBeGreaterThan(1.64);
+  });
+});
+
+describe('the museum label', () => {
+  it('names the specimen and gives its measured height', () => {
+    const [title, facts] = plaqueLines(1.684);
+    expect(title).toBe('Homo sapiens');
+    expect(facts).toContain('168 cm');
+    expect(facts).toContain('206 bones');
+  });
+
+  it('fits on the plinth, leaning back toward the viewer', () => {
+    expect(PLAQUE.width).toBeLessThan(PLINTH.radius);
+    expect(PLAQUE.tilt).toBeGreaterThan(0);
+    expect(PLAQUE.tilt).toBeLessThan(Math.PI / 2);
   });
 });
 

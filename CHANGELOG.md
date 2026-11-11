@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.32.0
+
+- **A glass figure.** The see-through skin used to be an even film, so on the pale page the body's outline all but vanished. It now thickens toward the outline, the way a glass anatomical figure in a museum looks denser at its edges because you see through more of it there, and deepens there toward a warm flesh tone. The front of the body stays clear, so the skeleton, heart and lungs still show through, while the shoulders, arms and legs read as one figure, in the light theme and the dark. Taken apart, the skin still fills in to an even, solid figure.
+- **A museum label.** A cream specimen card in a dark frame leans on the front of the plinth, as in a museum case, naming what stands there: *Homo sapiens*, adult, with the height the measuring rod reads and the 206 bones of the adult skeleton. It fades away with the rest of the stage when the body is taken apart.
+
 ## 0.31.0
 
 - **A stage for the body.** The whole body used to float on a soft shadow. It now stands on a low turntable plinth, like an anatomical model on its stand in a museum case, with a dial engraved round the rim (a tick every 5 degrees, a long one every 30) that shows the turn when you see the back. Beside it stands a stadiometer, the measuring rod a clinic stands you against: a centimeter scale numbered every 10 cm, with its headboard resting on the crown at 1.64 m. Taking the body apart fades the stage away, so the row has the floor to itself, and the skeleton dive's own plate keeps its bare floor.

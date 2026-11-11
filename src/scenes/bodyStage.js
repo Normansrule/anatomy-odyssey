@@ -1,6 +1,7 @@
 // The world the whole body stands in: a turntable plinth, like the dais an anatomical model
 // stands on in a museum case, with a dial engraved round its rim, and beside it a stadiometer,
-// the measuring rod a clinic stands you against, read off at the top of the head.
+// the measuring rod a clinic stands you against, read off at the top of the head. A museum label
+// leans on the plinth's front edge, naming the specimen.
 
 import * as THREE from 'three/webgpu';
 
@@ -21,6 +22,45 @@ export function rodMarks(heightCm) {
   const marks = [];
   for (let cm = 0; cm <= heightCm; cm++) marks.push({ cm, size: cm % 10 === 0 ? 'ten' : cm % 5 === 0 ? 'five' : 'one' });
   return marks;
+}
+
+export const PLAQUE = { width: 0.4, height: 0.096, tilt: 0.7 };
+
+/** The museum label's two lines for a figure `height` meters tall. */
+export function plaqueLines(height) {
+  const cm = Math.round(height * 100);
+  return ['Homo sapiens', `adult  ·  ${cm} cm  ·  206 bones`];
+}
+
+function plaqueTexture(lines) {
+  if (typeof document === 'undefined') return null;
+  const canvas = document.createElement('canvas');
+  canvas.width = 1200;
+  canvas.height = Math.round((1200 * PLAQUE.height) / PLAQUE.width);
+  const g = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+  // Cream card in a thin ink border, as a specimen label in a museum case.
+  g.fillStyle = '#f4ead3';
+  g.fillRect(0, 0, W, H);
+  g.strokeStyle = '#2b2620';
+  g.lineWidth = 6;
+  g.strokeRect(12, 12, W - 24, H - 24);
+  g.lineWidth = 2;
+  g.strokeRect(24, 24, W - 48, H - 48);
+  g.fillStyle = '#8e1b22';
+  g.fillRect(52, H / 2 - 44, 10, 88);
+  g.fillStyle = '#2b2620';
+  g.textBaseline = 'alphabetic';
+  g.font = 'italic 600 112px Georgia, "Times New Roman", serif';
+  g.fillText(lines[0], 92, H * 0.54);
+  g.font = '700 44px Archivo, "Helvetica Neue", Arial, sans-serif';
+  g.fillStyle = '#5a5045';
+  g.fillText(lines[1].toUpperCase(), 96, H * 0.8);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  return tex;
 }
 
 function rodFaceTexture(heightCm) {
@@ -121,6 +161,21 @@ export function buildStage(M, { height }) {
   const collar = still(new THREE.Mesh(new THREE.BoxGeometry(0.046, 0.024, 0.03), own(M(INK, { roughness: 0.45 }))));
   collar.position.set(ROD.x, height, ROD.z);
   g.add(collar);
+
+  // The label: a card in a dark frame, leaning back on the plinth's front edge toward the viewer.
+  const label = new THREE.Group();
+  const frame = still(new THREE.Mesh(new THREE.BoxGeometry(PLAQUE.width + 0.012, PLAQUE.height + 0.012, 0.006), own(M(INK, { roughness: 0.4 }))));
+  label.add(frame);
+  const plaqueTex = plaqueTexture(plaqueLines(height));
+  if (plaqueTex) {
+    const card = still(new THREE.Mesh(new THREE.PlaneGeometry(PLAQUE.width, PLAQUE.height), own(M.basic(0xffffff, { map: plaqueTex }))));
+    card.position.z = 0.0032;
+    label.add(card);
+  }
+  label.rotation.x = -PLAQUE.tilt;
+  label.position.set(0, (PLAQUE.height / 2) * Math.cos(PLAQUE.tilt) + 0.002, PLINTH.radius - 0.035);
+  label.name = 'plaque';
+  g.add(label);
 
   return {
     group: g,
