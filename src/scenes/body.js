@@ -14,7 +14,8 @@ import { bodyParts } from './bodyMeshes.js';
 import { buildSimpleSystems, SIMPLE_FIGURE } from './bodySimple.js';
 import { buildBloodFlow } from './bloodFlow.js';
 import { buildInfection, skinPointNear } from './bodyInfection.js';
-import { buildStage } from './bodyStage.js';
+import { buildStage, PLINTH } from './bodyStage.js';
+import { castShadowTexture, frontShare, SPOT, SPOT_BEHIND } from './castShadow.js';
 import LANDMARKS from '../data/bodyLandmarks.json';
 
 export const SYSTEMS = [
@@ -42,12 +43,27 @@ export const APART_SPACING = 0.54;
 export const APART_LIFT = 0.06;
 /** How opaque the skin becomes standing alone in the row. */
 export const SKIN_ALONE = 0.94;
+/** How dark the figure's cast shadow is at its feet. */
+export const CAST_OPACITY = 0.6;
 /** One breath at rest: about 14 a minute. */
 export const BREATH_SECONDS = 60 / 14;
 /** How full the lungs are through one breath (0 empty, 1 full): in for about 2 parts, out for 3. */
 export function breathFill(phase) {
   const p = ((phase % 1) + 1) % 1;
   return p < 0.4 ? Math.sin((p / 0.4) * (Math.PI / 2)) ** 2 : Math.cos(((p - 0.4) / 0.6) * (Math.PI / 2)) ** 2;
+}
+/**
+ * Quiet standing is never quite still: the body sways over its ankles, mostly forward and back,
+ * a few millimeters at the hips, in slow irregular drifts. Returns the lean in radians at time
+ * `t` seconds: pitch (forward and back) and roll (side to side), each under half a degree.
+ */
+export const SWAY = { pitch: 0.0042, roll: 0.0028 };
+export function swayAt(t) {
+  const w = (period) => (2 * Math.PI * t) / period;
+  return {
+    pitch: SWAY.pitch * (0.75 * Math.sin(w(9.1) + 1) + 0.25 * Math.sin(w(3.7))),
+    roll: SWAY.roll * (0.7 * Math.sin(w(7.3)) + 0.3 * Math.sin(w(2.9) + 2)),
+  };
 }
 /** Nerves on the whole body take the atlas's yellow. */
 export const ATLAS_NERVE = 0xe0b83a;
@@ -442,6 +458,10 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
   groups.skin?.traverse((o) => {
     if (o.isMesh && o.material?.transparent && o.material.opacity < 0.6) skinFades.push({ mat: o.material, base: o.material.opacity, map: o.material.map, color: o.material.color.clone() });
   });
+  const skinMeshes = [];
+  groups.skin?.traverse((o) => {
+    if (o.isMesh) skinMeshes.push(o);
+  });
   let lifted = null; // the system the pointer is on, raised off the floor like a plate picked up
   const shadows = {};
   for (const [id, grp] of Object.entries(groups)) {
@@ -487,6 +507,32 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
   // The figure stands on a plinth beside a measuring rod (not for the skeleton dive's own plate).
   const stage = skeletonOnly ? null : buildStage(M, { height });
   if (stage) root.add(stage.group);
+  // The shadow the figure casts across the plinth from the light, which rides with the camera:
+  // from the front it falls back, seen from behind it falls forward. Both are painted once, and
+  // each frame shows the one for the side the camera is on.
+  let cast = null;
+  if (stage && skinMeshes.length && typeof document !== 'undefined') {
+    root.updateMatrixWorld(true);
+    const plane = new THREE.PlaneGeometry(PLINTH.radius * 2, PLINTH.radius * 2);
+    const sides = [SPOT, SPOT_BEHIND].map((dir) => {
+      const mesh = new THREE.Mesh(plane, M.basic(0x1a120c, { map: castShadowTexture(skinMeshes, PLINTH.radius, { dir }), transparent: true, opacity: 0, depthWrite: false }));
+      mesh.rotation.x = -Math.PI / 2;
+      mesh.position.y = 0.0012;
+      mesh.raycast = () => {}; // a shadow is never picked
+      root.add(mesh);
+      return mesh;
+    });
+    const eye = new THREE.Vector3();
+    cast = { level: CAST_OPACITY, sides };
+    // Which side the camera is on is only known as the frame is drawn.
+    sides[0].onBeforeRender = (renderer, scene, camera) => {
+      eye.setFromMatrixPosition(camera.matrixWorld);
+      root.worldToLocal(eye);
+      const k = frontShare(eye.x, eye.z);
+      sides[0].material.opacity = cast.level * k;
+      sides[1].material.opacity = cast.level * (1 - k);
+    };
+  }
   // Breathing: the lungs fill and empty about 14 times a minute, swelling most at the base as the
   // diaphragm pulls them down, so the figure is alive.
   const breathing = [];
@@ -497,6 +543,7 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
     breathing.push({ mesh: o, apex: new THREE.Vector3((b.min.x + b.max.x) / 2, b.max.y, (b.min.z + b.max.z) / 2) });
   });
   let breath = 0;
+  let clock = 0;
   // Focus: the left femur (viewer's right), which the skeletal dive enters next.
   const femurCenter = parts ? lerp(...bone('left femur'), 0.5) : SIMPLE_FIGURE.femurCenter;
   let beat = 0;
@@ -586,6 +633,17 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
       const t = spread();
       floor.material.opacity = 0.75 * (1 - t);
       stage?.fade(t);
+      if (cast) {
+        cast.level = CAST_OPACITY * (1 - t);
+        for (const m of cast.sides) m.visible = groups.skin.visible && t < 0.99;
+      }
+      // The figure sways over its ankles; taken apart into a row, each system stands still.
+      clock += dt;
+      const lean = still ? { pitch: 0, roll: 0 } : swayAt(clock);
+      for (const grp of Object.values(groups)) {
+        grp.rotation.x = lean.pitch * (1 - t);
+        grp.rotation.z = lean.roll * (1 - t);
+      }
       breath = (breath + dt / BREATH_SECONDS) % 1;
       const b = still ? 0 : breathFill(breath);
       for (const { mesh, apex } of breathing) {

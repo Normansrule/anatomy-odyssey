@@ -7,7 +7,7 @@
 [![CI](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml/badge.svg)](https://github.com/Normansrule/anatomy-odyssey/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/code-MIT-1b2120)](LICENSE)
 ![Version](https://img.shields.io/badge/version-0.22.0-a3242f)
-![Tests](https://img.shields.io/badge/tests-564%20passing-276a40)
+![Tests](https://img.shields.io/badge/tests-570%20passing-276a40)
 
 [**Open the web app**](https://normansrule.github.io/anatomy-odyssey/) ·
 [Download the desktop app](https://github.com/Normansrule/anatomy-odyssey/releases/latest) ·
@@ -75,6 +75,9 @@ Anatomy Odyssey is a three-dimensional (3D) model of the human body, drawn like 
 </tr>
 <tr>
 <td align="center" colspan="2"><img src="docs/media/glass-figure.webp" alt="The whole body on its plinth in the light theme and the dark: the see-through skin grows denser and warmer toward the outline so the figure reads as one glass body, with the skeleton, heart and lungs showing through, and a framed museum label on the plinth reading Homo sapiens, adult, 164 cm, 206 bones" width="560" /><br /><sub><b>A glass figure.</b> The skin thickens toward its outline like a museum's glass body, and a specimen label names it.</sub></td>
+</tr>
+<tr>
+<td align="center" colspan="2"><img src="docs/media/cast-shadow.webp" alt="The legs and feet of the glass figure on its plinth, with the shadow of the legs falling back across the plinth's top toward the rim, dark at the heels and fading as it reaches away, beside the framed Homo sapiens label and the foot of the measuring rod" width="420" /><br /><sub><b>Its own shadow.</b> The figure casts a shadow across its stand from the light, and sways a little as a standing person does.</sub></td>
 </tr>
 <tr>
 <td align="center" colspan="2"><img src="docs/media/by-the-numbers.webp" alt="The heart plate: under the HEART heading the plate prints 100,000 beats a day in big condensed type, and the card on the right opens on three figures, 100,000 beats a day, 5 L of blood pumped a minute at rest and 300 g, above the numbered key" width="860" /><br /><sub><b>By the numbers.</b> Each plate prints its headline figure, and each card opens on three.</sub></td>

@@ -162,9 +162,9 @@ export function buildStage(M, { height }) {
   collar.position.set(ROD.x, height, ROD.z);
   g.add(collar);
 
-  // The label: a card in a dark frame, leaning back on the plinth's front edge toward the viewer.
+  // The label: a card on a wooden backboard (the same wood as the rod), leaning back on the plinth's front edge toward the viewer.
   const label = new THREE.Group();
-  const frame = still(new THREE.Mesh(new THREE.BoxGeometry(PLAQUE.width + 0.012, PLAQUE.height + 0.012, 0.006), own(M(INK, { roughness: 0.4 }))));
+  const frame = still(new THREE.Mesh(new THREE.BoxGeometry(PLAQUE.width + 0.012, PLAQUE.height + 0.012, 0.006), wood));
   label.add(frame);
   const plaqueTex = plaqueTexture(plaqueLines(height));
   if (plaqueTex) {

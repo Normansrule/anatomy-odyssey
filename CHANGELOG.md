@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.33.0
+
+- **A cast shadow.** The figure used to stand on a soft round smudge. It now casts its own shadow across the plinth from the light above and in front, darkest and sharpest at the heels and paler as it reaches back toward the rim, the way a figure on its stand in a lit museum case does. The studio light rides with your view, so seen from behind the shadow falls toward you, crossing over as you come round the side. The silhouette is worked out once when the plate opens and painted on the plinth, so it costs nothing to draw however detailed the body is. Taking the body apart takes the shadow away with the stage.
+- **It stands like a person.** No one stands quite still: the body sways over its ankles in slow, irregular drifts, mostly forward and back. The figure now does too, under half a degree, so the top of the head wanders less than a centimeter. With reduced motion it stands still, and taken apart into a row each system stands still.
+- **The label from behind.** The museum label now has a wooden back, the same wood as the measuring rod, so from behind it reads as a label stand rather than a black slab.
+
 ## 0.32.0
 
 - **A glass figure.** The see-through skin used to be an even film, so on the pale page the body's outline all but vanished. It now thickens toward the outline, the way a glass anatomical figure in a museum looks denser at its edges because you see through more of it there, and deepens there toward a warm flesh tone. The front of the body stays clear, so the skeleton, heart and lungs still show through, while the shoulders, arms and legs read as one figure, in the light theme and the dark. Taken apart, the skin still fills in to an even, solid figure.
