@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.34.0
+
+- **Eyes that look back.** Each eye used to end in a flat blue button. It now has a painted iris: slate-blue fibres running out from a ragged hazel collarette round the pupil, small dark crypts in between, and the dark limbal ring at the rim where the iris meets the white. A black pupil sits in the middle, and over both lies the clear dome of the cornea, which catches the studio light as a small glint up and to the right of the pupil, where the key light sits. Clicking the iris opens the iris and pupil card; clicking the cornea opens its own.
+- **Pupils that answer the light.** The page is the room the figure stands in. On the pale sheet the pupils narrow to about 3 mm; switch to the dark slate and they widen to about 6 mm, as yours do walking into a dim room. They narrow in well under a second and widen over a few, as real pupils do (the full range is roughly 2 to 8 mm). The iris card says how to try it. With reduced motion they change at once.
+
 ## 0.33.0
 
 - **A cast shadow.** The figure used to stand on a soft round smudge. It now casts its own shadow across the plinth from the light above and in front, darkest and sharpest at the heels and paler as it reaches back toward the rim, the way a figure on its stand in a lit museum case does. The studio light rides with your view, so seen from behind the shadow falls toward you, crossing over as you come round the side. The silhouette is worked out once when the plate opens and painted on the plinth, so it costs nothing to draw however detailed the body is. Taking the body apart takes the shadow away with the stage.

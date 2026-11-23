@@ -39,7 +39,7 @@ export const EYE_CARDS = [
     size: 'Pupil 2 to 4 mm in bright light, 4 to 8 mm in the dark',
     what: 'The colored ring of smooth muscle in front of the lens; the hole in its centre is the pupil.',
     why: 'It controls how much light gets in: it narrows the pupil in bright light and widens it in dim light.',
-    expert: 'A narrow pupil also sharpens focus, like a small aperture on a camera. Both pupils respond together even if light reaches only one eye.',
+    expert: 'A narrow pupil also sharpens focus, like a small aperture on a camera. Both pupils respond together even if light reaches only one eye. On the whole body, the page is the room: switch to the dark theme and the figure’s pupils widen from about 3 mm to 6 mm; switch back and they narrow again, faster than they widened.',
     refs: EYE,
   },
   {

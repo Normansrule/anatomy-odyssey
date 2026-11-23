@@ -15,6 +15,7 @@ import { buildSimpleSystems, SIMPLE_FIGURE } from './bodySimple.js';
 import { buildBloodFlow } from './bloodFlow.js';
 import { buildInfection, skinPointNear } from './bodyInfection.js';
 import { buildStage, PLINTH } from './bodyStage.js';
+import { buildEyeFronts } from './bodyEyes.js';
 import { castShadowTexture, frontShare, SPOT, SPOT_BEHIND } from './castShadow.js';
 import LANDMARKS from '../data/bodyLandmarks.json';
 
@@ -64,6 +65,16 @@ export function swayAt(t) {
     pitch: SWAY.pitch * (0.75 * Math.sin(w(9.1) + 1) + 0.25 * Math.sin(w(3.7))),
     roll: SWAY.roll * (0.7 * Math.sin(w(7.3)) + 0.3 * Math.sin(w(2.9) + 2)),
   };
+}
+/**
+ * The page is the room the figure stands in: the dark slate is a dim room, the pale sheet a lit
+ * one. Reads the theme the app set on the page, or the device's preference when it set none.
+ */
+const darkQuery = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+function roomIsDim() {
+  if (typeof document === 'undefined') return false;
+  const theme = document.documentElement.dataset.theme;
+  return theme ? theme === 'dark' : !!darkQuery?.matches;
 }
 /** Nerves on the whole body take the atlas's yellow. */
 export const ATLAS_NERVE = 0xe0b83a;
@@ -271,8 +282,10 @@ function buildNerves(M) {
     g.add(pick(coil, 'ear', 'Inner ear (cochlea)'));
     nerve([[x, INNER_EARS.y, INNER_EARS.z], [x * 0.5, INNER_EARS.y - 0.004, INNER_EARS.z - 0.008], [0, INNER_EARS.y - 0.014, INNER_EARS.z - 0.014]], 0.0012, 'vestibulocochlear-nerve', 'Vestibulocochlear nerve');
   }
-  // The iris and pupil, a domed disc just proud of the front of each eye.
-  for (const x of EYES.x) g.add(pick(ellipsoid([x, EYES.y, EYES.front - 0.0013], [0.0058, 0.0058, 0.0016], M(0x3f5f80, { roughness: 0.2 }), 18), 'eye', 'Iris and pupil'));
+  // The front of each eye: iris, pupil and cornea (bodyEyes.js).
+  const eyes = buildEyeFronts(M, { xs: EYES.x, y: EYES.y, front: EYES.front });
+  g.add(eyes.group);
+  g.userData.eyes = eyes;
   return g;
 }
 
@@ -410,10 +423,13 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
   let heart = null;
   let flow = null;
   let infection = null;
+  let eyes = null;
   let site = null;
   if (parts) {
     groups = measuredSystems(M, parts, { skeletonOnly });
-    groups.nervous.add(buildNerves(M));
+    const nerves = buildNerves(M);
+    eyes = nerves.userData.eyes;
+    groups.nervous.add(nerves);
     const limbs = buildLimbVessels(M);
     groups.circulatory.add(limbs.group);
     if (!skeletonOnly) {
@@ -671,6 +687,7 @@ function build({ mode = 'body', systems = DEFAULT_SYSTEMS, reducedMotion = false
       heart?.scale.setScalar(still ? 1 : heartbeatScale(beat));
       if (flow && groups.circulatory.visible) flow.update(dt, beat, still);
       infection?.update(dt);
+      eyes?.update(dt, { dim: roomIsDim(), still });
     },
     dispose() {
       disposeTree(root);
